@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhfh50p4q6kb4"]
+
+[ext_resource type="Script" uid="uid://duqh00njrpmdu" path="res://scripts/fragments/wallet.gd" id="1_aliir"]
+
+[node name="Wallet" type="Control"]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_aliir")
+
+[node name="Title" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 0
+offset_right = 352.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Название кошелька"
+
+[node name="Value" type="Label" parent="."]
+layout_mode = 0
+offset_left = 352.0
+offset_right = 658.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Текущее значение счета"
+horizontal_alignment = 2
+
+[node name="CashFlow" type="Label" parent="."]
+layout_mode = 0
+offset_left = 658.0
+offset_right = 964.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Движение средств на счету"
+horizontal_alignment = 2

@@ -23,7 +23,7 @@ func create_tables() -> void:
 	db.query("CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, title VARCHAR(255), date DATE, note VARCHAR(255));")
 	
 func create_datas() -> void:
-	db.query("SELECT * FROM `cash_flows`")
+	db.query("SELECT * FROM `cash_flows`;")
 	if len(db.query_result) != 0: return
 	db.query('INSERT INTO `wallets` (title, value) VALUES ("Кошелек1", '+str(randi()%10000)+'), ("Кошелек2", '+str(randi()%10000)+');')
 	db.query('INSERT INTO `sections` (title, month_limit, income) VALUES ("Развлечения", '+str(randi()%5000)+', false), ("Продукты", '+str(randi()%5000)+', false), ("Другое", '+str(randi()%5000)+', false);')
@@ -31,3 +31,8 @@ func create_datas() -> void:
 	db.query('INSERT INTO `loans` (title, total, percent) VALUES ("Кредит", '+str(randi()%1000000)+', '+str(randi()%50)+');')
 	db.query('INSERT INTO `payments` (wallet_id, loan_id, value) VALUES ('+str((randi()%2)+1)+', 1, '+str(randi()%5000)+'), ('+str((randi()%2)+1)+', 1, '+str(randi()%5000)+'), ('+str((randi()%2)+1)+', 1, '+str(randi()%5000)+');')
 	db.query('INSERT INTO `events` (title) VALUES ("событие1"), ("событие3"), ("событие4"), ("событие5");')
+
+# Получение списка счетов
+func get_wallets() -> Array:
+	db.query("SELECT * FROM `wallets`;")
+	return db.query_result
