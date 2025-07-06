@@ -1,22 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://7ijart5p1jvq"]
+[gd_scene load_steps=3 format=3 uid="uid://7ijart5p1jvq"]
 
 [ext_resource type="Script" uid="uid://cfajdl5x507of" path="res://scripts/pages/basic.gd" id="1_eejbm"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_mrggl"]
 
 [node name="Basic" type="Node2D"]
 script = ExtResource("1_eejbm")
 
-[node name="Head" type="ColorRect" parent="."]
-offset_right = 1152.0
-offset_bottom = 40.0
-color = Color(0, 0.529412, 0.384314, 1)
-
-[node name="Button" type="Button" parent="Head"]
-layout_mode = 0
-offset_left = 6.0
-offset_top = 5.0
-offset_right = 141.0
-offset_bottom = 36.0
-text = "Главная"
+[node name="Head" parent="." instance=ExtResource("2_mrggl")]
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_top = 40.0

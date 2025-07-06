@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=3 uid="uid://bg0kb3lreju3h"]
+
+[ext_resource type="Script" uid="uid://tg44jev2uudr" path="res://scripts/fragments/head.gd" id="1_3qfej"]
+
+[node name="Head" type="ColorRect"]
+offset_right = 1152.0
+offset_bottom = 40.0
+color = Color(0.286275, 0.545098, 0.52549, 1)
+script = ExtResource("1_3qfej")
+
+[node name="Main" type="Button" parent="."]
+offset_left = 6.0
+offset_top = 5.0
+offset_right = 156.0
+offset_bottom = 36.0
+text = "Главная"
+
+[node name="Wallet" type="Button" parent="."]
+offset_left = 162.0
+offset_top = 5.0
+offset_right = 312.0
+offset_bottom = 36.0
+text = "Кошельки"
+
+[node name="Loan" type="Button" parent="."]
+offset_left = 318.0
+offset_top = 5.0
+offset_right = 468.0
+offset_bottom = 36.0
+text = "Кредиты"
+
+[node name="Calendar" type="Button" parent="."]
+offset_left = 474.0
+offset_top = 5.0
+offset_right = 624.0
+offset_bottom = 36.0
+text = "Календарь"
+
+[node name="Flow" type="Button" parent="."]
+offset_left = 630.0
+offset_top = 5.0
+offset_right = 780.0
+offset_bottom = 36.0
+text = "Денежный поток"
+
+[node name="Report" type="Button" parent="."]
+offset_left = 786.0
+offset_top = 5.0
+offset_right = 936.0
+offset_bottom = 36.0
+text = "Отчеты"
+
+[node name="Exit" type="Button" parent="."]
+offset_left = 1046.0
+offset_top = 5.0
+offset_right = 1146.0
+offset_bottom = 36.0
+text = "Выход"
+
+[node name="Label" type="Label" parent="Exit"]
+layout_mode = 0
+offset_left = -167.0
+offset_right = -6.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Имя"
+horizontal_alignment = 2
+vertical_alignment = 1
