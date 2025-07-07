@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwknrqthvhq2m"]
+
+[ext_resource type="Script" uid="uid://cuk5gew4im7a0" path="res://scripts/fragments/date_selection.gd" id="1_srupp"]
+
+[node name="DateSelection" type="ColorRect"]
+offset_right = 280.0
+offset_bottom = 280.0
+color = Color(0, 0, 0, 0.333333)
+script = ExtResource("1_srupp")
+
+[node name="Month" type="Label" parent="."]
+layout_mode = 0
+offset_right = 280.0
+offset_bottom = 23.0
+text = "Июль"
+horizontal_alignment = 1
+vertical_alignment = 1
