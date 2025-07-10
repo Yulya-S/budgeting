@@ -1,6 +1,6 @@
 extends Node
-
-var db: SQLite = null
+enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, PAYMENTS, SQLITE_SEQUENCE} # Таблицы в базе данных
+var db: SQLite = null # Подключенная база данных
 
 func _ready() -> void:
 	connection_db()
@@ -31,6 +31,16 @@ func create_datas() -> void:
 	db.query('INSERT INTO `loans` (title, total, percent) VALUES ("Кредит", '+str(randi()%1000000)+', '+str(randi()%50)+');')
 	db.query('INSERT INTO `payments` (wallet_id, loan_id, value) VALUES ('+str((randi()%2)+1)+', 1, '+str(randi()%5000)+'), ('+str((randi()%2)+1)+', 1, '+str(randi()%5000)+'), ('+str((randi()%2)+1)+', 1, '+str(randi()%5000)+');')
 	db.query('INSERT INTO `events` (title) VALUES ("событие1"), ("событие3"), ("событие4"), ("событие5");')
+
+# Получить название таблицы из enum Tables
+func _get_table_name(table: Tables) -> String: return Global.enum_key(Tables, table)
+
+# Получение данных из таблиц
+func select(table: Tables, columns: String = "*", where: String = "", order: String = "") -> Array:
+	if where: where = " WHERE "+where
+	if order: order = " ORDER BY "+order
+	db.query("SELECT "+columns+" FROM "+_get_table_name(table)+where+order+";")
+	return db.query_result
 
 # Получение списка счетов
 func get_wallets() -> Array:
