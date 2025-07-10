@@ -2,25 +2,28 @@
 
 [ext_resource type="Script" uid="uid://duqh00njrpmdu" path="res://scripts/fragments/wallet.gd" id="1_aliir"]
 
-[node name="Wallet" type="Control"]
-custom_minimum_size = Vector2(0, 23)
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Wallet" type="ColorRect"]
+custom_minimum_size = Vector2(969, 23)
+offset_right = 969.0
+offset_bottom = 23.0
+mouse_filter = 1
+color = Color(0.955963, 0.955963, 0.955963, 1)
 script = ExtResource("1_aliir")
 
 [node name="Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 0
+offset_left = 5.0
 offset_right = 352.0
 offset_bottom = 23.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Название кошелька"
 
 [node name="Value" type="Label" parent="."]
 layout_mode = 0
-offset_left = 352.0
+offset_left = 357.0
 offset_right = 658.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -29,9 +32,12 @@ horizontal_alignment = 2
 
 [node name="CashFlow" type="Label" parent="."]
 layout_mode = 0
-offset_left = 658.0
+offset_left = 663.0
 offset_right = 964.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Движение средств"
 horizontal_alignment = 2
+
+[connection signal="mouse_entered" from="Title" to="." method="_on_title_mouse_entered"]
+[connection signal="mouse_exited" from="Title" to="." method="_on_title_mouse_exited"]

@@ -1,11 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://bvrh3bpimcb1e"]
 
-[ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/calendar/date_selection.tscn" id="2_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://c01ukoc123grl" path="res://scenes/pages/wallet.tscn" id="1_o5qli"]
 
 [node name="main" type="Node2D"]
 
-[node name="DateSelection" parent="." instance=ExtResource("2_0wfyh")]
-offset_left = 259.0
-offset_top = 63.0
-offset_right = 539.0
-offset_bottom = 343.0
+[node name="Wallets" parent="." instance=ExtResource("1_o5qli")]
