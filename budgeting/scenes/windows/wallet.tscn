@@ -1,0 +1,86 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjjhlo2lps3ww"]
+
+[ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="1_ex3f0"]
+
+[node name="Wallet" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Window" parent="." instance=ExtResource("1_ex3f0")]
+layout_mode = 0
+
+[node name="Title" type="TextEdit" parent="."]
+clip_contents = false
+layout_mode = 0
+offset_left = 485.0
+offset_top = 225.0
+offset_right = 906.0
+offset_bottom = 256.0
+placeholder_text = "Название"
+autowrap_mode = 1
+scroll_past_end_of_file = true
+
+[node name="Label" type="Label" parent="Title"]
+layout_mode = 0
+offset_left = -257.0
+offset_right = -5.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Название кошелька"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Value" type="TextEdit" parent="."]
+clip_contents = false
+layout_mode = 0
+offset_left = 485.0
+offset_top = 302.0
+offset_right = 906.0
+offset_bottom = 333.0
+text = "0.0"
+autowrap_mode = 1
+scroll_past_end_of_file = true
+
+[node name="Label" type="Label" parent="Value"]
+layout_mode = 0
+offset_left = -257.0
+offset_right = -5.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Значение счета"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Delete" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 160.0
+offset_top = 538.0
+offset_right = 470.0
+offset_bottom = 580.0
+theme_override_font_sizes/font_size = 24
+text = "Удалить кошелек"
+
+[node name="Apply" type="Button" parent="."]
+layout_mode = 0
+offset_left = 682.0
+offset_top = 538.0
+offset_right = 992.0
+offset_bottom = 580.0
+theme_override_font_sizes/font_size = 24
+text = "Сохранить кошелек"
+
+[node name="Close" type="Button" parent="."]
+layout_mode = 0
+offset_left = 998.0
+offset_top = 54.0
+offset_right = 1048.0
+offset_bottom = 96.0
+tooltip_text = "Отменить изменения"
+theme_override_constants/outline_size = 14
+theme_override_font_sizes/font_size = 24
+text = "X"

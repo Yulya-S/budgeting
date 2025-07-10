@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://2ktjulcaj65p"]
+
+[node name="Window" type="ColorRect"]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0, 0, 0.501961)
+
+[node name="Border" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 50.0
+offset_right = 1052.0
+offset_bottom = 598.0
+color = Color(0.286275, 0.545098, 0.52549, 1)
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 110.0
+offset_top = 60.0
+offset_right = 1042.0
+offset_bottom = 588.0
