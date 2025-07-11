@@ -1,5 +1,9 @@
 extends Node
+# Сигналы
+signal open_window(page: Pages, obj_id)
+
 # Перечисления
+enum Pages {WALLET}
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Получить имя объекта из перечисления

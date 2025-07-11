@@ -3,8 +3,19 @@ extends Control
 @onready var Error = $Error
 @onready var Title = $Title
 @onready var Value = $Value
+@onready var Delete = $Delete
 
 var object_id = null # id изменяемого счета
+
+# Изменение информации о счете
+func set_object(obj_id: int) -> void:
+	var value = Request.select(Request.Tables.WALLETS, "*", "id="+str(obj_id))
+	if len(value) == 0: return
+	object_id = obj_id
+	Value.editable = object_id == null
+	Delete.visible = object_id != null
+	Title.set_text(value[0].title)
+	Value.set_text(str(value[0].value))
 
 # Проверка введенных данных
 func check_title() -> bool:
