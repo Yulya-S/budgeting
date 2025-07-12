@@ -1,6 +1,7 @@
 extends Node
 # Сигналы
-signal open_window(page: Pages, obj_id)
+signal open_window(page: Pages, id)
+signal update_page()
 
 # Перечисления
 enum Pages {WALLET}

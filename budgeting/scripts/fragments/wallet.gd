@@ -5,7 +5,7 @@ extends Control
 @onready var CashFlow = $CashFlow
 
 # Переменные
-var obj_id: int = 0
+var id: int = 0
 var state: Global.MouseOver = Global.MouseOver.NORMAL # Текущее состояние объекта
 
 # Смена размера цветоывой линии под размер родителя
@@ -15,13 +15,13 @@ func _ready() -> void:
 
 # Изменение значений
 func set_values(data: Dictionary) -> void:
-	obj_id = data.id
+	id = data.id
 	Title.set_text(data.title)
 	Value.set_text(str(data.value))
 	
 func _input(event: InputEvent) -> void:
 	if state == Global.MouseOver.NORMAL: return
-	if event.is_action("click") and event.is_pressed(): Global.emit_signal("open_window", Global.Pages.WALLET, obj_id)
+	if event.is_action("click") and event.is_pressed(): Global.emit_signal("open_window", Global.Pages.WALLET, id)
 
 # Обработка наведения мыши на контейнер
 func _on_title_mouse_entered() -> void: state = Global.MouseOver.HOVER

@@ -35,6 +35,47 @@ func create_datas() -> void:
 # Получить название таблицы из enum Tables
 func _get_table_name(table: Tables) -> String: return Global.enum_key(Tables, table)
 
+# Получить названия колонок
+func _get_columns(table: Tables) -> Array:
+	db.query("PRAGMA table_info(`"+_get_table_name(table)+"`)")
+	var result: Array = []
+	for i in db.query_result: result.append(i.name)
+	result.pop_front()
+	return result
+	
+# Добавление фрагмента текста в запрос
+func add_part_request(text: String, column: String, value, operator: String = "=", sep: String = " AND ") -> String:
+	if not value: return text
+	if text: text += sep 
+	if operator == "LIKE": value = '"%' + str(value) + '%"'
+	text += column + " " + operator + " " + str(value)
+	return text
+
+# Отправка запроса на создание записи таблице
+func insert(table: Tables, columns: Array, values: Array) -> void:
+	db.query("INSERT INTO `"+_get_table_name(table)+"` ("+",".join(columns)+") VALUES ("+",".join(values)+");")
+
+# Добавление записи
+func insert_record(table: Tables, values: Array) -> void:
+	insert(table, _get_columns(table), values)
+
+# Отправка запроса на изменение записей в таблице
+func update(table: Tables, values: String, where: String) -> void:
+	db.query("UPDATE `"+_get_table_name(table)+"` SET "+values+" WHERE "+where + ";")
+
+# Изменение записи
+func update_record(table: Tables, id: int, values: Array) -> void:
+	var request_text: String = ""
+	var columns: Array = _get_columns(table)
+	for i in len(values): request_text = add_part_request(request_text, columns[i], values[i], "=", ", ")
+	update(table, request_text, "id=" + str(id))
+
+# Отправка запроса на удаление записи в таблице
+func delete(table: Tables, id: int) -> void:
+	db.query("DELETE FROM `"+_get_table_name(table)+"` WHERE id="+str(id)+";")
+	update(Tables.SQLITE_SEQUENCE, "seq=seq-1", 'name="'+_get_table_name(table)+'"')
+	update(Tables.WALLETS, "id=id-1", "id>"+str(id))
+
 # Получение данных из таблиц
 func select(table: Tables, columns: String = "*", where: String = "", order: String = "") -> Array:
 	if where: where = " WHERE "+where
