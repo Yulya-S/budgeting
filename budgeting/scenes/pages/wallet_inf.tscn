@@ -1,0 +1,177 @@
+[gd_scene load_steps=4 format=3 uid="uid://dogi0k768li3"]
+
+[ext_resource type="Script" uid="uid://de6p1m8lb4i5x" path="res://scripts/pages/wallet_inf.gd" id="1_y0peq"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_6imgx"]
+[ext_resource type="PackedScene" uid="uid://bbm4ew21ko7e1" path="res://scenes/fragments/cash_flow.tscn" id="3_6imgx"]
+
+[node name="Wallets" type="Node2D"]
+script = ExtResource("1_y0peq")
+
+[node name="Head" parent="." instance=ExtResource("2_6imgx")]
+
+[node name="Background" type="ColorRect" parent="."]
+offset_top = 40.0
+offset_right = 1152.0
+offset_bottom = 608.0
+
+[node name="Wallet" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_top = 68.0
+offset_right = 1152.0
+offset_bottom = 114.0
+color = Color(0.873298, 0.873299, 0.873298, 1)
+
+[node name="Title" type="Label" parent="Background/Wallet"]
+layout_mode = 2
+offset_left = 51.0
+offset_right = 499.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Название счета"
+vertical_alignment = 1
+
+[node name="Lable" type="Label" parent="Background/Wallet"]
+layout_mode = 2
+offset_left = 526.0
+offset_right = 780.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Значение счета:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Background/Wallet"]
+layout_mode = 2
+offset_left = 791.0
+offset_right = 1112.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Значение счета"
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Background"]
+layout_mode = 0
+offset_top = 134.0
+offset_right = 1152.0
+offset_bottom = 487.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/ScrollContainer"]
+layout_mode = 2
+
+[node name="CashFlow" parent="Background/ScrollContainer/VBoxContainer" instance=ExtResource("3_6imgx")]
+layout_mode = 2
+color = Color(0.87451, 0.87451, 0.87451, 1)
+
+[node name="Total" type="ColorRect" parent="Background"]
+layout_mode = 2
+offset_top = 507.0
+offset_right = 1152.0
+offset_bottom = 553.0
+color = Color(0.873298, 0.873299, 0.873298, 1)
+
+[node name="Lable" type="Label" parent="Background/Total"]
+layout_mode = 2
+offset_left = 51.0
+offset_right = 121.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Итог:"
+vertical_alignment = 1
+
+[node name="Lable2" type="Label" parent="Background/Total"]
+layout_mode = 2
+offset_left = 144.0
+offset_right = 408.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Количество транзакций:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Count" type="Label" parent="Background/Total"]
+layout_mode = 2
+offset_left = 415.0
+offset_right = 709.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Количество транзакций"
+vertical_alignment = 1
+
+[node name="Lable3" type="Label" parent="Background/Total"]
+layout_mode = 2
+offset_left = 709.0
+offset_right = 855.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Сумма:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Background/Total"]
+layout_mode = 2
+offset_left = 862.0
+offset_right = 1112.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Сумма"
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_top = 608.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.286275, 0.545098, 0.52549, 1)
+
+[node name="Label" type="Label" parent="ColorRect"]
+layout_mode = 0
+offset_left = 233.0
+offset_top = -554.0
+offset_right = 1098.0
+offset_bottom = -515.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "Информация о счете, за месяц"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Back" type="Button" parent="ColorRect"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = -550.0
+offset_right = 191.0
+offset_bottom = -519.0
+text = "Назад"
+
+[node name="Update" type="Button" parent="ColorRect"]
+layout_mode = 0
+offset_left = 499.0
+offset_top = 4.0
+offset_right = 649.0
+offset_bottom = 35.0
+text = "Изменить"
+
+[node name="Transactions" type="Button" parent="ColorRect"]
+layout_mode = 0
+offset_left = 654.0
+offset_top = 4.0
+offset_right = 898.0
+offset_bottom = 35.0
+text = "Список транзакций"
+
+[node name="CashFlow" type="Button" parent="ColorRect"]
+layout_mode = 0
+offset_left = 903.0
+offset_top = 4.0
+offset_right = 1147.0
+offset_bottom = 35.0
+text = "Записать движение средств"
+
+[connection signal="button_down" from="ColorRect/Update" to="." method="_on_add_wallet_button_down"]

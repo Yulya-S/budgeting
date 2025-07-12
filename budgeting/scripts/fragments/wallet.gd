@@ -1,4 +1,4 @@
-extends Control
+extends ColorRect
 # Подключение путей к объектам в сцене
 @onready var Title = $Title
 @onready var Value = $Value
@@ -8,7 +8,7 @@ extends Control
 var id: int = 0
 var state: Global.MouseOver = Global.MouseOver.NORMAL # Текущее состояние объекта
 
-# Смена размера цветоывой линии под размер родителя
+# Смена размера цветовой линии под размер родителя
 func _ready() -> void:
 	custom_minimum_size[0] = get_parent().get_parent().size[0]
 	update_minimum_size()
