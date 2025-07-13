@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 Request="*res://scripts/Request.gd"
 Global="*res://scripts/Global.gd"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [input]
 
 click={
