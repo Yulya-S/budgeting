@@ -1,10 +1,11 @@
 extends Node
 # Сигналы
-signal open_window(page: Pages, id)
+signal open_window(page: Pages, id, dir: Dirs)
 signal update_page()
 
 # Перечисления
-enum Pages {WALLET}
+enum Pages {WALLET, WALLET_INF} # Страницы приложения
+enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Получить имя объекта из перечисления

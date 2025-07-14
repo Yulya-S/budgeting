@@ -33,3 +33,11 @@ func _update_values() -> void:
 	lines = Request.select_cash_flow_sum(id)
 	Title.set_text(wallet_value.title)
 	Value.set_text(str(wallet_value.value))
+
+# Обработка нажатия кнопки возврата к списку счетов
+func _on_back_button_down() -> void:
+	self.queue_free()
+	get_parent().remove_child(self)
+
+# Обработка нажатия кнопки изменения счета
+func _on_update_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET, id)

@@ -175,3 +175,6 @@ offset_bottom = 731.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Добавить движение средств"
 icon = ExtResource("5_3ta84")
+
+[connection signal="button_down" from="Back" to="." method="_on_back_button_down"]
+[connection signal="button_down" from="Update" to="." method="_on_update_button_down"]

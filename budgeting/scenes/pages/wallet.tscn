@@ -51,3 +51,5 @@ offset_top = 603.0
 offset_right = 1147.0
 offset_bottom = 643.0
 text = "Записать движение средств"
+
+[connection signal="button_down" from="AddWallet" to="." method="_on_add_wallet_button_down"]

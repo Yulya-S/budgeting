@@ -21,7 +21,8 @@ func set_values(data: Dictionary) -> void:
 	
 func _input(event: InputEvent) -> void:
 	if state == Global.MouseOver.NORMAL: return
-	if event.is_action("click") and event.is_pressed(): Global.emit_signal("open_window", Global.Pages.WALLET, id)
+	if event.is_action("click") and event.is_pressed():
+		Global.emit_signal("open_window", Global.Pages.WALLET_INF, id, Global.Dirs.PAGES)
 
 # Обработка наведения мыши на контейнер
 func _on_title_mouse_entered() -> void: state = Global.MouseOver.HOVER
