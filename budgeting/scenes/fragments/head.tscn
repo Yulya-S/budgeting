@@ -22,6 +22,7 @@ offset_top = 5.0
 offset_right = 133.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
+tooltip_text = "Инструкция"
 icon = ExtResource("2_mgesx")
 
 [node name="Setting" type="Button" parent="."]
@@ -31,6 +32,7 @@ offset_top = 5.0
 offset_right = 178.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
+tooltip_text = "Настройки"
 icon = ExtResource("3_cpvs2")
 
 [node name="Main" type="Button" parent="."]
@@ -40,6 +42,7 @@ offset_top = 5.0
 offset_right = 223.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
+tooltip_text = "Главная"
 icon = ExtResource("2_qr8it")
 
 [node name="Wallet" type="Button" parent="."]
@@ -49,6 +52,7 @@ offset_top = 5.0
 offset_right = 268.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
+tooltip_text = "Кошельки"
 icon = ExtResource("3_jl5ir")
 
 [node name="Loan" type="Button" parent="."]
@@ -66,6 +70,7 @@ offset_top = 5.0
 offset_right = 422.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
+tooltip_text = "События"
 icon = ExtResource("6_xpsv6")
 
 [node name="Flow" type="Button" parent="."]
@@ -75,6 +80,7 @@ offset_top = 5.0
 offset_right = 467.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
+tooltip_text = "Движения средств"
 icon = ExtResource("7_s1w7j")
 
 [node name="Report" type="Button" parent="."]
@@ -84,6 +90,7 @@ offset_top = 5.0
 offset_right = 512.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
+tooltip_text = "Отчеты"
 icon = ExtResource("8_alv4j")
 
 [node name="Exit" type="Button" parent="."]
