@@ -5,6 +5,5 @@ func _ready() -> void: Global.connect("open_window", Callable(self, "_open_windo
 
 # Открытие страницы изменения тайтла
 func _open_window(page: Global.Pages, id = null, dir: Global.Dirs = Global.Dirs.WINDOWS) -> void:
-	print("res://scenes/"+Global.enum_key(Global.Dirs, dir)+Global.enum_key(Global.Pages, page)+".tscn")
 	add_child(load("res://scenes/"+Global.enum_key(Global.Dirs, dir)+"/"+Global.enum_key(Global.Pages, page)+".tscn").instantiate())
 	if id: get_child(-1).set_object(id)
