@@ -13,6 +13,9 @@ var cash_flow_path = load("res://scenes/fragments/cash_flow.tscn")
 var id = null # Индекс счета
 var lines: Array = [] # Список объектов для создания на странице
 
+# Подключение сигналов
+func _ready() -> void: Global.connect("update_page", Callable(self, "_update_values"))
+
 # Динамическое заполнение страницы
 func _process(delta: float) -> void:
 	if len(lines) > 0:
@@ -29,10 +32,13 @@ func set_object(obj_id: int) -> void:
 
 # Заполнение данных на странице
 func _update_values() -> void:
-	var wallet_value: Dictionary = Request.select(Request.Tables.WALLETS, "*", "id="+str(id))[0]
+	var wallet_value: Array = Request.select(Request.Tables.WALLETS, "*", "id="+str(id))
+	if len(wallet_value) == 0:
+		_on_back_button_down()
+		return
 	lines = Request.select_cash_flow_sum(id)
-	Title.set_text(wallet_value.title)
-	Value.set_text(str(wallet_value.value))
+	Title.set_text(wallet_value[0].title)
+	Value.set_text(str(wallet_value[0].value))
 
 # Обработка нажатия кнопки возврата к списку счетов
 func _on_back_button_down() -> void:

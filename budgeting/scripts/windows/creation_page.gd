@@ -1,5 +1,6 @@
 extends Control
 class_name CreationPage
+# Подключение путей к объектам в сцене
 @onready var Error = $Error
 @onready var Delete = $Delete
 
@@ -8,8 +9,7 @@ var id = null # Индекс изменяемого объекта
 var table: Request.Tables = Request.Tables.WALLETS # Связанная таблица
 
 # Изменение информации о счете
-func _get_obj_data(obj_id: int, new_table: Request.Tables) -> Array:
-	table = new_table
+func _get_obj_data(obj_id: int) -> Array:
 	id = obj_id
 	Delete.visible = id != null
 	return Request.select(table, "*", "id="+str(obj_id))
