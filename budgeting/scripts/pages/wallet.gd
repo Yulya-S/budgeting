@@ -28,3 +28,6 @@ func _update_page() -> void:
 
 # Обработка нажатия кнопки создания нового счета
 func _on_add_wallet_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET)
+
+# Обработка нажатия кнопки создания нового счета
+func _on_cash_flow_button_down() -> void: Global.emit_signal("open_window", Global.Pages.CASH_FLOW)

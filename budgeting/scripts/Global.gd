@@ -1,10 +1,10 @@
 extends Node
 # Сигналы
-signal open_window(page: Pages, id, dir: Dirs)
+signal open_window(page: Pages, id, dir: Dirs, parent)
 signal update_page()
 
 # Перечисления
-enum Pages {WALLET, WALLET_INF} # Страницы приложения
+enum Pages {WALLET, WALLET_INF, CASH_FLOW} # Страницы приложения
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
@@ -46,4 +46,7 @@ func text_changed_TextEdit(container: TextEdit, is_numeric: bool = false) -> voi
 	if len(text) > 0 and "\t" in text:
 		container.set_text(container.get_text().replace("\t", ""))
 		if container.find_next_valid_focus(): container.find_next_valid_focus().grab_focus()
-	
+
+# Заполнение выпадающего списка объектами
+func fill_optionButton(container: OptionButton, objects: Array):
+	for i in objects: container.add_item(i.title, i.id)

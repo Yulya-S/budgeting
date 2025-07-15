@@ -26,7 +26,7 @@ func _process(delta: float) -> void:
 		TotalCount.set_text(str(int(TotalCount.get_text()) + 1))	
 
 # Смена индекса объекта
-func set_object(obj_id: int) -> void:
+func set_object(obj_id: int, _parent = null) -> void:
 	id = obj_id
 	_update_values()
 
@@ -47,3 +47,6 @@ func _on_back_button_down() -> void:
 
 # Обработка нажатия кнопки изменения счета
 func _on_update_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET, id)
+
+# Обработка нажатия кнопки добавления движения средств
+func _on_cash_flow_button_down() -> void: Global.emit_signal("open_window", Global.Pages.CASH_FLOW, id, Global.Dirs.WINDOWS, Request.Tables.WALLETS)

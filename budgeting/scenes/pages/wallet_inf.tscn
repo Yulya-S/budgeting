@@ -158,14 +158,6 @@ scale = Vector2(0.31, 0.31)
 tooltip_text = "Изменить счет"
 icon = ExtResource("4_wj3dp")
 
-[node name="Transactions" type="Button" parent="."]
-layout_mode = 0
-offset_left = 903.0
-offset_top = 603.0
-offset_right = 1147.0
-offset_bottom = 643.0
-text = "Список транзакций"
-
 [node name="CashFlow" type="Button" parent="."]
 layout_mode = 0
 offset_left = 858.0
@@ -176,5 +168,14 @@ scale = Vector2(0.31, 0.31)
 tooltip_text = "Добавить движение средств"
 icon = ExtResource("5_3ta84")
 
+[node name="Transactions" type="Button" parent="."]
+layout_mode = 0
+offset_left = 903.0
+offset_top = 603.0
+offset_right = 1147.0
+offset_bottom = 643.0
+text = "Список транзакций"
+
 [connection signal="button_down" from="Back" to="." method="_on_back_button_down"]
 [connection signal="button_down" from="Update" to="." method="_on_update_button_down"]
+[connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]

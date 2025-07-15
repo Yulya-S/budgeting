@@ -4,7 +4,7 @@ extends CreationPage
 @onready var Value = $Value
 
 # Изменение информации о счете
-func set_object(obj_id: int) -> void:
+func set_object(obj_id: int, _parent = null) -> void:
 	var value: Array = _get_obj_data(obj_id)
 	if len(value) < 0: return
 	Value.editable = id == null
@@ -12,7 +12,7 @@ func set_object(obj_id: int) -> void:
 	Value.set_text(str(value[0].value))
 
 # Проверка введенных данных
-func check_title() -> bool:
+func check_object() -> bool:
 	Error.visible = false
 	var values = Request.select(table, "id", 'title="'+Title.get_text()+'"')
 	# Проверка заполнености полей
@@ -22,7 +22,7 @@ func check_title() -> bool:
 # Изменение значения названия кошелька
 func _on_title_text_changed() -> void:
 	Global.text_changed_TextEdit(Title)
-	check_title()
+	check_object()
 
 # Изменение значения счета
 func _on_value_text_changed() -> void: Global.text_changed_TextEdit(Value, true)
