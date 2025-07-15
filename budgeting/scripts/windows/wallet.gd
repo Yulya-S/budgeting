@@ -4,8 +4,8 @@ extends CreationPage
 @onready var Value = $Value
 
 # Изменение информации о счете
-func set_object(obj_id: int, table: Request.Tables) -> void:
-	var value: Array = _get_obj_data(obj_id, table)
+func set_object(obj_id: int) -> void:
+	var value: Array = _get_obj_data(obj_id)
 	if len(value) < 0: return
 	Value.editable = id == null
 	Title.set_text(value[0].title)
