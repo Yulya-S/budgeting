@@ -31,6 +31,7 @@ func set_all(obj_id: int):
 	set_section(value[0].section_id)
 	Value.set_text(str(value[0].value))
 	Note.set_text(value[0].note)
+	Date.set_date(value[0].date)
 
 # Изменение счета
 func set_wallet(wallet_id: int) -> void:
