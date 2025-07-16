@@ -53,4 +53,5 @@ offset_bottom = 643.0
 text = "Записать движение средств"
 
 [connection signal="button_down" from="AddWallet" to="." method="_on_add_wallet_button_down"]
+[connection signal="button_down" from="Transaction" to="." method="_on_transaction_button_down"]
 [connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]
