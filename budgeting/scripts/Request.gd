@@ -87,7 +87,6 @@ func select_cash_flow_sum(wallet_id: int) -> Array:
 	db.query("""SELECT s.title, COUNT(cf.id) count, SUM(cf.value) value FROM `cash_flows` as cf
 		LEFT JOIN `sections` AS s ON cf.section_id = s.id WHERE wallet_id="""+str(wallet_id)+" GROUP BY section_id;")
 	return db.query_result
-	
 
 # Получение списка счетов
 func get_wallets() -> Array:

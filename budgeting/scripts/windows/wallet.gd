@@ -27,11 +27,7 @@ func _on_title_text_changed() -> void:
 # Изменение значения счета
 func _on_value_text_changed() -> void: Global.text_changed_TextEdit(Value, true)
 
-# Обработка нажатия кнопки удаления счета
-func _on_delete_button_down() -> void:
-	Request.delete(table, id)
-	_apply_changes()
-
 # Обработка нажатия кнопки сохранения счета
 func _on_apply_button_down() -> void:
+	if check_object(): return
 	_create_update(['"'+Title.get_text()+'"', float(Value.get_text())])

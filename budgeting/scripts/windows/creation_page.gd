@@ -36,3 +36,8 @@ func _create_update(values: Array) -> void:
 	if id: Request.update_record(table, id, values)
 	else: Request.insert_record(table, values)
 	_apply_changes()
+	
+# Обработка нажатия кнопки удаления счета
+func _on_delete_button_down() -> void:
+	Request.delete(table, id)
+	_apply_changes()

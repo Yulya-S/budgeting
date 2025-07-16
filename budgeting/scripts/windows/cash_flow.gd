@@ -51,11 +51,37 @@ func check_object() -> bool:
 	elif float(Value.get_text()) <= 0: Global.set_error(Error, "Значение должно быть больше нуля")
 	return Error.visible
 
+# Изменение значение счета на кошельке после проведения транзакции
+func _update_wallet_value(delete: bool = false):
+	var income = int(ConsumptionIncome.get_text() == "Доход")
+	if delete: income = int(not bool(income))
+	if income == 0: income = -1
+	Request.update(Request.Tables.WALLETS, "value=value+"+str(income*float(Value.get_text())), "id="+str(Wallet.selected+1))
+
 # Изменение значения движения средств
-func _on_value_text_changed() -> void: Global.text_changed_TextEdit(Value, true)
+func _on_value_text_changed() -> void:
+	Global.text_changed_TextEdit(Value, true)
+	check_object()
 
 # Изменение выбранного счета
 func _on_wallet_item_selected(index: int) -> void: set_wallet(index + 1)
 
 # Изменение выбранного раздела
 func _on_section_item_selected(index: int) -> void: set_section(index + 1)
+
+# Обработка нажатия кнопки сохранения / изменения
+func _on_apply_button_down() -> void:
+	if check_object(): return
+	if id:
+		var new_value = Value.get_text()
+		Value.set_text(str(Request.select(Request.Tables.CASH_FLOWS, "value", "id="+str(id))[0].value))
+		_update_wallet_value(true)
+		Value.set_text(new_value)
+	_update_wallet_value()
+	_create_update([Wallet.selected+1, Section.selected+1, float(Value.get_text()), '"'+Date.get_date()+'"', '"'+Note.get_text()+'"'])
+
+# Обработка нажатия кнопки удаления
+func _on_delete_button_down() -> void:
+	Value.set_text(str(Request.select(Request.Tables.CASH_FLOWS, "value", "id="+str(id))[0].value))
+	_update_wallet_value(true)
+	super._on_delete_button_down()
