@@ -14,7 +14,7 @@ func _ready() -> void:
 	_update_page()
 
 # Динамическое заполнение страницы
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if len(lines) > 0:
 		Wallets.add_child(wallet_path.instantiate())
 		Wallets.get_child(-1).set_values(lines.pop_front())
@@ -31,3 +31,7 @@ func _on_add_wallet_button_down() -> void: Global.emit_signal("open_window", Glo
 
 # Обработка нажатия кнопки создания нового счета
 func _on_cash_flow_button_down() -> void: Global.emit_signal("open_window", Global.Pages.CASH_FLOW)
+
+# Обработка нажатия кнопки переноса средств между счетами
+func _on_transaction_button_down() -> void:
+	if Wallets.get_child_count() > 1: Global.emit_signal("open_window", Global.Pages.TRANSFER)

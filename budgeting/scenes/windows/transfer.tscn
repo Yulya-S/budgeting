@@ -1,0 +1,175 @@
+[gd_scene load_steps=4 format=3 uid="uid://csspk6wa3uaw6"]
+
+[ext_resource type="Script" uid="uid://ctp2fmv76uvc4" path="res://scripts/windows/transfer.gd" id="1_0qmjj"]
+[ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_bh4ot"]
+[ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/calendar/date_selection.tscn" id="3_qgj1t"]
+
+[node name="Transfer" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("1_0qmjj")
+
+[node name="Window" parent="." instance=ExtResource("2_bh4ot")]
+layout_mode = 0
+
+[node name="Count" type="Label" parent="."]
+layout_mode = 0
+offset_left = 396.0
+offset_top = 80.0
+offset_right = 805.0
+offset_bottom = 108.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "0.0"
+
+[node name="CountLabel" type="Label" parent="Count"]
+layout_mode = 0
+offset_left = -272.0
+offset_right = -5.0
+offset_bottom = 28.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Значение на счете съёма:"
+
+[node name="Error" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 110.0
+offset_top = 119.0
+offset_right = 693.0
+offset_bottom = 147.0
+theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="Wallet" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 153.0
+offset_right = 693.0
+offset_bottom = 184.0
+
+[node name="Label" type="Label" parent="Wallet"]
+layout_mode = 0
+offset_left = -210.0
+offset_right = -5.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Счет съема средств"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Extra" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 203.0
+offset_right = 693.0
+offset_bottom = 234.0
+
+[node name="Label" type="Label" parent="Extra"]
+layout_mode = 0
+offset_left = -210.0
+offset_right = -5.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Целевой счет"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Value" type="TextEdit" parent="."]
+clip_contents = false
+layout_mode = 0
+offset_left = 320.0
+offset_top = 282.0
+offset_right = 693.0
+offset_bottom = 313.0
+text = "0.0"
+autowrap_mode = 1
+scroll_past_end_of_file = true
+
+[node name="Label" type="Label" parent="Value"]
+layout_mode = 0
+offset_left = -210.0
+offset_right = -5.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Сумма транзакции"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="NoteLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 333.0
+offset_right = 308.0
+offset_bottom = 361.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Комментарий:"
+
+[node name="Note" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 365.0
+offset_right = 693.0
+offset_bottom = 504.0
+wrap_mode = 1
+
+[node name="DateLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 709.0
+offset_top = 130.0
+offset_right = 857.0
+offset_bottom = 158.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Дата:"
+
+[node name="DateSelection" parent="." instance=ExtResource("3_qgj1t")]
+layout_mode = 0
+offset_left = 709.0
+offset_top = 163.0
+offset_right = 999.0
+offset_bottom = 473.0
+
+[node name="Delete" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 160.0
+offset_top = 538.0
+offset_right = 470.0
+offset_bottom = 580.0
+theme_override_font_sizes/font_size = 24
+text = "Удалить операцию"
+
+[node name="Apply" type="Button" parent="."]
+layout_mode = 0
+offset_left = 682.0
+offset_top = 538.0
+offset_right = 992.0
+offset_bottom = 580.0
+theme_override_font_sizes/font_size = 24
+text = "Сохранить операцию"
+
+[node name="Close" type="Button" parent="."]
+layout_mode = 0
+offset_left = 998.0
+offset_top = 54.0
+offset_right = 1048.0
+offset_bottom = 96.0
+tooltip_text = "Отменить изменения"
+theme_override_constants/outline_size = 14
+theme_override_font_sizes/font_size = 24
+text = "X"
+
+[connection signal="item_selected" from="Wallet" to="." method="_on_wallet_item_selected"]
+[connection signal="item_selected" from="Extra" to="." method="_on_extra_item_selected"]
+[connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
+[connection signal="button_down" from="Delete" to="." method="_on_delete_button_down"]
+[connection signal="button_down" from="Apply" to="." method="_on_apply_button_down"]
+[connection signal="button_down" from="Close" to="." method="_on_close_button_down"]

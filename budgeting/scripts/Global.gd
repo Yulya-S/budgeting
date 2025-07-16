@@ -4,7 +4,7 @@ signal open_window(page: Pages, id, dir: Dirs, parent)
 signal update_page()
 
 # Перечисления
-enum Pages {WALLET, WALLET_INF, CASH_FLOW} # Страницы приложения
+enum Pages {WALLET, WALLET_INF, CASH_FLOW, TRANSFER} # Страницы приложения
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
