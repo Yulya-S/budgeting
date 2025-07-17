@@ -67,15 +67,12 @@ func _create_days():
 		elif current.weekday - 1 == i: start_draw = true
 		Cells.add_child(cell_path.instantiate())
 		if start_draw:
-			Cells.get_child(-1).get_child(-1).set_text(str(i-current.weekday+2))
-			Cells.get_child(-1).set_object(i-current.weekday+2)
-		if i - current.weekday + 2 == selected_day.day and Year.get_item_text(Year.selected) == str(selected_day.year) and month_idx == selected_day.month:
-			Cells.get_child(-1).get_child(0).color = Color.html("#f7cdcd")
+			Cells.get_child(-1).set_object(i-current.weekday+2, i-current.weekday+2 == selected_day.day)
 
 # Изменение номера дня
 func update_day(day: int):
 	selected_day.day = day
-	_create_days()
+	for i in Cells.get_children(): i.is_today = i.id == day
 
 # Изменение значения месяца
 func _update_month(value: int = 1) -> void:
