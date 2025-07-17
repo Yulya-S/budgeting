@@ -1,0 +1,60 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwknrqthvhq2m"]
+
+[ext_resource type="Script" uid="uid://cuk5gew4im7a0" path="res://scripts/fragments/date_selection.gd" id="1_srupp"]
+
+[node name="DateSelection" type="ColorRect"]
+custom_minimum_size = Vector2(290, 310)
+offset_right = 290.0
+offset_bottom = 310.0
+color = Color(0, 0, 0, 0.333333)
+script = ExtResource("1_srupp")
+
+[node name="Year" type="OptionButton" parent="."]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 0
+offset_right = 290.0
+offset_bottom = 24.0
+alignment = 1
+
+[node name="Month" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 0
+offset_left = 28.0
+offset_top = 36.0
+offset_right = 260.0
+offset_bottom = 60.0
+text = "Июль"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Previous" type="Button" parent="Month"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 0
+offset_left = -24.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 11
+text = "<"
+
+[node name="Next" type="Button" parent="Month"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 0
+offset_left = 232.0
+offset_right = 256.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 11
+text = ">"
+
+[node name="GridContainer" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 65.0
+offset_right = 285.0
+offset_bottom = 280.0
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 7
+
+[connection signal="item_selected" from="Year" to="." method="_on_year_item_selected"]
+[connection signal="button_down" from="Month/Previous" to="." method="_on_previous_button_down"]
+[connection signal="button_down" from="Month/Next" to="." method="_on_next_button_down"]
