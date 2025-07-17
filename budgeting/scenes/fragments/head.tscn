@@ -1,13 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://bg0kb3lreju3h"]
+[gd_scene load_steps=11 format=3 uid="uid://bg0kb3lreju3h"]
 
 [ext_resource type="Script" uid="uid://tg44jev2uudr" path="res://scripts/fragments/head.gd" id="1_3qfej"]
 [ext_resource type="Texture2D" uid="uid://dnib8h85vflf7" path="res://img/question.png" id="2_mgesx"]
 [ext_resource type="Texture2D" uid="uid://5ij7g0c4ur2n" path="res://img/home.png" id="2_qr8it"]
 [ext_resource type="Texture2D" uid="uid://cmlif5vfokfq5" path="res://img/gear.png" id="3_cpvs2"]
 [ext_resource type="Texture2D" uid="uid://bfw1wk455agmg" path="res://img/wallet.png" id="3_jl5ir"]
+[ext_resource type="Texture2D" uid="uid://bj2t2gu7qchrh" path="res://img/loan.png" id="6_cpvs2"]
 [ext_resource type="Texture2D" uid="uid://bl1p3eu7631ne" path="res://img/calendar.png" id="6_xpsv6"]
 [ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="7_s1w7j"]
 [ext_resource type="Texture2D" uid="uid://c315cbgn23fr6" path="res://img/report.png" id="8_alv4j"]
+[ext_resource type="Texture2D" uid="uid://c0gf7lke64g63" path="res://img/door.png" id="10_xpsv6"]
 
 [node name="Head" type="ColorRect"]
 offset_right = 1152.0
@@ -61,13 +63,15 @@ offset_left = 185.0
 offset_top = 5.0
 offset_right = 289.0
 offset_bottom = 45.0
-text = "Кредиты"
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Кредиты"
+icon = ExtResource("6_cpvs2")
 
 [node name="Calendar" type="Button" parent="."]
 layout_mode = 0
-offset_left = 294.0
+offset_left = 230.0
 offset_top = 5.0
-offset_right = 422.0
+offset_right = 358.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "События"
@@ -75,9 +79,9 @@ icon = ExtResource("6_xpsv6")
 
 [node name="Flow" type="Button" parent="."]
 layout_mode = 0
-offset_left = 339.0
+offset_left = 275.0
 offset_top = 5.0
-offset_right = 467.0
+offset_right = 403.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Движения средств"
@@ -85,28 +89,31 @@ icon = ExtResource("7_s1w7j")
 
 [node name="Report" type="Button" parent="."]
 layout_mode = 0
-offset_left = 384.0
+offset_left = 320.0
 offset_top = 5.0
-offset_right = 512.0
+offset_right = 448.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Отчеты"
 icon = ExtResource("8_alv4j")
 
-[node name="Exit" type="Button" parent="."]
+[node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 1047.0
+offset_left = 941.0
 offset_top = 5.0
-offset_right = 1147.0
+offset_right = 1102.0
 offset_bottom = 45.0
-text = "Выход"
-
-[node name="Label" type="Label" parent="Exit"]
-layout_mode = 0
-offset_left = -166.0
-offset_right = -5.0
-offset_bottom = 40.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Имя"
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="Exit" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1107.0
+offset_top = 5.0
+offset_right = 1235.0
+offset_bottom = 133.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Выход"
+icon = ExtResource("10_xpsv6")

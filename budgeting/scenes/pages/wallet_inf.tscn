@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://dogi0k768li3"]
+[gd_scene load_steps=8 format=3 uid="uid://dogi0k768li3"]
 
 [ext_resource type="Script" uid="uid://de6p1m8lb4i5x" path="res://scripts/pages/wallet_inf.gd" id="1_y0peq"]
 [ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_6imgx"]
 [ext_resource type="PackedScene" uid="uid://bbm4ew21ko7e1" path="res://scenes/fragments/cash_flow.tscn" id="3_6imgx"]
 [ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="4_3ta84"]
-[ext_resource type="Texture2D" uid="uid://dlghfxnauyu4o" path="res://img/brush.png" id="4_wj3dp"]
-[ext_resource type="Texture2D" uid="uid://kqp82a0he8xa" path="res://img/plus.png" id="5_3ta84"]
+[ext_resource type="Texture2D" uid="uid://dpw6qwab15i7s" path="res://img/update/update_wallet.png" id="5_37dcs"]
+[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="6_oy6n0"]
+[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="7_pha3d"]
 
 [node name="WalletsInfo" type="Control"]
 layout_mode = 3
@@ -150,31 +151,33 @@ icon = ExtResource("4_3ta84")
 
 [node name="Update" type="Button" parent="."]
 layout_mode = 0
-offset_left = 813.0
+offset_left = 1017.0
 offset_top = 603.0
-offset_right = 941.0
+offset_right = 1145.0
 offset_bottom = 731.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Изменить счет"
-icon = ExtResource("4_wj3dp")
+icon = ExtResource("5_37dcs")
 
 [node name="CashFlow" type="Button" parent="."]
 layout_mode = 0
-offset_left = 858.0
+offset_left = 1062.0
 offset_top = 603.0
-offset_right = 986.0
+offset_right = 1190.0
 offset_bottom = 731.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Добавить движение средств"
-icon = ExtResource("5_3ta84")
+icon = ExtResource("6_oy6n0")
 
 [node name="Transactions" type="Button" parent="."]
 layout_mode = 0
-offset_left = 903.0
+offset_left = 1107.0
 offset_top = 603.0
-offset_right = 1147.0
-offset_bottom = 643.0
-text = "Список транзакций"
+offset_right = 1235.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Список транзакций"
+icon = ExtResource("7_pha3d")
 
 [connection signal="button_down" from="Back" to="." method="_on_back_button_down"]
 [connection signal="button_down" from="Update" to="." method="_on_update_button_down"]

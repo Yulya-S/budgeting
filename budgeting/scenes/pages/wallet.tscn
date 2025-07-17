@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c01ukoc123grl"]
+[gd_scene load_steps=6 format=3 uid="uid://c01ukoc123grl"]
 
 [ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="1_oyhdl"]
 [ext_resource type="Script" uid="uid://cs4wnmk22cw27" path="res://scripts/pages/wallet.gd" id="1_xahbi"]
-[ext_resource type="Texture2D" uid="uid://kqp82a0he8xa" path="res://img/plus.png" id="3_gx72k"]
+[ext_resource type="Texture2D" uid="uid://dok2udq5yy5ho" path="res://img/add/add_wallet.png" id="3_h71wg"]
 [ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="4_h71wg"]
+[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="5_v2g8m"]
 
 [node name="Wallets" type="Control"]
 layout_mode = 3
@@ -26,19 +27,19 @@ layout_mode = 2
 
 [node name="AddWallet" type="Button" parent="."]
 layout_mode = 0
-offset_left = 813.0
+offset_left = 1017.0
 offset_top = 603.0
-offset_right = 941.0
+offset_right = 1145.0
 offset_bottom = 731.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Создать счет"
-icon = ExtResource("3_gx72k")
+icon = ExtResource("3_h71wg")
 
 [node name="Transaction" type="Button" parent="."]
 layout_mode = 0
-offset_left = 858.0
+offset_left = 1062.0
 offset_top = 603.0
-offset_right = 986.0
+offset_right = 1190.0
 offset_bottom = 731.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Переносить средства между счетами"
@@ -46,11 +47,13 @@ icon = ExtResource("4_h71wg")
 
 [node name="CashFlow" type="Button" parent="."]
 layout_mode = 0
-offset_left = 903.0
+offset_left = 1107.0
 offset_top = 603.0
-offset_right = 1147.0
-offset_bottom = 643.0
-text = "Записать движение средств"
+offset_right = 1235.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Записать движение средств"
+icon = ExtResource("5_v2g8m")
 
 [connection signal="button_down" from="AddWallet" to="." method="_on_add_wallet_button_down"]
 [connection signal="button_down" from="Transaction" to="." method="_on_transaction_button_down"]
