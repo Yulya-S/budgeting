@@ -15,7 +15,7 @@ func _get_obj_data(obj_id: int) -> Array:
 	return Request.select(table, "*", "id="+str(obj_id))
 
 # Проверка существуют ли подобные записи
-func _set_error(Error: Label, values: Array) -> bool:
+func _set_error(values: Array) -> bool:
 	if len(values) == 0: return Error.visible
 	elif not id: Global.set_error(Error, "Объект уже существует")
 	else: for i in values: if id != i.id:  Global.set_error(Error, "Объект уже существует")

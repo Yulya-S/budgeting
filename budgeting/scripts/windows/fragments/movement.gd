@@ -12,10 +12,10 @@ class_name Movement
 var second_table = Request.Tables.SECTIONS # Таблица связанная со вторым выпадающим списком
 
 # Изменение раздела расхода
-func set_extra(extra_id: int) -> void: pass
+func set_extra(_extra_id: int) -> void: pass
 
 # Изменение значение счета после проведения транзакции
-func _update_wallet_value(delete: bool = false) -> void: pass
+func _update_wallet_value(_delete: bool = false) -> void: pass
 
 # Создание сцены
 func _ready() -> void:
@@ -27,9 +27,9 @@ func _ready() -> void:
 	set_extra(1)
 	
 func _get_extra_name() -> String:
-	var name = Global.enum_key(Request.Tables, second_table)
-	name[-1] = "_"
-	return name + "id"
+	var obj_name: String = Global.enum_key(Request.Tables, second_table)
+	obj_name[-1] = "_"
+	return obj_name + "id"
 	
 # Изменение объекта
 func set_object(obj_id: int, parent = null) -> void:

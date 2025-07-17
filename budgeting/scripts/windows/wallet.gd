@@ -17,7 +17,7 @@ func check_object() -> bool:
 	var values = Request.select(table, "id", 'title="'+Title.get_text()+'"')
 	# Проверка заполнености полей
 	if Title.get_text() == "": Global.set_error(Error, "Поле названия не должно быть пустым")
-	return _set_error(Error, values)
+	return _set_error(values)
 
 # Изменение значения названия кошелька
 func _on_title_text_changed() -> void:
