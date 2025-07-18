@@ -24,7 +24,7 @@ func _update_page() -> void:
 	for i in Wallets.get_children():
 		i.queue_free()
 		Wallets.remove_child(i)
-	lines = Request.get_wallets()
+	lines = Request.select(Request.Tables.WALLETS)
 
 # Обработка нажатия кнопки создания нового счета
 func _on_add_wallet_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET)

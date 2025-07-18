@@ -18,6 +18,7 @@ func enum_key(enums, object) -> String: return enums.keys()[object].to_lower()
 # Изменение текста ошибки
 func set_error(container: Label, text: String) -> bool:
 	container.visible = true
+	text[0] = text[0].to_upper()
 	container.set_text(text+"!")
 	return true
 
@@ -52,5 +53,5 @@ func text_changed_TextEdit(container: TextEdit, is_numeric: bool = false) -> voi
 		if container.find_next_valid_focus(): container.find_next_valid_focus().grab_focus()
 
 # Заполнение выпадающего списка объектами
-func fill_optionButton(container: OptionButton, objects: Array):
+func fill_optionButton(container: OptionButton, objects: Array) -> void:
 	for i in objects: container.add_item(i.title, i.id)

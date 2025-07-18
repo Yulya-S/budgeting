@@ -8,7 +8,7 @@ func set_extra(extra_id: int) -> void:
 	if Request.select(second_table, "income", "id="+str(extra_id))[0].income: ConsumptionIncome.set_text("Доход")
 
 # Изменение значение счета после проведения транзакции
-func _update_wallet_value(delete: bool = false):
+func _update_wallet_value(delete: bool = false) -> void:
 	var income = int(ConsumptionIncome.get_text() == "Доход")
 	if delete: income = int(not bool(income))
 	if income == 0: income = -1

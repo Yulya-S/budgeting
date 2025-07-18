@@ -14,7 +14,7 @@ func _extra_errors() -> bool:
 	return Error.visible
 
 # Изменение значение счета после проведения транзакции
-func _update_wallet_value(delete: bool = false):
+func _update_wallet_value(delete: bool = false) -> void:
 	var income = -1
 	if delete: income = 1
 	Request.update(Request.Tables.WALLETS, "value=value+"+str(income*float(Value.get_text())), "id="+str(Wallet.selected+1))
