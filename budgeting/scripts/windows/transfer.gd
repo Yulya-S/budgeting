@@ -2,7 +2,6 @@ extends Movement
 
 # Создание сцены
 func _ready() -> void:
-	second_table = Request.Tables.WALLETS
 	super._ready()
 	set_extra(2)
 

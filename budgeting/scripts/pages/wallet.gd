@@ -5,7 +5,7 @@ extends Control
 # Путь к подгружаемой сцене транзакции
 var wallet_path = load("res://scenes/fragments/wallet.tscn")
 
-# Переменные
+# Переменная
 var lines: Array = [] # Список объектов для создания на странице
 
 # Подключение сигналов
@@ -29,7 +29,7 @@ func _update_page() -> void:
 # Обработка нажатия кнопки создания нового счета
 func _on_add_wallet_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET)
 
-# Обработка нажатия кнопки создания нового счета
+# Обработка нажатия кнопки создания движения средств
 func _on_cash_flow_button_down() -> void: Global.emit_signal("open_window", Global.Pages.CASH_FLOW)
 
 # Обработка нажатия кнопки переноса средств между счетами

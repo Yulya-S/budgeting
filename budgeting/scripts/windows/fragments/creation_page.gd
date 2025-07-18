@@ -4,9 +4,11 @@ class_name CreationPage
 @onready var Error = $Error
 @onready var Delete = $Delete
 
+# Экспорт переменных
+@export var table: Request.Tables = Request.Tables.WALLETS # Связанная таблица
+
 # Переменные
 var id = null # Индекс изменяемого объекта
-var table: Request.Tables = Request.Tables.WALLETS # Связанная таблица
 
 # Изменение информации о счете
 func _get_obj_data(obj_id: int) -> Array:

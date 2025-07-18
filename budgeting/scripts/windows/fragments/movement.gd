@@ -8,8 +8,8 @@ class_name Movement
 @onready var Note = $Note
 @onready var Date = $DateSelection
 
-# Переменные
-var second_table = Request.Tables.SECTIONS # Таблица связанная со вторым выпадающим списком
+# Экспортируемые переменные
+@export var second_table = Request.Tables.SECTIONS # Таблица связанная со вторым выпадающим списком
 
 # Изменение раздела расхода
 func set_extra(_extra_id: int) -> void: pass
@@ -17,10 +17,8 @@ func set_extra(_extra_id: int) -> void: pass
 # Изменение значение счета после проведения транзакции
 func _update_wallet_value(_delete: bool = false) -> void: pass
 
-# Создание сцены
+# Заполнение выпадающих списков
 func _ready() -> void:
-	if table == Request.Tables.WALLETS: table = Request.Tables.CASH_FLOWS # Смена связанной таблицы
-	# Заполнение выпадающих списков
 	Global.fill_optionButton(Wallet, Request.select(Request.Tables.WALLETS))
 	Global.fill_optionButton(Extra, Request.select(second_table))
 	set_wallet(1)
