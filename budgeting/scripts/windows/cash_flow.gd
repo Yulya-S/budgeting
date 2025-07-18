@@ -5,8 +5,7 @@ extends Movement
 # Изменение раздела расхода
 func set_extra(extra_id: int) -> void:
 	Extra.selected = extra_id - 1
-	if Request.select(second_table, "income", "id="+str(extra_id))[0].income:
-		ConsumptionIncome.set_text("Доход")
+	if Request.select(second_table, "income", "id="+str(extra_id))[0].income: ConsumptionIncome.set_text("Доход")
 
 # Изменение значение счета после проведения транзакции
 func _update_wallet_value(delete: bool = false):
