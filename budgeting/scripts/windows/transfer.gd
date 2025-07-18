@@ -8,7 +8,7 @@ func _ready() -> void:
 # Изменение раздела расхода
 func set_extra(extra_id: int) -> void: Extra.selected = extra_id - 1
 
-# Изменение значение счета после проведения транзакции
+# Проведение дополнительных проверок на верность данных
 func _extra_errors() -> bool:
 	if Wallet.selected == Extra.selected: Global.set_error(Error, "Нельзя перевести средства на тот же счет")
 	return Error.visible

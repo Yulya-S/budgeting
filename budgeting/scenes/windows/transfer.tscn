@@ -10,6 +10,8 @@ anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
 script = ExtResource("1_0qmjj")
+second_table = 0
+table = 2
 
 [node name="Window" parent="." instance=ExtResource("2_bh4ot")]
 layout_mode = 0
