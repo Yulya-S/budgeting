@@ -13,7 +13,6 @@ func _on_main_button_down() -> void: pass
 
 # Обработка нажатия кнопки кошелька 
 func _on_wallet_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.WALLET)
-	
 
 # Обработка нажатия кнопки кредита 
 func _on_loan_button_down() -> void: pass

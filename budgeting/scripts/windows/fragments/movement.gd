@@ -11,7 +11,7 @@ class_name Movement
 # Экспортируемые переменные
 @export var second_table = Request.Tables.SECTIONS # Таблица связанная со вторым выпадающим списком
 
-# Изменение раздела расхода
+# Изменение информации о дополнительном параметре
 func set_extra(_extra_id: int) -> void: pass
 
 # Изменение значение счета после проведения транзакции
@@ -23,11 +23,15 @@ func _ready() -> void:
 	Global.fill_optionButton(Extra, Request.select(second_table))
 	set_wallet(1)
 	set_extra(1)
-	
+
+# Получение названия колонки, отвечающей за связь таблиц
 func _get_extra_name() -> String:
 	var obj_name: String = Global.enum_key(Request.Tables, second_table)
 	obj_name[-1] = "_"
 	return obj_name + "id"
+	
+# Проведение дополнительных проверок на верность данных
+func _extra_errors() -> bool: return Error.visible
 	
 # Изменение объекта
 func set_object(obj_id: int, parent = null) -> void:
@@ -36,7 +40,7 @@ func set_object(obj_id: int, parent = null) -> void:
 		null: set_all(obj_id)
 		_: set_extra(obj_id) 
 
-# Изменение информации
+# Изменение всей информации об объекте
 func set_all(obj_id) -> void:
 	var value: Array = _get_obj_data(obj_id)
 	if len(value) <= 0: return
@@ -46,15 +50,12 @@ func set_all(obj_id) -> void:
 	Note.set_text(value[0].note)
 	Date.set_date(value[0].date)
 
-# Изменение счета
+# Изменение информации о счете
 func set_wallet(wallet_id: int) -> void:
 	Wallet.selected = wallet_id - 1
 	Count.set_text(str(Request.select(Request.Tables.WALLETS, "*", "id="+str(wallet_id))[0].value))
 
-# Изменение значение счета после проведения транзакции
-func _extra_errors() -> bool: return Error.visible
-
-# Проверка заполнености полей
+# Проверка заполненности полей
 func check_object() -> bool:
 	Error.visible = false
 	if Value.get_text() == "": Global.set_error(Error, "Значение не должно быть пустым")
@@ -70,21 +71,23 @@ func _on_value_text_changed() -> void:
 # Изменение выбранного счета
 func _on_wallet_item_selected(index: int) -> void: set_wallet(index + 1)
 
-# Изменение выбранного раздела
+# Изменение выбранного дополнительного параметра
 func _on_extra_item_selected(index: int) -> void: set_extra(index + 1)
+
+# Проведение обратной операции
+func _back_wallet_value() -> void:
+	set_all(id)
+	_update_wallet_value(true)
 
 # Обработка нажатия кнопки сохранения / изменения
 func _on_apply_button_down() -> void:
 	if check_object(): return
 	_update_wallet_value()
 	var values: Array = [Wallet.selected+1, Extra.selected+1, float(Value.get_text()), '"'+Date.get_date()+'"', '"'+Note.get_text()+'"']
-	if id:
-		set_all(id)
-		_update_wallet_value(true)
+	if id: _back_wallet_value()
 	_create_update(values)
 
 # Обработка нажатия кнопки удаления
 func _on_delete_button_down() -> void:
-	set_all(id)
-	_update_wallet_value(true)
+	_back_wallet_value()
 	super._on_delete_button_down()

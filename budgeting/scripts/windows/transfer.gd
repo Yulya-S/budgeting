@@ -22,6 +22,7 @@ func _update_wallet_value(delete: bool = false):
 
 # Создание или изменение объекта
 func _create_update(values: Array) -> void:
+	values[1] = 1
 	super._create_update(values)
 	values[2] *= -1
 	if id: Request.update_record(table, id+1, values)
