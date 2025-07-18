@@ -1,12 +1,16 @@
 extends Node
 # Сигналы
 signal open_window(page: Pages, id, dir: Dirs, parent)
+signal open_new_page(page: Pages)
 signal update_page()
 
 # Перечисления
 enum Pages {WALLET, WALLET_INF, CASH_FLOW, TRANSFER} # Страницы приложения
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
+
+# Переменная
+var current_page: Pages = Pages.WALLET
 
 # Получить имя объекта из перечисления
 func enum_key(enums, object) -> String: return enums.keys()[object].to_lower()
