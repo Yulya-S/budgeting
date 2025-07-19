@@ -3,22 +3,26 @@
 [ext_resource type="Script" uid="uid://cfajdl5x507of" path="res://scripts/pages/basic.gd" id="1_eejbm"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_mrggl"]
 
-[node name="Basic" type="Node2D"]
+[node name="Basic" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_eejbm")
 
 [node name="Head" parent="." instance=ExtResource("2_mrggl")]
+layout_mode = 0
 
 [node name="ColorRect" type="ColorRect" parent="."]
-offset_top = 40.0
+layout_mode = 0
+offset_top = 50.0
 offset_right = 1152.0
 offset_bottom = 648.0
 
 [node name="Wallets" type="ColorRect" parent="ColorRect"]
 layout_mode = 0
 offset_left = 46.0
-offset_top = 111.0
+offset_top = 55.0
 offset_right = 1106.0
-offset_bottom = 217.0
+offset_bottom = 161.0
 color = Color(0.817521, 0.817521, 0.817521, 1)
 
 [node name="Label" type="Label" parent="ColorRect/Wallets"]
@@ -29,11 +33,10 @@ offset_right = 494.0
 offset_bottom = -3.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Счета"
+text = "Список счетов"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="ColorRect/Wallets"]
 layout_mode = 0
-offset_left = 4.0
 offset_top = 4.0
 offset_right = 1060.0
 offset_bottom = 106.0
@@ -41,22 +44,12 @@ offset_bottom = 106.0
 [node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/Wallets/ScrollContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ColorRect"]
-layout_mode = 0
-offset_left = 46.0
-offset_top = 36.0
-offset_right = 520.0
-offset_bottom = 75.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 28
-text = "Текущее состояние основного счета: 0.0"
-
 [node name="ColorRect" type="ColorRect" parent="ColorRect"]
 layout_mode = 0
 offset_left = 46.0
-offset_top = 265.0
+offset_top = 209.0
 offset_right = 1106.0
-offset_bottom = 371.0
+offset_bottom = 315.0
 color = Color(0.817521, 0.817521, 0.817521, 1)
 
 [node name="Label" type="Label" parent="ColorRect/ColorRect"]
@@ -141,9 +134,9 @@ text = "Другое"
 [node name="ColorRect2" type="ColorRect" parent="ColorRect"]
 layout_mode = 0
 offset_left = 46.0
-offset_top = 416.0
+offset_top = 360.0
 offset_right = 1106.0
-offset_bottom = 522.0
+offset_bottom = 466.0
 color = Color(0.817521, 0.817521, 0.817521, 1)
 
 [node name="Label" type="Label" parent="ColorRect/ColorRect2"]
