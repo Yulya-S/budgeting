@@ -5,15 +5,18 @@ signal open_new_page(page: Pages)
 signal update_page()
 
 # Перечисления
-enum Pages {WALLET, WALLET_INF, CASH_FLOW, TRANSFER} # Страницы приложения
+enum Pages {BASIC, WALLET, WALLET_INF, CASH_FLOW, TRANSFER} # Страницы приложения
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменная
-var current_page: Pages = Pages.WALLET
+var current_page: Pages = Pages.BASIC
 
 # Получить имя объекта из перечисления
 func enum_key(enums, object) -> String: return enums.keys()[object].to_lower()
+
+# Получить индекс выбранного элемента выпадающего списка
+func get_OB_id(button: OptionButton) -> int: return button.get_item_id(button.selected)
 
 # Изменение текста ошибки
 func set_error(container: Label, text: String) -> bool:

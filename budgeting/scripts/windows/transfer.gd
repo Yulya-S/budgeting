@@ -3,10 +3,10 @@ extends Movement
 # Создание сцены
 func _ready() -> void:
 	super._ready()
-	set_extra(2)
+	set_extra(1)
 
 # Изменение раздела расхода
-func set_extra(extra_id: int) -> void: Extra.selected = extra_id - 1
+func set_extra(extra_idx: int = 0) -> void: Extra.selectedx = extra_idx
 
 # Проведение дополнительных проверок на верность данных
 func _extra_errors() -> bool:
@@ -17,8 +17,8 @@ func _extra_errors() -> bool:
 func _update_wallet_value(delete: bool = false) -> void:
 	var income = -1
 	if delete: income = 1
-	Request.update(Request.Tables.WALLETS, "value=value+"+str(income*float(Value.get_text())), "id="+str(Wallet.selected+1))
-	Request.update(Request.Tables.WALLETS, "value=value+"+str(income*float(Value.get_text())*-1), "id="+str(Extra.selected+1))
+	Request.update(Request.Tables.WALLETS, "value=value+"+str(income*float(Value.get_text())), "id="+str(Global.get_OB_id(Wallet)))
+	Request.update(Request.Tables.WALLETS, "value=value+"+str(income*float(Value.get_text())*-1), "id="+str(Global.get_OB_id(Extra)))
 
 # Создание или изменение объекта
 func _create_update(values: Array) -> void:
@@ -27,16 +27,6 @@ func _create_update(values: Array) -> void:
 	values[2] *= -1
 	if id: Request.update_record(table, id+1, values)
 	else: Request.insert_record(table, values)
-	
-# Изменение выбранного счета
-func _on_wallet_item_selected(index: int) -> void:
-	super._on_wallet_item_selected(index)
-	check_object()
-
-# Изменение выбранного раздела
-func _on_extra_item_selected(index: int) -> void:
-	super._on_extra_item_selected(index)
-	check_object()
 
 # Обработка нажатия кнопки удаления
 func _on_delete_button_down() -> void:

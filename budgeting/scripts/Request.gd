@@ -18,6 +18,7 @@ func connection_db() -> void:
 	db.open_db()
 	
 func _create_table(title: String, columns: String, other: String = "") -> void:
+	if other: other = ", " + other
 	db.query("CREATE TABLE IF NOT EXISTS "+title+" (id INTEGER PRIMARY KEY AUTOINCREMENT, "+columns+other+");")
 
 # Создание таблиц в базе
@@ -25,7 +26,7 @@ func create_tables() -> void:
 	_create_table("wallets", "title VARCHAR(255), value FLOAT")
 	_create_table("sections", "title VARCHAR(255), month_limit FLOAT, income BOOLEAN")
 	_create_table("cash_flows", "wallet_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)",	"FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`section_id`) REFERENCES `sections`(`id`)")
-	_create_table("loans", "title VARCHAR(255), date DATE, total FLOAT, percent FLOAT")
+	_create_table("loans", "title VARCHAR(255), date DATE, total FLOAT")
 	_create_table("payments", "wallet_id INT, loan_id INT, value FLOAT, date DATE, note VARCHAR(255)", "FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`loan_id`) REFERENCES `loans`(`id`)")
 	_create_table("events", "title VARCHAR(255), date DATE, note VARCHAR(255)")
 	

@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 @onready var Wallets = $ColorRect/Wallets/ScrollContainer/VBoxContainer
 var wallet_path = load("res://scenes/fragments/wallet.tscn")
 
@@ -7,7 +7,7 @@ func _ready() -> void: add_wallets()
 
 # Заполнение списка счетов
 func add_wallets():
-	var wallets_array: Array = Request.get_wallets()
+	var wallets_array: Array = Request.select(Request.Tables.WALLETS)
 	for i in wallets_array:
 		Wallets.add_child(wallet_path.instantiate())
 		Wallets.get_child(-1).set_values(i)

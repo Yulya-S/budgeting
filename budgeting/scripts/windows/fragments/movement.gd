@@ -12,7 +12,7 @@ class_name Movement
 @export var second_table = Request.Tables.SECTIONS # Таблица связанная со вторым выпадающим списком
 
 # Изменение информации о дополнительном параметре
-func set_extra(_extra_id: int) -> void: pass
+func set_extra(_extra_idx: int = 0) -> void: pass
 
 # Изменение значение счета после проведения транзакции
 func _update_wallet_value(_delete: bool = false) -> void: pass
@@ -21,8 +21,8 @@ func _update_wallet_value(_delete: bool = false) -> void: pass
 func _ready() -> void:
 	Global.fill_optionButton(Wallet, Request.select(Request.Tables.WALLETS))
 	Global.fill_optionButton(Extra, Request.select(second_table))
-	set_wallet(1)
-	set_extra(1)
+	set_wallet()
+	set_extra()
 
 # Получение названия колонки, отвечающей за связь таблиц
 func _get_extra_name() -> String:
@@ -51,9 +51,9 @@ func set_all(obj_id) -> void:
 	Date.set_date(value[0].date)
 
 # Изменение информации о счете
-func set_wallet(wallet_id: int) -> void:
-	Wallet.selected = wallet_id - 1
-	Count.set_text(str(Request.select(Request.Tables.WALLETS, "*", "id="+str(wallet_id))[0].value))
+func set_wallet(wallet_idx: int = 0) -> void:
+	Wallet.selected = wallet_idx
+	Count.set_text(str(Request.select(Request.Tables.WALLETS, "*", "id="+str(Global.get_OB_id(Wallet)))[0].value))
 
 # Проверка заполненности полей
 func check_object() -> bool:
@@ -69,10 +69,14 @@ func _on_value_text_changed() -> void:
 	check_object()
 
 # Изменение выбранного счета
-func _on_wallet_item_selected(index: int) -> void: set_wallet(index + 1)
+func _on_wallet_item_selected(index: int) -> void:
+	set_wallet(index)
+	check_object()
 
 # Изменение выбранного дополнительного параметра
-func _on_extra_item_selected(index: int) -> void: set_extra(index + 1)
+func _on_extra_item_selected(index: int) -> void:
+	set_extra(index)
+	check_object()
 
 # Проведение обратной операции
 func _back_wallet_value() -> void:
@@ -83,7 +87,7 @@ func _back_wallet_value() -> void:
 func _on_apply_button_down() -> void:
 	if check_object(): return
 	_update_wallet_value()
-	var values: Array = [Wallet.selected+1, Extra.selected+1, float(Value.get_text()), '"'+Date.get_date()+'"', '"'+Note.get_text()+'"']
+	var values: Array = [Global.get_OB_id(Wallet), Global.get_OB_id(Extra), float(Value.get_text()), '"'+Date.get_date()+'"', '"'+Note.get_text()+'"']
 	if id: _back_wallet_value()
 	_create_update(values)
 
