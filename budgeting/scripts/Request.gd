@@ -96,3 +96,10 @@ func select_cash_flow_sum(wallet_id: int) -> Array:
 	db.query("""SELECT s.title, COUNT(cf.id) count, SUM(cf.value) value FROM `cash_flows` as cf
 		LEFT JOIN `sections` AS s ON cf.section_id = s.id WHERE wallet_id="""+str(wallet_id)+" GROUP BY section_id;")
 	return db.query_result
+	
+# Получение суммы затрат / доходов по статьям расходов / доходов
+func select_cash_flow(id: int, date: String = Time.get_datetime_string_from_system()) -> float:
+	db.query("SELECT COALESCE(SUM(value), 0) value FROM `cash_flows` WHERE wallet_id="+str(id)+" AND strftime('%Y-%m', date) = strftime('%Y-%m', '"+date+"');")
+	var value: Array = db.query_result 
+	if len(value) == 0: return 0.0
+	return value[0].value

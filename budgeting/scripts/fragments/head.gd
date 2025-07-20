@@ -9,7 +9,7 @@ func _ready() -> void:
 		_: Marker.position.x = $Main.position.x - 2
 
 # Обработка нажатия кнопки главная 
-func _on_main_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.BASIC, null, Global.Dirs.PAGES)
+func _on_main_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.BASIC)
 
 # Обработка нажатия кнопки кошелька 
 func _on_wallet_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.WALLET)

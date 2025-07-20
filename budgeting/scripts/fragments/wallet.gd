@@ -18,6 +18,7 @@ func set_values(data: Dictionary) -> void:
 	id = data.id
 	Title.set_text(data.title)
 	Value.set_text(str(data.value))
+	CashFlow.set_text(str(Request.select_cash_flow(id)))
 
 # Обработка нажатия клавиш мыши
 func _input(event: InputEvent) -> void:
