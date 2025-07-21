@@ -41,9 +41,7 @@ func _update_values() -> void:
 	Value.set_text(str(wallet_value[0].value))
 
 # Обработка нажатия кнопки возврата к списку счетов
-func _on_back_button_down() -> void:
-	self.queue_free()
-	get_parent().remove_child(self)
+func _on_back_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.WALLET)
 
 # Обработка нажатия кнопки изменения счета
 func _on_update_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET, id)
