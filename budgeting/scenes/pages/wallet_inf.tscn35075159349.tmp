@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dogi0k768li3"]
+[gd_scene load_steps=9 format=3 uid="uid://dogi0k768li3"]
 
 [ext_resource type="Script" uid="uid://de6p1m8lb4i5x" path="res://scripts/pages/wallet_inf.gd" id="1_y0peq"]
 [ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_6imgx"]
+[ext_resource type="PackedScene" uid="uid://bbm4ew21ko7e1" path="res://scenes/fragments/cash_flow.tscn" id="3_6imgx"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_oy6n0"]
 [ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="4_3ta84"]
 [ext_resource type="Texture2D" uid="uid://dpw6qwab15i7s" path="res://img/update/update_wallet.png" id="5_37dcs"]
@@ -61,6 +62,19 @@ offset_top = 174.0
 offset_right = 1152.0
 offset_bottom = 542.0
 table = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_top = 174.0
+offset_right = 1152.0
+offset_bottom = 542.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+
+[node name="CashFlow2" parent="ScrollContainer/VBoxContainer" instance=ExtResource("3_6imgx")]
+layout_mode = 2
+color = Color(0.87451, 0.87451, 0.87451, 1)
 
 [node name="Total" type="ColorRect" parent="."]
 layout_mode = 0

@@ -18,11 +18,11 @@ func set_values(data: Dictionary) -> void:
 	id = data.id
 	Title.set_text(data.title)
 	Value.set_text(str(data.value))
-	CashFlow.set_text(str(Request.select_cash_flow(id)))
+	CashFlow.set_text(str(Request.select_total_cash_flow(id).value))
 
 # Обработка нажатия клавиш мыши
 func _input(event: InputEvent) -> void:
-	if state == Global.MouseOver.NORMAL: return
+	if state == Global.MouseOver.NORMAL or not id: return
 	if event.is_action("click") and event.is_pressed():
 		Global.emit_signal("open_window", Global.Pages.WALLET_INF, id, Global.Dirs.PAGES)
 

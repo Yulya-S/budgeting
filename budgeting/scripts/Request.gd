@@ -91,15 +91,20 @@ func select(table: Tables, columns: String = "*", where: String = "", order: Str
 	db.query("SELECT "+columns+" FROM "+_get_table_name(table)+where+order+";")
 	return db.query_result
 
+# Получение списка разделов (нужно доделать)
+func select_sections(date: String = Time.get_datetime_string_from_system()) -> Array:
+	db.query("SELECT s.*, COALESCE(SUM(cf.value), 0) value FROM `sections` s LEFT JOIN `cash_flows` cf ON cf.section_id = s.id WHERE strftime('%Y-%m', cf.date) = strftime('%Y-%m', '"+date+"') GROUP BY s.id;")
+	return db.query_result
+
 # Получение суммы затрат / доходов по статьям расходов / доходов
-func select_cash_flow_sum(wallet_id: int) -> Array:
+func select_cash_flow_sum(wallet_id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
 	db.query("""SELECT s.title, COUNT(cf.id) count, SUM(cf.value) value FROM `cash_flows` as cf
-		LEFT JOIN `sections` AS s ON cf.section_id = s.id WHERE wallet_id="""+str(wallet_id)+" GROUP BY section_id;")
+		LEFT JOIN `sections` AS s ON cf.section_id = s.id WHERE wallet_id="""+str(wallet_id)+" AND strftime('%Y-%m', date) = strftime('%Y-%m', '"+date+"') GROUP BY section_id;")
 	return db.query_result
 	
 # Получение суммы затрат / доходов по статьям расходов / доходов
-func select_cash_flow(id: int, date: String = Time.get_datetime_string_from_system()) -> float:
-	db.query("SELECT COALESCE(SUM(value), 0) value FROM `cash_flows` WHERE wallet_id="+str(id)+" AND strftime('%Y-%m', date) = strftime('%Y-%m', '"+date+"');")
+func select_total_cash_flow(id: int, date: String = Time.get_datetime_string_from_system()) -> Dictionary:
+	db.query("SELECT COALESCE(SUM(value), 0) value, COALESCE(COUNT(value), 0) count FROM `cash_flows` WHERE wallet_id="+str(id)+" AND strftime('%Y-%m', date) = strftime('%Y-%m', '"+date+"');")
 	var value: Array = db.query_result 
-	if len(value) == 0: return 0.0
-	return value[0].value
+	if len(value) == 0: return {"value": 0.0, "count": 0}
+	return value[0]

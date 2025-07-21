@@ -5,7 +5,7 @@ signal open_new_page(page: Pages)
 signal update_page()
 
 # Перечисления
-enum Pages {BASIC, WALLET, WALLET_INF, CASH_FLOW, TRANSFER} # Страницы приложения
+enum Pages {BASIC, WALLET, WALLET_INF, CASH_FLOW, TRANSFER, SECTION} # Страницы приложения
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 

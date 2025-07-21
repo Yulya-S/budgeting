@@ -6,6 +6,7 @@ extends ColorRect
 func _ready() -> void:
 	match Global.current_page:
 		Global.Pages.WALLET: Marker.position.x = $Wallet.position.x - 2
+		Global.Pages.SECTION: Marker.position.x = $Flow.position.x - 2
 		_: Marker.position.x = $Main.position.x - 2
 
 # Обработка нажатия кнопки главная 
@@ -21,7 +22,7 @@ func _on_loan_button_down() -> void: pass
 func _on_calendar_button_down() -> void: pass
 
 # Обработка нажатия кнопки ждвижения средств 
-func _on_flow_button_down() -> void: pass
+func _on_flow_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.SECTION)
 
 # Обработка нажатия кнопки отчетов 
 func _on_report_button_down() -> void: pass
