@@ -1,0 +1,178 @@
+[gd_scene load_steps=8 format=3 uid="uid://dogi0k768li3"]
+
+[ext_resource type="Script" uid="uid://de6p1m8lb4i5x" path="res://scripts/pages/wallet_inf.gd" id="1_y0peq"]
+[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_6imgx"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_oy6n0"]
+[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="4_3ta84"]
+[ext_resource type="Texture2D" uid="uid://dpw6qwab15i7s" path="res://img/update/update_wallet.png" id="5_37dcs"]
+[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="6_oy6n0"]
+[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="7_pha3d"]
+
+[node name="WalletsInfo" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_y0peq")
+
+[node name="Page" parent="." instance=ExtResource("2_6imgx")]
+
+[node name="Wallet" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 118.0
+offset_right = 1152.0
+offset_bottom = 164.0
+color = Color(0.873298, 0.873299, 0.873298, 1)
+
+[node name="Title" type="Label" parent="Wallet"]
+layout_mode = 2
+offset_left = 51.0
+offset_right = 499.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Название счета"
+vertical_alignment = 1
+
+[node name="LableValue" type="Label" parent="Wallet"]
+layout_mode = 2
+offset_left = 526.0
+offset_right = 780.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Значение счета:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Wallet"]
+layout_mode = 2
+offset_left = 791.0
+offset_right = 1112.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "0.0"
+vertical_alignment = 1
+
+[node name="ObjArray" parent="." instance=ExtResource("3_oy6n0")]
+layout_mode = 0
+offset_top = 174.0
+offset_right = 1152.0
+offset_bottom = 542.0
+table = 2
+
+[node name="Total" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 542.0
+offset_right = 1152.0
+offset_bottom = 588.0
+color = Color(0.873298, 0.873299, 0.873298, 1)
+
+[node name="Lable" type="Label" parent="Total"]
+layout_mode = 2
+offset_left = 51.0
+offset_right = 121.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Итог:"
+vertical_alignment = 1
+
+[node name="LableCount" type="Label" parent="Total"]
+layout_mode = 2
+offset_left = 144.0
+offset_right = 408.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Количество транзакций:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Count" type="Label" parent="Total"]
+layout_mode = 2
+offset_left = 415.0
+offset_right = 709.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "0"
+vertical_alignment = 1
+
+[node name="LableValue" type="Label" parent="Total"]
+layout_mode = 2
+offset_left = 709.0
+offset_right = 855.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Сумма:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Total"]
+layout_mode = 2
+offset_left = 862.0
+offset_right = 1112.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "0.0"
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 233.0
+offset_top = 66.5
+offset_right = 1098.0
+offset_bottom = 101.5
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "Информация о счете, за месяц"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Back" type="Button" parent="."]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 64.0
+offset_right = 149.0
+offset_bottom = 192.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Назад"
+icon = ExtResource("4_3ta84")
+
+[node name="Update" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1017.0
+offset_top = 603.0
+offset_right = 1145.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Изменить счет"
+icon = ExtResource("5_37dcs")
+
+[node name="CashFlow" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1062.0
+offset_top = 603.0
+offset_right = 1190.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Добавить движение средств"
+icon = ExtResource("6_oy6n0")
+
+[node name="Transactions" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1107.0
+offset_top = 603.0
+offset_right = 1235.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Список транзакций"
+icon = ExtResource("7_pha3d")
+
+[connection signal="button_down" from="Back" to="." method="_on_back_button_down"]
+[connection signal="button_down" from="Update" to="." method="_on_update_button_down"]
+[connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]

@@ -9,64 +9,83 @@ const month_list: Array = ["Январь", "Февраль", "Март", "Апр
 							"Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
 
 # Переменные
-var month_idx: int = 0 # Номер выбранного месяца
-var today: Dictionary = {} # Данные о текущем дне
+var selected_day: Dictionary = {} # Номер выбранного дня
 var cell_path = load("res://scenes/fragments/calendar/cell.tscn") # Путь к сцене ячеек календаря
 
-# Получение текущей даты и месяца
+# Получение текущей даты
 func _ready() -> void:
-	today = Time.get_date_dict_from_system()
-	month_idx = today.month
-	# Заполнение списка выбора года
-	for i in range(today.year-10, today.year, 1): Year.add_item(str(i+1))
-	Year.selected = Year.item_count - 1
-	create_days()
+	selected_day = Time.get_date_dict_from_system()
+	_update_calendar()
 
+# Изменение текущей даты из базы данных
+func set_date(new_date: String) -> void:
+	selected_day = Time.get_datetime_dict_from_datetime_string(new_date, true)
+	_update_calendar()
+
+# Получение выбранной в календаре даты
+func get_date() -> String: return Time.get_datetime_string_from_datetime_dict(selected_day, true).split(" ")[0]
+
+# Изменение настроек календаря
+func _update_calendar() -> void:
+	var current: Dictionary = Time.get_date_dict_from_system()
+	# Заполнение списка выбора года
+	for i in range(Year.item_count): Year.remove_item(0)
+	for i in range(selected_day.year-10, selected_day.year+10, 1):
+		if i + 1 > current.year: break
+		Year.add_item(str(i+1))
+	Year.selected = 9
+	_create_days()
+	
 # Заполнение календаря ячейками дней
-func create_days():
-	Month.set_text(month_list[month_idx-1].to_upper()) # Смена имени месяца
+func _create_days() -> void:
+	Month.set_text(month_list[selected_day.month-1].to_upper()) # Смена имени месяца
 	# Очистка ячеек
 	for i in Cells.get_children():
 		i.queue_free()
 		Cells.remove_child(i)
 	
 	# Сдвиг месяца и года
-	var next_month_idx = month_idx + 1
+	var next_month_idx = selected_day.month + 1
 	var next_year: int = int(Year.get_item_text(Year.selected))
 	if next_month_idx > len(month_list):
 		next_month_idx = 1
 		next_year += 1
 	
 	# Получение первых чисел этого и следующего месяцев
-	var current: Dictionary = Time.get_datetime_dict_from_datetime_string("-".join([Year.get_item_text(Year.selected), month_idx, 1]), true)
+	var current: Dictionary = Time.get_datetime_dict_from_datetime_string("-".join([selected_day.year, selected_day.month, 1]), true)
 	var next: Dictionary = Time.get_datetime_dict_from_datetime_string("-".join([next_year, next_month_idx, 1]), true)
 	# Смена индекса воскресения
 	if current.weekday == 0: current.weekday = 7
 	if next.weekday == 0: next.weekday = 7
-	# Создание ячеекв
+	# Создание ячеек
 	var start_draw: bool = false
-	var day_count = 27 + abs(next.weekday - (current.weekday))
-	print(day_count)
 	for i in range(42):
-		if i-current.weekday > 26:
-			if (i + 1) % 7 == next.weekday: start_draw = false
+		if i-current.weekday > 26 and (i + 1) % 7 == next.weekday: start_draw = false
 		elif current.weekday - 1 == i: start_draw = true
 		Cells.add_child(cell_path.instantiate())
-		if start_draw: Cells.get_child(-1).get_child(-1).set_text(str(i-current.weekday+2))
-		if i - current.weekday + 2 == current.day and Year.get_item_text(Year.selected) == str(today.year) and month_idx == today.month:
-			Cells.get_child(-1).get_child(0).color = Color.html("#f7cdcd")
+		if start_draw: Cells.get_child(-1).set_object(i-current.weekday+2, i-current.weekday+2 == selected_day.day)
+
+# Изменение номера дня
+func update_day(day: int) -> void:
+	selected_day.day = day
+	for i in Cells.get_children(): i.is_today = i.id == day
+
+# Изменение значения месяца
+func _update_month(value: int = 1) -> void:
+	selected_day.month += value
+	if selected_day.month > len(month_list): selected_day.month = 1
+	elif selected_day.month <= 0: selected_day.month = len(month_list)
+	selected_day.day = 1
+	_create_days()
 
 # Обработка нажатия кнопки следующего месяца
-func _on_next_button_down() -> void:
-	month_idx += 1
-	if month_idx > len(month_list): month_idx = 1
-	create_days()
+func _on_next_button_down() -> void: _update_month(1)
 
 # Обработка нажатия кнопки предыдущего
-func _on_previous_button_down() -> void:
-	month_idx -= 1
-	if month_idx <= 0: month_idx = len(month_list)
-	create_days()
+func _on_previous_button_down() -> void: _update_month(-1)
 
 # Обработка выбора года
-func _on_year_item_selected(index: int) -> void: create_days()
+func _on_year_item_selected(index: int) -> void:
+	selected_day.year = int(Year.get_item_text(index))
+	selected_day.day = 1
+	_update_calendar()

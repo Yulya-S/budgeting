@@ -1,15 +1,28 @@
-[gd_scene load_steps=2 format=3 uid="uid://cjjhlo2lps3ww"]
+[gd_scene load_steps=3 format=3 uid="uid://cjjhlo2lps3ww"]
 
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="1_ex3f0"]
+[ext_resource type="Script" uid="uid://dxnlx017mvbfm" path="res://scripts/windows/wallet.gd" id="1_tudm4"]
 
 [node name="Wallet" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
+script = ExtResource("1_tudm4")
 
 [node name="Window" parent="." instance=ExtResource("1_ex3f0")]
 layout_mode = 0
+
+[node name="Error" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 110.0
+offset_top = 197.0
+offset_right = 1042.0
+offset_bottom = 225.0
+theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
 
 [node name="Title" type="TextEdit" parent="."]
 clip_contents = false
@@ -84,3 +97,9 @@ tooltip_text = "Отменить изменения"
 theme_override_constants/outline_size = 14
 theme_override_font_sizes/font_size = 24
 text = "X"
+
+[connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
+[connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
+[connection signal="button_down" from="Delete" to="." method="_on_delete_button_down"]
+[connection signal="button_down" from="Apply" to="." method="_on_apply_button_down"]
+[connection signal="button_down" from="Close" to="." method="_on_close_button_down"]

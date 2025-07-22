@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://kb12kdasv2yv"]
+
+[ext_resource type="Script" uid="uid://djxfcsdvyoykq" path="res://scripts/pages/section.gd" id="1_42u4g"]
+[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_4yy0k"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_21h3v"]
+[ext_resource type="Texture2D" uid="uid://i3eg6d82cpd" path="res://img/add/add_section.png" id="4_42u4g"]
+[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="5_8bm6h"]
+
+[node name="Section" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("1_42u4g")
+
+[node name="Page" parent="." instance=ExtResource("2_4yy0k")]
+
+[node name="ObjArray" parent="." instance=ExtResource("3_21h3v")]
+layout_mode = 0
+offset_top = 60.0
+offset_right = 1152.0
+offset_bottom = 598.0
+table = 1
+
+[node name="AddSections" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1062.0
+offset_top = 603.0
+offset_right = 1190.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Создать раздел"
+icon = ExtResource("4_42u4g")
+
+[node name="CashFlow" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1107.0
+offset_top = 603.0
+offset_right = 1235.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Записать движение средств"
+icon = ExtResource("5_8bm6h")
+
+[connection signal="button_down" from="AddSections" to="." method="_on_add_sections_button_down"]
+[connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]

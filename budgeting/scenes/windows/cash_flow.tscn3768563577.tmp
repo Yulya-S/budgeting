@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cma0tkdwn1ppo"]
+
+[ext_resource type="Script" uid="uid://c8tfwlokk7kaq" path="res://scripts/windows/cash_flow.gd" id="1_h45nr"]
+
+[node name="CashFlow" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("1_h45nr")
