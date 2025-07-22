@@ -44,7 +44,7 @@ text = "Название раздела"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="CheckButton" type="CheckButton" parent="."]
+[node name="ConsumptionIncome" type="CheckButton" parent="."]
 layout_mode = 0
 offset_left = 689.0
 offset_top = 263.0
