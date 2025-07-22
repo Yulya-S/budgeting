@@ -16,14 +16,15 @@ func set_values(data: Dictionary) -> void:
 	var value = Request.select(Request.Tables.CASH_FLOWS, "SUM(value) value", "section_id="+str(data.id)+" AND strftime('%Y-%m', date) = strftime('%Y-%m', DATE())")
 	if len(value) == 0 or not value[0].value: value = 0.0
 	else: value = value[0].value
-	Border.visible = true
+	if data.income: ConsumptionIncome.set_text("Доход")
+	elif data.month_limit > 0: ConsumptionIncome.set_text("Расход")
+	Border.visible = ConsumptionIncome.get_text() == "Расход"
 	Border.get_child(0).size.x = (Border.size.x * value) / data.month_limit
 	if Border.size.x < Border.get_child(0).size.x:
 		Border.get_child(0).size.x = Border.size.x
 		Border.get_child(0).color = Color.html("#990027")
 	elif Border.size.x / 2. <  Border.get_child(0).size.x: Border.get_child(0).color = Color.html("#978800")
 	Value.set_text(str(value))
-	Max.set_text(str(data.month_limit))
-	if data.income: ConsumptionIncome.set_text("Доход")
-	else: ConsumptionIncome.set_text("Расход")
+	if data.month_limit > 0: Max.set_text(str(data.month_limit))
+	else: Max.set_text("")
 	Title.set_text(data.title)

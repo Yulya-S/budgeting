@@ -4,7 +4,7 @@
 
 [node name="Section" type="ColorRect"]
 custom_minimum_size = Vector2(969, 23)
-offset_right = 1152.0
+offset_right = 969.0
 offset_bottom = 23.0
 mouse_filter = 1
 color = Color(0.955963, 0.955963, 0.955963, 1)
@@ -13,22 +13,20 @@ script = ExtResource("1_gafra")
 [node name="Border" type="ColorRect" parent="."]
 visible = false
 layout_mode = 0
-offset_left = 165.0
+offset_left = 155.0
 offset_top = 5.0
-offset_right = 469.0
+offset_right = 340.0
 offset_bottom = 18.0
 color = Color(0.728822, 0.728822, 0.728822, 1)
 
 [node name="ColorRect" type="ColorRect" parent="Border"]
 layout_mode = 0
-offset_right = 231.0
 offset_bottom = 13.0
 color = Color(0.298524, 0.598649, 0.412661, 1)
 
 [node name="Value" type="Label" parent="."]
 layout_mode = 0
-offset_left = 5.0
-offset_right = 159.5
+offset_right = 155.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Текущее значение"
@@ -36,24 +34,24 @@ horizontal_alignment = 2
 
 [node name="Max" type="Label" parent="."]
 layout_mode = 0
-offset_left = 474.0
-offset_right = 680.0
+offset_left = 340.0
+offset_right = 546.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Максимальное значение"
 
 [node name="ConsumptionIncome" type="Label" parent="."]
 layout_mode = 0
-offset_left = 685.0
-offset_right = 885.0
+offset_left = 551.0
+offset_right = 702.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 horizontal_alignment = 2
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 0
-offset_left = 890.0
-offset_right = 1147.0
+offset_left = 707.0
+offset_right = 964.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Название раздела"

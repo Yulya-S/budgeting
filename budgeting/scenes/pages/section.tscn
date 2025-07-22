@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://djxfcsdvyoykq" path="res://scripts/pages/section.gd" id="1_42u4g"]
 [ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_4yy0k"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_21h3v"]
-[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/add/plus.png" id="4_y5ii3"]
+[ext_resource type="Texture2D" uid="uid://i3eg6d82cpd" path="res://img/add/add_section.png" id="4_42u4g"]
 [ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="5_8bm6h"]
 
 [node name="Section" type="Control"]
@@ -30,7 +30,7 @@ offset_right = 1190.0
 offset_bottom = 731.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Создать раздел"
-icon = ExtResource("4_y5ii3")
+icon = ExtResource("4_42u4g")
 
 [node name="CashFlow" type="Button" parent="."]
 layout_mode = 0
