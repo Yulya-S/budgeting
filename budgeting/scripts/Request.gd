@@ -89,8 +89,9 @@ func select_value(table: Tables, columns: String = "*") -> float:
 	return value[0].value
 
 # Получение списка разделов (нужно доделать)
-func select_sections(date: String = Time.get_datetime_string_from_system()) -> Array:
-	db.query("SELECT s.*, COALESCE(SUM(cf.value), 0) value FROM `sections` s LEFT JOIN `cash_flows` cf ON cf.section_id = s.id WHERE strftime('%Y-%m', cf.date) = strftime('%Y-%m', '"+date+"') GROUP BY s.id;")
+func select_sections(date: String = Time.get_datetime_string_from_system(), where: String = "") -> Array:
+	if where: where = " WHERE " + where
+	db.query("SELECT s.*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.wallet_id = s.id AND strftime('%Y-%m', cf.date) = strftime('%Y-%m', '"+date+"')) value FROM `sections` s"+where+";")
 	return db.query_result
 
 # Получение суммы затрат / доходов по статьям расходов / доходов
