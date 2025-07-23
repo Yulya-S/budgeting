@@ -15,9 +15,136 @@ script = ExtResource("1_42u4g")
 
 [node name="Page" parent="." instance=ExtResource("2_4yy0k")]
 
-[node name="ObjArray" parent="." instance=ExtResource("3_21h3v")]
+[node name="Filters" type="ColorRect" parent="."]
 layout_mode = 0
 offset_top = 60.0
+offset_right = 1152.0
+offset_bottom = 125.0
+color = Color(0.405473, 0.704353, 0.680819, 1)
+
+[node name="Title" type="TextEdit" parent="Filters"]
+clip_contents = false
+layout_mode = 0
+offset_left = 20.25
+offset_top = 24.0
+offset_right = 226.65
+offset_bottom = 55.0
+autowrap_mode = 1
+scroll_past_end_of_file = true
+
+[node name="Label" type="Label" parent="Filters/Title"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Фрагмент названия"
+vertical_alignment = 1
+
+[node name="Year" type="OptionButton" parent="Filters"]
+layout_mode = 0
+offset_left = 473.0
+offset_top = 24.0
+offset_right = 679.4
+offset_bottom = 55.0
+alignment = 1
+item_count = 1
+popup/item_0/id = 0
+
+[node name="Label" type="Label" parent="Filters/Year"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Год фильтрации"
+vertical_alignment = 1
+
+[node name="Month" type="OptionButton" parent="Filters"]
+layout_mode = 0
+offset_left = 699.0
+offset_top = 24.0
+offset_right = 905.4
+offset_bottom = 55.0
+alignment = 1
+selected = 0
+item_count = 12
+popup/item_0/text = "Январь"
+popup/item_0/id = 0
+popup/item_1/text = "Февраль"
+popup/item_1/id = 1
+popup/item_2/text = "Март"
+popup/item_2/id = 2
+popup/item_3/text = "Апрель"
+popup/item_3/id = 3
+popup/item_4/text = "Май"
+popup/item_4/id = 4
+popup/item_5/text = "Июнь"
+popup/item_5/id = 5
+popup/item_6/text = "Июль"
+popup/item_6/id = 6
+popup/item_7/text = "Август"
+popup/item_7/id = 7
+popup/item_8/text = "Сентябрь"
+popup/item_8/id = 8
+popup/item_9/text = "Октябрь"
+popup/item_9/id = 9
+popup/item_10/text = "Ноябрь"
+popup/item_10/id = 10
+popup/item_11/text = "Декабрь"
+popup/item_11/id = 11
+
+[node name="Label" type="Label" parent="Filters/Month"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Месяц фильтрации"
+vertical_alignment = 1
+
+[node name="ConsumptionIncome" type="OptionButton" parent="Filters"]
+layout_mode = 0
+offset_left = 247.0
+offset_top = 24.0
+offset_right = 453.4
+offset_bottom = 55.0
+alignment = 1
+selected = 0
+item_count = 4
+popup/item_0/text = "Все типы"
+popup/item_0/id = 0
+popup/item_1/text = "Расходы"
+popup/item_1/id = 1
+popup/item_2/text = "Доходы"
+popup/item_2/id = 2
+popup/item_3/text = "без типа"
+popup/item_3/id = 3
+
+[node name="Label" type="Label" parent="Filters/ConsumptionIncome"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Тип статьи"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Filters"]
+layout_mode = 0
+offset_left = 925.0
+offset_top = 23.0
+offset_right = 1131.0
+offset_bottom = 54.0
+text = "Применить"
+
+[node name="ObjArray" parent="." instance=ExtResource("3_21h3v")]
+layout_mode = 0
+offset_top = 130.0
 offset_right = 1152.0
 offset_bottom = 598.0
 table = 1

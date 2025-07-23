@@ -11,6 +11,7 @@ color = Color(0.955963, 0.955963, 0.955963, 1)
 script = ExtResource("1_gafra")
 
 [node name="Border" type="ColorRect" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 160.0
 offset_top = 5.0
