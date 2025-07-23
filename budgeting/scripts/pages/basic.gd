@@ -5,6 +5,6 @@ extends Control
 
 # Создание главной страницы
 func _ready() -> void:
-	Budget.set_text(str(Request.select(Request.Tables.WALLETS, "SUM(value) value")[0].value))
-	Budget.set_text(str(float(Budget.get_text()) - Request.select(Request.Tables.LOANS, "SUM(total) value")[0].value))
+	Budget.set_text(str(Request.select_value(Request.Tables.WALLETS, "SUM(value) value")))
+	Budget.set_text(str(float(Budget.get_text()) - Request.select_value(Request.Tables.LOANS, "SUM(total) value")))
 		

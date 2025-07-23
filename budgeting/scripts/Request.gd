@@ -28,8 +28,8 @@ func create_tables() -> void:
 	_create_table("loans", "title VARCHAR(255), date DATE, total FLOAT")
 	_create_table("payments", "cash_flow_id INT, loan_id INT", "FOREIGN KEY (`cash_flow_id`) REFERENCES `cash_flows`(`id`), FOREIGN KEY (`loan_id`) REFERENCES `loans`(`id`)")
 	_create_table("events", "title VARCHAR(255), date DATE, note VARCHAR(255)")
-	if len(select(Tables.SECTIONS)) == 0: return
-	for i in ["Переводы", "Платежы"]: insert_record(Tables.SECTIONS, [i, -1, false])
+	if len(select(Tables.SECTIONS)) != 0: return
+	for i in ["Переводы", "Платежи"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
 	
 # Получить название таблицы из enum Tables
 func _get_table_name(table: Tables) -> String: return Global.enum_key(Tables, table)
@@ -81,6 +81,12 @@ func select(table: Tables, columns: String = "*", where: String = "", order: Str
 	if order: order = " ORDER BY "+order
 	db.query("SELECT "+columns+" FROM "+_get_table_name(table)+where+order+";")
 	return db.query_result
+
+# Получение числового значения из базы
+func select_value(table: Tables, columns: String = "*") -> float:
+	var value: Array = select(table, columns)
+	if len(value) == 0 or not value[0].value: return 0.0
+	return value[0].value
 
 # Получение списка разделов (нужно доделать)
 func select_sections(date: String = Time.get_datetime_string_from_system()) -> Array:

@@ -13,9 +13,9 @@ var lines: Array = [] # Список объектов для создания н
 # Создание сцены
 func _ready() -> void:
 	# Подгрузка сцены объекта
-	var name: String = Global.enum_key(Request.Tables, table)
-	name[-1] = "."
-	obj_path = load("res://scenes/fragments/"+name+"tscn")
+	var obj_name: String = Global.enum_key(Request.Tables, table)
+	obj_name[-1] = "."
+	obj_path = load("res://scenes/fragments/"+obj_name+"tscn")
 	# Подключение сигналов
 	Global.connect("update_page", Callable(self, "update_page"))
 	update_page()
