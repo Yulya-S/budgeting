@@ -6,7 +6,9 @@ extends Control
 func _on_add_wallet_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET)
 
 # Обработка нажатия кнопки создания движения средств
-func _on_cash_flow_button_down() -> void: Global.emit_signal("open_window", Global.Pages.CASH_FLOW)
+func _on_cash_flow_button_down() -> void:
+	if Objects.obj_count() > 0: Global.emit_signal("open_window", Global.Pages.CASH_FLOW)
 
 # Обработка нажатия кнопки переноса средств между счетами
-func _on_transaction_button_down() -> void: if Objects.obj_count() > 1: Global.emit_signal("open_window", Global.Pages.TRANSFER)
+func _on_transaction_button_down() -> void:
+	if Objects.obj_count() > 1: Global.emit_signal("open_window", Global.Pages.TRANSFER)
