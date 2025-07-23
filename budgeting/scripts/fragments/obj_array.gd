@@ -4,7 +4,7 @@ extends ScrollContainer
 
 # Экспортируемые параметры
 @export var table: Request.Tables = Request.Tables.WALLETS # Таблица связанная со списком
-@export var data: Dictionary = {"columns": "*", "where": "", "order": ""}
+@export var data: Dictionary = {"columns": "*", "where": "", "order": "", "date": Time.get_date_string_from_system()}
 
 # Параметры
 var obj_path: Resource = null # Подгружаемый объект
@@ -33,16 +33,17 @@ func _process(_delta: float) -> void:
 		Objects.get_child(-1).set_values(lines.pop_front())
 
 # Изменение параметров запроса
-func set_data(columns: String = "", where: String = "", order: String = "") -> void:
+func set_data(columns: String = "", where: String = "", order: String = "", date: String = "") -> void:
 	if columns != "": data.columns = columns
 	if where != "": data.where = where
 	if order != "": data.order = order
+	if date != "": data.date = date
 	update_page()
 	
 func _select() -> Array:
 	match table:
-		Request.Tables.CASH_FLOWS: if data.where: return Request.select_cash_flow_sum(int(data.where.split("=")[1]))
-		Request.Tables.SECTIONS: return Request.select_sections()
+		Request.Tables.CASH_FLOWS: if data.where: return Request.select_cash_flow_sum(int(data.where.split("=")[1]), data.date)
+		Request.Tables.SECTIONS: return Request.select_sections(data.date, data.where)
 	return Request.select(table, data.columns, data.where, data.order)
 
 # Заполнение страницы	

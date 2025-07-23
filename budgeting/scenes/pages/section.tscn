@@ -169,5 +169,7 @@ scale = Vector2(0.31, 0.31)
 tooltip_text = "Записать движение средств"
 icon = ExtResource("5_8bm6h")
 
+[connection signal="item_selected" from="Filters/Year" to="." method="_on_year_item_selected"]
+[connection signal="button_down" from="Filters/Button" to="." method="_on_filter_button_down"]
 [connection signal="button_down" from="AddSections" to="." method="_on_add_sections_button_down"]
 [connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]

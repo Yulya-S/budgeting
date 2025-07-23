@@ -42,9 +42,13 @@ func _get_columns(table: Tables) -> Array:
 	result.pop_front()
 	return result
 	
+# Добавление фрагмента текста в запрос с проверкой что значение это число
+func add_part_request_with_check(text: String, column: String, value, operator: String = "=", sep: String = " AND ") -> String:
+	if not value: return text
+	return add_part_request(text, column, value, operator, sep)
+	
 # Добавление фрагмента текста в запрос
 func add_part_request(text: String, column: String, value, operator: String = "=", sep: String = " AND ") -> String:
-	if not value: return text
 	if text: text += sep 
 	if operator == "LIKE": value = '"%' + str(value) + '%"'
 	text += column + " " + operator + " " + str(value)

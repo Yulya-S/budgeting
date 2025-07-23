@@ -18,6 +18,9 @@ func enum_key(enums, object) -> String: return enums.keys()[object].to_lower()
 # Получить индекс выбранного элемента выпадающего списка
 func get_OB_id(button: OptionButton) -> int: return button.get_item_id(button.selected)
 
+# Получить текст выбранного элемента выпадающего списка
+func get_OB_text(button: OptionButton) -> String: return button.get_item_text(button.selected)
+
 # Изменение текста ошибки
 func set_error(container: Label, text: String) -> bool:
 	container.visible = true
