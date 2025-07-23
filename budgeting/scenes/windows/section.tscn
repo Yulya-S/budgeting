@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://bm8d2roc1o62"]
+[gd_scene load_steps=3 format=3 uid="uid://bm8d2roc1o62"]
 
+[ext_resource type="Script" uid="uid://bme8i7rc6pnvh" path="res://scripts/windows/section.gd" id="1_r1ear"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_lnpay"]
 
 [node name="Section" type="Control"]
@@ -7,6 +8,8 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
+script = ExtResource("1_r1ear")
+table = 1
 
 [node name="Window" parent="." instance=ExtResource("2_lnpay")]
 layout_mode = 0
@@ -46,16 +49,18 @@ vertical_alignment = 1
 
 [node name="ConsumptionIncome" type="CheckButton" parent="."]
 layout_mode = 0
-offset_left = 689.0
+offset_left = 648.0
 offset_top = 263.0
 offset_right = 793.0
 offset_bottom = 294.0
+theme_override_colors/font_disabled_color = Color(0.364706, 0.364706, 0.364706, 1)
 theme_override_colors/font_hover_pressed_color = Color(0.364706, 0.364706, 0.364706, 1)
 theme_override_colors/font_hover_color = Color(0.364706, 0.364706, 0.364706, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 text = "Расход"
+alignment = 2
 
 [node name="Value" type="TextEdit" parent="."]
 clip_contents = false
@@ -110,6 +115,7 @@ theme_override_font_sizes/font_size = 24
 text = "X"
 
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
+[connection signal="toggled" from="ConsumptionIncome" to="." method="_on_consumption_income_toggled"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
 [connection signal="button_down" from="Delete" to="." method="_on_delete_button_down"]
 [connection signal="button_down" from="Apply" to="." method="_on_apply_button_down"]
