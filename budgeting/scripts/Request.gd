@@ -9,7 +9,6 @@ var db: SQLite = null # Подключенная база данных
 func _ready() -> void:
 	connection_db()
 	create_tables()
-	create_datas()
 
 # Подключение базы данных
 func connection_db() -> void:
@@ -27,19 +26,11 @@ func create_tables() -> void:
 	_create_table("sections", "title VARCHAR(255), month_limit FLOAT, income BOOLEAN")
 	_create_table("cash_flows", "wallet_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)",	"FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`section_id`) REFERENCES `sections`(`id`)")
 	_create_table("loans", "title VARCHAR(255), date DATE, total FLOAT")
-	_create_table("payments", "wallet_id INT, loan_id INT, value FLOAT, date DATE, note VARCHAR(255)", "FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`loan_id`) REFERENCES `loans`(`id`)")
+	_create_table("payments", "cash_flow_id INT, loan_id INT", "FOREIGN KEY (`cash_flow_id`) REFERENCES `cash_flows`(`id`), FOREIGN KEY (`loan_id`) REFERENCES `loans`(`id`)")
 	_create_table("events", "title VARCHAR(255), date DATE, note VARCHAR(255)")
+	if len(select(Tables.SECTIONS)) == 0: return
+	for i in ["Переводы", "Платежы"]: insert_record(Tables.SECTIONS, [i, -1, false])
 	
-# Создание данных для проверки работы программы
-func create_datas() -> void:
-	if len(select(Tables.CASH_FLOWS)) != 0: return
-	db.query('INSERT INTO `wallets` (title, value) VALUES ("Кошелек1", '+str(randi()%10000)+'), ("Кошелек2", '+str(randi()%10000)+');')
-	db.query('INSERT INTO `sections` (title, month_limit, income) VALUES ("Перевод", -1, false), ("Развлечения", '+str(randi()%5000)+', false), ("Продукты", '+str(randi()%5000)+', false), ("Другое", '+str(randi()%5000)+', false);')
-	db.query('INSERT INTO `cash_flows` (wallet_id, section_id, value) VALUES ('+str((randi()%2)+1)+','+str((randi()%3)+1)+','+str(randi()%1000)+'), ('+str((randi()%2)+1)+','+str((randi()%3)+1)+','+str(randi()%1000)+'), ('+str((randi()%2)+1)+','+str((randi()%3)+1)+','+str(randi()%1000)+');')
-	db.query('INSERT INTO `loans` (title, total, percent) VALUES ("Кредит", '+str(randi()%1000000)+', '+str(randi()%50)+');')
-	db.query('INSERT INTO `payments` (wallet_id, loan_id, value) VALUES ('+str((randi()%2)+1)+', 1, '+str(randi()%5000)+'), ('+str((randi()%2)+1)+', 1, '+str(randi()%5000)+'), ('+str((randi()%2)+1)+', 1, '+str(randi()%5000)+');')
-	db.query('INSERT INTO `events` (title) VALUES ("событие1"), ("событие3"), ("событие4"), ("событие5");')
-
 # Получить название таблицы из enum Tables
 func _get_table_name(table: Tables) -> String: return Global.enum_key(Tables, table)
 
