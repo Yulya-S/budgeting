@@ -35,8 +35,8 @@ func _process(_delta: float) -> void:
 # Изменение параметров запроса
 func set_data(columns: String = "", where: String = "", order: String = "", date: String = "") -> void:
 	if columns != "": data.columns = columns
-	if where != "": data.where = where
-	if order != "": data.order = order
+	if where != "" or data.where != "": data.where = where
+	if order != "" or data.order != "": data.order = order
 	if date != "": data.date = date
 	update_page()
 	
