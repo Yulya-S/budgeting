@@ -145,17 +145,18 @@ text = "Применить"
 
 [node name="ObjArray" parent="." instance=ExtResource("3_21h3v")]
 layout_mode = 0
+offset_left = 162.0
 offset_top = 130.0
-offset_right = 1152.0
+offset_right = 1143.0
 offset_bottom = 598.0
 table = 1
 
 [node name="PieChart" parent="." instance=ExtResource("4_4yy0k")]
 layout_mode = 0
-offset_left = 452.0
-offset_top = 145.0
-offset_right = 624.0
-offset_bottom = 240.0
+offset_left = 9.0
+offset_top = 143.0
+offset_right = 90.0
+offset_bottom = 226.0
 
 [node name="AddSections" type="Button" parent="."]
 layout_mode = 0
