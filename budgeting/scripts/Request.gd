@@ -32,20 +32,17 @@ func create_tables() -> void:
 	for i in ["Переводы", "Платежи"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
 	
 # Получить название таблицы из enum Tables
-func _get_table_name(table: Tables) -> String: return Global.enum_key(Tables, table)
+func _get_table_name(table) -> String:
+	if table is String: return table
+	return Global.enum_key(Tables, table)
 
 # Получить названия колонок
-func _get_columns(table: Tables) -> Array:
+func _get_columns(table) -> Array:
 	db.query("PRAGMA table_info(`"+_get_table_name(table)+"`)")
 	var result: Array = []
 	for i in db.query_result: result.append(i.name)
 	result.pop_front()
 	return result
-	
-# Добавление фрагмента текста в запрос с проверкой что значение это число
-func add_part_request_with_check(text: String, column: String, value, operator: String = "=", sep: String = " AND ") -> String:
-	if not value: return text
-	return add_part_request(text, column, value, operator, sep)
 	
 # Добавление фрагмента текста в запрос
 func add_part_request(text: String, column: String, value, operator: String = "=", sep: String = " AND ") -> String:
@@ -53,60 +50,67 @@ func add_part_request(text: String, column: String, value, operator: String = "=
 	if operator == "LIKE": value = '"%' + str(value) + '%"'
 	text += column + " " + operator + " " + str(value)
 	return text
+	
+# Добавление фрагмента текста в запрос с проверкой что значение это число
+func add_part_request_with_check(text: String, column: String, value, operator: String = "=", sep: String = " AND ") -> String:
+	if not value: return text
+	return add_part_request(text, column, value, operator, sep)
 
 # Отправка запроса на создание записи таблице
-func insert(table: Tables, columns: Array, values: Array) -> void:
+func insert(table, columns: Array, values: Array) -> void:
+	if table is Tables: table = _get_table_name(table)
 	db.query("INSERT INTO `"+_get_table_name(table)+"` ("+",".join(columns)+") VALUES ("+",".join(values)+");")
 
 # Добавление записи
-func insert_record(table: Tables, values: Array) -> void:
+func insert_record(table, values: Array) -> void:
 	insert(table, _get_columns(table), values)
 
 # Отправка запроса на изменение записей в таблице
-func update(table: Tables, values: String, where: String) -> void:
+func update(table, values: String, where: String) -> void:
 	db.query("UPDATE `"+_get_table_name(table)+"` SET "+values+" WHERE "+where + ";")
 
 # Изменение записи
-func update_record(table: Tables, id: int, values: Array) -> void:
+func update_record(table, id: int, values: Array) -> void:
 	var request_text: String = ""
 	var columns: Array = _get_columns(table)
 	for i in len(values): request_text = add_part_request(request_text, columns[i], values[i], "=", ", ")
 	update(table, request_text, "id=" + str(id))
 
 # Отправка запроса на удаление записи в таблице
-func delete(table: Tables, id: int) -> void:
+func delete(table, id: int) -> void:
 	db.query("DELETE FROM `"+_get_table_name(table)+"` WHERE id="+str(id)+";")
 	update(Tables.SQLITE_SEQUENCE, "seq=seq-1", 'name="'+_get_table_name(table)+'"')
 	update(Tables.WALLETS, "id=id-1", "id>"+str(id))
 
+# Сборка даты
+func where_date(date: String = Time.get_datetime_string_from_system(), column: String = "date") -> String:
+	return "strftime('%Y-%m', "+column+") = strftime('%Y-%m', '"+date+"')"
+
 # Получение данных из таблиц
-func select(table: Tables, columns: String = "*", where: String = "", order: String = "") -> Array:
+func select(table, columns: String = "*", where: String = "", order: String = "", left: String = "") -> Array:
 	if where: where = " WHERE "+where
 	if order: order = " ORDER BY "+order
-	db.query("SELECT "+columns+" FROM "+_get_table_name(table)+where+order+";")
+	if left: left = " LEFT JOIN "+left
+	db.query("SELECT "+columns+" FROM "+_get_table_name(table)+left+where+order+";")
 	return db.query_result
 
 # Получение числового значения из базы
-func select_value(table: Tables, columns: String = "*") -> float:
-	var value: Array = select(table, columns)
+func select_value(table: Tables, columns: String = "*", where: String = "", order: String = "", left: String = "") -> float:
+	var value: Array = select(table, columns, where, order, left)
 	if len(value) == 0 or not value[0].value: return 0.0
 	return value[0].value
 
 # Получение списка разделов (нужно доделать)
 func select_sections(date: String = Time.get_datetime_string_from_system(), where: String = "") -> Array:
-	if where: where = " WHERE " + where
-	db.query("SELECT s.*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.wallet_id = s.id AND strftime('%Y-%m', cf.date) = strftime('%Y-%m', '"+date+"')) value FROM `sections` s"+where+";")
-	return db.query_result
+	return select("`sections` s", "s.*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.wallet_id = s.id AND "+where_date(date)+") value", where)
 
 # Получение суммы затрат / доходов по статьям расходов / доходов
 func select_cash_flow_sum(wallet_id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
-	db.query("""SELECT s.title, COUNT(cf.id) count, SUM(cf.value) value FROM `cash_flows` as cf
-		LEFT JOIN `sections` AS s ON cf.section_id = s.id WHERE wallet_id="""+str(wallet_id)+" AND strftime('%Y-%m', date) = strftime('%Y-%m', '"+date+"') GROUP BY section_id;")
-	return db.query_result
+	return select("`cash_flows` as cf", "s.title, COUNT(cf.id) count, SUM(cf.value) value",
+		"wallet_id="+str(wallet_id)+" AND "+where_date(date), "cf.section_id", "`sections` AS s ON cf.section_id = s.id")
 	
-# Получение суммы затрат / доходов по статьям расходов / доходов
+# Получение суммы и количества записей по движениям средств
 func select_total_cash_flow(id: int, date: String = Time.get_datetime_string_from_system()) -> Dictionary:
-	db.query("SELECT COALESCE(SUM(value), 0) value, COALESCE(COUNT(value), 0) count FROM `cash_flows` WHERE wallet_id="+str(id)+" AND strftime('%Y-%m', date) = strftime('%Y-%m', '"+date+"');")
-	var value: Array = db.query_result 
+	var value: Array = select(Tables.CASH_FLOWS, "COALESCE(SUM(value), 0) value, COALESCE(COUNT(value), 0) count", "wallet_id="+str(id)+" AND "+where_date(date))
 	if len(value) == 0: return {"value": 0.0, "count": 0}
 	return value[0]
