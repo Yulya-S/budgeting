@@ -25,6 +25,7 @@ func create_tables() -> void:
 	_create_table("wallets", "title VARCHAR(255), value FLOAT")
 	_create_table("sections", "title VARCHAR(255), month_limit FLOAT, income BOOLEAN")
 	_create_table("cash_flows", "wallet_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)",	"FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`section_id`) REFERENCES `sections`(`id`)")
+	_create_table("transfers", "cash_flow_id INT, wallet_id INT", "FOREIGN KEY (`cash_flow_id`) REFERENCES `cash_flows`(`id`), FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`)")
 	_create_table("loans", "title VARCHAR(255), date DATE, total FLOAT")
 	_create_table("payments", "cash_flow_id INT, loan_id INT", "FOREIGN KEY (`cash_flow_id`) REFERENCES `cash_flows`(`id`), FOREIGN KEY (`loan_id`) REFERENCES `loans`(`id`)")
 	_create_table("events", "title VARCHAR(255), date DATE, note VARCHAR(255)")

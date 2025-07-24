@@ -30,7 +30,7 @@ func _draw() -> void:
 # Заполнение списка значений
 func set_values(objects: Array, key: String = "value") -> void:
 	values = []
-	for i in objects: values.append(i[key])
+	for i in objects: if i[key] > 0: values.append(i[key])
 	queue_redraw()
 		
 	
