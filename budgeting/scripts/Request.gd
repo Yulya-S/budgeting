@@ -108,7 +108,7 @@ func select_sections(date: String = Time.get_datetime_string_from_system(), wher
 # Получение суммы затрат / доходов по статьям расходов / доходов
 func select_cash_flow_sum(wallet_id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
 	return select("`cash_flows` as cf", "s.title, COUNT(cf.id) count, SUM(cf.value) value",
-		"wallet_id="+str(wallet_id)+" AND "+where_date(date), "cf.section_id", "`sections` AS s ON cf.section_id = s.id")
+		"wallet_id="+str(wallet_id)+" AND "+where_date(date)+" AND s.title IS NOT NULL", "cf.section_id", "`sections` AS s ON cf.section_id = s.id")
 	
 # Получение суммы и количества записей по движениям средств
 func select_total_cash_flow(id: int, date: String = Time.get_datetime_string_from_system()) -> Dictionary:

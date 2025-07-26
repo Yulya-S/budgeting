@@ -21,10 +21,10 @@ func _ready() -> void:
 	update_page()
 	
 # Получение количества объектов
-func obj_count() -> int: return len(Objects)
+func obj_count() -> int: return Objects.get_child_count()
 
 # Существуют ли объекты в списке
-func lack_objects() -> bool: return len(Objects) > 1
+func lack_objects() -> bool: return Objects.get_child_count() > 1
 
 # Динамическое заполнение страницы
 func _process(_delta: float) -> void:
@@ -40,7 +40,7 @@ func set_data(columns: String = "", where: String = "", order: String = "", date
 	if date != "": data.date = date
 	update_page()
 	
-func _select() -> Array:
+func select() -> Array:
 	match table:
 		Request.Tables.CASH_FLOWS: if data.where: return Request.select_cash_flow_sum(int(data.where.split("=")[1]), data.date)
 		Request.Tables.SECTIONS: return Request.select_sections(data.date, data.where)
@@ -53,5 +53,6 @@ func update_page():
 		Objects.remove_child(i)
 	Objects.add_child(obj_path.instantiate())
 	Objects.get_child(-1).color = Color.html("#dfdfdf")
-	lines = _select()
+	lines = select()
+	if len(lines) > 0 and null in lines[0].values(): lines = []
 	if get_parent().get("update_page"): get_parent().update_page()
