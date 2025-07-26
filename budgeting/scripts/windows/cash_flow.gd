@@ -2,6 +2,12 @@ extends Movement
 # Подключение путей к объектам в сцене
 @onready var ConsumptionIncome = $Extra/ConsumptionIncome
 
+# Проведение дополнительных проверок на верность данных
+func _extra_errors() -> bool:
+	if ConsumptionIncome.get_text() == "Расход" and float(Count.get_text())-float(Value.get_text()) < 0:
+		Global.set_error(Error, "На счету недостаточно средств")
+	return Error.visible
+
 # Изменение раздела расхода
 func set_extra(extra_idx: int = 0) -> void:
 	Extra.selected = extra_idx

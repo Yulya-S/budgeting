@@ -20,7 +20,7 @@ func _update_wallet_value(_delete: bool = false) -> void: pass
 # Заполнение выпадающих списков
 func _ready() -> void:
 	Global.fill_optionButton(Wallet, Request.select(Request.Tables.WALLETS))
-	Global.fill_optionButton(Extra, Request.select(second_table))
+	Global.fill_optionButton(Extra, Request.select(second_table, "*", "id>2"))
 	set_wallet()
 	set_extra()
 
@@ -36,7 +36,7 @@ func _extra_errors() -> bool: return Error.visible
 # Изменение объекта
 func set_object(obj_id: int, parent = null) -> void:
 	match parent:
-		Request.Tables.WALLETS: set_wallet(obj_id) 
+		Request.Tables.WALLETS:	set_wallet(obj_id - 1) 
 		null: set_all(obj_id)
 		_: set_extra(obj_id) 
 
@@ -60,7 +60,6 @@ func check_object() -> bool:
 	Error.visible = false
 	if Value.get_text() == "": Global.set_error(Error, "Значение не должно быть пустым")
 	elif float(Value.get_text()) <= 0: Global.set_error(Error, "Значение должно быть больше нуля")
-	elif float(Count.get_text())-float(Value.get_text()) < 0: Global.set_error(Error, "На счету недостаточно средств")
 	return _extra_errors()
 
 # Изменение значения движения средств
