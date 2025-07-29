@@ -24,7 +24,7 @@ func _process(_delta: float) -> void:
 	if len(lines) > 0:
 		Objects.add_child(obj_path.instantiate())
 		Objects.get_child(-1).set_values(lines.pop_front())
-		Objects.get_child(-1).Marker.color = PieChart.get_color(Objects.get_child(-1).m_index)
+		Objects.get_child(-1).Marker.color = ColorScheme.get_color(Objects.get_child(-1).m_index, Objects.get_child_count() - 2 + len(lines))
 
 # Заполнение страницы
 func update_page():

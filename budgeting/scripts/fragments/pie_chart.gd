@@ -10,9 +10,6 @@ func _ready() -> void:
 	radius = min(size.x, size.y)/2.
 	$Marker.visible = false
 
-# Получение значения цвета по индексу объекта
-func get_color(index: int) -> Color: return Global.gradient.sample(index / (len(values) - 1.))
-	
 #Отрисовка графика
 func _draw() -> void:
 	draw_circle(Vector2(radius, radius), radius, Color.BLACK, false)
@@ -22,7 +19,7 @@ func _draw() -> void:
 	var deg: float = 2
 	for i in range(len(values)):
 		if values[i] <= 0: continue
-		var new_color: Color = get_color(i)
+		var new_color: Color = ColorScheme.get_color(i, len(values) - 1.)
 		if higliter_idx == i: new_color = Color.AQUAMARINE
 		var arc_size: float = (values[i]*360.)/sum
 		draw_arc(Vector2(radius, radius), (radius/2.)+2, deg_to_rad(deg-2), deg_to_rad(deg+arc_size+2), arc_size+4, Color.BLACK, radius)
