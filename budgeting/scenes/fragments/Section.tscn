@@ -19,16 +19,19 @@ mouse_filter = 1
 color = Color(0.729412, 0.729412, 0.729412, 1)
 
 [node name="Border" type="ColorRect" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 197.0
 offset_top = 5.0
 offset_right = 382.0
 offset_bottom = 18.0
+mouse_filter = 1
 color = Color(0.728822, 0.728822, 0.728822, 1)
 
 [node name="ColorRect" type="ColorRect" parent="Border"]
 layout_mode = 0
 offset_bottom = 13.0
+mouse_filter = 1
 color = Color(0.298524, 0.598649, 0.412661, 1)
 
 [node name="Value" type="Label" parent="."]

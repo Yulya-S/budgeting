@@ -15,15 +15,15 @@ func set_values(data: Dictionary) -> void:
 	Marker.visible = true
 	id = data.id
 	m_index = get_parent().get_child_count() - 2
+	# Отображение типа статьи
 	if data.income: ConsumptionIncome.set_text("Доход")
 	elif data.month_limit > 0: ConsumptionIncome.set_text("Расход")
 	Border.visible = ConsumptionIncome.get_text() == "Расход"
+	# Заполнение шкалы перерасхода
 	if Border.visible:
 		Border.get_child(0).size.x = (Border.size.x * data.value) / data.month_limit
-		if Border.size.x < Border.get_child(0).size.x:
-			Border.get_child(0).size.x = Border.size.x
-			Border.get_child(0).color = Color.html("#990027")
-		elif Border.size.x / 2. <  Border.get_child(0).size.x: Border.get_child(0).color = Color.html("#978800")
+		if Border.size.x < Border.get_child(0).size.x: Border.get_child(0).size.x = Border.size.x
+		Border.get_child(0).color = ColorScheme.get_color(Border.get_child(0).size.x, Border.size.x, ColorScheme.scales_gradient)
 	Value.set_text(str(data.value))
 	if data.month_limit > 0: Max.set_text(str(data.month_limit))
 	else: Max.set_text("")
