@@ -13,10 +13,10 @@ var id = null # Индекс счета
 func set_object(obj_id: int, _parent = null) -> void:
 	id = obj_id
 	Objects.set_data("", "id="+str(id))
+	Global.emit_signal("update_page")
 
 # Заполнение данных на странице
 func update_page() -> void:
-	if not id: return
 	# Заполнение информации о кошельке
 	var wallet_value: Array = Request.select(Request.Tables.WALLETS, "*", "id="+str(id))
 	Title.set_text(wallet_value[0].title)

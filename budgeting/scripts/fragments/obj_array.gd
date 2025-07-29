@@ -22,7 +22,6 @@ func _ready() -> void:
 	obj_path = load("res://scenes/fragments/"+obj_name+"tscn")
 	# Подключение сигналов
 	Global.connect("update_page", Callable(self, "update_page"))
-	update_page()
 	
 # Получение количества объектов
 func obj_count() -> int: return Objects.get_child_count()
@@ -46,9 +45,9 @@ func set_data(columns: String = "", where: String = "", order: String = "", date
 	
 func select() -> Array:
 	match table:
-		Request.Tables.CASH_FLOWS: if data.where: return Request.select_cash_flow_sum(int(data.where.split("=")[1]), data.date)
+		Request.Tables.CASH_FLOWS: return Request.select_cash_flow_sum(get_parent().id, data.date)
 		Request.Tables.SECTIONS: return Request.select_sections(data.date, data.where)
-	return Request.select(table, data.columns, data.where, data.order)
+		_: return Request.select(table, data.columns, data.where, data.order)
 
 # Заполнение страницы	
 func update_page():

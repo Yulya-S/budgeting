@@ -7,4 +7,4 @@ extends Control
 func _ready() -> void:
 	Budget.set_text(str(Request.select_value(Request.Tables.WALLETS, "SUM(value) value")))
 	Budget.set_text(str(float(Budget.get_text()) - Request.select_value(Request.Tables.LOANS, "SUM(total) value")))
-		
+	Global.emit_signal("update_page")

@@ -2,8 +2,7 @@ extends Control
 # Переменные
 var radius: float = 50 # Радиус графика
 var values: Array = [] # Значения для построения
-
-var higliter_idx = null
+var higliter_idx = null # Индекс подсвечивающегося фрагмента
 
 # Сокрытие маркера и изменение радиуса диаграммы
 func _ready() -> void:

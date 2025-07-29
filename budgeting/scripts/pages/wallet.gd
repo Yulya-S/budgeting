@@ -2,6 +2,8 @@ extends Control
 # Подключение путей к объектам в сцене
 @onready var Objects = $ObjArray
 
+func _ready() -> void: Global.emit_signal("update_page")
+
 # Обработка нажатия кнопки создания нового счета
 func _on_add_wallet_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET)
 
