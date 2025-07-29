@@ -1,26 +1,32 @@
 extends Control
+# Подключение путей к объектам в сцене
+@onready var Marker = $Marker
+
 # Переменные
 var radius: float = 50 # Радиус графика
-var values: Array = [] # Значения для построения
-var higliter_idx = null # Индекс подсвечивающегося фрагмента
+var values: Array = [] # Значения для построения графика
+var higliter_idx = null # Индекс выделенного фрагмента
 
 # Сокрытие маркера и изменение радиуса диаграммы
 func _ready() -> void:
 	radius = min(size.x, size.y)/2.
-	$Marker.visible = false
+	Marker.visible = false
 
-#Отрисовка графика
+# Отрисовка графика
 func _draw() -> void:
-	draw_circle(Vector2(radius, radius), radius, Color.BLACK, false)
-	if len(values) == 0: return
+	if len(values) == 0:
+		draw_circle(Vector2(radius, radius), radius, Color.BLACK, false)
+		return
 	var sum: float = 0
 	for i in values: sum += i
 	var deg: float = 2
 	for i in range(len(values)):
 		if values[i] <= 0: continue
+		# Смена цвета для секции
 		var new_color: Color = ColorScheme.get_color(i, len(values) - 1.)
 		if higliter_idx == i: new_color = Color.AQUAMARINE
-		var arc_size: float = (values[i]*360.)/sum
+		var arc_size: float = (values[i] * 360.) / sum
+		# Отрисовка секции
 		draw_arc(Vector2(radius, radius), (radius/2.)+2, deg_to_rad(deg-2), deg_to_rad(deg+arc_size+2), arc_size+4, Color.BLACK, radius)
 		draw_arc(Vector2(radius, radius), radius/2., deg_to_rad(deg), deg_to_rad(deg+arc_size), arc_size, new_color, radius)
 		deg += arc_size

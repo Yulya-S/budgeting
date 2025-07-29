@@ -8,7 +8,7 @@ extends PageFragment
 @onready var PieChart = $"../../../PieChart"
 
 # Переменные
-var m_index: int = 0 # индекс объекта для изменения цветового маркера
+var m_index: int = 0 # Индекс объекта для изменения цветового маркера
 
 # Изменение значений
 func set_values(data: Dictionary) -> void:
@@ -24,10 +24,10 @@ func set_values(data: Dictionary) -> void:
 		Border.get_child(0).size.x = (Border.size.x * data.value) / data.month_limit
 		if Border.size.x < Border.get_child(0).size.x: Border.get_child(0).size.x = Border.size.x
 		Border.get_child(0).color = ColorScheme.get_color(Border.get_child(0).size.x, Border.size.x, ColorScheme.scales_gradient)
+	Title.set_text(data.title)
 	Value.set_text(str(data.value))
 	if data.month_limit > 0: Max.set_text(str(data.month_limit))
 	else: Max.set_text("")
-	Title.set_text(data.title)
 	
 # Обработка нажатия клавиш мыши
 func _input(event: InputEvent) -> void:
