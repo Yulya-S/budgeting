@@ -4,6 +4,7 @@
 
 [sub_resource type="Gradient" id="Gradient_m731n"]
 colors = PackedColorArray(1, 0, 0, 1, 1, 1, 0, 1)
+metadata/_snap_count = 50
 
 [node name="PieChart" type="Control"]
 layout_mode = 3

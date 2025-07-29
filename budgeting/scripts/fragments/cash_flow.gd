@@ -11,6 +11,6 @@ func _ready() -> void:
 
 # Изменение значений
 func set_values(data: Dictionary) -> void:
-	Title.set_text(data.title)
+	Title.set_text(str(data.title))
 	Count.set_text(str(data.count))
 	Total.set_text(str(data.value))

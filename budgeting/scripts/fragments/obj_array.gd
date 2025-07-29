@@ -31,7 +31,7 @@ func _process(_delta: float) -> void:
 	if len(lines) > 0:
 		Objects.add_child(obj_path.instantiate())
 		Objects.get_child(-1).set_values(lines.pop_front())
-
+	
 # Изменение параметров запроса
 func set_data(columns: String = "", where: String = "", order: String = "", date: String = "") -> void:
 	if columns != "": data.columns = columns
