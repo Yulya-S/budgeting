@@ -1,7 +1,4 @@
 extends Control
-# Экпортируемые переменные
-@export var gradient: Gradient = Gradient.new() # Цветовой градиент
-
 # Переменные
 var radius: float = 50 # Радиус графика
 var values: Array = [] # Значения для построения
@@ -14,7 +11,7 @@ func _ready() -> void:
 	$Marker.visible = false
 
 # Получение значения цвета по индексу объекта
-func get_color(index: int) -> Color:	return gradient.sample(index / (len(values) - 1.))
+func get_color(index: int) -> Color: return Global.gradient.sample(index / (len(values) - 1.))
 	
 #Отрисовка графика
 func _draw() -> void:

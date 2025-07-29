@@ -11,6 +11,9 @@ enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменная
 var current_page: Pages = Pages.BASIC
+var gradient: Gradient = Gradient.new()
+
+func _ready() -> void: gradient.colors = PackedColorArray([Color(1, 0, 0), Color(1, 1, 0)])
 
 # Получить имя объекта из перечисления
 func enum_key(enums, object) -> String: return enums.keys()[object].to_lower()

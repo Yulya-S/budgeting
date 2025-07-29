@@ -1,10 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1d4w0kc52m1u"]
+[gd_scene load_steps=2 format=3 uid="uid://b1d4w0kc52m1u"]
 
 [ext_resource type="Script" uid="uid://cjv3tohtwmodc" path="res://scripts/fragments/pie_chart.gd" id="1_m731n"]
-
-[sub_resource type="Gradient" id="Gradient_m731n"]
-colors = PackedColorArray(1, 0, 0, 1, 1, 1, 0, 1)
-metadata/_snap_count = 50
 
 [node name="PieChart" type="Control"]
 layout_mode = 3
@@ -12,7 +8,6 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_m731n")
-gradient = SubResource("Gradient_m731n")
 
 [node name="Marker" type="ColorRect" parent="."]
 layout_mode = 1
