@@ -23,7 +23,8 @@ func update_page() -> void:
 	Value.set_text(str(wallet_value[0].value))
 	# Заполнение информации о движениях средств
 	var cash_flow: Dictionary = Request.select_total_cash_flow(id)
-	TotalValue.set_text(str(cash_flow.value))
+	var total_v: float = Request.select_total_v(id)
+	TotalValue.set_text(str(total_v))
 	TotalCount.set_text(str(cash_flow.count))
 
 # Обработка нажатия кнопки возврата к списку счетов

@@ -6,7 +6,7 @@ func _ready() -> void:
 	set_extra(1)
 
 # Изменение раздела расхода
-func set_extra(extra_idx: int = 0) -> void: Extra.selectedx = extra_idx
+func set_extra(extra_idx: int = 0) -> void: Extra.selected = extra_idx
 
 # Проведение дополнительных проверок на верность данных
 func _extra_errors() -> bool:
