@@ -3,11 +3,7 @@ extends ColorRect
 @onready var Marker = $Marker
 
 # Изменение положения маркера страницы
-func _ready() -> void:
-	match Global.current_page:
-		Global.Pages.WALLET: Marker.position.x = $Wallet.position.x - 2
-		Global.Pages.SECTION: Marker.position.x = $Section.position.x - 2
-		_: Marker.position.x = $Main.position.x - 2
+func _ready() -> void: Marker.position.x = (5 * (Global.current_page + 3)) + (39.68 * (Global.current_page + 2)) - 1
 
 # Обработка нажатия кнопки главная 
 func _on_main_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.BASIC)
