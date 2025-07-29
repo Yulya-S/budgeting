@@ -10,6 +10,7 @@ color = Color(0.955963, 0.955963, 0.955963, 1)
 script = ExtResource("1_gafra")
 next_page = 2
 next_page_dir = 1
+signal_name = null
 
 [node name="Marker" type="ColorRect" parent="."]
 visible = false
