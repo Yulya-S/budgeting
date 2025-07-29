@@ -103,7 +103,7 @@ func select_value(table: Tables, columns: String = "*", where: String = "", orde
 
 # Получение списка разделов (нужно доделать)
 func select_sections(date: String = Time.get_datetime_string_from_system(), where: String = "") -> Array:
-	return select("`sections` s", "s.*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.wallet_id = s.id AND "+where_date(date)+") value", where)
+	return select("`sections` s", "s.*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+") value", where)
 
 # Получение суммы затрат / доходов по статьям расходов / доходов
 func select_cash_flow_sum(wallet_id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
