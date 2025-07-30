@@ -12,9 +12,10 @@ var m_index: int = 0 # Индекс объекта для изменения ц�
 
 # Изменение значений
 func set_values(data: Dictionary) -> void:
-	Marker.visible = true
 	id = data.id
 	m_index = get_parent().get_child_count() - 2
+	Marker.visible = true
+	Marker.color = ColorScheme.get_color(m_index, len(PieChart.values) - 1)
 	# Отображение типа статьи
 	if data.income: ConsumptionIncome.set_text("Доход")
 	elif data.month_limit > 0: ConsumptionIncome.set_text("Расход")
