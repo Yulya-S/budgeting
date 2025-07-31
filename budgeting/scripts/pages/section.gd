@@ -14,7 +14,6 @@ var data = {"where": "", "date": Time.get_datetime_string_from_system()}
 func _ready() -> void:
 	_on_year_item_selected(-1)
 	FilterMonth.selected = Time.get_datetime_dict_from_system().month - 1
-	PieChart.set_values(Request.select_sections(data.date, data.where))
 	Global.emit_signal("update_page")
 
 # Обработка выбора года
@@ -27,6 +26,9 @@ func _on_year_item_selected(index: int) -> void:
 		if i + 1 > current_year: break
 		FilterYear.add_item(str(i+1))
 	FilterYear.selected = 9
+
+# Изменение данных на графике
+func update_page(): PieChart.set_values(Request.select_sections(data.date, data.where))
 
 # Применение фильтров
 func _set_filters() -> void:
@@ -41,7 +43,6 @@ func _set_filters() -> void:
 	# Изменение даты
 	data.date = Global.date_to_sql_date("-".join([Global.get_OB_text(FilterYear), FilterMonth.selected+1, 1]))
 	# Применение фильтров
-	PieChart.set_values(Request.select_sections(data.date, data.where))
 	Objects.set_data("", data.where, "", data.date)
 
 # Обработка нажатия кнопки применения фильтров
