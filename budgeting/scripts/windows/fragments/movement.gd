@@ -20,8 +20,7 @@ func _update_wallet_value(_delete: bool = false) -> void: pass
 # Заполнение выпадающих списков
 func _ready() -> void:
 	Global.fill_optionButton(Wallet, Request.select(Request.Tables.WALLETS))
-	if second_table == Request.Tables.SECTIONS: Global.fill_optionButton(Extra, Request.select(second_table, "*", "id>2"))
-	else: Global.fill_optionButton(Extra, Request.select(second_table))
+	Global.fill_optionButton(Extra, Request.select(second_table))
 	set_wallet()
 	set_extra()
 

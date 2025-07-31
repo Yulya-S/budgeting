@@ -12,6 +12,11 @@ enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 # Переменная
 var current_page: Pages = Pages.BASIC
 
+# Изменение даты под формат запроса
+func date_to_sql_date(text: String) -> String:
+	var value: Dictionary = Time.get_datetime_dict_from_datetime_string(text, false)
+	return Time.get_datetime_string_from_datetime_dict(value, false)
+
 # Получить имя объекта из перечисления
 func enum_key(enums, object) -> String: return enums.keys()[object].to_lower()
 
@@ -60,4 +65,5 @@ func text_changed_TextEdit(container: TextEdit, is_numeric: bool = false) -> voi
 
 # Заполнение выпадающего списка объектами
 func fill_optionButton(container: OptionButton, objects: Array) -> void:
+	container.clear()
 	for i in objects: container.add_item(i.title, i.id)

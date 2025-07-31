@@ -2,6 +2,11 @@ extends Movement
 # Подключение путей к объектам в сцене
 @onready var ConsumptionIncome = $Extra/ConsumptionIncome
 
+# Заполнение выпадающих списков
+func _ready() -> void:
+	super._ready()
+	Global.fill_optionButton(Extra, Request.select(second_table, "*", "id>2"))
+
 # Проведение дополнительных проверок на верность данных
 func _extra_errors() -> bool:
 	if ConsumptionIncome.get_text() == "Расход" and float(Count.get_text())-float(Value.get_text()) < 0:

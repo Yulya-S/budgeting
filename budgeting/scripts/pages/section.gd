@@ -30,6 +30,7 @@ func _on_year_item_selected(index: int) -> void:
 
 # Применение фильтров
 func _set_filters() -> void:
+	# Сборка запроса
 	data.where = Request.add_part_request_with_check("", "s.title", FilterTitle.get_text(), "LIKE")
 	match FilterConsumptionIncome.selected:
 		1:
@@ -37,8 +38,9 @@ func _set_filters() -> void:
 			data.where = Request.add_part_request(data.where, "s.income", 0)
 		2: data.where = Request.add_part_request(data.where, "s.income", 1)
 		3: data.where = Request.add_part_request(data.where, "s.month_limit", -1)
-	data.date = Time.get_datetime_dict_from_datetime_string("-".join([Global.get_OB_text(FilterYear), FilterMonth.selected+1, 1]), false)
-	data.date = Time.get_datetime_string_from_datetime_dict(data.date, false)
+	# Изменение даты
+	data.date = Global.date_to_sql_date("-".join([Global.get_OB_text(FilterYear), FilterMonth.selected+1, 1]))
+	# Применение фильтров
 	PieChart.set_values(Request.select_sections(data.date, data.where))
 	Objects.set_data("", data.where, "", data.date)
 
@@ -50,5 +52,5 @@ func _on_add_sections_button_down() -> void: Global.emit_signal("open_window", G
 
 # Обработка нажатия кнопки создания движения средств
 func _on_cash_flow_button_down() -> void:
-	if len(Request.select(Request.Tables.WALLETS)) != 0 and Objects.obj_count > 2:
+	if len(Request.select(Request.Tables.WALLETS)) != 0 and Objects.obj_count() > 2:
 		Global.emit_signal("open_window", Global.Pages.CASH_FLOW)
