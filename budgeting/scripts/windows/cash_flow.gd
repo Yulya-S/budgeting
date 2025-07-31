@@ -17,6 +17,7 @@ func _extra_errors() -> bool:
 func set_extra(extra_idx: int = 0) -> void:
 	Extra.selected = extra_idx
 	if Request.select(second_table, "income", "id="+str(Global.get_OB_id(Extra)))[0].income: ConsumptionIncome.set_text("Доход")
+	else: ConsumptionIncome.set_text("Расход")
 
 # Изменение значение счета после проведения транзакции
 func _update_wallet_value(delete: bool = false) -> void:
