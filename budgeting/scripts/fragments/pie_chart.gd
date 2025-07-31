@@ -14,9 +14,8 @@ func _ready() -> void:
 
 # Отрисовка графика
 func _draw() -> void:
-	if len(values) == 0:
-		draw_circle(Vector2(radius, radius), radius, Color.BLACK, false)
-		return
+	draw_circle(Vector2(radius, radius), radius, Color.BLACK, false)
+	if len(values) == 0: return
 	var sum: float = 0
 	for i in values: sum += i
 	var deg: float = 2
