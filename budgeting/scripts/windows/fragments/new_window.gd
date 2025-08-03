@@ -1,5 +1,5 @@
 extends Control
-class_name CreationPage
+class_name NewWindow
 # Подключение путей к объектам в сцене
 @onready var Error = $Error
 @onready var Delete = $Delete

@@ -6,8 +6,10 @@ extends Control
 
 # Создание главной страницы
 func _ready() -> void:
+	# Заменить вычисление бюджета на сапрос к бд
 	Budget.set_text(str(Request.select_value(Request.Tables.WALLETS, "SUM(value) value")))
 	Budget.set_text(str(float(Budget.get_text()) - Request.select_value(Request.Tables.LOANS, "SUM(total) value")))
+	
 	ObjectsSection.data.where = "s.income = 0 and s.month_limit > 0"
 	PieChart.set_values(Request.select_sections(Time.get_date_string_from_system(), ObjectsSection.data.where))
 	Global.emit_signal("update_page")

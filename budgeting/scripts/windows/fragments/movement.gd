@@ -1,4 +1,4 @@
-extends CreationPage
+extends NewWindow
 class_name Movement
 # Подключение путей к объектам в сцене
 @onready var Count = $Count

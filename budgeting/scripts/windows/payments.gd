@@ -4,9 +4,8 @@ extends Movement
 
 # Создание сцены
 func _ready() -> void:
-	Global.fill_optionButton(Wallet, Request.select(Request.Tables.WALLETS))
+	super._ready()
 	Global.fill_optionButton(Extra, Request.select(second_table, "*", "total>0"))
-	set_wallet()
 	set_extra()
 
 # Изменение раздела расхода
