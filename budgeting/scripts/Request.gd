@@ -1,8 +1,8 @@
 extends Node
-# Перечисления
+# Перечисление
 enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, PAYMENTS, SQLITE_SEQUENCE} # Таблицы в базе данных
 
-# Параметр
+# Переменная
 var db: SQLite = null # Подключенная база данных
 
 # Создание и подключение базы данных
@@ -15,7 +15,8 @@ func connection_db() -> void:
 	db = SQLite.new()
 	db.path = "res://bases/base.db"
 	db.open_db()
-	
+
+# Запрос на создание таблицы
 func _create_table(title: String, columns: String, other: String = "") -> void:
 	if other: other = ", " + other
 	db.query("CREATE TABLE IF NOT EXISTS "+title+" (id INTEGER PRIMARY KEY AUTOINCREMENT, "+columns+other+");")
@@ -52,7 +53,7 @@ func add_part_request(text: String, column: String, value, operator: String = "=
 	text += column + " " + operator + " " + str(value)
 	return text
 	
-# Добавление фрагмента текста в запрос с проверкой что значение это число
+# Добавление фрагмента текста в запрос с проверкой что значение не null
 func add_part_request_with_check(text: String, column: String, value, operator: String = "=", sep: String = " AND ") -> String:
 	if not value: return text
 	return add_part_request(text, column, value, operator, sep)
@@ -101,7 +102,7 @@ func select_value(table: Tables, columns: String = "*", where: String = "", orde
 	if len(value) == 0 or not value[0].value: return 0.0
 	return value[0].value
 
-# Получение списка разделов (нужно доделать)
+# Получение списка разделов
 func select_sections(date: String = Time.get_datetime_string_from_system(), where: String = "") -> Array:
 	return select("`sections` s", "s.*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+") value", where)
 
@@ -116,7 +117,7 @@ func select_total_cash_flow(id: int, date: String = Time.get_datetime_string_fro
 	if len(value) == 0: return {"value": 0.0, "count": 0}
 	return value[0]
 	
-	# Получение суммы и количества записей по движениям средств
+# Получение суммы доходов и расходов за месяц
 func select_total_v(id: int, date: String = Time.get_datetime_string_from_system()) -> float:
 	db.query("SELECT SUM(cf.value) value, s.income FROM cash_flows cf LEFT JOIN sections AS s ON cf.section_id = s.id WHERE cf.wallet_id ="+str(id)+" AND s.month_limit >= 0 AND "+where_date(date)+" GROUP BY income")
 	var value: float = 0

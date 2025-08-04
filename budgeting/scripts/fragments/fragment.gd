@@ -1,6 +1,6 @@
 extends ColorRect
 class_name PageFragment
-# Подключение путей к объектам в сцене
+# Подключение пути к объектам в сцене
 @onready var Title = $Title
 
 # Переменные

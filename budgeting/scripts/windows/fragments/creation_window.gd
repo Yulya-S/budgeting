@@ -21,6 +21,6 @@ func _on_value_text_changed() -> void:
 	check_object()
 
 # Сохранение данных
-func apply_change(other_parametrs: Array = []):
+func apply_change(other_parametrs: Array = []) -> void:
 	if check_object(): return
 	_create_update(['"'+Title.get_text()+'"', float(Value.get_text())] + other_parametrs)

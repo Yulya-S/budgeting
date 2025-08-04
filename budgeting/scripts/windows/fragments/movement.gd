@@ -8,7 +8,7 @@ class_name Movement
 @onready var Note = $Note
 @onready var Date = $DateSelection
 
-# Экспортируемые переменные
+# Экспортируемая переменная
 @export var second_table = Request.Tables.SECTIONS # Таблица связанная со вторым выпадающим списком
 
 # Изменение информации о дополнительном параметре
@@ -86,7 +86,8 @@ func _back_wallet_value() -> void:
 func _on_apply_button_down() -> void:
 	if check_object(): return
 	_update_wallet_value()
-	var values: Array = [Global.get_OB_id(Wallet), Global.get_OB_id(Extra), float(Value.get_text()), '"'+Date.get_date()+'"', '"'+Note.get_text()+'"']
+	var values: Array = [Global.get_OB_id(Wallet), Global.get_OB_id(Extra), float(Value.get_text()),
+		'"'+Date.get_date()+'"', '"'+Note.get_text()+'"']
 	if id: _back_wallet_value()
 	_create_update(values)
 

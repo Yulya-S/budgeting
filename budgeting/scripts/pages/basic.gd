@@ -6,7 +6,7 @@ extends Control
 
 # Создание главной страницы
 func _ready() -> void:
-	# Заменить вычисление бюджета на сапрос к бд
+	# Заменить вычисление бюджета на запрос к бд
 	Budget.set_text(str(Request.select_value(Request.Tables.WALLETS, "SUM(value) value")))
 	Budget.set_text(str(float(Budget.get_text()) - Request.select_value(Request.Tables.LOANS, "SUM(total) value")))
 	

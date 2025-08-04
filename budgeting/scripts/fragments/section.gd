@@ -7,7 +7,7 @@ extends PageFragment
 @onready var ConsumptionIncome = $ConsumptionIncome
 @onready var PieChart = $"../../../PieChart"
 
-# Переменные
+# Переменная
 var m_index: int = 0 # Индекс объекта для изменения цветового маркера
 
 # Изменение значений

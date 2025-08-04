@@ -6,7 +6,7 @@ extends Control
 @onready var TotalCount = $Total/Count
 @onready var TotalValue = $Total/Value
 
-# Переменные
+# Переменная
 var id = null # Индекс счета
 
 # Смена индекса объекта

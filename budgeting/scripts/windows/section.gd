@@ -1,5 +1,5 @@
 extends CreationWindow
-# Подключение путей к объектам в сцене
+# Подключение пути к объектам в сцене
 @onready var ConsumptionIncome = $ConsumptionIncome
 
 # Изменение информации о счете
@@ -15,7 +15,7 @@ func set_object(obj_id: int, _parent = null) -> void:
 func check_object() -> bool:
 	Error.visible = super.check_object()
 	var values = Request.select(table, "id", 'title="'+Title.get_text()+'" AND income='+str(int(ConsumptionIncome.button_pressed)))
-	# Проверка заполнености полей
+	# Проверка заполнения полей
 	if Value.get_text() == "": Global.set_error(Error, "Поле значения должно быть заполнено")
 	elif float(Value.get_text()) <= 0 and not ConsumptionIncome.button_pressed:
 		Global.set_error(Error, "Значение должно быть больше нуля")

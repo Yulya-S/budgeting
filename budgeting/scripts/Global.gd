@@ -1,8 +1,8 @@
 extends Node
 # Сигналы
-signal open_window(page: Pages, id, dir: Dirs, parent)
-signal open_new_page(page: Pages)
-signal update_page()
+signal open_window(page: Pages, id, dir: Dirs, parent) # Открытие окна
+signal open_new_page(page: Pages) # Открытие окна с предварительной очисткой
+signal update_page() # Обновление данных на странице
 
 # Перечисления
 enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, TRANSFER, WALLET_INF} # Страницы приложения
@@ -10,7 +10,7 @@ enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменная
-var current_page: Pages = Pages.BASIC
+var current_page: Pages = Pages.BASIC # Текущая страница
 
 # Изменение даты под формат запроса
 func date_to_sql_date(text: String) -> String:

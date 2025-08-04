@@ -10,7 +10,8 @@ func set_extra(extra_idx: int = 0) -> void: Extra.selected = extra_idx
 
 # Проведение дополнительных проверок на верность данных
 func _extra_errors() -> bool:
-	if Wallet.selected == Extra.selected: Global.set_error(Error, "Нельзя перевести средства на тот же счет")
+	if Wallet.selected == Extra.selected:
+		Global.set_error(Error, "Нельзя перевести средства на тот же счет")
 	return Error.visible
 
 # Изменение значение счета после проведения транзакции

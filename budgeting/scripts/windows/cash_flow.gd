@@ -1,5 +1,5 @@
 extends Movement
-# Подключение путей к объектам в сцене
+# Подключение пути к объектам в сцене
 @onready var ConsumptionIncome = $Extra/ConsumptionIncome
 
 # Заполнение выпадающих списков
