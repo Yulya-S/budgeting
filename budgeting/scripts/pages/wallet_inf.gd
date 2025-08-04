@@ -22,10 +22,9 @@ func update_page() -> void:
 	Title.set_text(wallet_value[0].title)
 	Value.set_text(str(wallet_value[0].value))
 	# Заполнение информации о движениях средств
-	var cash_flow: Dictionary = Request.select_total_cash_flow(id)
-	var total_v: float = Request.select_total_v(id)
-	TotalValue.set_text(str(total_v))
-	TotalCount.set_text(str(cash_flow.count))
+	var total: Array = Request.select_wallets_movement(id)
+	TotalValue.set_text(str(total[0]))
+	TotalCount.set_text(str(total[1]))
 
 # Обработка нажатия кнопки возврата к списку счетов
 func _on_back_button_down() -> void:

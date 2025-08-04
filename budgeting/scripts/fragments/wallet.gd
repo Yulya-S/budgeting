@@ -8,4 +8,6 @@ func set_values(data: Dictionary) -> void:
 	id = data.id
 	Title.set_text(data.title)
 	Value.set_text(str(data.value))
-	CashFlow.set_text(str(Request.select_total_cash_flow(id).value))
+	CashFlow.set_text(str(Request.select_wallets_movement(id)[0]))
+	
+	#CashFlow.set_text(str(Request.select_total_cash_flow(id).value))
