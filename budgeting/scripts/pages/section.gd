@@ -51,5 +51,5 @@ func _on_add_sections_button_down() -> void: Global.emit_signal("open_window", G
 
 # Обработка нажатия кнопки создания движения средств
 func _on_cash_flow_button_down() -> void:
-	if len(Request.select(Request.Tables.WALLETS)) != 0 and Objects.obj_count() > 2:
+	if len(Request.select(Request.Tables.WALLETS)) != 0 and Objects.obj_count() > 3:
 		Global.emit_signal("open_window", Global.Pages.CASH_FLOW)

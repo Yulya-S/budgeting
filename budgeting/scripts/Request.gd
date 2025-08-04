@@ -25,13 +25,11 @@ func _create_table(title: String, columns: String, other: String = "") -> void:
 func create_tables() -> void:
 	_create_table("wallets", "title VARCHAR(255), value FLOAT")
 	_create_table("sections", "title VARCHAR(255), month_limit FLOAT, income BOOLEAN")
-	_create_table("cash_flows", "wallet_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)",	"FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`section_id`) REFERENCES `sections`(`id`)")
-	_create_table("transfers", "cash_flow_id INT, wallet_id INT", "FOREIGN KEY (`cash_flow_id`) REFERENCES `cash_flows`(`id`), FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`)")
+	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)",	"FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`section_id`) REFERENCES `sections`(`id`)")
 	_create_table("loans", "title VARCHAR(255), date DATE, total FLOAT")
-	_create_table("payments", "cash_flow_id INT, loan_id INT", "FOREIGN KEY (`cash_flow_id`) REFERENCES `cash_flows`(`id`), FOREIGN KEY (`loan_id`) REFERENCES `loans`(`id`)")
 	_create_table("events", "title VARCHAR(255), date DATE, note VARCHAR(255)")
 	if len(select(Tables.SECTIONS)) != 0: return
-	for i in ["Переводы", "Платежи"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
+	for i in ["Переводы", "Платежи", "Заём"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
 	
 # Получить название таблицы из enum Tables
 func _get_table_name(table) -> String:
@@ -95,6 +93,9 @@ func select(table, columns: String = "*", where: String = "", order: String = ""
 	if left: left = " LEFT JOIN "+left
 	db.query("SELECT "+columns+" FROM "+_get_table_name(table)+left+where+order+";")
 	return db.query_result
+	
+func select_wallets_movment() -> Array:
+	return []
 
 # Получение числового значения из базы
 func select_value(table: Tables, columns: String = "*", where: String = "", order: String = "", left: String = "") -> float:
