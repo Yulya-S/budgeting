@@ -5,7 +5,7 @@ extends Movement
 # Заполнение выпадающих списков
 func _ready() -> void:
 	super._ready()
-	Global.fill_optionButton(Extra, Request.select(second_table, "*", "id>2"))
+	Global.fill_optionButton(Extra, Request.select(second_table, "*", "id>3"))
 
 # Проведение дополнительных проверок на верность данных
 func _extra_errors() -> bool:
