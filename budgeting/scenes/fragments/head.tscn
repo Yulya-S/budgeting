@@ -116,6 +116,17 @@ scale = Vector2(0.31, 0.31)
 tooltip_text = "Отчеты"
 icon = ExtResource("8_alv4j")
 
+[node name="Date" type="Label" parent="."]
+layout_mode = 0
+offset_left = 433.0
+offset_top = 5.0
+offset_right = 703.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "05.08.2025"
+vertical_alignment = 1
+
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_left = 896.0
