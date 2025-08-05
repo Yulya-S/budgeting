@@ -94,6 +94,11 @@ func select(table, columns: String = "*", where: String = "", order: String = ""
 	db.query("SELECT "+columns+" FROM "+_get_table_name(table)+left+where+order+";")
 	return db.query_result
 
+# Получение текущего суммарного бюджета
+func select_budget() -> float:
+	var wallets_sum: float = select(Tables.WALLETS, "COALESCE(SUM(value), 0) value")[0].value
+	return wallets_sum + (select(Tables.LOANS, "COALESCE(SUM(total), 0) value")[0].value * 2.)
+
 # Запрос на получение суммы и количества транзакций сгруппированных по разделам
 func select_sections_cash_movement(id, date: String = Time.get_datetime_string_from_system()) -> Array:
 	db.query("SELECT sum(cf.value) value, count(cf.id) count, s.title, s.income FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id "+\
@@ -103,7 +108,7 @@ func select_sections_cash_movement(id, date: String = Time.get_datetime_string_f
 	return result
 
 # Запрос на получение суммы и количества транзакций сгруппированных по специальным разделам
-func select_special_sections_cash_movment(id, date: String = Time.get_datetime_string_from_system()) -> Array:
+func select_special_sections_cash_movement(id, date: String = Time.get_datetime_string_from_system()) -> Array:
 	db.query("SELECT cf.*, s.title, SUM(cf.value) value, COUNT(cf.id) count FROM cash_flows cf LEFT JOIN sections s ON cf.section_id = s.id "+\
 		"WHERE (cf.wallet_id="+str(id)+" OR (cf.wallet_2_id="+str(id)+" AND s.id=1)) AND s.month_limit=-1 AND "+where_date(date, "cf.date")+" GROUP BY section_id, wallet_id, wallet_2_id;")
 	var sections: Array = []
@@ -119,16 +124,22 @@ func select_special_sections_cash_movment(id, date: String = Time.get_datetime_s
 	return values
 
 # Объединение результатов двух запросов на сумму и количество транзакций сгруппированных по разделам
-func select_general_sections_cash_movment(id, date: String = Time.get_datetime_string_from_system()) -> Array:
-	return select_special_sections_cash_movment(id, date) + select_sections_cash_movement(id, date)
+func select_general_sections_cash_movement(id, date: String = Time.get_datetime_string_from_system()) -> Array:
+	return select_special_sections_cash_movement(id, date) + select_sections_cash_movement(id, date)
 	
 # Получение суммы движений средств на счете
 func select_wallets_movement(id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
 	var result: Array = [0.0, 0]
-	for i in select_general_sections_cash_movment(id, date):
+	for i in select_general_sections_cash_movement(id, date):
 		result[0] += i.value 
 		result[1] += i.count
 	return result
+	
+# Получение движенения средств суммарно для всех кошельков
+func select_general_wallets_movement() -> float:
+	var sum: float = 0.0
+	for i in select(Tables.WALLETS, "id"): sum += select_wallets_movement(i.id)[0]
+	return sum
 
 # Получение числового значения из базы
 func select_value(table: Tables, columns: String = "*", where: String = "", order: String = "", left: String = "") -> float:
