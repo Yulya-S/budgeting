@@ -79,17 +79,6 @@ theme_override_font_sizes/font_size = 20
 text = "Итог:"
 vertical_alignment = 1
 
-[node name="LableCount" type="Label" parent="Total"]
-layout_mode = 2
-offset_left = 144.0
-offset_right = 408.0
-offset_bottom = 46.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Количество транзакций:"
-horizontal_alignment = 2
-vertical_alignment = 1
-
 [node name="Count" type="Label" parent="Total"]
 layout_mode = 2
 offset_left = 415.0
@@ -100,14 +89,14 @@ theme_override_font_sizes/font_size = 20
 text = "0"
 vertical_alignment = 1
 
-[node name="LableValue" type="Label" parent="Total"]
+[node name="Lable" type="Label" parent="Total/Count"]
 layout_mode = 2
-offset_left = 709.0
-offset_right = 855.0
+offset_left = -271.0
+offset_right = -7.0
 offset_bottom = 46.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Сумма:"
+text = "Количество транзакций:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -119,6 +108,17 @@ offset_bottom = 46.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "0.0"
+vertical_alignment = 1
+
+[node name="Lable" type="Label" parent="Total/Value"]
+layout_mode = 2
+offset_left = -153.0
+offset_right = -7.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Сумма:"
+horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Label" type="Label" parent="."]

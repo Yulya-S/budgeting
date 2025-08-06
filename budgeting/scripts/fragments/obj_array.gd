@@ -47,7 +47,7 @@ func set_data(columns: String = "", where: String = "", order: String = "", date
 # Получение списка элементов списка
 func select() -> Array:
 	match table:
-		Request.Tables.CASH_FLOWS: return Request.select_general_sections_cash_movment(get_parent().id, data.date)
+		Request.Tables.CASH_FLOWS: return Request.select_general_sections_cash_movement(get_parent().id, data.date)
 		Request.Tables.SECTIONS: return Request.select_sections(data.date, data.where)
 		_: return Request.select(table, data.columns, data.where, data.order)
 
