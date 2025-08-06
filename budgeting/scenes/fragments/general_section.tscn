@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgne07kk56an5"]
+
+[ext_resource type="Script" uid="uid://b01ab17o3eu6h" path="res://scripts/fragments/general_section.gd" id="1_fken4"]
+
+[node name="GeneralSection" type="ColorRect"]
+custom_minimum_size = Vector2(969, 23)
+offset_right = 969.0
+offset_bottom = 23.0
+color = Color(0.955963, 0.955963, 0.955963, 1)
+script = ExtResource("1_fken4")
+
+[node name="Border" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 216.0
+offset_top = 7.0
+offset_right = 401.0
+offset_bottom = 20.0
+mouse_filter = 1
+color = Color(0.728822, 0.728822, 0.728822, 1)
+
+[node name="ColorRect" type="ColorRect" parent="Border"]
+layout_mode = 0
+offset_bottom = 13.0
+mouse_filter = 1
+color = Color(0.298524, 0.598649, 0.412661, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_right = 56.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Итог:"
+
+[node name="Value" type="Label" parent="."]
+offset_left = 56.0
+offset_right = 211.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Текущие затраты"
+horizontal_alignment = 2
+
+[node name="Max" type="Label" parent="."]
+offset_left = 406.0
+offset_right = 618.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Суммарное ограничение"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

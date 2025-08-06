@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://kb12kdasv2yv"]
+[gd_scene load_steps=8 format=3 uid="uid://kb12kdasv2yv"]
 
 [ext_resource type="Script" uid="uid://djxfcsdvyoykq" path="res://scripts/pages/section.gd" id="1_42u4g"]
 [ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_4yy0k"]
+[ext_resource type="PackedScene" uid="uid://cgne07kk56an5" path="res://scenes/fragments/general_section.tscn" id="3_21h3v"]
 [ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/pie_chart.tscn" id="4_4yy0k"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_21h3v"]
 [ext_resource type="Texture2D" uid="uid://i3eg6d82cpd" path="res://img/add/add_section.png" id="4_42u4g"]
@@ -15,6 +16,12 @@ offset_bottom = 648.0
 script = ExtResource("1_42u4g")
 
 [node name="Page" parent="." instance=ExtResource("2_4yy0k")]
+
+[node name="GeneralSection" parent="." instance=ExtResource("3_21h3v")]
+layout_mode = 0
+offset_top = 575.0
+offset_right = 1152.0
+offset_bottom = 598.0
 
 [node name="Filters" type="ColorRect" parent="."]
 layout_mode = 0
@@ -155,7 +162,7 @@ offset_bottom = 175.5
 layout_mode = 0
 offset_top = 181.0
 offset_right = 1152.0
-offset_bottom = 598.0
+offset_bottom = 575.0
 table = 1
 
 [node name="AddSections" type="Button" parent="."]

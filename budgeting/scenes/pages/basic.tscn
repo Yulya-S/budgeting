@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bxbo401tituxp"]
+[gd_scene load_steps=6 format=3 uid="uid://bxbo401tituxp"]
 
 [ext_resource type="Script" uid="uid://cfajdl5x507of" path="res://scripts/pages/basic.gd" id="1_eejbm"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_mrggl"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_ii1de"]
 [ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/pie_chart.tscn" id="4_kcgbp"]
+[ext_resource type="PackedScene" uid="uid://cgne07kk56an5" path="res://scenes/fragments/general_section.tscn" id="5_1kehw"]
 
 [node name="Basic" type="Control"]
 layout_mode = 3
@@ -81,7 +82,7 @@ offset_top = 5.0
 offset_right = 1060.0
 offset_bottom = 106.0
 
-[node name="ColorRect" type="ColorRect" parent="ColorRect"]
+[node name="Sections" type="ColorRect" parent="ColorRect"]
 layout_mode = 0
 offset_left = 46.0
 offset_top = 256.0
@@ -89,14 +90,14 @@ offset_right = 1106.0
 offset_bottom = 362.0
 color = Color(0.817521, 0.817521, 0.817521, 1)
 
-[node name="PieChart" parent="ColorRect/ColorRect" instance=ExtResource("4_kcgbp")]
+[node name="PieChart" parent="ColorRect/Sections" instance=ExtResource("4_kcgbp")]
 visible = false
 offset_left = 946.0
 offset_top = -248.0
 offset_right = 1029.0
 offset_bottom = -165.0
 
-[node name="Label" type="Label" parent="ColorRect/ColorRect"]
+[node name="Label" type="Label" parent="ColorRect/Sections"]
 layout_mode = 0
 offset_left = 20.0
 offset_top = -31.0
@@ -106,19 +107,25 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Превышение затрат"
 
-[node name="ObjArray" parent="ColorRect/ColorRect" instance=ExtResource("3_ii1de")]
+[node name="ObjArray" parent="ColorRect/Sections" instance=ExtResource("3_ii1de")]
 layout_mode = 0
 offset_top = 5.0
 offset_right = 1060.0
 offset_bottom = 106.0
 table = 1
 
+[node name="GeneralSection" parent="ColorRect/Sections" instance=ExtResource("5_1kehw")]
+layout_mode = 0
+offset_top = 111.0
+offset_right = 1060.0
+offset_bottom = 134.0
+
 [node name="ColorRect2" type="ColorRect" parent="ColorRect"]
 layout_mode = 0
 offset_left = 46.0
-offset_top = 407.0
+offset_top = 462.0
 offset_right = 1106.0
-offset_bottom = 513.0
+offset_bottom = 568.0
 color = Color(0.817521, 0.817521, 0.817521, 1)
 
 [node name="Label" type="Label" parent="ColorRect/ColorRect2"]

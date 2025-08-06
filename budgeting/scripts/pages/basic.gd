@@ -2,8 +2,8 @@ extends Control
 # Подключение путей к объектам в сцене
 @onready var Budget = $ColorRect/Budget/Value
 @onready var CashFlow = $ColorRect/CashFlow/Value
-@onready var PieChart = $ColorRect/ColorRect/PieChart
-@onready var ObjectsSection = $ColorRect/ColorRect/ObjArray
+@onready var PieChart = $ColorRect/Sections/PieChart
+@onready var ObjectsSection = $ColorRect/Sections/ObjArray
 
 # Создание главной страницы
 func _ready() -> void:
