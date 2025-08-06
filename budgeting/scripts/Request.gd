@@ -140,33 +140,7 @@ func select_general_wallets_movement() -> float:
 	var sum: float = 0.0
 	for i in select(Tables.WALLETS, "id"): sum += select_wallets_movement(i.id)[0]
 	return sum
-
-# Получение числового значения из базы
-func select_value(table: Tables, columns: String = "*", where: String = "", order: String = "", left: String = "") -> float:
-	var value: Array = select(table, columns, where, order, left)
-	if len(value) == 0 or not value[0].value: return 0.0
-	return value[0].value
-
+	
 # Получение списка разделов
 func select_sections(date: String = Time.get_datetime_string_from_system(), where: String = "") -> Array:
 	return select("`sections` s", "s.*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+") value", where)
-
-# Получение суммы затрат / доходов по статьям расходов / доходов
-func select_cash_flow_sum(wallet_id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
-	return select("`cash_flows` as cf", "s.title, COUNT(cf.id) count, SUM(cf.value) value",
-		"wallet_id="+str(wallet_id)+" AND "+where_date(date)+" AND s.title IS NOT NULL", "cf.section_id", "`sections` AS s ON cf.section_id = s.id")
-	
-# Получение суммы и количества записей по движениям средств
-func select_total_cash_flow(id: int, date: String = Time.get_datetime_string_from_system()) -> Dictionary:
-	var value: Array = select(Tables.CASH_FLOWS, "COALESCE(SUM(value), 0) value, COALESCE(COUNT(value), 0) count", "wallet_id="+str(id)+" AND "+where_date(date))
-	if len(value) == 0: return {"value": 0.0, "count": 0}
-	return value[0]
-	
-# Получение суммы доходов и расходов за месяц
-func select_total_v(id: int, date: String = Time.get_datetime_string_from_system()) -> float:
-	db.query("SELECT SUM(cf.value) value, s.income FROM cash_flows cf LEFT JOIN sections AS s ON cf.section_id = s.id WHERE cf.wallet_id ="+str(id)+" AND s.month_limit >= 0 AND "+where_date(date)+" GROUP BY income")
-	var value: float = 0
-	for i in db.query_result:
-		if not i.income: i.value*=-1
-		value += i.value
-	return value
