@@ -16,6 +16,27 @@ script = ExtResource("1_xahbi")
 
 [node name="Page" parent="." instance=ExtResource("1_oyhdl")]
 
+[node name="Total" type="Label" parent="."]
+layout_mode = 2
+offset_left = 251.0
+offset_top = 603.0
+offset_right = 492.0
+offset_bottom = 643.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "0.0"
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="Total"]
+layout_mode = 2
+offset_left = -246.0
+offset_right = -5.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "Итоговая сумма:"
+vertical_alignment = 1
+
 [node name="ObjArray" parent="." instance=ExtResource("3_v2g8m")]
 layout_mode = 0
 offset_top = 60.0
