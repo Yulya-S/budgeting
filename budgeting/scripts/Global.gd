@@ -64,6 +64,6 @@ func text_changed_TextEdit(container: TextEdit, is_numeric: bool = false) -> voi
 		if container.find_next_valid_focus(): container.find_next_valid_focus().grab_focus()
 
 # Заполнение выпадающего списка объектами
-func fill_optionButton(container: OptionButton, objects: Array) -> void:
-	container.clear()
+func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool = true) -> void:
+	if clear_OB: container.clear()
 	for i in objects: container.add_item(i.title, i.id)

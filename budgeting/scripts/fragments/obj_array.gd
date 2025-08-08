@@ -10,6 +10,7 @@ extends ScrollContainer
 @export var next_page: Global.Pages = Global.Pages.WALLET_INF # Страница, на которую произойдет переход
 @export var next_page_dir: Global.Dirs = Global.Dirs.PAGES # Директория, на которую произойдет переход
 @export var signal_name: String = "open_window" # Наименование сигнала, который будет отправлен при переходе
+@export var name_fragment: String = "" # Фрагмент названия пути к объекту списка
 
 # Переменные
 var obj_path: Resource = null # Подгружаемый объект
@@ -20,7 +21,7 @@ func _ready() -> void:
 	# Создание сцены объекта
 	var obj_name: String = Global.enum_key(Request.Tables, table)
 	obj_name[-1] = "."
-	obj_path = load("res://scenes/fragments/"+obj_name+"tscn")
+	obj_path = load("res://scenes/fragments/"+name_fragment+obj_name+"tscn")
 	# Подключение сигнала
 	Global.connect("update_page", Callable(self, "update_page"))
 	
@@ -47,9 +48,11 @@ func set_data(columns: String = "", where: String = "", order: String = "", date
 # Получение списка элементов списка
 func select() -> Array:
 	match table:
-		Request.Tables.CASH_FLOWS: return Request.select_general_sections_cash_movement(get_parent().id, data.date)
-		Request.Tables.SECTIONS: return Request.select_sections(data.date, data.where)
-		_: return Request.select(table, data.columns, data.where, data.order)
+		Request.Tables.CASH_FLOWS:
+			if get_parent().get("id"): return Request.select_general_sections_cash_movement(get_parent().id, data.date)
+			return Request.select_cash_flows(data.where, data.date)
+		Request.Tables.SECTIONS: return Request.select_sections(data.where, data.date)
+	return Request.select(table, data.columns, data.where, data.order)
 
 # Заполнение страницы
 func update_page():

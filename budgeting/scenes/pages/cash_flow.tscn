@@ -1,0 +1,154 @@
+[gd_scene load_steps=5 format=3 uid="uid://kdy6ds4fx23h"]
+
+[ext_resource type="Script" uid="uid://kbdd4pa6livs" path="res://scripts/pages/cash_flow.gd" id="1_2tflp"]
+[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_njwxx"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_tbl8u"]
+[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="6_ampir"]
+
+[node name="CashFlow" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("1_2tflp")
+
+[node name="Page" parent="." instance=ExtResource("2_njwxx")]
+
+[node name="Filters" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 60.0
+offset_right = 1152.0
+offset_bottom = 125.0
+color = Color(0.405473, 0.704353, 0.680819, 1)
+
+[node name="Section" type="OptionButton" parent="Filters"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 24.0
+offset_right = 283.0
+offset_bottom = 55.0
+alignment = 1
+selected = 0
+item_count = 1
+popup/item_0/id = 0
+
+[node name="Label" type="Label" parent="Filters/Section"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Статья"
+vertical_alignment = 1
+
+[node name="Year" type="OptionButton" parent="Filters"]
+layout_mode = 0
+offset_left = 303.0
+offset_top = 24.0
+offset_right = 566.0
+offset_bottom = 55.0
+alignment = 1
+item_count = 1
+popup/item_0/id = 0
+
+[node name="Label" type="Label" parent="Filters/Year"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Год фильтрации"
+vertical_alignment = 1
+
+[node name="Month" type="OptionButton" parent="Filters"]
+layout_mode = 0
+offset_left = 586.0
+offset_top = 23.0
+offset_right = 849.0
+offset_bottom = 54.0
+alignment = 1
+selected = 0
+item_count = 12
+popup/item_0/text = "Январь"
+popup/item_0/id = 0
+popup/item_1/text = "Февраль"
+popup/item_1/id = 1
+popup/item_2/text = "Март"
+popup/item_2/id = 2
+popup/item_3/text = "Апрель"
+popup/item_3/id = 3
+popup/item_4/text = "Май"
+popup/item_4/id = 4
+popup/item_5/text = "Июнь"
+popup/item_5/id = 5
+popup/item_6/text = "Июль"
+popup/item_6/id = 6
+popup/item_7/text = "Август"
+popup/item_7/id = 7
+popup/item_8/text = "Сентябрь"
+popup/item_8/id = 8
+popup/item_9/text = "Октябрь"
+popup/item_9/id = 9
+popup/item_10/text = "Ноябрь"
+popup/item_10/id = 10
+popup/item_11/text = "Декабрь"
+popup/item_11/id = 11
+
+[node name="Label" type="Label" parent="Filters/Month"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Месяц фильтрации"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Filters"]
+layout_mode = 0
+offset_left = 869.0
+offset_top = 24.0
+offset_right = 1132.0
+offset_bottom = 55.0
+text = "Применить"
+
+[node name="Schedule" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 130.0
+offset_right = 1152.0
+offset_bottom = 250.0
+color = Color(0.815686, 0.815686, 0.815686, 1)
+
+[node name="Label" type="Label" parent="Schedule"]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 120.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "График движений средств"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjArray" parent="." instance=ExtResource("4_tbl8u")]
+layout_mode = 0
+offset_top = 255.0
+offset_right = 1152.0
+offset_bottom = 598.0
+table = 2
+next_page = 3
+name_fragment = "simple_"
+
+[node name="CashFlow" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1107.0
+offset_top = 603.0
+offset_right = 1235.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Записать движение средств"
+icon = ExtResource("6_ampir")
+
+[connection signal="item_selected" from="Filters/Year" to="." method="_on_year_item_selected"]
+[connection signal="button_down" from="Filters/Button" to="." method="_on_filter_button_down"]
+[connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]

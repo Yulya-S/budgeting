@@ -94,6 +94,10 @@ func select(table, columns: String = "*", where: String = "", order: String = ""
 	db.query("SELECT "+columns+" FROM "+_get_table_name(table)+left+where+order+";")
 	return db.query_result
 
+# Проверка достаточно ли данных в базе для создания движения средств
+func select_possibility_opening_cashFlow() -> bool:
+	return len(Request.select(Request.Tables.WALLETS)) != 0 and len(Request.select(Request.Tables.SECTIONS)) > 3
+
 # Получение текущего суммарного бюджета
 func select_budget() -> float:
 	var wallets_sum: float = select(Tables.WALLETS, "COALESCE(SUM(value), 0) value")[0].value
@@ -142,5 +146,11 @@ func select_general_wallets_movement() -> float:
 	return sum
 	
 # Получение списка разделов
-func select_sections(date: String = Time.get_datetime_string_from_system(), where: String = "") -> Array:
+func select_sections(where: String = "", date: String = Time.get_datetime_string_from_system()) -> Array:
 	return select("`sections` s", "s.*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+") value", where)
+
+# Получение списка движений средств
+func select_cash_flows(where: String = "", date: String = Time.get_datetime_string_from_system()) -> Array:
+	if where != "": where += " AND " + where_date(date)
+	else: where = where_date(date)
+	return select("`cash_flows` cf", "cf.*, s.title, w.title wallet_title", where, "cf.date DESC", "sections s ON cf.section_id=s.id LEFT JOIN wallets w ON cf.wallet_id=w.id")

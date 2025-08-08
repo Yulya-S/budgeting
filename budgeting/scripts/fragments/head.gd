@@ -18,7 +18,7 @@ func _on_wallet_button_down() -> void: Global.emit_signal("open_new_page", Globa
 func _on_section_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.SECTION)
 
 # Обработка нажатия кнопки движения средств 
-func _on_flow_button_down() -> void: pass
+func _on_flow_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.CASH_FLOW)
 
 # Обработка нажатия кнопки кредита
 func _on_loan_button_down() -> void: pass
