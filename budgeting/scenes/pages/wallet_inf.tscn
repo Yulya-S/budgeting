@@ -176,3 +176,4 @@ icon = ExtResource("7_pha3d")
 [connection signal="button_down" from="Back" to="." method="_on_back_button_down"]
 [connection signal="button_down" from="Update" to="." method="_on_update_button_down"]
 [connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]
+[connection signal="button_down" from="Transactions" to="." method="_on_transactions_button_down"]

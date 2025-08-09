@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://be8awch8xk5nq" path="res://scripts/fragments/simple_cash_flow.gd" id="1_goi3v"]
 
 [node name="CashFlow" type="ColorRect"]
-custom_minimum_size = Vector2(969, 23)
+custom_minimum_size = Vector2(1152, 23)
 offset_right = 969.0
 offset_bottom = 23.0
 mouse_filter = 1
@@ -14,7 +14,7 @@ script = ExtResource("1_goi3v")
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 0
 offset_left = 10.0
-offset_right = 221.0
+offset_right = 228.4
 offset_bottom = 23.0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
@@ -24,18 +24,29 @@ text = "Название раздела"
 [node name="WalletTitle" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 0
-offset_left = 226.0
-offset_right = 437.0
+offset_left = 238.0
+offset_right = 456.4
 offset_bottom = 23.0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Название кошелька"
+horizontal_alignment = 2
+
+[node name="Wallet2Title" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 0
+offset_left = 466.0
+offset_right = 684.4
+offset_bottom = 23.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 
 [node name="Value" type="Label" parent="."]
 layout_mode = 0
-offset_left = 537.0
-offset_right = 748.0
+offset_left = 694.0
+offset_right = 912.4
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Сумма"
@@ -43,8 +54,8 @@ horizontal_alignment = 2
 
 [node name="Date" type="Label" parent="."]
 layout_mode = 0
-offset_left = 753.0
-offset_right = 964.0
+offset_left = 922.0
+offset_right = 1140.4
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Дата"

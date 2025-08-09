@@ -1,5 +1,6 @@
 extends Control
 # Подключение путей к объектам в сцене
+@onready var FilterWallet = $Filters/Wallet
 @onready var FilterSection = $Filters/Section
 @onready var FilterYear = $Filters/Year
 @onready var FilterMonth = $Filters/Month
@@ -12,9 +13,16 @@ var data = {"where": "", "date": Time.get_datetime_string_from_system()}
 # Стартовое применение фильтров
 func _ready() -> void:
 	Global.fill_optionButton(FilterSection, Request.select(Request.Tables.SECTIONS), false)
+	Global.fill_optionButton(FilterWallet, Request.select(Request.Tables.WALLETS), false)
 	_on_year_item_selected(-1)
 	FilterMonth.selected = Time.get_datetime_dict_from_system().month - 1
 	Global.emit_signal("update_page")
+	
+# Изменение значений фильтрации извне
+func set_object(obj_id: int, parent = null) -> void:
+	match parent:
+		Global.Pages.WALLET_INF: FilterWallet.selected = obj_id
+	_set_filters()
 
 # Обработка выбора года
 func _on_year_item_selected(index: int) -> void:
@@ -30,8 +38,10 @@ func _on_year_item_selected(index: int) -> void:
 # Применение фильтров
 func _set_filters() -> void:
 	data.where = ""
-	if FilterSection.selected != 0:
-		data.where = Request.add_part_request("", "section_id", Global.get_OB_id(FilterSection))
+	if FilterWallet.selected != 0:
+		data.where = "(section_id=1 AND wallet_2_id="+str(Global.get_OB_id(FilterWallet))+")"
+		data.where = Request.add_part_request(data.where, "wallet_id", Global.get_OB_id(FilterWallet), "=", " OR ")
+	if FilterSection.selected != 0: data.where = Request.add_part_request("", "section_id", Global.get_OB_id(FilterSection))
 	data.date = Global.date_to_sql_date("-".join([Global.get_OB_text(FilterYear), FilterMonth.selected+1, 1]))
 	Objects.set_data("", data.where, "", data.date)
 

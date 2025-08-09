@@ -37,3 +37,6 @@ func _on_update_button_down() -> void: Global.emit_signal("open_window", Global.
 
 # Обработка нажатия кнопки добавления движения средств
 func _on_cash_flow_button_down() -> void: Global.emit_signal("open_window", Global.Pages.CASH_FLOW, id, Global.Dirs.WINDOWS, Request.Tables.WALLETS)
+
+# Обработка нажатия кнопки перехода к списку транзакций
+func _on_transactions_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.CASH_FLOW, id, Global.Pages.WALLET_INF)
