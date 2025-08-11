@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://c078s7whekfej"]
+
+[ext_resource type="Script" uid="uid://6k8g2qso758x" path="res://scripts/fragments/schedule.gd" id="1_mwc83"]
+
+[node name="Schedule" type="ColorRect"]
+custom_minimum_size = Vector2(1152, 120)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_mwc83")
+
+[node name="X" type="Line2D" parent="."]
+points = PackedVector2Array(10, 59, 1142, 59)
+width = 2.0
+default_color = Color(0, 0, 0, 1)

@@ -45,7 +45,7 @@ func _create_days() -> void:
 		Cells.remove_child(i)
 		
 	# Сдвиг месяца и года
-	var next_month_idx = selected_day.month + 1
+	var next_month_idx: int = selected_day.month + 1
 	var next_year: int = int(Year.get_item_text(Year.selected))
 	if next_month_idx > len(month_list):
 		next_month_idx = 1

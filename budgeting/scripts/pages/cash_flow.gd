@@ -5,7 +5,7 @@ extends Control
 @onready var FilterYear = $Filters/Year
 @onready var FilterMonth = $Filters/Month
 @onready var Objects = $ObjArray
-@onready var Schedule = null
+@onready var Schedule = $Schedule
 
 # Переменная
 var data = {"where": "", "date": Time.get_datetime_string_from_system()}
@@ -44,6 +44,7 @@ func _set_filters() -> void:
 	if FilterSection.selected != 0: data.where = Request.add_part_request("", "section_id", Global.get_OB_id(FilterSection))
 	data.date = Global.date_to_sql_date("-".join([Global.get_OB_text(FilterYear), FilterMonth.selected+1, 1]))
 	Objects.set_data("", data.where, "", data.date)
+	Schedule.update_schedule(data.where, data.date)
 
 # Обработка нажатия кнопки применения фильтров
 func _on_filter_button_down() -> void: _set_filters()

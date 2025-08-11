@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://kdy6ds4fx23h"]
+[gd_scene load_steps=6 format=3 uid="uid://kdy6ds4fx23h"]
 
 [ext_resource type="Script" uid="uid://kbdd4pa6livs" path="res://scripts/pages/cash_flow.gd" id="1_2tflp"]
 [ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_njwxx"]
+[ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/schedule.tscn" id="3_mkcc5"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_tbl8u"]
 [ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="6_ampir"]
 
@@ -135,21 +136,11 @@ offset_right = 1140.4
 offset_bottom = 55.0
 text = "Применить"
 
-[node name="Schedule" type="ColorRect" parent="."]
+[node name="Schedule" parent="." instance=ExtResource("3_mkcc5")]
 layout_mode = 0
 offset_top = 130.0
 offset_right = 1152.0
 offset_bottom = 250.0
-color = Color(0.815686, 0.815686, 0.815686, 1)
-
-[node name="Label" type="Label" parent="Schedule"]
-layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 120.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "График движений средств"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="ObjArray" parent="." instance=ExtResource("4_tbl8u")]
 layout_mode = 0

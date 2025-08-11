@@ -154,3 +154,12 @@ func select_cash_flows(where: String = "", date: String = Time.get_datetime_stri
 	if where != "": where += " AND " + where_date(date)
 	else: where = where_date(date)
 	return select("`cash_flows` cf", "cf.*, s.title, w.title wallet_title", where, "cf.date DESC", "sections s ON cf.section_id=s.id LEFT JOIN wallets w ON cf.wallet_id=w.id")
+
+# Получение суммы движений средств распределенных по дням
+func select_daily_transactions(where: String, date: String = Time.get_datetime_string_from_system()) -> Array:
+	if where != "": where = " WHERE " + where
+	db.query("""SELECT COALESCE(SUM(value), 0) value, strftime('%d', date) day FROM (SELECT cf.date, CASE WHEN cf.section_id = 1 THEN 0
+		WHEN cf.section_id = 2 THEN cf.value * -1 WHEN s.income = 0 THEN cf.value * -1 ELSE cf.value END value FROM cash_flows cf
+		LEFT JOIN sections s ON cf.section_id=s.id"""+where+") WHERE "+where_date(date)+" GROUP BY date")
+	return db.query_result
+	
