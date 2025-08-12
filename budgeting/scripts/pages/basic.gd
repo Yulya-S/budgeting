@@ -1,14 +1,12 @@
 extends Control
 # Подключение путей к объектам в сцене
-@onready var Budget = $ColorRect/Budget/Value
-@onready var CashFlow = $ColorRect/CashFlow/Value
-@onready var PieChart = $ColorRect/Sections/PieChart
-@onready var ObjectsSection = $ColorRect/Sections/ObjArray
+@onready var Budget = $ScrollContainer/VBoxContainer/Information/Budget/Value
+@onready var CashFlow = $ScrollContainer/VBoxContainer/Information/CashFlow/Value
+@onready var ObjectsSection = $ScrollContainer/VBoxContainer/Sections/ObjArray
 
 # Создание главной страницы
 func _ready() -> void:
 	Budget.set_text(str(Request.select_budget()))
 	CashFlow.set_text(str(Request.select_general_wallets_movement()))
 	ObjectsSection.data.where = "s.income = 0 and s.month_limit > 0"
-	PieChart.set_values(Request.select_sections(Time.get_date_string_from_system(), ObjectsSection.data.where))
 	Global.emit_signal("update_page")
