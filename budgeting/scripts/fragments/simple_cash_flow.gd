@@ -5,11 +5,9 @@ extends PageFragment
 @onready var Value = $Value
 @onready var Date = $Date
 
-# Обработка нажатия клавиш мыши
-func _input(_event: InputEvent) -> void: pass
-
 # Изменение значений
 func set_values(data: Dictionary) -> void:
+	id = data.id
 	Title.set_text(str(data.title))
 	var wallet_title: String = str(data.wallet_title)
 	var wallet2_title: String = ""

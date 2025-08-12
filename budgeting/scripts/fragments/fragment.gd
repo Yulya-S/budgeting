@@ -4,7 +4,7 @@ class_name PageFragment
 @onready var Title = $Title
 
 # Переменные
-var id: int = 0 # Индекс объекта
+var id = 0 # Индекс объекта
 var state: Global.MouseOver = Global.MouseOver.NORMAL # Текущее состояние объекта
 
 # Смена размера цветовой линии под размер родителя

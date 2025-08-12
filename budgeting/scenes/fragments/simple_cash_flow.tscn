@@ -27,8 +27,6 @@ layout_mode = 0
 offset_left = 238.0
 offset_right = 456.4
 offset_bottom = 23.0
-mouse_filter = 1
-mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Название кошелька"
 horizontal_alignment = 2
@@ -39,8 +37,6 @@ layout_mode = 0
 offset_left = 466.0
 offset_right = 684.4
 offset_bottom = 23.0
-mouse_filter = 1
-mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 
 [node name="Value" type="Label" parent="."]
@@ -60,3 +56,6 @@ offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Дата"
 horizontal_alignment = 2
+
+[connection signal="mouse_entered" from="Title" to="." method="_on_title_mouse_entered"]
+[connection signal="mouse_exited" from="Title" to="." method="_on_title_mouse_exited"]

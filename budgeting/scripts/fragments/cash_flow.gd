@@ -3,11 +3,9 @@ extends PageFragment
 @onready var Count = $Count
 @onready var Total = $Total
 
-# Обработка нажатия клавиш мыши
-func _input(_event: InputEvent) -> void: pass
-
 # Изменение значений
 func set_values(data: Dictionary) -> void:
+	id = [data.wallet_id, data.section_id]
 	Title.set_text(str(data.title))
 	Count.set_text(str(data.count))
 	Total.set_text(str(data.value))

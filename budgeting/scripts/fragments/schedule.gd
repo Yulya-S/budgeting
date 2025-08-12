@@ -3,6 +3,9 @@ extends ColorRect
 var values: Array = [] # Данные для отображения
 var date: Dictionary = Time.get_datetime_dict_from_system() # Дата фильтрации
 
+# Получение изначальных данных
+func _ready() -> void: values = Request.select_daily_transactions("", Time.get_date_string_from_system())
+
 # Отрисовка графика
 func _draw() -> void:
 	# Получение количества дней в выбранном месяце
@@ -18,19 +21,20 @@ func _draw() -> void:
 	var day_count: int = 21 # 3 недели
 	day_count += next.weekday + (7 - current.weekday)
 	if day_count < 28: day_count += 7 # Если в месяце 4 целых недели
-	# Отрисовка
+	# Получение размеров объектов графика
 	var max_value: float = 0.0
 	for i in values: if max_value < abs(i.value): max_value = abs(i.value)
 	var x_step: float = size.x / day_count
-	for i in range(day_count): draw_string(ThemeDB.fallback_font, Vector2(x_step*i, 120), str(i+1), 1, x_step, 9, Color.BLACK)
+	# Отрисовка
+	for i in range(day_count): draw_string(ThemeDB.fallback_font, Vector2(x_step*i, 120), str(i+1.), HORIZONTAL_ALIGNMENT_CENTER, x_step, 9, Color.BLACK)
 	for i in values:
 		var y_size: float = 50. * abs(i.value) / abs(max_value)
 		if i.value < 0:
 			draw_rect(Rect2(Vector2(x_step*(int(i.day)-1), 60), Vector2(x_step, y_size)),Color.FIREBRICK)
-			draw_string(ThemeDB.fallback_font, Vector2(x_step*(int(i.day)-1), 30), str(i.value), 1, x_step, 9, Color.BLACK)
+			draw_string(ThemeDB.fallback_font, Vector2(x_step*(int(i.day)-1.), 30.), str(i.value), HORIZONTAL_ALIGNMENT_CENTER, x_step, 9, Color.BLACK)
 		else:
 			draw_rect(Rect2(Vector2(x_step*(int(i.day)-1), 60 - y_size), Vector2(x_step, y_size)),Color.WEB_GREEN)
-			draw_string(ThemeDB.fallback_font, Vector2(x_step*(int(i.day)-1), 90), str(i.value), 1, x_step, 9, Color.BLACK)
+			draw_string(ThemeDB.fallback_font, Vector2(x_step*(int(i.day)-1.), 90.), str(i.value), HORIZONTAL_ALIGNMENT_CENTER, x_step, 9, Color.BLACK)
 	
 # Перезапуск отрисовки графика
 func update_schedule(where: String, new_date: String = Time.get_date_string_from_system()) -> void:

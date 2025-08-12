@@ -105,7 +105,7 @@ func select_budget() -> float:
 
 # Запрос на получение суммы и количества транзакций сгруппированных по разделам
 func select_sections_cash_movement(id, date: String = Time.get_datetime_string_from_system()) -> Array:
-	db.query("SELECT sum(cf.value) value, count(cf.id) count, s.title, s.income FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id "+\
+	db.query("SELECT cf.wallet_id, cf.section_id, sum(cf.value) value, count(cf.id) count, s.title, s.income FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id "+\
 		"WHERE cf.wallet_id="+str(id)+" AND s.month_limit>=0 AND "+where_date(date, "cf.date")+" GROUP BY s.id;")
 	var result: Array = db.query_result
 	for i in result: if not i.income: i.value *= -1
@@ -120,7 +120,7 @@ func select_special_sections_cash_movement(id, date: String = Time.get_datetime_
 	for i in db.query_result:
 		if i.section_id not in sections:
 			sections.append(i.section_id)
-			values.append({"title": i.title, "value": 0.0, "count": 0})
+			values.append({"wallet_id": id, "section_id": i.section_id, "title": i.title, "value": 0.0, "count": 0})
 		if (i.section_id == 1 and i.wallet_id == id) or i.section_id == 2:
 			i.value *= -1.
 		values[sections.find(i.section_id)].value += i.value

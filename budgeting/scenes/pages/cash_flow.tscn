@@ -149,6 +149,7 @@ offset_right = 1152.0
 offset_bottom = 598.0
 table = 2
 next_page = 3
+next_page_dir = 1
 name_fragment = "simple_"
 
 [node name="CashFlow" type="Button" parent="."]
