@@ -19,9 +19,13 @@ func _ready() -> void:
 	Global.emit_signal("update_page")
 	
 # Изменение значений фильтрации извне
-func set_object(obj_id: int, parent = null) -> void:
-	match parent:
-		Global.Pages.WALLET_INF: FilterWallet.selected = obj_id
+func set_object(obj_id, parent = null) -> void:
+	if obj_id is Array:
+		FilterWallet.selected = obj_id[0]
+		FilterSection.selected = obj_id[1]
+	else:
+		match parent:
+			Global.Pages.WALLET_INF: FilterWallet.selected = obj_id
 	_set_filters()
 
 # Обработка выбора года
@@ -41,7 +45,7 @@ func _set_filters() -> void:
 	if FilterWallet.selected != 0:
 		data.where = "(section_id=1 AND wallet_2_id="+str(Global.get_OB_id(FilterWallet))+")"
 		data.where = Request.add_part_request(data.where, "wallet_id", Global.get_OB_id(FilterWallet), "=", " OR ")
-	if FilterSection.selected != 0: data.where = Request.add_part_request("", "section_id", Global.get_OB_id(FilterSection))
+	if FilterSection.selected != 0: data.where = Request.add_part_request("("+data.where+")", "section_id", Global.get_OB_id(FilterSection))
 	data.date = Global.date_to_sql_date("-".join([Global.get_OB_text(FilterYear), FilterMonth.selected+1, 1]))
 	Objects.set_data("", data.where, "", data.date)
 	Schedule.update_schedule(data.where, data.date)
