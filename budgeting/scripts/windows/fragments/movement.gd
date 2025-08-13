@@ -28,6 +28,7 @@ func _ready() -> void:
 func _get_extra_name() -> String:
 	var obj_name: String = Global.enum_key(Request.Tables, second_table)
 	obj_name[-1] = "_"
+	if obj_name == "wallet_": obj_name += "2_"
 	return obj_name + "id"
 	
 # Проведение дополнительных проверок на верность данных
@@ -36,7 +37,7 @@ func _extra_errors() -> bool: return Error.visible
 # Изменение объекта
 func set_object(obj_id: int, parent = null) -> void:
 	match parent:
-		Request.Tables.WALLETS:	set_wallet(obj_id - 1) 
+		Request.Tables.WALLETS:	set_wallet(obj_id) 
 		null: set_all(obj_id)
 		_: set_extra(obj_id) 
 
@@ -44,8 +45,8 @@ func set_object(obj_id: int, parent = null) -> void:
 func set_all(obj_id) -> void:
 	var value: Array = _get_obj_data(obj_id)
 	if len(value) <= 0: return
-	set_wallet(value[0].wallet_id)
-	set_extra(value[0][_get_extra_name()])
+	set_wallet(value[0].wallet_id - 1)
+	set_extra(value[0][_get_extra_name()] - 1)
 	Value.set_text(str(value[0].value))
 	Note.set_text(value[0].note)
 	Date.set_date(value[0].date)

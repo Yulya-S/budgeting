@@ -5,7 +5,6 @@ extends PageFragment
 
 # Изменение значений
 func set_values(data: Dictionary) -> void:
-	id = data.id
-	Title.set_text(data.title)
+	Title.set_object(data.title, data.id)
 	Value.set_text(str(data.value))
-	CashFlow.set_text(str(Request.select_wallets_movement(id)[0]))
+	CashFlow.set_text(str(Request.select_wallets_movement(data.id)[0]))

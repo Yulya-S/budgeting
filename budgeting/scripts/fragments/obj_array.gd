@@ -6,10 +6,6 @@ extends ScrollContainer
 @export var table: Request.Tables = Request.Tables.WALLETS # Таблица связанная со списком
 @export var data: Dictionary = {"columns": "*", "where": "", "order": "",
 	"date": Time.get_date_string_from_system()} # Фрагменты запроса
-# Параметры отвечающие за переадресацию из списка
-@export var next_page: Global.Pages = Global.Pages.WALLET_INF # Страница, на которую произойдет переход
-@export var next_page_dir: Global.Dirs = Global.Dirs.PAGES # Директория, на которую произойдет переход
-@export var signal_name: String = "open_window" # Наименование сигнала, который будет отправлен при переходе
 @export var name_fragment: String = "" # Фрагмент названия пути к объекту списка
 
 # Переменные

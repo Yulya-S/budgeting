@@ -10,14 +10,15 @@ var section_id: int = 0
 
 # Изменение значений
 func set_values(data: Dictionary) -> void:
-	id = data.id
 	wallet_ids = [data.wallet_id, data.wallet_2_id]
 	section_id = section_id
-	Title.set_text(str(data.title))
+	Title.set_object(str(data.title), data.id)
 	var wallet_title: String = str(data.wallet_title)
 	var wallet2_title: String = ""
 	match data.section_id:
-		1: wallet2_title = Request.select(Request.Tables.WALLETS, "title", "id="+str(data.wallet_2_id))[0].title
+		1:
+			Title.next_page = Global.Pages.TRANSFER
+			wallet2_title = Request.select(Request.Tables.WALLETS, "title", "id="+str(data.wallet_2_id))[0].title
 		2: wallet2_title = Request.select(Request.Tables.LOANS, "title", "id="+str(data.wallet_2_id))[0].title
 		3:
 			wallet2_title = wallet_title
