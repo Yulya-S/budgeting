@@ -1,0 +1,59 @@
+[gd_scene load_steps=2 format=3 uid="uid://fnpl6nhxd4w3"]
+
+[ext_resource type="Script" uid="uid://d5ux0v0hg53i" path="res://scripts/fragments/loan.gd" id="1_xq43f"]
+
+[node name="Loan" type="ColorRect"]
+custom_minimum_size = Vector2(1152, 23)
+offset_right = 969.0
+offset_bottom = 23.0
+mouse_filter = 1
+color = Color(0.955963, 0.955963, 0.955963, 1)
+script = ExtResource("1_xq43f")
+
+[node name="Title" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 0
+offset_left = 10.0
+offset_right = 228.4
+offset_bottom = 23.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Название займа"
+
+[node name="WalletTitle" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 0
+offset_left = 253.0
+offset_right = 471.4
+offset_bottom = 23.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Название целевого счета"
+
+[node name="Arrow" type="Label" parent="WalletTitle"]
+layout_mode = 0
+offset_left = -25.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "->"
+horizontal_alignment = 1
+
+[node name="Total" type="Label" parent="."]
+layout_mode = 0
+offset_left = 694.0
+offset_right = 912.4
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Начальная сумма займа"
+horizontal_alignment = 2
+
+[node name="Value" type="Label" parent="."]
+layout_mode = 0
+offset_left = 922.0
+offset_right = 1140.4
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Оставшаяся сумма займа"
+horizontal_alignment = 2

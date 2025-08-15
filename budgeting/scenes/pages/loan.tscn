@@ -1,0 +1,136 @@
+[gd_scene load_steps=7 format=3 uid="uid://covbv83eqowki"]
+
+[ext_resource type="Script" uid="uid://c085rmbc47jhr" path="res://scripts/pages/loan.gd" id="1_gfb22"]
+[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_h6v1m"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_d4621"]
+[ext_resource type="Texture2D" uid="uid://2ap5rcpa63an" path="res://img/add/add_loan.png" id="4_gfb22"]
+[ext_resource type="Texture2D" uid="uid://cgrjoxjtjep5j" path="res://img/add/percent.png" id="5_gfb22"]
+[ext_resource type="Texture2D" uid="uid://6w1jiyvu1gij" path="res://img/add/payment.png" id="6_h6v1m"]
+
+[node name="Loan" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("1_gfb22")
+
+[node name="Page" parent="." instance=ExtResource("2_h6v1m")]
+
+[node name="Filters" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1152, 65)
+layout_mode = 2
+offset_top = 60.0
+offset_right = 1152.0
+offset_bottom = 125.0
+color = Color(0.405473, 0.704353, 0.680819, 1)
+
+[node name="Title" type="TextEdit" parent="Filters"]
+clip_contents = false
+offset_left = 15.0
+offset_top = 24.0
+offset_right = 379.0
+offset_bottom = 55.0
+autowrap_mode = 1
+scroll_past_end_of_file = true
+
+[node name="Label" type="Label" parent="Filters/Title"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Фрагмент названия"
+vertical_alignment = 1
+
+[node name="Status" type="OptionButton" parent="Filters"]
+layout_mode = 0
+offset_left = 394.0
+offset_top = 24.0
+offset_right = 758.0
+offset_bottom = 55.0
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/id = 0
+popup/item_1/text = "Выплачено"
+popup/item_1/id = 1
+popup/item_2/text = "В процессе"
+popup/item_2/id = 2
+
+[node name="Label" type="Label" parent="Filters/Status"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Статус"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Filters"]
+layout_mode = 0
+offset_left = 773.0
+offset_top = 24.0
+offset_right = 1137.0
+offset_bottom = 55.0
+text = "Применить"
+
+[node name="Total" type="Label" parent="."]
+layout_mode = 2
+offset_left = 335.0
+offset_top = 603.0
+offset_right = 576.0
+offset_bottom = 643.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "0.0"
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="Total"]
+layout_mode = 2
+offset_left = -330.0
+offset_right = -5.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Текущая сумма задолженности:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ObjArray" parent="." instance=ExtResource("3_d4621")]
+layout_mode = 0
+offset_top = 130.0
+offset_right = 1152.0
+offset_bottom = 598.0
+table = 3
+
+[node name="AddLoan" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1017.0
+offset_top = 603.0
+offset_right = 1145.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Создать заём"
+icon = ExtResource("4_gfb22")
+
+[node name="AddInterest" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1062.0
+offset_top = 603.0
+offset_right = 1190.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Добавить проценты по займу"
+icon = ExtResource("5_gfb22")
+
+[node name="AddPayment" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1107.0
+offset_top = 603.0
+offset_right = 1235.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Добавить платёж"
+icon = ExtResource("6_h6v1m")
