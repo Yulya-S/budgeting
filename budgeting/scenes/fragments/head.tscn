@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bg0kb3lreju3h"]
+[gd_scene load_steps=13 format=3 uid="uid://bg0kb3lreju3h"]
 
 [ext_resource type="Script" uid="uid://tg44jev2uudr" path="res://scripts/fragments/head.gd" id="1_3qfej"]
 [ext_resource type="Texture2D" uid="uid://dnib8h85vflf7" path="res://img/question.png" id="2_mgesx"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="7_s1w7j"]
 [ext_resource type="Texture2D" uid="uid://c315cbgn23fr6" path="res://img/report.png" id="8_alv4j"]
 [ext_resource type="Texture2D" uid="uid://c0gf7lke64g63" path="res://img/door.png" id="10_xpsv6"]
+[ext_resource type="Texture2D" uid="uid://o4wbtftkl6b" path="res://img/notification.png" id="11_alv4j"]
 
 [node name="Head" type="ColorRect"]
 offset_right = 1152.0
@@ -115,16 +116,37 @@ scale = Vector2(0.31, 0.31)
 tooltip_text = "Отчеты"
 icon = ExtResource("8_alv4j")
 
+[node name="Date" type="Label" parent="."]
+layout_mode = 0
+offset_left = 433.0
+offset_top = 5.0
+offset_right = 703.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "05.08.2025"
+vertical_alignment = 1
+
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 941.0
+offset_left = 896.0
 offset_top = 5.0
-offset_right = 1102.0
+offset_right = 1057.0
 offset_bottom = 45.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Имя"
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="Notification" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1062.0
+offset_top = 5.0
+offset_right = 1190.0
+offset_bottom = 133.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Выход"
+icon = ExtResource("11_alv4j")
 
 [node name="Exit" type="Button" parent="."]
 layout_mode = 0

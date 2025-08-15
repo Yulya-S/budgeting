@@ -1,55 +1,76 @@
-[gd_scene load_steps=7 format=3 uid="uid://kb12kdasv2yv"]
+[gd_scene load_steps=7 format=3 uid="uid://kdy6ds4fx23h"]
 
-[ext_resource type="Script" uid="uid://djxfcsdvyoykq" path="res://scripts/pages/section.gd" id="1_42u4g"]
-[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_4yy0k"]
-[ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/pie_chart.tscn" id="4_4yy0k"]
-[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_21h3v"]
-[ext_resource type="Texture2D" uid="uid://i3eg6d82cpd" path="res://img/add/add_section.png" id="4_42u4g"]
-[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="5_8bm6h"]
+[ext_resource type="Script" uid="uid://kbdd4pa6livs" path="res://scripts/pages/cash_flow.gd" id="1_2tflp"]
+[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_njwxx"]
+[ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/schedule.tscn" id="3_mkcc5"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_tbl8u"]
+[ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="5_8gck2"]
+[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="6_ampir"]
 
-[node name="Section" type="Control"]
+[node name="CashFlow" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-script = ExtResource("1_42u4g")
+script = ExtResource("1_2tflp")
 
-[node name="Page" parent="." instance=ExtResource("2_4yy0k")]
+[node name="Page" parent="." instance=ExtResource("2_njwxx")]
 
 [node name="Filters" type="ColorRect" parent="."]
 layout_mode = 0
-offset_left = 160.0
 offset_top = 60.0
 offset_right = 1152.0
-offset_bottom = 175.0
+offset_bottom = 125.0
 color = Color(0.405473, 0.704353, 0.680819, 1)
 
-[node name="Title" type="TextEdit" parent="Filters"]
-clip_contents = false
+[node name="Wallet" type="OptionButton" parent="Filters"]
 layout_mode = 0
-offset_left = 20.25
+offset_left = 10.0
 offset_top = 24.0
-offset_right = 373.25
+offset_right = 228.4
 offset_bottom = 55.0
-autowrap_mode = 1
-scroll_past_end_of_file = true
+alignment = 1
+selected = 0
+item_count = 1
+popup/item_0/id = 0
 
-[node name="Label" type="Label" parent="Filters/Title"]
+[node name="Label" type="Label" parent="Filters/Wallet"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = -24.0
 offset_right = 262.0
 offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Фрагмент названия"
+text = "Имя счёта"
+vertical_alignment = 1
+
+[node name="Section" type="OptionButton" parent="Filters"]
+layout_mode = 0
+offset_left = 238.0
+offset_top = 24.0
+offset_right = 456.4
+offset_bottom = 55.0
+alignment = 1
+selected = 0
+item_count = 1
+popup/item_0/id = 0
+
+[node name="Label" type="Label" parent="Filters/Section"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Статья"
 vertical_alignment = 1
 
 [node name="Year" type="OptionButton" parent="Filters"]
 layout_mode = 0
-offset_left = 20.0
-offset_top = 77.0
-offset_right = 373.0
-offset_bottom = 108.0
+offset_left = 466.0
+offset_top = 24.0
+offset_right = 684.4
+offset_bottom = 55.0
 alignment = 1
 item_count = 1
 popup/item_0/id = 0
@@ -66,10 +87,10 @@ vertical_alignment = 1
 
 [node name="Month" type="OptionButton" parent="Filters"]
 layout_mode = 0
-offset_left = 393.0
-offset_top = 77.0
-offset_right = 746.0
-offset_bottom = 108.0
+offset_left = 694.0
+offset_top = 24.0
+offset_right = 912.4
+offset_bottom = 55.0
 alignment = 1
 selected = 0
 item_count = 12
@@ -108,67 +129,37 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Месяц фильтрации"
 vertical_alignment = 1
 
-[node name="ConsumptionIncome" type="OptionButton" parent="Filters"]
-layout_mode = 0
-offset_left = 393.0
-offset_top = 24.0
-offset_right = 746.0
-offset_bottom = 55.0
-alignment = 1
-selected = 0
-item_count = 4
-popup/item_0/text = "Все типы"
-popup/item_0/id = 0
-popup/item_1/text = "Расходы"
-popup/item_1/id = 1
-popup/item_2/text = "Доходы"
-popup/item_2/id = 2
-popup/item_3/text = "без типа"
-popup/item_3/id = 3
-
-[node name="Label" type="Label" parent="Filters/ConsumptionIncome"]
-layout_mode = 0
-offset_left = 10.0
-offset_top = -24.0
-offset_right = 262.0
-offset_bottom = -1.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Тип статьи"
-vertical_alignment = 1
-
 [node name="Button" type="Button" parent="Filters"]
 layout_mode = 0
-offset_left = 766.0
-offset_top = 42.0
-offset_right = 972.0
-offset_bottom = 73.0
+offset_left = 922.0
+offset_top = 24.0
+offset_right = 1140.4
+offset_bottom = 55.0
 text = "Применить"
 
-[node name="PieChart" parent="." instance=ExtResource("4_4yy0k")]
+[node name="Schedule" parent="." instance=ExtResource("3_mkcc5")]
 layout_mode = 0
-offset_left = 23.0
-offset_top = 60.0
-offset_right = 138.5
-offset_bottom = 175.5
+offset_top = 130.0
+offset_right = 1152.0
+offset_bottom = 250.0
 
-[node name="ObjArray" parent="." instance=ExtResource("4_21h3v")]
+[node name="ObjArray" parent="." instance=ExtResource("4_tbl8u")]
 layout_mode = 0
-offset_top = 181.0
+offset_top = 255.0
 offset_right = 1152.0
 offset_bottom = 598.0
-table = 1
-next_page = 2
-next_page_dir = 1
+table = 2
+name_fragment = "simple_"
 
-[node name="AddSections" type="Button" parent="."]
+[node name="Transaction" type="Button" parent="."]
 layout_mode = 0
 offset_left = 1062.0
 offset_top = 603.0
 offset_right = 1190.0
 offset_bottom = 731.0
 scale = Vector2(0.31, 0.31)
-tooltip_text = "Создать раздел"
-icon = ExtResource("4_42u4g")
+tooltip_text = "Переносить средства между счетами"
+icon = ExtResource("5_8gck2")
 
 [node name="CashFlow" type="Button" parent="."]
 layout_mode = 0
@@ -178,9 +169,9 @@ offset_right = 1235.0
 offset_bottom = 731.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Записать движение средств"
-icon = ExtResource("5_8bm6h")
+icon = ExtResource("6_ampir")
 
 [connection signal="item_selected" from="Filters/Year" to="." method="_on_year_item_selected"]
 [connection signal="button_down" from="Filters/Button" to="." method="_on_filter_button_down"]
-[connection signal="button_down" from="AddSections" to="." method="_on_add_sections_button_down"]
+[connection signal="button_down" from="Transaction" to="." method="_on_transaction_button_down"]
 [connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]

@@ -43,14 +43,14 @@ func _create_days() -> void:
 	for i in Cells.get_children():
 		i.queue_free()
 		Cells.remove_child(i)
-	
+		
 	# Сдвиг месяца и года
-	var next_month_idx = selected_day.month + 1
+	var next_month_idx: int = selected_day.month + 1
 	var next_year: int = int(Year.get_item_text(Year.selected))
 	if next_month_idx > len(month_list):
 		next_month_idx = 1
 		next_year += 1
-	
+		
 	# Получение первых чисел этого и следующего месяцев
 	var current: Dictionary = Time.get_datetime_dict_from_datetime_string("-".join([selected_day.year, selected_day.month, 1]), true)
 	var next: Dictionary = Time.get_datetime_dict_from_datetime_string("-".join([next_year, next_month_idx, 1]), true)

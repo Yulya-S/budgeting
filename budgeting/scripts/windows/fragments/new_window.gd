@@ -1,13 +1,13 @@
 extends Control
-class_name CreationPage
+class_name NewWindow
 # Подключение путей к объектам в сцене
 @onready var Error = $Error
 @onready var Delete = $Delete
 
-# Экспорт переменных
+# Экспортируемая переменная
 @export var table: Request.Tables = Request.Tables.WALLETS # Связанная таблица
 
-# Переменные
+# Переменная
 var id = null # Индекс изменяемого объекта
 
 # Изменение информации о счете

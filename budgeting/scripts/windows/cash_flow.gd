@@ -1,11 +1,23 @@
 extends Movement
-# Подключение путей к объектам в сцене
+# Подключение пути к объектам в сцене
 @onready var ConsumptionIncome = $Extra/ConsumptionIncome
+
+# Заполнение выпадающих списков
+func _ready() -> void:
+	super._ready()
+	Global.fill_optionButton(Extra, Request.select(second_table, "*", "id>3"))
+
+# Проведение дополнительных проверок на верность данных
+func _extra_errors() -> bool:
+	if ConsumptionIncome.get_text() == "Расход" and float(Count.get_text())-float(Value.get_text()) < 0:
+		Global.set_error(Error, "На счету недостаточно средств")
+	return Error.visible
 
 # Изменение раздела расхода
 func set_extra(extra_idx: int = 0) -> void:
-	Extra.selected = extra_idx
+	Extra.selected = extra_idx - 3
 	if Request.select(second_table, "income", "id="+str(Global.get_OB_id(Extra)))[0].income: ConsumptionIncome.set_text("Доход")
+	else: ConsumptionIncome.set_text("Расход")
 
 # Изменение значение счета после проведения транзакции
 func _update_wallet_value(delete: bool = false) -> void:

@@ -1,7 +1,4 @@
-extends CreationPage
-# Подключение путей к объектам в сцене
-@onready var Title = $Title
-@onready var Value = $Value
+extends CreationWindow
 
 # Изменение информации о счете
 func set_object(obj_id: int, _parent = null) -> void:
@@ -13,21 +10,9 @@ func set_object(obj_id: int, _parent = null) -> void:
 
 # Проверка введенных данных
 func check_object() -> bool:
-	Error.visible = false
+	Error.visible = super.check_object()
 	var values = Request.select(table, "id", 'title="'+Title.get_text()+'"')
-	# Проверка заполнености полей
-	if Title.get_text() == "": Global.set_error(Error, "Поле названия не должно быть пустым")
 	return _set_error(values)
 
-# Изменение значения названия кошелька
-func _on_title_text_changed() -> void:
-	Global.text_changed_TextEdit(Title)
-	check_object()
-
-# Изменение значения счета
-func _on_value_text_changed() -> void: Global.text_changed_TextEdit(Value, true)
-
 # Обработка нажатия кнопки сохранения счета
-func _on_apply_button_down() -> void:
-	if check_object(): return
-	_create_update(['"'+Title.get_text()+'"', float(Value.get_text())])
+func _on_apply_button_down() -> void: apply_change()

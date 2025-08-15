@@ -1,22 +1,30 @@
 extends Node
 # Сигналы
-signal open_window(page: Pages, id, dir: Dirs, parent)
-signal open_new_page(page: Pages)
-signal update_page()
+signal open_window(page: Pages, id, dir: Dirs, parent) # Открытие окна
+signal open_new_page(page: Pages, id, parent) # Открытие окна с предварительной очисткой
+signal update_page() # Обновление данных на странице
 
 # Перечисления
-enum Pages {BASIC, WALLET, WALLET_INF, CASH_FLOW, TRANSFER, SECTION} # Страницы приложения
+enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, TRANSFER, WALLET_INF} # Страницы приложения
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменная
-var current_page: Pages = Pages.BASIC
+var current_page: Pages = Pages.BASIC # Текущая страница
+
+# Изменение даты под формат запроса
+func date_to_sql_date(text: String) -> String:
+	var value: Dictionary = Time.get_datetime_dict_from_datetime_string(text, false)
+	return Time.get_datetime_string_from_datetime_dict(value, false)
 
 # Получить имя объекта из перечисления
 func enum_key(enums, object) -> String: return enums.keys()[object].to_lower()
 
 # Получить индекс выбранного элемента выпадающего списка
 func get_OB_id(button: OptionButton) -> int: return button.get_item_id(button.selected)
+
+# Получить текст выбранного элемента выпадающего списка
+func get_OB_text(button: OptionButton) -> String: return button.get_item_text(button.selected)
 
 # Изменение текста ошибки
 func set_error(container: Label, text: String) -> bool:
@@ -56,5 +64,6 @@ func text_changed_TextEdit(container: TextEdit, is_numeric: bool = false) -> voi
 		if container.find_next_valid_focus(): container.find_next_valid_focus().grab_focus()
 
 # Заполнение выпадающего списка объектами
-func fill_optionButton(container: OptionButton, objects: Array) -> void:
+func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool = true) -> void:
+	if clear_OB: container.clear()
 	for i in objects: container.add_item(i.title, i.id)

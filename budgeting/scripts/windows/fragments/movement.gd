@@ -1,4 +1,4 @@
-extends CreationPage
+extends NewWindow
 class_name Movement
 # Подключение путей к объектам в сцене
 @onready var Count = $Count
@@ -8,7 +8,7 @@ class_name Movement
 @onready var Note = $Note
 @onready var Date = $DateSelection
 
-# Экспортируемые переменные
+# Экспортируемая переменная
 @export var second_table = Request.Tables.SECTIONS # Таблица связанная со вторым выпадающим списком
 
 # Изменение информации о дополнительном параметре
@@ -28,15 +28,20 @@ func _ready() -> void:
 func _get_extra_name() -> String:
 	var obj_name: String = Global.enum_key(Request.Tables, second_table)
 	obj_name[-1] = "_"
+	if obj_name == "wallet_": obj_name += "2_"
 	return obj_name + "id"
 	
 # Проведение дополнительных проверок на верность данных
 func _extra_errors() -> bool: return Error.visible
 	
 # Изменение объекта
-func set_object(obj_id: int, parent = null) -> void:
+func set_object(obj_id, parent = null) -> void:
+	if obj_id is Array:
+		set_wallet(obj_id[0])
+		set_extra(obj_id[1])
+		return
 	match parent:
-		Request.Tables.WALLETS: set_wallet(obj_id) 
+		Request.Tables.WALLETS:	set_wallet(obj_id) 
 		null: set_all(obj_id)
 		_: set_extra(obj_id) 
 
@@ -44,8 +49,8 @@ func set_object(obj_id: int, parent = null) -> void:
 func set_all(obj_id) -> void:
 	var value: Array = _get_obj_data(obj_id)
 	if len(value) <= 0: return
-	set_wallet(value[0].wallet_id)
-	set_extra(value[0][_get_extra_name()])
+	set_wallet(value[0].wallet_id - 1)
+	set_extra(value[0][_get_extra_name()] - 1)
 	Value.set_text(str(value[0].value))
 	Note.set_text(value[0].note)
 	Date.set_date(value[0].date)
@@ -60,7 +65,6 @@ func check_object() -> bool:
 	Error.visible = false
 	if Value.get_text() == "": Global.set_error(Error, "Значение не должно быть пустым")
 	elif float(Value.get_text()) <= 0: Global.set_error(Error, "Значение должно быть больше нуля")
-	elif float(Count.get_text())-float(Value.get_text()) < 0: Global.set_error(Error, "На счету недостаточно средств")
 	return _extra_errors()
 
 # Изменение значения движения средств
@@ -87,7 +91,8 @@ func _back_wallet_value() -> void:
 func _on_apply_button_down() -> void:
 	if check_object(): return
 	_update_wallet_value()
-	var values: Array = [Global.get_OB_id(Wallet), Global.get_OB_id(Extra), float(Value.get_text()), '"'+Date.get_date()+'"', '"'+Note.get_text()+'"']
+	var values: Array = [Global.get_OB_id(Wallet), 0, Global.get_OB_id(Extra), float(Value.get_text()),
+		'"'+Date.get_date()+'"', '"'+Note.get_text()+'"']
 	if id: _back_wallet_value()
 	_create_update(values)
 

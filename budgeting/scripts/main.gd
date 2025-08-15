@@ -12,12 +12,12 @@ func _notification(what) -> void:
 # Открытие страницы
 func _open_window(page: Global.Pages, id = null, dir: Global.Dirs = Global.Dirs.WINDOWS, parent = null) -> void:
 	add_child(load("res://scenes/"+Global.enum_key(Global.Dirs, dir)+"/"+Global.enum_key(Global.Pages, page)+".tscn").instantiate())
-	if id: get_child(-1).set_object(id, parent)
+	if id and get_child(-1).get("set_object"): get_child(-1).set_object(id, parent)
 
 # Очистка экрана и открытие новой страницы
-func _open_new_page(page: Global.Pages) -> void:
+func _open_new_page(page: Global.Pages, id = null, parent = null) -> void:
 	Global.current_page = page
 	for i in get_children():
 		i.queue_free()
 		remove_child(i)
-	_open_window(page, null, Global.Dirs.PAGES)
+	_open_window(page, id, Global.Dirs.PAGES, parent)
