@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://kdy6ds4fx23h"]
+[gd_scene load_steps=7 format=3 uid="uid://kdy6ds4fx23h"]
 
 [ext_resource type="Script" uid="uid://kbdd4pa6livs" path="res://scripts/pages/cash_flow.gd" id="1_2tflp"]
 [ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_njwxx"]
 [ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/schedule.tscn" id="3_mkcc5"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_tbl8u"]
+[ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="5_8gck2"]
 [ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="6_ampir"]
 
 [node name="CashFlow" type="Control"]
@@ -148,9 +149,17 @@ offset_top = 255.0
 offset_right = 1152.0
 offset_bottom = 598.0
 table = 2
-next_page = 3
-next_page_dir = 1
 name_fragment = "simple_"
+
+[node name="Transaction" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1062.0
+offset_top = 603.0
+offset_right = 1190.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Переносить средства между счетами"
+icon = ExtResource("5_8gck2")
 
 [node name="CashFlow" type="Button" parent="."]
 layout_mode = 0
@@ -164,4 +173,5 @@ icon = ExtResource("6_ampir")
 
 [connection signal="item_selected" from="Filters/Year" to="." method="_on_year_item_selected"]
 [connection signal="button_down" from="Filters/Button" to="." method="_on_filter_button_down"]
+[connection signal="button_down" from="Transaction" to="." method="_on_transaction_button_down"]
 [connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]

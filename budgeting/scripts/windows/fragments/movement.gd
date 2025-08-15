@@ -35,7 +35,11 @@ func _get_extra_name() -> String:
 func _extra_errors() -> bool: return Error.visible
 	
 # Изменение объекта
-func set_object(obj_id: int, parent = null) -> void:
+func set_object(obj_id, parent = null) -> void:
+	if obj_id is Array:
+		set_wallet(obj_id[0])
+		set_extra(obj_id[1])
+		return
 	match parent:
 		Request.Tables.WALLETS:	set_wallet(obj_id) 
 		null: set_all(obj_id)
