@@ -15,7 +15,15 @@ func set_object(obj_id, parent = null) -> void:
 	match parent:
 		Request.Tables.WALLETS:	_on_wallet_item_selected(obj_id) 
 		Request.Tables.LOANS: set_loan(obj_id)
-		_: set_all(obj_id) 
+		_: set_all(obj_id)
+
+# Изменение информации о счете
+func _get_obj_data(obj_id: int) -> Array:
+	id = obj_id
+	var value: Array = Request.select(Request.Tables.CASH_FLOWS, "*", "section_id=3 AND wallet_2_id="+str(obj_id))
+	if len(value) <= 0: return value
+	Delete.visible = id != null and value[0].value == Request.select(table, "total", "id="+str(obj_id))[0].total
+	return value
 
 # Изменение всей информации об объекте
 func set_all(obj_id) -> void:
@@ -26,6 +34,7 @@ func set_all(obj_id) -> void:
 	Value.set_text(str(value[0].value))
 	Note.set_text(value[0].note)
 	Date.set_date(value[0].date)
+	check_object()
 
 # Изменение выбранного займа
 func set_loan(extra_idx: int = 0) -> void:
