@@ -26,6 +26,7 @@ color = Color(0.405473, 0.704353, 0.680819, 1)
 
 [node name="Title" type="TextEdit" parent="Filters"]
 clip_contents = false
+layout_mode = 0
 offset_left = 15.0
 offset_top = 24.0
 offset_right = 379.0
@@ -134,3 +135,5 @@ offset_bottom = 731.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Добавить платёж"
 icon = ExtResource("6_h6v1m")
+
+[connection signal="button_down" from="AddLoan" to="." method="_on_add_loan_button_down"]
