@@ -149,7 +149,7 @@ offset_top = 255.0
 offset_right = 1152.0
 offset_bottom = 598.0
 table = 2
-name_fragment = "simple_"
+obj_name = "simple_cash_flow"
 
 [node name="Transaction" type="Button" parent="."]
 layout_mode = 0

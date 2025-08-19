@@ -105,6 +105,7 @@ offset_top = 130.0
 offset_right = 1152.0
 offset_bottom = 598.0
 table = 3
+obj_name = "loan"
 
 [node name="AddLoan" type="Button" parent="."]
 layout_mode = 0

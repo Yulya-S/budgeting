@@ -6,7 +6,7 @@ extends ScrollContainer
 @export var table: Request.Tables = Request.Tables.WALLETS # Таблица связанная со списком
 @export var data: Dictionary = {"columns": "*", "where": "", "order": "",
 	"date": Time.get_date_string_from_system()} # Фрагменты запроса
-@export var name_fragment: String = "" # Фрагмент названия пути к объекту списка
+@export var obj_name: String = "wallet"
 
 # Переменные
 var obj_path: Resource = null # Подгружаемый объект
@@ -15,9 +15,7 @@ var lines: Array = [] # Список объектов для создания н
 # Создание сцены
 func _ready() -> void:
 	# Создание сцены объекта
-	var obj_name: String = Global.enum_key(Request.Tables, table)
-	obj_name[-1] = "."
-	obj_path = load("res://scenes/fragments/"+name_fragment+obj_name+"tscn")
+	obj_path = load("res://scenes/fragments/"+obj_name+".tscn")
 	# Подключение сигнала
 	Global.connect("update_page", Callable(self, "update_page"))
 	
@@ -48,6 +46,7 @@ func select() -> Array:
 			if get_parent().get("id"): return Request.select_general_sections_cash_movement(get_parent().id, data.date)
 			return Request.select_cash_flows(data.where, data.date)
 		Request.Tables.SECTIONS: return Request.select_sections(data.where, data.date)
+		Request.Tables.LOANS: return []
 	return Request.select(table, data.columns, data.where, data.order)
 
 # Заполнение страницы

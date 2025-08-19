@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="6_oy6n0"]
 [ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="7_pha3d"]
 
-[node name="WalletsInfo" type="Control"]
+[node name="WalletInfo" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -34,17 +34,6 @@ theme_override_font_sizes/font_size = 20
 text = "Название счета"
 vertical_alignment = 1
 
-[node name="LableValue" type="Label" parent="Wallet"]
-layout_mode = 2
-offset_left = 526.0
-offset_right = 780.0
-offset_bottom = 46.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Значение счета:"
-horizontal_alignment = 2
-vertical_alignment = 1
-
 [node name="Value" type="Label" parent="Wallet"]
 layout_mode = 2
 offset_left = 791.0
@@ -55,12 +44,24 @@ theme_override_font_sizes/font_size = 20
 text = "0.0"
 vertical_alignment = 1
 
+[node name="Lable" type="Label" parent="Wallet/Value"]
+layout_mode = 2
+offset_left = -265.0
+offset_right = -11.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Значение счета:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="ObjArray" parent="." instance=ExtResource("3_oy6n0")]
 layout_mode = 0
 offset_top = 174.0
 offset_right = 1152.0
 offset_bottom = 542.0
 table = 2
+obj_name = "cash_flow"
 
 [node name="Total" type="ColorRect" parent="."]
 layout_mode = 0
