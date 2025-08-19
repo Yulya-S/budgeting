@@ -1,0 +1,167 @@
+[gd_scene load_steps=8 format=3 uid="uid://fwrl2jqi85wt"]
+
+[ext_resource type="Script" uid="uid://cm8lyl8iebiv" path="res://scripts/pages/loan_inf.gd" id="1_730se"]
+[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_1y1g5"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_36teq"]
+[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="4_lickx"]
+[ext_resource type="Texture2D" uid="uid://bx52yefh7t80p" path="res://img/update/update_loan.png" id="5_1y1g5"]
+[ext_resource type="Texture2D" uid="uid://cgrjoxjtjep5j" path="res://img/add/percent.png" id="6_36teq"]
+[ext_resource type="Texture2D" uid="uid://6w1jiyvu1gij" path="res://img/add/payment.png" id="7_lickx"]
+
+[node name="LoanInfo" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_730se")
+
+[node name="Page" parent="." instance=ExtResource("2_1y1g5")]
+
+[node name="Loan" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 118.0
+offset_right = 1152.0
+offset_bottom = 164.0
+color = Color(0.873298, 0.873299, 0.873298, 1)
+
+[node name="Title" type="Label" parent="Loan"]
+layout_mode = 2
+offset_left = 20.0
+offset_right = 288.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Название займа"
+vertical_alignment = 1
+
+[node name="Total" type="Label" parent="Loan"]
+layout_mode = 2
+offset_left = 574.0
+offset_right = 721.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "0.0"
+vertical_alignment = 1
+
+[node name="Lable" type="Label" parent="Loan/Total"]
+layout_mode = 2
+offset_left = -216.0
+offset_right = -11.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Оставшаяся сумма"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Loan"]
+layout_mode = 2
+offset_left = 978.0
+offset_right = 1125.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "0.0"
+vertical_alignment = 1
+
+[node name="Lable" type="Label" parent="Loan/Value"]
+layout_mode = 2
+offset_left = -216.0
+offset_right = -11.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Изначальная сумма"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ObjArray" parent="." instance=ExtResource("3_36teq")]
+layout_mode = 0
+offset_top = 174.0
+offset_right = 1152.0
+offset_bottom = 469.0
+table = 3
+obj_name = "simple_cash_flow"
+
+[node name="Schedule" type="ColorRect" parent="."]
+layout_mode = 2
+offset_top = 469.0
+offset_right = 1152.0
+offset_bottom = 593.0
+color = Color(0.737193, 0.737193, 0.737193, 1)
+
+[node name="Label" type="Label" parent="Schedule"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -298.0
+offset_top = -11.5
+offset_right = 298.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "График погашения займа"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 233.0
+offset_top = 66.5
+offset_right = 1098.0
+offset_bottom = 101.5
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "Информация о займе"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Back" type="Button" parent="."]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 64.0
+offset_right = 149.0
+offset_bottom = 192.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Назад"
+icon = ExtResource("4_lickx")
+
+[node name="Update" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1017.0
+offset_top = 603.0
+offset_right = 1145.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Изменить займ"
+icon = ExtResource("5_1y1g5")
+
+[node name="CashFlow" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1062.0
+offset_top = 603.0
+offset_right = 1190.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Добавить проценты по займу"
+icon = ExtResource("6_36teq")
+
+[node name="Transactions" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1107.0
+offset_top = 603.0
+offset_right = 1235.0
+offset_bottom = 731.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Добавить платёж"
+icon = ExtResource("7_lickx")
+
+[connection signal="button_down" from="Back" to="." method="_on_back_button_down"]
+[connection signal="button_down" from="Update" to="." method="_on_update_button_down"]
+[connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]
+[connection signal="button_down" from="Transactions" to="." method="_on_transactions_button_down"]
