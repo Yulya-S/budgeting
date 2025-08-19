@@ -153,7 +153,7 @@ func select_sections(where: String = "", date: String = Time.get_datetime_string
 func select_cash_flows(where: String = "", date: String = Time.get_datetime_string_from_system()) -> Array:
 	if where != "": where += " AND " + where_date(date)
 	else: where = where_date(date)
-	return select("`cash_flows` cf", "cf.*, s.title, w.title wallet_title", where, "cf.date DESC", "sections s ON cf.section_id=s.id LEFT JOIN wallets w ON cf.wallet_id=w.id")
+	return select("`cash_flows` cf", "cf.*, s.title, w.title title_2", where, "cf.date DESC", "sections s ON cf.section_id=s.id LEFT JOIN wallets w ON cf.wallet_id=w.id")
 
 # Получение суммы движений средств распределенных по дням
 func select_daily_transactions(where: String, date: String = Time.get_datetime_string_from_system()) -> Array:
@@ -163,3 +163,8 @@ func select_daily_transactions(where: String, date: String = Time.get_datetime_s
 		LEFT JOIN sections s ON cf.section_id=s.id"""+where+") WHERE "+where_date(date)+" GROUP BY date")
 	return db.query_result
 	
+# Получение данных о выплате кредита
+func select_loan_progress(id: int) -> Array:
+	db.query("""SELECT cf.*, s.title, l.title title_2 FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id
+		LEFT JOIN loans l ON cf.wallet_2_id=l.id WHERE cf.section_id IN (2,3,4) AND cf.wallet_2_id="""+str(id)+" ORDER BY cf.date DESC")
+	return db.query_result

@@ -46,7 +46,7 @@ func select() -> Array:
 			if get_parent().get("id"): return Request.select_general_sections_cash_movement(get_parent().id, data.date)
 			return Request.select_cash_flows(data.where, data.date)
 		Request.Tables.SECTIONS: return Request.select_sections(data.where, data.date)
-		Request.Tables.LOANS: return []
+		Request.Tables.LOANS: if get_parent().get("id"): return Request.select_loan_progress(get_parent().id)
 	return Request.select(table, data.columns, data.where, data.order)
 
 # Заполнение страницы

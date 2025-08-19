@@ -141,7 +141,7 @@ scale = Vector2(0.31, 0.31)
 tooltip_text = "Изменить займ"
 icon = ExtResource("5_1y1g5")
 
-[node name="CashFlow" type="Button" parent="."]
+[node name="AddInterest" type="Button" parent="."]
 layout_mode = 0
 offset_left = 1062.0
 offset_top = 603.0
@@ -151,7 +151,7 @@ scale = Vector2(0.31, 0.31)
 tooltip_text = "Добавить проценты по займу"
 icon = ExtResource("6_36teq")
 
-[node name="Transactions" type="Button" parent="."]
+[node name="AddPayment" type="Button" parent="."]
 layout_mode = 0
 offset_left = 1107.0
 offset_top = 603.0
@@ -163,5 +163,5 @@ icon = ExtResource("7_lickx")
 
 [connection signal="button_down" from="Back" to="." method="_on_back_button_down"]
 [connection signal="button_down" from="Update" to="." method="_on_update_button_down"]
-[connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]
-[connection signal="button_down" from="Transactions" to="." method="_on_transactions_button_down"]
+[connection signal="button_down" from="AddInterest" to="." method="_on_cash_flow_button_down"]
+[connection signal="button_down" from="AddPayment" to="." method="_on_transactions_button_down"]

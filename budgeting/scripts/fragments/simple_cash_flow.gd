@@ -12,7 +12,7 @@ var section_id: int = 0
 func set_values(data: Dictionary) -> void:
 	wallet_ids = [data.wallet_id, data.wallet_2_id]
 	Title.set_object(str(data.title), data.id)
-	var wallet_title: String = str(data.wallet_title)
+	var wallet_title: String = str(data.title_2)
 	var wallet2_title: String = ""
 	match data.section_id:
 		1:
