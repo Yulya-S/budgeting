@@ -61,7 +61,7 @@ offset_top = 174.0
 offset_right = 1152.0
 offset_bottom = 542.0
 table = 2
-obj_name = "cash_flow"
+obj_name = "wallet_transactions"
 
 [node name="Total" type="ColorRect" parent="."]
 layout_mode = 0

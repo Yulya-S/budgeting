@@ -82,7 +82,7 @@ offset_top = 174.0
 offset_right = 1152.0
 offset_bottom = 469.0
 table = 3
-obj_name = "simple_cash_flow"
+obj_name = "cash_flow"
 
 [node name="Schedule" type="ColorRect" parent="."]
 layout_mode = 2

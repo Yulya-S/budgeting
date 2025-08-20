@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://jm4p2f0pnu7r"]
+[gd_scene load_steps=3 format=3 uid="uid://bbm4ew21ko7e1"]
 
-[ext_resource type="Script" uid="uid://be8awch8xk5nq" path="res://scripts/fragments/simple_cash_flow.gd" id="1_goi3v"]
-[ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_f5qn8"]
+[ext_resource type="Script" uid="uid://be8awch8xk5nq" path="res://scripts/fragments/list_elements/cash_flow.gd" id="1_rbn4l"]
+[ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_nyojl"]
 
 [node name="CashFlow" type="ColorRect"]
 custom_minimum_size = Vector2(1152, 23)
@@ -9,7 +9,7 @@ offset_right = 969.0
 offset_bottom = 23.0
 mouse_filter = 1
 color = Color(0.955963, 0.955963, 0.955963, 1)
-script = ExtResource("1_goi3v")
+script = ExtResource("1_rbn4l")
 
 [node name="Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
@@ -21,11 +21,11 @@ mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Название раздела"
-script = ExtResource("2_f5qn8")
+script = ExtResource("2_nyojl")
 next_page = 3
 next_page_dir = 1
 
-[node name="WalletTitle" type="Label" parent="."]
+[node name="Wallet_Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 0
 offset_left = 238.0
@@ -36,9 +36,9 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Название кошелька"
 horizontal_alignment = 2
-script = ExtResource("2_f5qn8")
+script = ExtResource("2_nyojl")
 
-[node name="Wallet2Title" type="Label" parent="."]
+[node name="Wallet_2_Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 0
 offset_left = 481.0
@@ -47,9 +47,9 @@ offset_bottom = 23.0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-script = ExtResource("2_f5qn8")
+script = ExtResource("2_nyojl")
 
-[node name="Arrow" type="Label" parent="Wallet2Title"]
+[node name="Arrow" type="Label" parent="Wallet_2_Title"]
 visible = false
 layout_mode = 0
 offset_left = -25.0
@@ -78,7 +78,7 @@ horizontal_alignment = 2
 
 [connection signal="mouse_entered" from="Title" to="Title" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Title" to="Title" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="WalletTitle" to="WalletTitle" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="WalletTitle" to="WalletTitle" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="Wallet2Title" to="Wallet2Title" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Wallet2Title" to="Wallet2Title" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Wallet_Title" to="Wallet_Title" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Wallet_Title" to="Wallet_Title" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Wallet_2_Title" to="Wallet_2_Title" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Wallet_2_Title" to="Wallet_2_Title" method="_on_mouse_exited"]

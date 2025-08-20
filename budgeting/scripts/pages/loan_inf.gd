@@ -11,6 +11,8 @@ var id = null # Индекс счета
 # Смена индекса объекта
 func set_object(obj_id: int, _parent = null) -> void:
 	id = obj_id
+	Objects.data.date = ""
+	Objects.set_data("", "cf.section_id IN (2,3,4) AND cf.wallet_2_id="+str(id))
 	Global.emit_signal("update_page")
 
 # Заполнение данных на странице

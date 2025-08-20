@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bbm4ew21ko7e1"]
 
-[ext_resource type="Script" uid="uid://badflm0bx6i12" path="res://scripts/fragments/cash_flow.gd" id="1_2xxl1"]
-[ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_iq12e"]
+[ext_resource type="Script" uid="uid://badflm0bx6i12" path="res://scripts/fragments/cash_flow.gd" id="1_isii8"]
+[ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_7g72n"]
 
 [node name="CashFlow" type="ColorRect"]
 custom_minimum_size = Vector2(969, 23)
@@ -9,7 +9,7 @@ offset_right = 969.0
 offset_bottom = 23.0
 mouse_filter = 1
 color = Color(0.955963, 0.955963, 0.955963, 1)
-script = ExtResource("1_2xxl1")
+script = ExtResource("1_isii8")
 
 [node name="Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
@@ -21,7 +21,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Название раздела"
-script = ExtResource("2_iq12e")
+script = ExtResource("2_7g72n")
 signal_name = "open_new_page"
 next_page = 3
 
