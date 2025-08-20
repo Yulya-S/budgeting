@@ -165,6 +165,4 @@ func select_daily_transactions(where: String, date: String = Time.get_datetime_s
 	
 # Получение данных о выплате кредита
 func select_loan_progress(id: int) -> Array:
-	db.query("""SELECT cf.*, s.title, l.title title_2 FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id
-		LEFT JOIN loans l ON cf.wallet_2_id=l.id WHERE cf.section_id IN (2,3,4) AND cf.wallet_2_id="""+str(id)+" ORDER BY cf.date DESC")
-	return db.query_result
+	return select("`cash_flows` cf", "cf.*, s.title, w.title title_2", "cf.section_id IN (2,3,4) AND cf.wallet_2_id="+str(id), "cf.date DESC", "sections s ON cf.section_id=s.id LEFT JOIN wallets w ON cf.wallet_id=w.id")
