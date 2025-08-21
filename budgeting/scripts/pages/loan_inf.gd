@@ -17,7 +17,6 @@ func set_object(obj_id: int, _parent = null) -> void:
 
 # Заполнение данных на странице
 func update_page() -> void:
-	# Заполнение информации о кошельке
 	var loan_value: Array = Request.select(Request.Tables.LOANS, "*", "id="+str(id))
 	Title.set_text(loan_value[0].title)
 	Total.set_text(str(loan_value[0].total))

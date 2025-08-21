@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://kbdd4pa6livs" path="res://scripts/pages/cash_flow.gd" id="1_2tflp"]
 [ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_njwxx"]
-[ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/schedule.tscn" id="3_mkcc5"]
+[ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="3_mkcc5"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_tbl8u"]
 [ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="5_8gck2"]
 [ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="6_ampir"]

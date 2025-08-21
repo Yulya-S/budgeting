@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://cfajdl5x507of" path="res://scripts/pages/basic.gd" id="1_eejbm"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_mrggl"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_ii1de"]
-[ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/pie_chart.tscn" id="4_kcgbp"]
-[ext_resource type="Script" uid="uid://b01ab17o3eu6h" path="res://scripts/fragments/sections_total.gd" id="5_1kehw"]
-[ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/schedule.tscn" id="6_yvt7d"]
+[ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/graphics/pie_chart.tscn" id="4_kcgbp"]
+[ext_resource type="Script" uid="uid://bm1vklnhejild" path="res://scripts/fragments/sections_total.gd" id="6_uj7m6"]
+[ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="6_yvt7d"]
 
 [node name="Basic" type="Control"]
 layout_mode = 3
@@ -156,7 +156,7 @@ offset_top = 111.0
 offset_right = 1060.0
 offset_bottom = 134.0
 color = Color(0.956863, 0.956863, 0.956863, 1)
-script = ExtResource("5_1kehw")
+script = ExtResource("6_uj7m6")
 
 [node name="Border" type="ColorRect" parent="ScrollContainer/VBoxContainer/Sections/SectionsTotal"]
 layout_mode = 0
