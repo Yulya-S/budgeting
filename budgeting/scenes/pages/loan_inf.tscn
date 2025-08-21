@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cgrjoxjtjep5j" path="res://img/add/percent.png" id="6_36teq"]
 [ext_resource type="Texture2D" uid="uid://6w1jiyvu1gij" path="res://img/add/payment.png" id="7_lickx"]
 
-[node name="LoanInfo" type="Control"]
+[node name="LoanInf" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -81,8 +81,7 @@ layout_mode = 0
 offset_top = 174.0
 offset_right = 1152.0
 offset_bottom = 469.0
-table = 3
-obj_name = "cash_flow"
+obj = 3
 
 [node name="Schedule" type="ColorRect" parent="."]
 layout_mode = 2

@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="6_oy6n0"]
 [ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="7_pha3d"]
 
-[node name="WalletInfo" type="Control"]
+[node name="WalletInf" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -60,8 +60,7 @@ layout_mode = 0
 offset_top = 174.0
 offset_right = 1152.0
 offset_bottom = 542.0
-table = 2
-obj_name = "wallet_transactions"
+obj = 1
 
 [node name="Total" type="ColorRect" parent="."]
 layout_mode = 0

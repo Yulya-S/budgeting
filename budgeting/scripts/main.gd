@@ -11,6 +11,7 @@ func _notification(what) -> void:
 
 # Открытие страницы
 func _open_window(page: Global.Pages, id = null, dir: Global.Dirs = Global.Dirs.WINDOWS, parent = null) -> void:
+	if get_child_count() > 0 and get_child(-1).name.to_lower() == "".join(Global.enum_key(Global.Pages, page).split("_")): return
 	add_child(load("res://scenes/"+Global.enum_key(Global.Dirs, dir)+"/"+Global.enum_key(Global.Pages, page)+".tscn").instantiate())
 	if id and get_child(-1).get("set_object"): get_child(-1).set_object(id, parent)
 

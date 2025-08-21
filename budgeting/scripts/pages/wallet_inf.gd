@@ -12,7 +12,7 @@ var id = null # Индекс счета
 # Смена индекса объекта
 func set_object(obj_id: int, _parent = null) -> void:
 	id = obj_id
-	Objects.set_data("", "id="+str(id))
+	Objects.set_data("id="+str(id))
 	Global.emit_signal("update_page")
 
 # Заполнение данных на странице

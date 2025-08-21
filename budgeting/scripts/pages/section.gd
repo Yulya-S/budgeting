@@ -41,7 +41,7 @@ func _set_filters() -> void:
 		2: data.where = Request.add_part_request(data.where, "s.income", 1)
 		3: data.where = Request.add_part_request(data.where, "s.month_limit", -1)
 	data.date = Global.date_to_sql_date("-".join([Global.get_OB_text(FilterYear), FilterMonth.selected+1, 1]))
-	Objects.set_data("", data.where, "", data.date)
+	Objects.set_data(data.where, data.date)
 
 # Обработка нажатия кнопки применения фильтров
 func _on_filter_button_down() -> void: _set_filters()

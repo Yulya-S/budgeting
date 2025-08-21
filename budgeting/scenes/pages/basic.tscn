@@ -147,8 +147,7 @@ layout_mode = 0
 offset_top = 5.0
 offset_right = 1152.0
 offset_bottom = 106.0
-table = 1
-obj_name = "section"
+obj = 2
 
 [node name="SectionsTotal" type="ColorRect" parent="ScrollContainer/VBoxContainer/Sections"]
 custom_minimum_size = Vector2(0, 23)

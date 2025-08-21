@@ -148,8 +148,7 @@ layout_mode = 0
 offset_top = 255.0
 offset_right = 1152.0
 offset_bottom = 598.0
-table = 2
-obj_name = "cash_flow"
+obj = 3
 
 [node name="Transaction" type="Button" parent="."]
 layout_mode = 0

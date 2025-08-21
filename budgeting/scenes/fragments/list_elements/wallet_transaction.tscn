@@ -1,15 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://bbm4ew21ko7e1"]
 
-[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/fragment.gd" id="1_ddw27"]
-[ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_k3gak"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/fragment.gd" id="1_rul2d"]
+[ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_v86u3"]
 
-[node name="WalletTransactions" type="ColorRect"]
+[node name="WalletTransaction" type="ColorRect"]
 custom_minimum_size = Vector2(969, 23)
 offset_right = 969.0
 offset_bottom = 23.0
 mouse_filter = 1
 color = Color(0.955963, 0.955963, 0.955963, 1)
-script = ExtResource("1_ddw27")
+script = ExtResource("1_rul2d")
 special_elements = {
 "title": ["wallet_id", "section_id"]
 }
@@ -24,7 +24,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Название раздела"
-script = ExtResource("2_k3gak")
+script = ExtResource("2_v86u3")
 signal_name = "open_new_page"
 next_page = 3
 

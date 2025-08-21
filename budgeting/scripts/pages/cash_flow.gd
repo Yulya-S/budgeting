@@ -47,7 +47,7 @@ func _set_filters() -> void:
 		data.where = Request.add_part_request(data.where, "wallet_id", Global.get_OB_id(FilterWallet), "=", " OR ")
 	if FilterSection.selected != 0: data.where = Request.add_part_request("("+data.where+")", "section_id", Global.get_OB_id(FilterSection))
 	data.date = Global.date_to_sql_date("-".join([Global.get_OB_text(FilterYear), FilterMonth.selected+1, 1]))
-	Objects.set_data("", data.where, "", data.date)
+	Objects.set_data(data.where, data.date)
 	Schedule.update_schedule(data.where, data.date)
 
 # Обработка нажатия кнопки применения фильтров

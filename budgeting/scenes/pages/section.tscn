@@ -156,8 +156,7 @@ layout_mode = 0
 offset_top = 181.0
 offset_right = 1152.0
 offset_bottom = 598.0
-table = 1
-obj_name = "section"
+obj = 2
 
 [node name="AddSections" type="Button" parent="."]
 layout_mode = 0
