@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://c01ukoc123grl"]
 
-[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="1_oyhdl"]
 [ext_resource type="Script" uid="uid://cs4wnmk22cw27" path="res://scripts/pages/wallet.gd" id="1_xahbi"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_v2g8m"]
 [ext_resource type="Texture2D" uid="uid://dok2udq5yy5ho" path="res://img/add/add_wallet.png" id="3_h71wg"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_v2g8m"]
 [ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="4_h71wg"]
@@ -14,7 +14,7 @@ offset_right = 1152.0
 offset_bottom = 648.0
 script = ExtResource("1_xahbi")
 
-[node name="Background" parent="." instance=ExtResource("1_oyhdl")]
+[node name="Head" parent="." instance=ExtResource("2_v2g8m")]
 layout_mode = 0
 
 [node name="Total" type="Label" parent="."]
@@ -46,6 +46,7 @@ offset_right = 1152.0
 offset_bottom = 598.0
 
 [node name="Footer" type="ColorRect" parent="."]
+layout_mode = 0
 offset_top = 598.0
 offset_right = 1152.0
 offset_bottom = 648.0

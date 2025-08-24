@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://kdy6ds4fx23h"]
 
 [ext_resource type="Script" uid="uid://kbdd4pa6livs" path="res://scripts/pages/cash_flow.gd" id="1_2tflp"]
-[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_njwxx"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_8gck2"]
 [ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="3_mkcc5"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_tbl8u"]
 [ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="5_8gck2"]
@@ -14,7 +14,7 @@ offset_right = 1152.0
 offset_bottom = 648.0
 script = ExtResource("1_2tflp")
 
-[node name="Background" parent="." instance=ExtResource("2_njwxx")]
+[node name="Head" parent="." instance=ExtResource("2_8gck2")]
 layout_mode = 0
 
 [node name="Filters" type="ColorRect" parent="."]

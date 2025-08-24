@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dogi0k768li3"]
 
 [ext_resource type="Script" uid="uid://de6p1m8lb4i5x" path="res://scripts/pages/wallet_inf.gd" id="1_y0peq"]
-[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_6imgx"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_37dcs"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_oy6n0"]
 [ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="4_3ta84"]
 [ext_resource type="Texture2D" uid="uid://dpw6qwab15i7s" path="res://img/update/update_wallet.png" id="5_37dcs"]
@@ -15,7 +15,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_y0peq")
 
-[node name="Background" parent="." instance=ExtResource("2_6imgx")]
+[node name="Head" parent="." instance=ExtResource("2_37dcs")]
 layout_mode = 0
 
 [node name="Label" type="Label" parent="."]

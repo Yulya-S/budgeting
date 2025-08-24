@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://bxbo401tituxp"]
 
 [ext_resource type="Script" uid="uid://cfajdl5x507of" path="res://scripts/pages/basic.gd" id="1_eejbm"]
-[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_yvt7d"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_mrggl"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_ii1de"]
 [ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/graphics/pie_chart.tscn" id="4_kcgbp"]
 [ext_resource type="Script" uid="uid://b01ab17o3eu6h" path="res://scripts/fragments/sections_total.gd" id="6_uj7m6"]
@@ -12,7 +12,7 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_eejbm")
 
-[node name="Background" parent="." instance=ExtResource("2_yvt7d")]
+[node name="Head" parent="." instance=ExtResource("2_mrggl")]
 layout_mode = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]

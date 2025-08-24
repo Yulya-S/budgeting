@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://covbv83eqowki"]
 
 [ext_resource type="Script" uid="uid://c085rmbc47jhr" path="res://scripts/pages/loan.gd" id="1_gfb22"]
-[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_h6v1m"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_gfb22"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_d4621"]
 [ext_resource type="Texture2D" uid="uid://2ap5rcpa63an" path="res://img/add/add_loan.png" id="4_gfb22"]
 [ext_resource type="Texture2D" uid="uid://cgrjoxjtjep5j" path="res://img/add/percent.png" id="5_gfb22"]
@@ -14,7 +14,7 @@ offset_right = 1152.0
 offset_bottom = 648.0
 script = ExtResource("1_gfb22")
 
-[node name="Background" parent="." instance=ExtResource("2_h6v1m")]
+[node name="Head" parent="." instance=ExtResource("2_gfb22")]
 layout_mode = 0
 
 [node name="Filters" type="ColorRect" parent="."]
