@@ -1,9 +1,10 @@
 extends Control
+class_name InfPage
 # Подключение путей к объектам в сцене
-@onready var Title = $Loan/Title
-@onready var Total = $Loan/Total
-@onready var Value = $Loan/Value
-@onready var Objects = $ObjArray
+@onready var Info = $Info
+
+# Экспортируемая переменная
+@export var table: Request.Tables = Request.Tables.WALLETS # Таблица 
 
 # Переменная
 var id = null # Индекс счета
@@ -11,16 +12,21 @@ var id = null # Индекс счета
 # Смена индекса объекта
 func set_object(obj_id: int, _parent = null) -> void:
 	id = obj_id
-	Objects.data.date = ""
-	Objects.set_data("cf.section_id IN (2,3,4) AND cf.wallet_2_id="+str(id))
 	Global.emit_signal("update_page")
 
 # Заполнение данных на странице
 func update_page() -> void:
-	var loan_value: Array = Request.select(Request.Tables.LOANS, "*", "id="+str(id))
-	Title.set_text(loan_value[0].title)
-	Total.set_text(str(loan_value[0].total))
-	Value.set_text(str(Request.select(Request.Tables.CASH_FLOWS, "*", "section_id=3 AND wallet_2_id="+str(id))[0].value))
+	var table_name: String = Global.enum_key(Request.Tables, table)
+	table_name[-1] = "_"
+	if not id: return
+	var value: Dictionary = Request.call("select_"+table_name+"inf", id)
+	_replace_values(Info, value)
+
+# Изменение текстовых значений в сцене
+func _replace_values(obj, value: Dictionary) -> void:
+	for i in obj.get_children():
+		if i is Label and i.name.to_lower() in value.keys(): i.set_text(str(value[i.name.to_lower()]))
+		else: _replace_values(i, value)
 
 # Обработка нажатия кнопки возврата к списку счетов
 func _on_back_button_down() -> void:

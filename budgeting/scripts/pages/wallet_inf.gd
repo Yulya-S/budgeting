@@ -1,36 +1,11 @@
-extends Control
-# Подключение путей к объектам в сцене
-@onready var Title = $Wallet/Title
-@onready var Value = $Wallet/Value
+extends InfPage
+# Подключение пути к объектам в сцене
 @onready var Objects = $ObjArray
-@onready var TotalCount = $Total/Count
-@onready var TotalValue = $Total/Value
-
-# Переменная
-var id = null # Индекс счета
 
 # Смена индекса объекта
-func set_object(obj_id: int, _parent = null) -> void:
-	id = obj_id
-	Objects.set_data("id="+str(id))
-	Global.emit_signal("update_page")
-
-# Заполнение данных на странице
-func update_page() -> void:
-	# Заполнение информации о кошельке
-	var wallet_value: Array = Request.select(Request.Tables.WALLETS, "*", "id="+str(id))
-	Title.set_text(wallet_value[0].title)
-	Value.set_text(str(wallet_value[0].value))
-	# Заполнение информации о движениях средств
-	var total: Array = Request.select_wallets_movement(id)
-	TotalValue.set_text(str(total[0]))
-	TotalCount.set_text(str(total[1]))
-
-# Обработка нажатия кнопки возврата к списку счетов
-func _on_back_button_down() -> void:
-	self.queue_free()
-	get_parent().remove_child(self)
-	Global.emit_signal("update_page")
+func set_object(obj_id: int, parent = null) -> void:
+	Objects.set_data("id="+str(obj_id))
+	super.set_object(obj_id, parent)
 
 # Обработка нажатия кнопки изменения счета
 func _on_update_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET, id)
