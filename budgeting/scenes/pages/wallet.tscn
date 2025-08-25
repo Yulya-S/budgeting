@@ -17,31 +17,72 @@ script = ExtResource("1_xahbi")
 [node name="Head" parent="." instance=ExtResource("2_v2g8m")]
 layout_mode = 0
 
-[node name="Total" type="Label" parent="."]
-layout_mode = 2
-offset_left = 180.0
-offset_top = 603.0
-offset_right = 421.0
-offset_bottom = 643.0
+[node name="Filters" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1152, 65)
+offset_top = 60.0
+offset_right = 1152.0
+offset_bottom = 125.0
+color = Color(0.405473, 0.704353, 0.680819, 1)
+
+[node name="Title" type="TextEdit" parent="Filters"]
+clip_contents = false
+layout_mode = 0
+offset_left = 21.0
+offset_top = 24.0
+offset_right = 377.0
+offset_bottom = 55.0
+autowrap_mode = 1
+scroll_past_end_of_file = true
+
+[node name="Label" type="Label" parent="Filters/Title"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "0.0"
+text = "Фрагмент названия"
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="Total"]
-layout_mode = 2
-offset_left = -175.0
-offset_right = -5.0
-offset_bottom = 40.0
+[node name="Order" type="OptionButton" parent="Filters"]
+layout_mode = 0
+offset_left = 398.0
+offset_top = 24.0
+offset_right = 754.0
+offset_bottom = 55.0
+alignment = 1
+selected = 0
+item_count = 4
+popup/item_0/text = "По дате транзакций"
+popup/item_0/id = 0
+popup/item_1/text = "По дате добавления"
+popup/item_1/id = 1
+popup/item_2/text = "По алфавиту"
+popup/item_2/id = 2
+popup/item_3/text = "По текущей сумме"
+popup/item_3/id = 3
+
+[node name="Label" type="Label" parent="Filters/Order"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Итоговая сумма:"
-horizontal_alignment = 2
+text = "Порядок сортировки"
 vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Filters"]
+layout_mode = 0
+offset_left = 775.0
+offset_top = 24.0
+offset_right = 1131.0
+offset_bottom = 55.0
+text = "Применить"
 
 [node name="ObjArray" parent="." instance=ExtResource("3_v2g8m")]
 layout_mode = 0
-offset_top = 60.0
+offset_top = 130.0
 offset_right = 1152.0
 offset_bottom = 598.0
 
@@ -81,6 +122,28 @@ offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Записать движение средств"
 icon = ExtResource("5_v2g8m")
+
+[node name="Total" type="Label" parent="Footer"]
+layout_mode = 2
+offset_left = 180.0
+offset_top = 5.0
+offset_right = 421.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "0.0"
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="Footer/Total"]
+layout_mode = 2
+offset_left = -175.0
+offset_right = -5.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Итоговая сумма:"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [connection signal="button_down" from="Footer/AddWallet" to="." method="_on_add_wallet_button_down"]
 [connection signal="button_down" from="Footer/Transaction" to="." method="_on_transaction_button_down"]

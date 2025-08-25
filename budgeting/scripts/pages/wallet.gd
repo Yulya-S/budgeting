@@ -1,6 +1,6 @@
 extends Control
 # Подключение пути к объектам в сцене
-@onready var Total = $Total
+@onready var Total = $Footer/Total
 @onready var Objects = $ObjArray
 
 # Подключение сигнала

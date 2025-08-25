@@ -21,14 +21,14 @@ layout_mode = 0
 layout_mode = 0
 offset_top = 60.0
 offset_right = 1152.0
-offset_bottom = 125.0
+offset_bottom = 175.0
 color = Color(0.405473, 0.704353, 0.680819, 1)
 
 [node name="Wallet" type="OptionButton" parent="Filters"]
 layout_mode = 0
-offset_left = 10.0
+offset_left = 21.0
 offset_top = 24.0
-offset_right = 228.4
+offset_right = 377.0
 offset_bottom = 55.0
 alignment = 1
 selected = 0
@@ -47,9 +47,9 @@ vertical_alignment = 1
 
 [node name="Section" type="OptionButton" parent="Filters"]
 layout_mode = 0
-offset_left = 238.0
+offset_left = 398.0
 offset_top = 24.0
-offset_right = 456.4
+offset_right = 754.0
 offset_bottom = 55.0
 alignment = 1
 selected = 0
@@ -66,12 +66,37 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Статья"
 vertical_alignment = 1
 
+[node name="Order" type="OptionButton" parent="Filters"]
+offset_left = 775.0
+offset_top = 24.0
+offset_right = 1131.0
+offset_bottom = 55.0
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "По дате добавления"
+popup/item_0/id = 0
+popup/item_1/text = "По статье"
+popup/item_1/id = 1
+popup/item_2/text = "По сумме трензакции"
+popup/item_2/id = 2
+
+[node name="Label" type="Label" parent="Filters/Order"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Порядок сортировки"
+vertical_alignment = 1
+
 [node name="Year" type="OptionButton" parent="Filters"]
 layout_mode = 0
-offset_left = 466.0
-offset_top = 24.0
-offset_right = 684.4
-offset_bottom = 55.0
+offset_left = 21.0
+offset_top = 77.0
+offset_right = 377.0
+offset_bottom = 108.0
 alignment = 1
 item_count = 1
 popup/item_0/id = 0
@@ -88,10 +113,10 @@ vertical_alignment = 1
 
 [node name="Month" type="OptionButton" parent="Filters"]
 layout_mode = 0
-offset_left = 694.0
-offset_top = 24.0
-offset_right = 912.4
-offset_bottom = 55.0
+offset_left = 398.0
+offset_top = 77.0
+offset_right = 754.0
+offset_bottom = 108.0
 alignment = 1
 selected = 0
 item_count = 12
@@ -132,21 +157,21 @@ vertical_alignment = 1
 
 [node name="Button" type="Button" parent="Filters"]
 layout_mode = 0
-offset_left = 922.0
-offset_top = 24.0
-offset_right = 1140.4
-offset_bottom = 55.0
+offset_left = 775.0
+offset_top = 77.0
+offset_right = 1131.0
+offset_bottom = 108.0
 text = "Применить"
 
 [node name="Schedule" parent="." instance=ExtResource("3_mkcc5")]
 layout_mode = 0
-offset_top = 130.0
+offset_top = 180.0
 offset_right = 1152.0
-offset_bottom = 250.0
+offset_bottom = 300.0
 
 [node name="ObjArray" parent="." instance=ExtResource("4_tbl8u")]
 layout_mode = 0
-offset_top = 255.0
+offset_top = 305.0
 offset_right = 1152.0
 offset_bottom = 598.0
 obj = 3

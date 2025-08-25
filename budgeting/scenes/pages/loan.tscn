@@ -30,7 +30,7 @@ clip_contents = false
 layout_mode = 0
 offset_left = 15.0
 offset_top = 24.0
-offset_right = 379.0
+offset_right = 284.25
 offset_bottom = 55.0
 autowrap_mode = 1
 scroll_past_end_of_file = true
@@ -47,9 +47,9 @@ vertical_alignment = 1
 
 [node name="Status" type="OptionButton" parent="Filters"]
 layout_mode = 0
-offset_left = 394.0
+offset_left = 299.0
 offset_top = 24.0
-offset_right = 758.0
+offset_right = 568.25
 offset_bottom = 55.0
 alignment = 1
 selected = 0
@@ -70,11 +70,37 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Статус"
 vertical_alignment = 1
 
+[node name="Order" type="OptionButton" parent="Filters"]
+layout_mode = 0
+offset_left = 583.0
+offset_top = 24.0
+offset_right = 852.25
+offset_bottom = 55.0
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "По дате добавления"
+popup/item_0/id = 0
+popup/item_1/text = "По алфавиту"
+popup/item_1/id = 1
+popup/item_2/text = "По сумме остатка"
+popup/item_2/id = 2
+
+[node name="Label" type="Label" parent="Filters/Order"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Порядок сортировки"
+vertical_alignment = 1
+
 [node name="Button" type="Button" parent="Filters"]
 layout_mode = 0
-offset_left = 773.0
+offset_left = 867.0
 offset_top = 24.0
-offset_right = 1137.0
+offset_right = 1136.25
 offset_bottom = 55.0
 text = "Применить"
 
@@ -108,6 +134,7 @@ offset_bottom = 598.0
 obj = 4
 
 [node name="Footer" type="ColorRect" parent="."]
+layout_mode = 0
 offset_top = 598.0
 offset_right = 1152.0
 offset_bottom = 648.0
