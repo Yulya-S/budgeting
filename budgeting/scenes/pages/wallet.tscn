@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://c01ukoc123grl"]
+[gd_scene load_steps=5 format=3 uid="uid://c01ukoc123grl"]
 
 [ext_resource type="Script" uid="uid://cs4wnmk22cw27" path="res://scripts/pages/wallet.gd" id="1_xahbi"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_v2g8m"]
+[ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filters.gd" id="3_gx72k"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_v2g8m"]
 
 [node name="Wallets" type="Control"]
@@ -53,6 +54,16 @@ offset_top = 100.0
 offset_right = 1152.0
 offset_bottom = 165.0
 color = Color(0.627451, 0.913725, 0.894118, 1)
+script = ExtResource("3_gx72k")
+OB_items = {
+"Order": {
+"0": "id",
+"1": "id",
+"2": "title",
+"3": "value DESC",
+"filter": "order"
+}
+}
 
 [node name="Title" type="TextEdit" parent="Filters"]
 clip_contents = false
@@ -119,3 +130,4 @@ offset_bottom = 643.0
 [connection signal="button_down" from="Menu/AddWallet" to="." method="_on_add_wallet_button_down"]
 [connection signal="button_down" from="Menu/Transaction" to="." method="_on_transaction_button_down"]
 [connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
+[connection signal="button_down" from="Filters/Button" to="Filters" method="_on_button_button_down"]

@@ -104,7 +104,7 @@ func select_budget() -> float:
 	return wallets_sum + (select(Tables.LOANS, "COALESCE(SUM(total), 0) value")[0].value * 2.)
 
 # Запрос на получение суммы и количества транзакций сгруппированных по разделам
-func select_sections_cash_movement(id, date: String = Time.get_datetime_string_from_system()) -> Array:
+func select_sections_cash_movement(id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
 	db.query("SELECT cf.wallet_id, cf.section_id, sum(cf.value) value, count(cf.id) count, s.title, s.income FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id "+\
 		"WHERE cf.wallet_id="+str(id)+" AND s.month_limit>=0 AND "+where_date(date, "cf.date")+" GROUP BY s.id;")
 	var result: Array = db.query_result
@@ -112,7 +112,7 @@ func select_sections_cash_movement(id, date: String = Time.get_datetime_string_f
 	return result
 
 # Запрос на получение суммы и количества транзакций сгруппированных по специальным разделам
-func select_special_sections_cash_movement(id, date: String = Time.get_datetime_string_from_system()) -> Array:
+func select_special_sections_cash_movement(id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
 	db.query("SELECT cf.*, s.title, SUM(cf.value) value, COUNT(cf.id) count FROM cash_flows cf LEFT JOIN sections s ON cf.section_id = s.id "+\
 		"WHERE (cf.wallet_id="+str(id)+" OR (cf.wallet_2_id="+str(id)+" AND s.id=1)) AND s.month_limit=-1 AND "+where_date(date, "cf.date")+" GROUP BY section_id, wallet_id, wallet_2_id;")
 	var sections: Array = []
@@ -129,6 +129,7 @@ func select_special_sections_cash_movement(id, date: String = Time.get_datetime_
 
 # Объединение результатов двух запросов на сумму и количество транзакций сгруппированных по разделам
 func select_general_sections_cash_movement(id, date: String = Time.get_datetime_string_from_system()) -> Array:
+	if not id: return []
 	return select_special_sections_cash_movement(id, date) + select_sections_cash_movement(id, date)
 	
 # Получение суммы движений средств на счете
@@ -140,8 +141,8 @@ func select_wallets_movement(id: int, date: String = Time.get_datetime_string_fr
 	return result
 
 # Получение списка счетов
-func select_wallets_list() -> Array:
-	var wallets: Array = Request.select(Tables.WALLETS)
+func select_wallets_list(where: String, order: String) -> Array:
+	var wallets: Array = Request.select(Tables.WALLETS, "*", where, order)
 	for i in range(len(wallets)): wallets[i]["cash_flow"] = select_wallets_movement(wallets[i].id)[0]
 	return wallets
 	
@@ -152,8 +153,8 @@ func select_general_wallets_movement() -> float:
 	return sum
 	
 # Получение списка разделов
-func select_sections(where: String = "", date: String = Time.get_datetime_string_from_system()) -> Array:
-	return select("`sections` s", "s.*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+") value", where)
+func select_sections(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
+	return select("`sections` s", "*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+") value", where, order)
 
 # Получение названия объекта под определенным индексом
 func _select_title(table: Tables, id: int) -> String: return Request.select(table, "title", "id="+str(id))[0].title
@@ -189,3 +190,17 @@ func select_loan_list(where: String = "") -> Array:
 	if where != "": where = " WHERE " + where
 	db.query("SELECT l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=3 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id"+where)
 	return db.query_result
+	
+# Получение информации о займе
+func select_loan_inf(id: int) -> Dictionary:
+	var value: Dictionary = Request.select(Request.Tables.LOANS, "*", "id="+str(id))[0]
+	value["value"] = Request.select(Request.Tables.CASH_FLOWS, "*", "section_id=3 AND wallet_2_id="+str(id))[0].value
+	return value
+	
+# Получение информации о счёте
+func select_wallet_inf(id: int) -> Dictionary:
+	var value: Dictionary = Request.select(Request.Tables.WALLETS, "*", "id="+str(id))[0]
+	var total: Array = Request.select_wallets_movement(id)
+	value["total_count"] = total[0]
+	value["total_value"] = total[1]
+	return value

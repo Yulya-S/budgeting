@@ -14,8 +14,6 @@ var data = {"where": "", "date": Time.get_datetime_string_from_system()}
 func _ready() -> void:
 	Global.fill_optionButton(FilterSection, Request.select(Request.Tables.SECTIONS), false)
 	Global.fill_optionButton(FilterWallet, Request.select(Request.Tables.WALLETS), false)
-	_on_year_item_selected(-1)
-	FilterMonth.selected = Time.get_datetime_dict_from_system().month - 1
 	Global.emit_signal("update_page")
 	
 # Изменение значений фильтрации извне
@@ -27,17 +25,6 @@ func set_object(obj_id, parent = null) -> void:
 		match parent:
 			Global.Pages.WALLET_INF: FilterWallet.selected = obj_id
 	_set_filters()
-
-# Обработка выбора года
-func _on_year_item_selected(index: int) -> void:
-	var current_year: int = Time.get_datetime_dict_from_system().year
-	var year: int = current_year
-	if index != -1: year = int(FilterYear.get_item_text(index))
-	for i in range(FilterYear.item_count): FilterYear.remove_item(0)
-	for i in range(year-10, year+10, 1):
-		if i + 1 > current_year: break
-		FilterYear.add_item(str(i+1))
-	FilterYear.selected = 9
 
 # Применение фильтров
 func _set_filters() -> void:

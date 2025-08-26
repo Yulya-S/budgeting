@@ -9,7 +9,7 @@ extends ScrollContainer
 enum ListObjects {WALLET, WALLET_TRANSACTION, SECTION, CASH_FLOW, LOAN} # Объекты списка
 
 # Переменные
-var data: Dictionary = {"where": "", "date": Time.get_date_string_from_system()} # Фрагменты запроса
+var data: Dictionary = {"where": "", "date": Time.get_date_string_from_system(), "order": ""} # Фрагменты запроса
 var obj_path: Resource = null # Подгружаемый объект
 var lines: Array = [] # Список объектов для создания на странице
 
@@ -31,18 +31,19 @@ func _process(_delta: float) -> void:
 		Objects.get_child(-1).set_values(lines.pop_front())
 	
 # Изменение параметров запроса
-func set_data(where: String = "", date: String = "") -> void:
+func set_data(where: String = "", date: String = "", order: String = "") -> void:
 	if where != "" or data.where != "": data.where = where
 	if date != "": data.date = date
+	if order != "" or data.order != "": data.order = order
 	update_page()
 
 # Получение списка элементов списка
 func select() -> Array:
 	match obj:
-		ListObjects.WALLET: return Request.select_wallets_list()
+		ListObjects.WALLET: return Request.select_wallets_list(data.where, data.order)
 		ListObjects.WALLET_TRANSACTION: return Request.select_general_sections_cash_movement(get_parent().id, data.date)
 		ListObjects.LOAN: return Request.select_loan_list(data.where)
-		ListObjects.SECTION: return Request.select_sections(data.where, data.date)
+		ListObjects.SECTION: return Request.select_sections(data.where, data.date, data.order)
 		ListObjects.CASH_FLOW: return Request.select_cash_flows(data.where, data.date)
 	return []
 
