@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://covbv83eqowki"]
+[gd_scene load_steps=5 format=3 uid="uid://covbv83eqowki"]
 
 [ext_resource type="Script" uid="uid://c085rmbc47jhr" path="res://scripts/pages/loan.gd" id="1_gfb22"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_gfb22"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_d4621"]
+[ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_kg306"]
 
 [node name="Loan" type="Control"]
 layout_mode = 3
@@ -45,15 +46,29 @@ offset_right = 667.0
 offset_bottom = 40.5
 text = "Добавить платёж по займу"
 
-[node name="Filters" type="ColorRect" parent="."]
+[node name="Filter" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(1152, 65)
 layout_mode = 2
 offset_top = 100.0
 offset_right = 1152.0
 offset_bottom = 165.0
 color = Color(0.627451, 0.913725, 0.894118, 1)
+script = ExtResource("3_kg306")
+OB_items = {
+"Order": {
+"0": "cf.date DESC",
+"1": "l.title",
+"2": "l.total DESC",
+"filter": "order"
+},
+"Status": {
+"1": "l.total=0",
+"2": "l.total<>cf.value"
+}
+}
+title_pref = "l."
 
-[node name="Title" type="TextEdit" parent="Filters"]
+[node name="Title" type="TextEdit" parent="Filter"]
 clip_contents = false
 layout_mode = 0
 offset_left = 15.0
@@ -63,7 +78,7 @@ offset_bottom = 55.0
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
-[node name="Label" type="Label" parent="Filters/Title"]
+[node name="Label" type="Label" parent="Filter/Title"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = -24.0
@@ -73,7 +88,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Фрагмент названия"
 vertical_alignment = 1
 
-[node name="Status" type="OptionButton" parent="Filters"]
+[node name="Status" type="OptionButton" parent="Filter"]
 layout_mode = 0
 offset_left = 299.0
 offset_top = 24.0
@@ -88,7 +103,7 @@ popup/item_1/id = 1
 popup/item_2/text = "В процессе"
 popup/item_2/id = 2
 
-[node name="Label" type="Label" parent="Filters/Status"]
+[node name="Label" type="Label" parent="Filter/Status"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = -24.0
@@ -98,7 +113,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Статус"
 vertical_alignment = 1
 
-[node name="Order" type="OptionButton" parent="Filters"]
+[node name="Order" type="OptionButton" parent="Filter"]
 layout_mode = 0
 offset_left = 583.0
 offset_top = 24.0
@@ -114,7 +129,7 @@ popup/item_1/id = 1
 popup/item_2/text = "По сумме остатка"
 popup/item_2/id = 2
 
-[node name="Label" type="Label" parent="Filters/Order"]
+[node name="Label" type="Label" parent="Filter/Order"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = -24.0
@@ -124,7 +139,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Порядок сортировки"
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="Filters"]
+[node name="Button" type="Button" parent="Filter"]
 layout_mode = 0
 offset_left = 867.0
 offset_top = 24.0
@@ -140,3 +155,4 @@ offset_bottom = 643.0
 obj = 4
 
 [connection signal="button_down" from="Menu/AddLoan" to="." method="_on_add_loan_button_down"]
+[connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]

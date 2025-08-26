@@ -1,10 +1,13 @@
 extends Control
 # Подключение пути к объектам в сцене
 #@onready var Total = $Footer/Total
+@onready var Filter = $Filter
 @onready var Objects = $ObjArray
 
 # Подключение сигнала
-func _ready() -> void: Global.emit_signal("update_page")
+func _ready() -> void:
+	Filter.get_filter()
+	Global.emit_signal("update_page")
 
 # Изменение значения итоговой суммы по счетам
 #func update_page() -> void: Total.set_text(str(Request.select(Request.Tables.WALLETS, "COALESCE(SUM(value), 0) value")[0].value))

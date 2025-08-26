@@ -42,9 +42,9 @@ func select() -> Array:
 	match obj:
 		ListObjects.WALLET: return Request.select_wallets_list(data.where, data.order)
 		ListObjects.WALLET_TRANSACTION: return Request.select_general_sections_cash_movement(get_parent().id, data.date)
-		ListObjects.LOAN: return Request.select_loan_list(data.where)
+		ListObjects.LOAN: return Request.select_loan_list(data.where, data.order)
 		ListObjects.SECTION: return Request.select_sections(data.where, data.date, data.order)
-		ListObjects.CASH_FLOW: return Request.select_cash_flows(data.where, data.date)
+		ListObjects.CASH_FLOW: return Request.select_cash_flows(data.where, data.date, data.order)
 	return []
 
 # Заполнение страницы
@@ -55,5 +55,4 @@ func update_page():
 	Objects.add_child(obj_path.instantiate())
 	Objects.get_child(-1).color = Color.html("#dfdfdf")
 	lines = select()
-	if len(lines) > 0 and null in lines[0].values(): lines = []
 	if get_parent().get("update_page"): get_parent().update_page()

@@ -1,19 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://kb12kdasv2yv"]
+[gd_scene load_steps=6 format=3 uid="uid://kdy6ds4fx23h"]
 
-[ext_resource type="Script" uid="uid://djxfcsdvyoykq" path="res://scripts/pages/section.gd" id="1_42u4g"]
-[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_4yy0k"]
-[ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_42u4g"]
-[ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/graphics/pie_chart.tscn" id="4_4yy0k"]
-[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_21h3v"]
+[ext_resource type="Script" uid="uid://kbdd4pa6livs" path="res://scripts/pages/cash_flow.gd" id="1_2tflp"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_8gck2"]
+[ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filters.gd" id="3_8gck2"]
+[ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="3_mkcc5"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_tbl8u"]
 
-[node name="Section" type="Control"]
+[node name="CashFlow" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-script = ExtResource("1_42u4g")
+script = ExtResource("1_2tflp")
 
-[node name="Head" parent="." instance=ExtResource("2_4yy0k")]
+[node name="Head" parent="." instance=ExtResource("2_8gck2")]
 layout_mode = 0
 
 [node name="Menu" type="ColorRect" parent="."]
@@ -23,19 +23,19 @@ offset_right = 1152.0
 offset_bottom = 100.0
 color = Color(0.376471, 0.72549, 0.698039, 1)
 
-[node name="AddSections" type="Button" parent="Menu"]
+[node name="Transaction" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 9.5
-offset_right = 154.0
+offset_right = 321.0
 offset_bottom = 40.5
-text = "Создать раздел"
+text = "Перенести средства между счетами"
 
 [node name="CashFlow" type="Button" parent="Menu"]
 layout_mode = 0
-offset_left = 174.0
+offset_left = 341.0
 offset_top = 9.5
-offset_right = 412.0
+offset_right = 579.0
 offset_bottom = 40.5
 text = "Записать движение средств"
 
@@ -45,93 +45,65 @@ offset_top = 100.0
 offset_right = 1152.0
 offset_bottom = 215.0
 color = Color(0.627451, 0.913725, 0.894118, 1)
-script = ExtResource("3_42u4g")
-OB_items = {
-"ConsumptionIncome": {
-"1": "s.month_limit>=0 AND s.income=0",
-"2": "s.income=1",
-"3": "s.month_limit=-1"
-},
-"Order": {
-"0": "last_date DESC",
-"1": "id",
-"2": "title",
-"3": "value",
-"4": "value DESC",
-"5": "month_limit",
-"filter": "order"
-}
-}
+script = ExtResource("3_8gck2")
 
-[node name="Title" type="TextEdit" parent="Filter"]
-clip_contents = false
+[node name="Wallet" type="OptionButton" parent="Filter"]
 layout_mode = 0
-offset_left = 180.0
-offset_top = 23.0
-offset_right = 484.0
-offset_bottom = 54.0
-autowrap_mode = 1
-scroll_past_end_of_file = true
-
-[node name="Label" type="Label" parent="Filter/Title"]
-layout_mode = 0
-offset_left = 10.0
-offset_top = -24.0
-offset_right = 262.0
-offset_bottom = -1.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Фрагмент названия"
-vertical_alignment = 1
-
-[node name="ConsumptionIncome" type="OptionButton" parent="Filter"]
-layout_mode = 0
-offset_left = 504.0
-offset_top = 23.0
-offset_right = 808.0
-offset_bottom = 54.0
+offset_left = 21.0
+offset_top = 24.0
+offset_right = 377.0
+offset_bottom = 55.0
 alignment = 1
 selected = 0
-item_count = 4
-popup/item_0/text = "Все типы"
+item_count = 1
 popup/item_0/id = 0
-popup/item_1/text = "Расходы"
-popup/item_1/id = 1
-popup/item_2/text = "Доходы"
-popup/item_2/id = 2
-popup/item_3/text = "Займы"
-popup/item_3/id = 3
 
-[node name="Label" type="Label" parent="Filter/ConsumptionIncome"]
+[node name="Label" type="Label" parent="Filter/Wallet"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = -24.0
 offset_right = 262.0
 offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Тип статьи"
+text = "Имя счёта"
+vertical_alignment = 1
+
+[node name="Section" type="OptionButton" parent="Filter"]
+layout_mode = 0
+offset_left = 398.0
+offset_top = 24.0
+offset_right = 754.0
+offset_bottom = 55.0
+alignment = 1
+selected = 0
+item_count = 1
+popup/item_0/id = 0
+
+[node name="Label" type="Label" parent="Filter/Section"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Статья"
 vertical_alignment = 1
 
 [node name="Order" type="OptionButton" parent="Filter"]
 layout_mode = 0
-offset_left = 828.0
-offset_top = 23.0
-offset_right = 1132.0
-offset_bottom = 54.0
+offset_left = 775.0
+offset_top = 24.0
+offset_right = 1131.0
+offset_bottom = 55.0
 alignment = 1
 selected = 0
-item_count = 6
-popup/item_0/text = "По дате последней транзакций"
+item_count = 3
+popup/item_0/text = "По дате добавления"
 popup/item_0/id = 0
-popup/item_1/text = "По дате добавления"
+popup/item_1/text = "По статье"
 popup/item_1/id = 1
-popup/item_2/text = "По алфавиту"
+popup/item_2/text = "По сумме трензакции"
 popup/item_2/id = 2
-popup/item_3/text = "По возрастанию суммы"
-popup/item_3/id = 3
-popup/item_4/text = "По убыванию суммы"
-popup/item_4/id = 4
-popup/item_5/text = "По ежемесячному лимиту"
-popup/item_5/id = 5
 
 [node name="Label" type="Label" parent="Filter/Order"]
 layout_mode = 0
@@ -145,10 +117,10 @@ vertical_alignment = 1
 
 [node name="Year" type="OptionButton" parent="Filter"]
 layout_mode = 0
-offset_left = 180.0
-offset_top = 76.0
-offset_right = 484.0
-offset_bottom = 107.0
+offset_left = 21.0
+offset_top = 77.0
+offset_right = 377.0
+offset_bottom = 108.0
 alignment = 1
 item_count = 1
 popup/item_0/id = 0
@@ -165,10 +137,10 @@ vertical_alignment = 1
 
 [node name="Month" type="OptionButton" parent="Filter"]
 layout_mode = 0
-offset_left = 504.0
-offset_top = 76.0
-offset_right = 808.0
-offset_bottom = 107.0
+offset_left = 398.0
+offset_top = 77.0
+offset_right = 754.0
+offset_bottom = 108.0
 alignment = 1
 selected = 0
 item_count = 12
@@ -209,27 +181,26 @@ vertical_alignment = 1
 
 [node name="Button" type="Button" parent="Filter"]
 layout_mode = 0
-offset_left = 828.0
-offset_top = 76.0
-offset_right = 1132.0
-offset_bottom = 107.0
+offset_left = 775.0
+offset_top = 77.0
+offset_right = 1131.0
+offset_bottom = 108.0
 text = "Применить"
 
-[node name="PieChart" parent="." instance=ExtResource("4_4yy0k")]
+[node name="Schedule" parent="." instance=ExtResource("3_mkcc5")]
 layout_mode = 0
-offset_left = 32.25
-offset_top = 105.0
-offset_right = 147.75
-offset_bottom = 210.0
+offset_top = 215.0
+offset_right = 1152.0
+offset_bottom = 335.0
 
-[node name="ObjArray" parent="." instance=ExtResource("4_21h3v")]
+[node name="ObjArray" parent="." instance=ExtResource("4_tbl8u")]
 layout_mode = 0
-offset_top = 220.0
+offset_top = 340.0
 offset_right = 1152.0
 offset_bottom = 643.0
-obj = 2
+obj = 3
 
-[connection signal="button_down" from="Menu/AddSections" to="." method="_on_add_sections_button_down"]
+[connection signal="button_down" from="Menu/Transaction" to="." method="_on_transaction_button_down"]
 [connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
 [connection signal="item_selected" from="Filter/Year" to="Filter" method="_on_year_item_selected"]
 [connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]
