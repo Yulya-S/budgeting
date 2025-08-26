@@ -1,7 +1,7 @@
 extends Control
 # Подключение путей к объектам в сцене
-@onready var Budget = $ScrollContainer/VBoxContainer/Information/Budget/Value
-@onready var CashFlow = $ScrollContainer/VBoxContainer/Information/CashFlow/Value
+@onready var Budget = $Menu/Budget
+@onready var CashFlow = $Menu/CashFlow
 @onready var ObjectsSection = $ScrollContainer/VBoxContainer/Sections/ObjArray
 
 # Создание главной страницы

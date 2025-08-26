@@ -1,13 +1,13 @@
 extends Control
 # Подключение пути к объектам в сцене
-@onready var Total = $Total
+#@onready var Total = $Total
 @onready var Objects = $ObjArray
 
 # Подключение сигнала
 func _ready() -> void: Global.emit_signal("update_page")
 
 # Изменение значения итоговой суммы по счетам
-func update_page() -> void: Total.set_text(str(Request.select(Request.Tables.LOANS, "COALESCE(SUM(total), 0) value")[0].value))
+# func update_page() -> void: Total.set_text(str(Request.select(Request.Tables.LOANS, "COALESCE(SUM(total), 0) value")[0].value))
 
 # Обработка нажатия кнопки создания нового займа
 func _on_add_loan_button_down() -> void: Global.emit_signal("open_window", Global.Pages.LOAN)

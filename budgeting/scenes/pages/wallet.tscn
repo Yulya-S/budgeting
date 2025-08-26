@@ -1,11 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c01ukoc123grl"]
+[gd_scene load_steps=4 format=3 uid="uid://c01ukoc123grl"]
 
 [ext_resource type="Script" uid="uid://cs4wnmk22cw27" path="res://scripts/pages/wallet.gd" id="1_xahbi"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_v2g8m"]
-[ext_resource type="Texture2D" uid="uid://dok2udq5yy5ho" path="res://img/add/add_wallet.png" id="3_h71wg"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_v2g8m"]
-[ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="4_h71wg"]
-[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="5_v2g8m"]
 
 [node name="Wallets" type="Control"]
 layout_mode = 3
@@ -17,12 +14,45 @@ script = ExtResource("1_xahbi")
 [node name="Head" parent="." instance=ExtResource("2_v2g8m")]
 layout_mode = 0
 
+[node name="Menu" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 50.0
+offset_right = 1152.0
+offset_bottom = 100.0
+color = Color(0.376471, 0.72549, 0.698039, 1)
+
+[node name="AddWallet" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 9.5
+offset_right = 133.0
+offset_bottom = 40.5
+tooltip_text = "Создать счет"
+text = "Создать счет"
+
+[node name="Transaction" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 153.0
+offset_top = 9.5
+offset_right = 464.0
+offset_bottom = 40.5
+text = "Переносить средства между счетами"
+
+[node name="CashFlow" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 484.0
+offset_top = 9.5
+offset_right = 722.0
+offset_bottom = 40.5
+text = "Записать движение средств"
+
 [node name="Filters" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(1152, 65)
-offset_top = 60.0
+layout_mode = 0
+offset_top = 100.0
 offset_right = 1152.0
-offset_bottom = 125.0
-color = Color(0.405473, 0.704353, 0.680819, 1)
+offset_bottom = 165.0
+color = Color(0.627451, 0.913725, 0.894118, 1)
 
 [node name="Title" type="TextEdit" parent="Filters"]
 clip_contents = false
@@ -82,69 +112,10 @@ text = "Применить"
 
 [node name="ObjArray" parent="." instance=ExtResource("3_v2g8m")]
 layout_mode = 0
-offset_top = 130.0
+offset_top = 170.0
 offset_right = 1152.0
-offset_bottom = 598.0
+offset_bottom = 643.0
 
-[node name="Footer" type="ColorRect" parent="."]
-layout_mode = 0
-offset_top = 598.0
-offset_right = 1152.0
-offset_bottom = 648.0
-color = Color(0.286275, 0.545098, 0.52549, 1)
-
-[node name="AddWallet" type="Button" parent="Footer"]
-layout_mode = 0
-offset_left = 1017.0
-offset_top = 5.0
-offset_right = 1145.0
-offset_bottom = 133.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Создать счет"
-icon = ExtResource("3_h71wg")
-
-[node name="Transaction" type="Button" parent="Footer"]
-layout_mode = 0
-offset_left = 1062.0
-offset_top = 5.0
-offset_right = 1190.0
-offset_bottom = 133.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Переносить средства между счетами"
-icon = ExtResource("4_h71wg")
-
-[node name="CashFlow" type="Button" parent="Footer"]
-layout_mode = 0
-offset_left = 1107.0
-offset_top = 5.0
-offset_right = 1235.0
-offset_bottom = 133.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Записать движение средств"
-icon = ExtResource("5_v2g8m")
-
-[node name="Total" type="Label" parent="Footer"]
-layout_mode = 2
-offset_left = 180.0
-offset_top = 5.0
-offset_right = 421.0
-offset_bottom = 45.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "0.0"
-vertical_alignment = 1
-
-[node name="Label" type="Label" parent="Footer/Total"]
-layout_mode = 2
-offset_left = -175.0
-offset_right = -5.0
-offset_bottom = 40.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Итоговая сумма:"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[connection signal="button_down" from="Footer/AddWallet" to="." method="_on_add_wallet_button_down"]
-[connection signal="button_down" from="Footer/Transaction" to="." method="_on_transaction_button_down"]
-[connection signal="button_down" from="Footer/CashFlow" to="." method="_on_cash_flow_button_down"]
+[connection signal="button_down" from="Menu/AddWallet" to="." method="_on_add_wallet_button_down"]
+[connection signal="button_down" from="Menu/Transaction" to="." method="_on_transaction_button_down"]
+[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]

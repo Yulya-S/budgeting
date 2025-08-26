@@ -1,11 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://kdy6ds4fx23h"]
+[gd_scene load_steps=5 format=3 uid="uid://kdy6ds4fx23h"]
 
 [ext_resource type="Script" uid="uid://kbdd4pa6livs" path="res://scripts/pages/cash_flow.gd" id="1_2tflp"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_8gck2"]
 [ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="3_mkcc5"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_tbl8u"]
-[ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="5_8gck2"]
-[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="6_ampir"]
 
 [node name="CashFlow" type="Control"]
 layout_mode = 3
@@ -17,12 +15,35 @@ script = ExtResource("1_2tflp")
 [node name="Head" parent="." instance=ExtResource("2_8gck2")]
 layout_mode = 0
 
+[node name="Menu" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 50.0
+offset_right = 1152.0
+offset_bottom = 100.0
+color = Color(0.376471, 0.72549, 0.698039, 1)
+
+[node name="Transaction" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 9.5
+offset_right = 321.0
+offset_bottom = 40.5
+text = "Перенести средства между счетами"
+
+[node name="CashFlow" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 341.0
+offset_top = 9.5
+offset_right = 579.0
+offset_bottom = 40.5
+text = "Записать движение средств"
+
 [node name="Filters" type="ColorRect" parent="."]
 layout_mode = 0
-offset_top = 60.0
+offset_top = 100.0
 offset_right = 1152.0
-offset_bottom = 175.0
-color = Color(0.405473, 0.704353, 0.680819, 1)
+offset_bottom = 215.0
+color = Color(0.627451, 0.913725, 0.894118, 1)
 
 [node name="Wallet" type="OptionButton" parent="Filters"]
 layout_mode = 0
@@ -67,6 +88,7 @@ text = "Статья"
 vertical_alignment = 1
 
 [node name="Order" type="OptionButton" parent="Filters"]
+layout_mode = 0
 offset_left = 775.0
 offset_top = 24.0
 offset_right = 1131.0
@@ -165,45 +187,18 @@ text = "Применить"
 
 [node name="Schedule" parent="." instance=ExtResource("3_mkcc5")]
 layout_mode = 0
-offset_top = 180.0
+offset_top = 215.0
 offset_right = 1152.0
-offset_bottom = 300.0
+offset_bottom = 335.0
 
 [node name="ObjArray" parent="." instance=ExtResource("4_tbl8u")]
 layout_mode = 0
-offset_top = 305.0
+offset_top = 340.0
 offset_right = 1152.0
-offset_bottom = 598.0
+offset_bottom = 643.0
 obj = 3
 
-[node name="Footer" type="ColorRect" parent="."]
-layout_mode = 0
-offset_top = 598.0
-offset_right = 1152.0
-offset_bottom = 648.0
-color = Color(0.286275, 0.545098, 0.52549, 1)
-
-[node name="Transaction" type="Button" parent="Footer"]
-layout_mode = 0
-offset_left = 1062.0
-offset_top = 5.0
-offset_right = 1190.0
-offset_bottom = 133.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Переносить средства между счетами"
-icon = ExtResource("5_8gck2")
-
-[node name="CashFlow" type="Button" parent="Footer"]
-layout_mode = 0
-offset_left = 1107.0
-offset_top = 5.0
-offset_right = 1235.0
-offset_bottom = 133.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Записать движение средств"
-icon = ExtResource("6_ampir")
-
+[connection signal="button_down" from="Menu/Transaction" to="." method="_on_transaction_button_down"]
+[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
 [connection signal="item_selected" from="Filters/Year" to="." method="_on_year_item_selected"]
 [connection signal="button_down" from="Filters/Button" to="." method="_on_filter_button_down"]
-[connection signal="button_down" from="Footer/Transaction" to="." method="_on_transaction_button_down"]
-[connection signal="button_down" from="Footer/CashFlow" to="." method="_on_cash_flow_button_down"]

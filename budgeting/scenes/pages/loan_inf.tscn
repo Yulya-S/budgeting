@@ -1,12 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://fwrl2jqi85wt"]
+[gd_scene load_steps=5 format=3 uid="uid://fwrl2jqi85wt"]
 
 [ext_resource type="Script" uid="uid://cm8lyl8iebiv" path="res://scripts/pages/loan_inf.gd" id="1_730se"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_730se"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_36teq"]
 [ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="4_lickx"]
-[ext_resource type="Texture2D" uid="uid://bx52yefh7t80p" path="res://img/update/update_loan.png" id="5_1y1g5"]
-[ext_resource type="Texture2D" uid="uid://cgrjoxjtjep5j" path="res://img/add/percent.png" id="6_36teq"]
-[ext_resource type="Texture2D" uid="uid://6w1jiyvu1gij" path="res://img/add/payment.png" id="7_lickx"]
 
 [node name="LoanInf" type="Control"]
 layout_mode = 3
@@ -19,33 +16,71 @@ table = 3
 [node name="Head" parent="." instance=ExtResource("2_730se")]
 layout_mode = 0
 
-[node name="Label" type="Label" parent="."]
+[node name="Menu" type="ColorRect" parent="."]
 layout_mode = 0
-offset_left = 233.0
-offset_top = 66.5
-offset_right = 1098.0
-offset_bottom = 101.5
+offset_top = 50.0
+offset_right = 1152.0
+offset_bottom = 100.0
+color = Color(0.376471, 0.72549, 0.698039, 1)
+
+[node name="Update" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 9.5
+offset_right = 148.0
+offset_bottom = 40.5
+text = "Изменить займ"
+
+[node name="AddInterest" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 9.5
+offset_right = 426.0
+offset_bottom = 40.5
+text = "Добавить проценты по займу"
+
+[node name="AddPayment" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 446.0
+offset_top = 9.5
+offset_right = 597.0
+offset_bottom = 40.5
+text = "Добавить платёж"
+
+[node name="Label" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 100.0
+offset_right = 1152.0
+offset_bottom = 156.0
+color = Color(0.627451, 0.913725, 0.894118, 1)
+
+[node name="Label" type="Label" parent="Label"]
+layout_mode = 0
+offset_left = 230.0
+offset_top = 9.0
+offset_right = 1095.0
+offset_bottom = 49.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
 text = "Информация о займе"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Back" type="Button" parent="."]
+[node name="Back" type="Button" parent="Label"]
 layout_mode = 0
-offset_left = 21.0
-offset_top = 64.0
-offset_right = 149.0
-offset_bottom = 192.0
+offset_left = 20.0
+offset_top = 9.0
+offset_right = 148.0
+offset_bottom = 137.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Назад"
 icon = ExtResource("4_lickx")
 
 [node name="Info" type="ColorRect" parent="."]
 layout_mode = 0
-offset_top = 118.0
+offset_top = 156.0
 offset_right = 1152.0
-offset_bottom = 164.0
+offset_bottom = 202.0
 color = Color(0.873298, 0.873299, 0.873298, 1)
 
 [node name="Title" type="Label" parent="Info"]
@@ -102,16 +137,16 @@ vertical_alignment = 1
 
 [node name="ObjArray" parent="." instance=ExtResource("3_36teq")]
 layout_mode = 0
-offset_top = 174.0
+offset_top = 207.0
 offset_right = 1152.0
-offset_bottom = 469.0
+offset_bottom = 518.0
 obj = 3
 
 [node name="Schedule" type="ColorRect" parent="."]
 layout_mode = 2
-offset_top = 469.0
+offset_top = 523.0
 offset_right = 1152.0
-offset_bottom = 593.0
+offset_bottom = 647.0
 color = Color(0.737193, 0.737193, 0.737193, 1)
 
 [node name="Label" type="Label" parent="Schedule"]
@@ -132,44 +167,7 @@ text = "График погашения займа"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Footer" type="ColorRect" parent="."]
-layout_mode = 0
-offset_top = 598.0
-offset_right = 1152.0
-offset_bottom = 648.0
-color = Color(0.286275, 0.545098, 0.52549, 1)
-
-[node name="Update" type="Button" parent="Footer"]
-layout_mode = 0
-offset_left = 1017.0
-offset_top = 5.0
-offset_right = 1145.0
-offset_bottom = 133.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Изменить займ"
-icon = ExtResource("5_1y1g5")
-
-[node name="AddInterest" type="Button" parent="Footer"]
-layout_mode = 0
-offset_left = 1062.0
-offset_top = 5.0
-offset_right = 1190.0
-offset_bottom = 133.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Добавить проценты по займу"
-icon = ExtResource("6_36teq")
-
-[node name="AddPayment" type="Button" parent="Footer"]
-layout_mode = 0
-offset_left = 1107.0
-offset_top = 5.0
-offset_right = 1235.0
-offset_bottom = 133.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Добавить платёж"
-icon = ExtResource("7_lickx")
-
-[connection signal="button_down" from="Back" to="." method="_on_back_button_down"]
-[connection signal="button_down" from="Footer/Update" to="." method="_on_update_button_down"]
-[connection signal="button_down" from="Footer/AddInterest" to="." method="_on_cash_flow_button_down"]
-[connection signal="button_down" from="Footer/AddPayment" to="." method="_on_transactions_button_down"]
+[connection signal="button_down" from="Menu/Update" to="." method="_on_update_button_down"]
+[connection signal="button_down" from="Menu/AddInterest" to="." method="_on_cash_flow_button_down"]
+[connection signal="button_down" from="Menu/AddPayment" to="." method="_on_transactions_button_down"]
+[connection signal="button_down" from="Label/Back" to="." method="_on_back_button_down"]
