@@ -1,10 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bxbo401tituxp"]
+[gd_scene load_steps=5 format=3 uid="uid://bxbo401tituxp"]
 
 [ext_resource type="Script" uid="uid://cfajdl5x507of" path="res://scripts/pages/basic.gd" id="1_eejbm"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_mrggl"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_ii1de"]
-[ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/graphics/pie_chart.tscn" id="4_kcgbp"]
-[ext_resource type="Script" uid="uid://b01ab17o3eu6h" path="res://scripts/fragments/sections_total.gd" id="6_uj7m6"]
 [ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="6_yvt7d"]
 
 [node name="Basic" type="Control"]
@@ -70,133 +68,57 @@ offset_bottom = 643.0
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="Control" type="Control" parent="ScrollContainer/VBoxContainer"]
+[node name="Wallets" type="Control" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
-
-[node name="Wallets" type="ColorRect" parent="ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(1060, 106)
-layout_mode = 2
-color = Color(0.817521, 0.817521, 0.817521, 1)
 
 [node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Wallets"]
 layout_mode = 2
 offset_left = 25.0
-offset_top = -38.0
+offset_top = 12.0
 offset_right = 1147.0
-offset_bottom = -10.0
+offset_bottom = 40.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Список счетов"
 
 [node name="ObjArray" parent="ScrollContainer/VBoxContainer/Wallets" instance=ExtResource("3_ii1de")]
 layout_mode = 0
-offset_top = 5.0
+offset_top = 55.0
 offset_right = 1152.0
-offset_bottom = 106.0
+offset_bottom = 156.0
 
-[node name="Schedule" type="ColorRect" parent="ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(1152, 135)
+[node name="Line2D" type="Line2D" parent="ScrollContainer/VBoxContainer/Wallets"]
+position = Vector2(0, 160)
+points = PackedVector2Array(0, 0, 1152, 0)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Schedule" type="Control" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
-color = Color(0.815686, 0.815686, 0.815686, 1)
 
 [node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Schedule"]
 layout_mode = 2
 offset_left = 25.0
-offset_top = -38.0
-offset_right = 1152.0
-offset_bottom = -10.0
+offset_top = 12.0
+offset_right = 1147.0
+offset_bottom = 40.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Распределение движений средств за текущий месяц"
 
 [node name="Schedule" parent="ScrollContainer/VBoxContainer/Schedule" instance=ExtResource("6_yvt7d")]
 layout_mode = 0
-offset_top = 5.0
+offset_top = 55.0
 offset_right = 1152.0
-offset_bottom = 130.0
+offset_bottom = 180.0
 
-[node name="Sections" type="Control" parent="ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(1060, 134)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Sections"]
-layout_mode = 2
-offset_left = 25.0
-offset_top = -38.0
-offset_right = 1152.0
-offset_bottom = -10.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Превышение затрат"
-
-[node name="Background" type="ColorRect" parent="ScrollContainer/VBoxContainer/Sections"]
-layout_mode = 2
-offset_right = 1152.0
-offset_bottom = 106.0
-color = Color(0.817521, 0.817521, 0.817521, 1)
-
-[node name="PieChart" parent="ScrollContainer/VBoxContainer/Sections" instance=ExtResource("4_kcgbp")]
-visible = false
-offset_left = 946.0
-offset_top = -248.0
-offset_right = 1029.0
-offset_bottom = -165.0
-
-[node name="ObjArray" parent="ScrollContainer/VBoxContainer/Sections" instance=ExtResource("3_ii1de")]
-layout_mode = 0
-offset_top = 5.0
-offset_right = 1152.0
-offset_bottom = 106.0
-obj = 2
-
-[node name="SectionsTotal" type="ColorRect" parent="ScrollContainer/VBoxContainer/Sections"]
-custom_minimum_size = Vector2(0, 23)
-layout_mode = 2
-offset_top = 111.0
-offset_right = 1060.0
-offset_bottom = 134.0
-color = Color(0.956863, 0.956863, 0.956863, 1)
-script = ExtResource("6_uj7m6")
-
-[node name="Border" type="ColorRect" parent="ScrollContainer/VBoxContainer/Sections/SectionsTotal"]
-layout_mode = 0
-offset_left = 216.0
-offset_top = 7.0
-offset_right = 401.0
-offset_bottom = 20.0
-mouse_filter = 1
-color = Color(0.728822, 0.728822, 0.728822, 1)
-
-[node name="ColorRect" type="ColorRect" parent="ScrollContainer/VBoxContainer/Sections/SectionsTotal/Border"]
-layout_mode = 0
-offset_bottom = 13.0
-mouse_filter = 1
-color = Color(0.298524, 0.598649, 0.412661, 1)
-
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Sections/SectionsTotal"]
-layout_mode = 0
-offset_left = 5.0
-offset_right = 56.0
-offset_bottom = 23.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Итог:"
-
-[node name="Value" type="Label" parent="ScrollContainer/VBoxContainer/Sections/SectionsTotal"]
-layout_mode = 0
-offset_left = 56.0
-offset_right = 211.0
-offset_bottom = 23.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Текущие затраты"
-horizontal_alignment = 2
-
-[node name="Max" type="Label" parent="ScrollContainer/VBoxContainer/Sections/SectionsTotal"]
-layout_mode = 0
-offset_left = 406.0
-offset_right = 618.0
-offset_bottom = 23.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Суммарное ограничение"
+[node name="Line2D" type="Line2D" parent="ScrollContainer/VBoxContainer/Schedule"]
+position = Vector2(0, 180)
+points = PackedVector2Array(0, 0, 1152, 0)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
 
 [node name="ColorRect2" type="ColorRect" parent="ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(1060, 106)
