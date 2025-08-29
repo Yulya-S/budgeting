@@ -96,7 +96,7 @@ func select(table, columns: String = "*", where: String = "", order: String = ""
 
 # Проверка достаточно ли данных в базе для создания движения средств
 func select_possibility_opening_cashFlow() -> bool:
-	return len(Request.select(Request.Tables.WALLETS)) != 0 and len(Request.select(Request.Tables.SECTIONS)) > 3
+	return len(select(Tables.WALLETS)) != 0 and len(select(Tables.SECTIONS)) > 3
 
 # Получение текущего суммарного бюджета
 func select_budget() -> float:
@@ -162,7 +162,7 @@ func select_sections(where: String = "", date: String = Time.get_datetime_string
 		(SELECT cf.date FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+" ORDER BY cf.date DESC) last_date", where, order)
 
 # Получение названия объекта под определенным индексом
-func _select_title(table: Tables, id: int) -> String: return Request.select(table, "title", "id="+str(id))[0].title
+func _select_title(table: Tables, id: int) -> String: return select(table, "title", "id="+str(id))[0].title
 
 # Получение списка движений средств
 func select_cash_flows(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
@@ -172,11 +172,11 @@ func select_cash_flows(where: String = "", date: String = Time.get_datetime_stri
 	var values: Array = select("`cash_flows` cf", "cf.*, s.title, w.title wallet_title", where, order, "sections s ON cf.section_id=s.id LEFT JOIN wallets w ON cf.wallet_id=w.id")
 	for i in range(len(values)):
 		match values[i].section_id:
-			1: values[i]["wallet_2_title"] = _select_title(Request.Tables.WALLETS, values[i].wallet_2_id)
-			2: values[i]["wallet_2_title"] = _select_title(Request.Tables.LOANS, values[i].wallet_2_id)
+			1: values[i]["wallet_2_title"] = _select_title(Tables.WALLETS, values[i].wallet_2_id)
+			2: values[i]["wallet_2_title"] = _select_title(Tables.LOANS, values[i].wallet_2_id)
 			3:
 				values[i]["wallet_2_title"] = values[i].wallet_title
-				values[i].wallet_title = _select_title(Request.Tables.LOANS, values[i].wallet_2_id)
+				values[i].wallet_title = _select_title(Tables.LOANS, values[i].wallet_2_id)
 				var save_id: int = values[i].wallet_id
 				values[i].wallet_id = values[i].wallet_2_id
 				values[i].wallet_2_id = save_id
@@ -196,17 +196,25 @@ func select_loan_list(where: String = "", order: String = "") -> Array:
 	if order != "": order = " ORDER BY " + order
 	db.query("SELECT l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=3 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id"+where+order+";")
 	return db.query_result
+
+# Получение информации об объекте с учетом возможности его отсутствия
+func select_inf_value(table: Tables, id: int) -> Dictionary:
+	var value: Array = select(table, "*", "id="+str(id))
+	if len(value) == 0: return {}
+	return value[0]
 	
 # Получение информации о займе
 func select_loan_inf(id: int) -> Dictionary:
-	var value: Dictionary = Request.select(Request.Tables.LOANS, "*", "id="+str(id))[0]
-	value["value"] = Request.select(Request.Tables.CASH_FLOWS, "*", "section_id=3 AND wallet_2_id="+str(id))[0].value
+	var value: Dictionary = select_inf_value(Tables.LOANS, id)
+	if value == {}: return value
+	value["value"] = select(Tables.CASH_FLOWS, "*", "section_id=3 AND wallet_2_id="+str(id))[0].value
 	return value
 	
 # Получение информации о счёте
 func select_wallet_inf(id: int) -> Dictionary:
-	var value: Dictionary = Request.select(Request.Tables.WALLETS, "*", "id="+str(id))[0]
-	var total: Array = Request.select_wallets_movement(id)
+	var value: Dictionary = select_inf_value(Tables.WALLETS, id)
+	if value == {}: return value
+	var total: Array = select_wallets_movement(id)
 	value["total_count"] = total[0]
 	value["total_value"] = total[1]
 	return value

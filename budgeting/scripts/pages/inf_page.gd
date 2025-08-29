@@ -20,7 +20,8 @@ func update_page() -> void:
 	table_name[-1] = "_"
 	if not id: return
 	var value: Dictionary = Request.call("select_"+table_name+"inf", id)
-	_replace_values(Info, value)
+	if value == {}: _on_back_button_down()
+	else: _replace_values(Info, value)
 
 # Изменение текстовых значений в сцене
 func _replace_values(obj, value: Dictionary) -> void:
@@ -30,6 +31,7 @@ func _replace_values(obj, value: Dictionary) -> void:
 
 # Обработка нажатия кнопки возврата к списку счетов
 func _on_back_button_down() -> void:
+	if not get_parent(): return
 	self.queue_free()
 	get_parent().remove_child(self)
 	Global.emit_signal("update_page")
