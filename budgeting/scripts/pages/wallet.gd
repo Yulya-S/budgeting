@@ -1,6 +1,5 @@
 extends Control
 # Подключение пути к объектам в сцене
-#@onready var Total = $Footer/Total
 @onready var Filter = $Filter
 @onready var Objects = $ObjArray
 
@@ -8,9 +7,6 @@ extends Control
 func _ready() -> void:
 	Filter.get_filter()
 	Global.emit_signal("update_page")
-
-# Изменение значения итоговой суммы по счетам
-#func update_page() -> void: Total.set_text(str(Request.select(Request.Tables.WALLETS, "COALESCE(SUM(value), 0) value")[0].value))
 
 # Обработка нажатия кнопки создания нового счета
 func _on_add_wallet_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET)

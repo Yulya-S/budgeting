@@ -1,34 +1,39 @@
 extends CreationWindow
 # Подключение пути к объектам в сцене
-@onready var ConsumptionIncome = $ConsumptionIncome
+@onready var Income = $Income
+@onready var Title = $Title
+@onready var MonthLimit = $Month_Limit
+
+# Переменная
+var ml_value: String = "0.0"
 
 # Изменение информации о счете
-func set_object(obj_id: int, _parent = null) -> void:
-	var value: Array = _get_obj_data(obj_id)
-	if len(value) < 0: return
-	ConsumptionIncome.disabled = id != null
-	ConsumptionIncome.button_pressed = value[0].income
-	Title.set_text(value[0].title)
-	Value.set_text(str(value[0].month_limit))
+func set_object(obj_id: int, parent = null) -> void:
+	super.set_object(obj_id, parent)
+	if "-1" in MonthLimit.get_text(): $Window.on_close_button_down()
 
 # Проверка введенных данных
-func check_object() -> bool:
-	Error.visible = super.check_object()
-	var values = Request.select(table, "id", 'title="'+Title.get_text()+'" AND income='+str(int(ConsumptionIncome.button_pressed)))
-	# Проверка заполнения полей
-	if Value.get_text() == "": Global.set_error(Error, "Поле значения должно быть заполнено")
-	elif float(Value.get_text()) <= 0 and not ConsumptionIncome.button_pressed:
-		Global.set_error(Error, "Значение должно быть больше нуля")
-	return _set_error(values)
+func check_object(new_circle: bool = true) -> bool:
+	Error.visible = not new_circle
+	if float(MonthLimit.get_text()) <= 0 and not Income.button_pressed: Global.set_error(Error, "Значение должно быть больше нуля")
+	super.check_object(not Error.visible)
+	return _set_error(Request.select(table, "id", 'title="'+Title.get_text()+'" AND income='+str(int(Income.button_pressed))))
 	
 # Изменение значения типа статьи
 func _on_consumption_income_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		ConsumptionIncome.set_text("Доход")
-		if not Value.get_text(): Value.set_text("0.0")
-	else: ConsumptionIncome.set_text("Расход")
-	Value.visible = ConsumptionIncome.get_text() == "Расход"
+	Income.set_text("Доход" if toggled_on else "Расход")
+	if toggled_on: ml_value = MonthLimit.get_text()
+	else: MonthLimit.set_text(ml_value)
+	if not MonthLimit.get_text() or toggled_on: MonthLimit.set_text("0.0")
+	MonthLimit.visible = not Income.button_pressed
+	check_object()
+
+# Изменение значения названия кошелька
+func _on_title_text_changed() -> void:
+	Global.text_changed_TextEdit(Title)
 	check_object()
 	
-# Обработка нажатия кнопки сохранения счета
-func _on_apply_button_down() -> void: apply_change([int(ConsumptionIncome.button_pressed)])
+# Изменение значения счета
+func _on_month_limit_text_changed() -> void:
+	Global.text_changed_TextEdit(MonthLimit, true)
+	check_object()

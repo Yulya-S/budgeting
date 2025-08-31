@@ -1,9 +1,12 @@
-[gd_scene format=3 uid="uid://2ktjulcaj65p"]
+[gd_scene load_steps=2 format=3 uid="uid://2ktjulcaj65p"]
+
+[ext_resource type="Script" uid="uid://bhrlbgv3vu8ub" path="res://scripts/windows/fragments/window.gd" id="1_0gtsr"]
 
 [node name="Window" type="ColorRect"]
 offset_right = 1152.0
 offset_bottom = 648.0
 color = Color(0, 0, 0, 0.501961)
+script = ExtResource("1_0gtsr")
 
 [node name="Border" type="ColorRect" parent="."]
 layout_mode = 0
@@ -19,3 +22,37 @@ offset_left = 110.0
 offset_top = 60.0
 offset_right = 1042.0
 offset_bottom = 588.0
+
+[node name="Delete" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 160.0
+offset_top = 538.0
+offset_right = 470.0
+offset_bottom = 580.0
+theme_override_font_sizes/font_size = 24
+text = "Удалить"
+
+[node name="Apply" type="Button" parent="."]
+layout_mode = 0
+offset_left = 682.0
+offset_top = 538.0
+offset_right = 992.0
+offset_bottom = 580.0
+theme_override_font_sizes/font_size = 24
+text = "Сохранить"
+
+[node name="Close" type="Button" parent="."]
+layout_mode = 0
+offset_left = 998.0
+offset_top = 54.0
+offset_right = 1048.0
+offset_bottom = 96.0
+tooltip_text = "Отменить изменения"
+theme_override_constants/outline_size = 14
+theme_override_font_sizes/font_size = 24
+text = "X"
+
+[connection signal="button_down" from="Delete" to="." method="_on_delete_button_down"]
+[connection signal="button_down" from="Apply" to="." method="_on_apply_button_down"]
+[connection signal="button_down" from="Close" to="." method="on_close_button_down"]

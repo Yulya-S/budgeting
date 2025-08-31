@@ -1,18 +1,19 @@
 extends CreationWindow
-
-# Изменение информации о счете
-func set_object(obj_id: int, _parent = null) -> void:
-	var value: Array = _get_obj_data(obj_id)
-	if len(value) < 0: return
-	Value.editable = id == null
-	Title.set_text(value[0].title)
-	Value.set_text(str(value[0].value))
-
-# Проверка введенных данных
+# Подключение путей к объектам в 
+@onready var Title = $Title
+@onready var Value = $Value
+	
+	# Проверка введенных данных
 func check_object() -> bool:
-	Error.visible = super.check_object()
-	var values = Request.select(table, "id", 'title="'+Title.get_text()+'"')
-	return _set_error(values)
+	super.check_object()
+	return _set_error(Request.select(table, "id", 'title="'+Title.get_text()+'"'))
 
-# Обработка нажатия кнопки сохранения счета
-func _on_apply_button_down() -> void: apply_change()
+# Изменение значения названия кошелька
+func _on_title_text_changed() -> void:
+	Global.text_changed_TextEdit(Title)
+	check_object()
+	
+# Изменение значения счета
+func _on_value_text_changed() -> void:
+	Global.text_changed_TextEdit(Value, true)
+	check_object()
