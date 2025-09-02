@@ -13,8 +13,8 @@ func set_object(obj_id: int, parent = null) -> void:
 	if "-1" in MonthLimit.get_text(): $Window.on_close_button_down()
 
 # Проверка введенных данных
-func check_object(new_circle: bool = true) -> bool:
-	Error.visible = not new_circle
+func check_object(_new_circle: bool = true) -> bool:
+	Error.visible = false
 	if float(MonthLimit.get_text()) <= 0 and not Income.button_pressed: Global.set_error(Error, "Значение должно быть больше нуля")
 	super.check_object(not Error.visible)
 	return _set_error(Request.select(table, "id", 'title="'+Title.get_text()+'" AND income='+str(int(Income.button_pressed))))
@@ -26,14 +26,4 @@ func _on_consumption_income_toggled(toggled_on: bool) -> void:
 	else: MonthLimit.set_text(ml_value)
 	if not MonthLimit.get_text() or toggled_on: MonthLimit.set_text("0.0")
 	MonthLimit.visible = not Income.button_pressed
-	check_object()
-
-# Изменение значения названия кошелька
-func _on_title_text_changed() -> void:
-	Global.text_changed_TextEdit(Title)
-	check_object()
-	
-# Изменение значения счета
-func _on_month_limit_text_changed() -> void:
-	Global.text_changed_TextEdit(MonthLimit, true)
 	check_object()

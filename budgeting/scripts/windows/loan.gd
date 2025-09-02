@@ -1,5 +1,7 @@
 extends CreationWindow
 # Подключение путей к объектам в сцене
+@onready var Title = $Title
+@onready var Value = $Value
 @onready var Wallet = $Wallet
 @onready var Note = $Note
 @onready var Date = $DateSelection
@@ -47,7 +49,7 @@ func _on_wallet_item_selected(index: int) -> void:
 	check_object()
 
 # Проверка заполненности полей
-func check_object() -> bool:
+func check_object(_new_circle: bool = true) -> bool:
 	Error.visible = super.check_object()
 	if Value.get_text() == "": Global.set_error(Error, "Значение не должно быть пустым")
 	elif float(Value.get_text()) <= 0: Global.set_error(Error, "Значение должно быть больше нуля")

@@ -14,7 +14,8 @@ var id = null # Индекс изменяемого объекта
 func set_object(obj_id: int, _parent = null) -> void:
 	id = obj_id
 	Delete.visible = true
-	var value: Array = Request.select(table, "*", "id="+str(id))
+	if "@" in name: name = get_parent().get_child(-2).name.to_lower()
+	var value: Array = Request.call("select_"+name.to_lower(), id)
 	if len(value) < 0: return
 	set_values(value[0])
 
@@ -58,4 +59,19 @@ func create_update() -> void:
 
 # Удаление объекта
 func delete_obj() -> void: Request.delete(table, id)
+
+# Изменение значения названия кошелька
+func _on_title_text_changed() -> void:
+	Global.text_changed_TextEdit($Title)
+	check_object()
+	
+# Изменение значения счета
+func _on_value_text_changed() -> void:
+	Global.text_changed_TextEdit($Value, true)
+	check_object()
+	
+# Изменение значения счета
+func _on_month_limit_text_changed() -> void:
+	Global.text_changed_TextEdit($Month_Limit, true)
+	check_object()
 			

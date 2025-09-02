@@ -218,3 +218,9 @@ func select_wallet_inf(id: int) -> Dictionary:
 	value["total_count"] = total[0]
 	value["total_value"] = total[1]
 	return value
+
+# Получение кошелька по индексу
+func select_wallet(id: int) -> Array: return select(Tables.WALLETS, "*", "id="+str(id))
+
+# Получение кошелька по индексу
+func select_section(id: int) -> Array: return select(Tables.SECTIONS, "*", "id="+str(id))
