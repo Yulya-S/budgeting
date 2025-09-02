@@ -105,16 +105,6 @@ offset_right = 693.0
 offset_bottom = 504.0
 wrap_mode = 1
 
-[node name="DateLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 709.0
-offset_top = 130.0
-offset_right = 857.0
-offset_bottom = 158.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Дата:"
-
 [node name="DateSelection" parent="." instance=ExtResource("2_kl61x")]
 layout_mode = 0
 offset_left = 709.0
@@ -122,39 +112,6 @@ offset_top = 163.0
 offset_right = 999.0
 offset_bottom = 473.0
 
-[node name="Delete" type="Button" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 160.0
-offset_top = 538.0
-offset_right = 470.0
-offset_bottom = 580.0
-theme_override_font_sizes/font_size = 24
-text = "Удалить операцию"
-
-[node name="Apply" type="Button" parent="."]
-layout_mode = 0
-offset_left = 682.0
-offset_top = 538.0
-offset_right = 992.0
-offset_bottom = 580.0
-theme_override_font_sizes/font_size = 24
-text = "Сохранить операцию"
-
-[node name="Close" type="Button" parent="."]
-layout_mode = 0
-offset_left = 998.0
-offset_top = 54.0
-offset_right = 1048.0
-offset_bottom = 96.0
-tooltip_text = "Отменить изменения"
-theme_override_constants/outline_size = 14
-theme_override_font_sizes/font_size = 24
-text = "X"
-
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
 [connection signal="item_selected" from="Wallet" to="." method="_on_wallet_item_selected"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
-[connection signal="button_down" from="Delete" to="." method="_on_delete_button_down"]
-[connection signal="button_down" from="Apply" to="." method="_on_apply_button_down"]
-[connection signal="button_down" from="Close" to="." method="_on_close_button_down"]
