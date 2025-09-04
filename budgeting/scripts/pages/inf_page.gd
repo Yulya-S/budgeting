@@ -15,7 +15,8 @@ func set_object(obj_id: int, _parent = null) -> void:
 	Global.emit_signal("update_page")
 
 # Заполнение данных на странице
-func update_page() -> void:
+func update_page(close: bool = false) -> void:
+	if close: _on_back_button_down()
 	var table_name: String = Global.enum_key(Request.Tables, table)
 	table_name[-1] = "_"
 	if not id: return

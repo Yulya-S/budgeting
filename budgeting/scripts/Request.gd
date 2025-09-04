@@ -26,7 +26,7 @@ func create_tables() -> void:
 	_create_table("wallets", "title VARCHAR(255), value FLOAT")
 	_create_table("sections", "title VARCHAR(255), month_limit FLOAT, income BOOLEAN")
 	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)",	"FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`section_id`) REFERENCES `sections`(`id`)")
-	_create_table("loans", "title VARCHAR(255), date DATE, total FLOAT")
+	_create_table("loans", "title VARCHAR(255), total FLOAT, date DATE")
 	_create_table("events", "title VARCHAR(255), date DATE, note VARCHAR(255)")
 	if len(select(Tables.SECTIONS)) != 0: return
 	for i in ["Переводы", "Платежи", "Заём"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
@@ -80,7 +80,7 @@ func update_record(table, id: int, values: Array) -> void:
 func delete(table, id: int) -> void:
 	db.query("DELETE FROM `"+_get_table_name(table)+"` WHERE id="+str(id)+";")
 	update(Tables.SQLITE_SEQUENCE, "seq=seq-1", 'name="'+_get_table_name(table)+'"')
-	update(Tables.WALLETS, "id=id-1", "id>"+str(id))
+	update(table, "id=id-1", "id>"+str(id))
 
 # Сборка даты
 func where_date(date: String = Time.get_datetime_string_from_system(), column: String = "date") -> String:
@@ -101,7 +101,7 @@ func select_possibility_opening_cashFlow() -> bool:
 # Получение текущего суммарного бюджета
 func select_budget() -> float:
 	var wallets_sum: float = select(Tables.WALLETS, "COALESCE(SUM(value), 0) value")[0].value
-	return wallets_sum + (select(Tables.LOANS, "COALESCE(SUM(total), 0) value")[0].value * 2.)
+	return wallets_sum - (select(Tables.LOANS, "COALESCE(SUM(total), 0) value")[0].value)
 
 # Запрос на получение суммы и количества транзакций сгруппированных по разделам
 func select_sections_cash_movement(id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
@@ -222,5 +222,8 @@ func select_wallet_inf(id: int) -> Dictionary:
 # Получение кошелька по индексу
 func select_wallet(id: int) -> Array: return select(Tables.WALLETS, "*", "id="+str(id))
 
-# Получение кошелька по индексу
+# Получение раздела по индексу
 func select_section(id: int) -> Array: return select(Tables.SECTIONS, "*", "id="+str(id))
+
+# Получение займа по индексу
+func select_loan(id: int) -> Array: return select("cash_flows cf", "cf.*, l.title", "section_id=3 AND wallet_2_id="+str(id), "", "loans l ON l.id=wallet_2_id")

@@ -2,7 +2,7 @@ extends Node
 # Сигналы
 signal open_window(page: Pages, id, dir: Dirs, parent) # Открытие окна
 signal open_new_page(page: Pages, id, parent) # Открытие окна с предварительной очисткой
-signal update_page() # Обновление данных на странице
+signal update_page(close: bool) # Обновление данных на странице
 
 # Перечисления
 enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, TRANSFER, WALLET_INF, LOAN_INF} # Страницы приложения

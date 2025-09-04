@@ -48,11 +48,11 @@ func select() -> Array:
 	return []
 
 # Заполнение страницы
-func update_page():
+func update_page(close: bool = false):
 	for i in Objects.get_children():
 		i.queue_free()
 		Objects.remove_child(i)
 	Objects.add_child(obj_path.instantiate())
 	Objects.get_child(-1).color = Color.html("#dfdfdf")
 	lines = select()
-	if get_parent().get("update_page"): get_parent().update_page()
+	if get_parent().get("update_page"): get_parent().update_page(close)
