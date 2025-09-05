@@ -35,7 +35,7 @@ func create_update() -> void:
 	var values: Array = get_values()
 	var loan_values: Array = []
 	for i in range(3): loan_values.append(values[i+1])
-	values.insert(2, 3)
+	values.insert(2, 2)
 	_update_wallet_value()
 	if id: _back_wallet_value()
 	if id:
@@ -53,4 +53,4 @@ func delete_obj() -> void:
 	var loan_id: int = get_loan_id()
 	Request.delete(table, loan_id)
 	Request.delete(Request.Tables.CASH_FLOWS, id)
-	Request.update(Request.Tables.CASH_FLOWS, "wallet_2_id=wallet_2_id-1", "section_id IN (2, 3) AND wallet_2_id>"+str(loan_id))
+	Request.update(Request.Tables.CASH_FLOWS, "wallet_2_id=wallet_2_id-1", "section_id IN (2, 3, 4) AND wallet_2_id>"+str(loan_id))

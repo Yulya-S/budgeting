@@ -29,7 +29,7 @@ func create_tables() -> void:
 	_create_table("loans", "title VARCHAR(255), total FLOAT, date DATE")
 	_create_table("events", "title VARCHAR(255), date DATE, note VARCHAR(255)")
 	if len(select(Tables.SECTIONS)) != 0: return
-	for i in ["Переводы", "Платежи", "Заём"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
+	for i in ["Переводы", "Заём", "Платежи по займам", "Проценты по займу"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
 	
 # Получить название таблицы из enum Tables
 func _get_table_name(table) -> String:
@@ -144,7 +144,7 @@ func select_wallets_movement(id: int, date: String = Time.get_datetime_string_fr
 func select_wallets_list(where: String, order: String) -> Array:
 	if where: where = " WHERE "+where
 	if order: order = " ORDER BY "+order
-	db.query("""SELECT *, (SELECT cf.date FROM cash_flows cf WHERE (cf.section_id NOT IN (2, 3)
+	db.query("""SELECT *, (SELECT cf.date FROM cash_flows cf WHERE (cf.section_id NOT IN (2, 3, 4)
 		AND cf.wallet_2_id=w.id) OR cf.wallet_id=w.id ORDER BY cf.date DESC) last_date FROM wallets w"""+where+order+";")
 	var wallets: Array = db.query_result
 	for i in range(len(wallets)): wallets[i]["cash_flow"] = select_wallets_movement(wallets[i].id)[0]
@@ -173,20 +173,20 @@ func select_cash_flows(where: String = "", date: String = Time.get_datetime_stri
 	for i in range(len(values)):
 		match values[i].section_id:
 			1: values[i]["wallet_2_title"] = _select_title(Tables.WALLETS, values[i].wallet_2_id)
-			2: values[i]["wallet_2_title"] = _select_title(Tables.LOANS, values[i].wallet_2_id)
-			3:
+			2:
 				values[i]["wallet_2_title"] = values[i].wallet_title
 				values[i].wallet_title = _select_title(Tables.LOANS, values[i].wallet_2_id)
 				var save_id: int = values[i].wallet_id
 				values[i].wallet_id = values[i].wallet_2_id
 				values[i].wallet_2_id = save_id
+			3: values[i]["wallet_2_title"] = _select_title(Tables.LOANS, values[i].wallet_2_id)
 	return values
 
 # Получение суммы движений средств распределенных по дням
 func select_daily_transactions(where: String, date: String = Time.get_datetime_string_from_system()) -> Array:
 	if where != "": where = " WHERE " + where
-	db.query("""SELECT COALESCE(SUM(value), 0) value, strftime('%d', date) day FROM (SELECT cf.date, CASE WHEN cf.section_id = 1 THEN 0
-		WHEN cf.section_id = 2 THEN cf.value * -1 WHEN s.income = 0 AND s.month_limit<>-1 THEN cf.value * -1 ELSE cf.value END value FROM cash_flows cf
+	db.query("""SELECT COALESCE(SUM(value), 0) value, strftime('%d', date) day FROM (SELECT cf.date, CASE WHEN cf.section_id IN (1, 4) THEN 0
+		WHEN cf.section_id = 3 THEN cf.value * -1 WHEN s.income = 0 AND s.month_limit<>-1 THEN cf.value * -1 ELSE cf.value END value FROM cash_flows cf
 		LEFT JOIN sections s ON cf.section_id=s.id"""+where+") WHERE "+where_date(date)+" GROUP BY date")
 	return db.query_result
 	
@@ -194,7 +194,7 @@ func select_daily_transactions(where: String, date: String = Time.get_datetime_s
 func select_loan_list(where: String = "", order: String = "") -> Array:
 	if where != "": where = " WHERE " + where
 	if order != "": order = " ORDER BY " + order
-	db.query("SELECT l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=3 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id"+where+order+";")
+	db.query("SELECT l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=2 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id"+where+order+";")
 	return db.query_result
 
 # Получение информации об объекте с учетом возможности его отсутствия
@@ -207,7 +207,7 @@ func select_inf_value(table: Tables, id: int) -> Dictionary:
 func select_loan_inf(id: int) -> Dictionary:
 	var value: Dictionary = select_inf_value(Tables.LOANS, id)
 	if value == {}: return value
-	value["value"] = select(Tables.CASH_FLOWS, "*", "section_id=3 AND wallet_2_id="+str(id))[0].value
+	value["value"] = select(Tables.CASH_FLOWS, "*", "section_id=2 AND wallet_2_id="+str(id))[0].value
 	return value
 	
 # Получение информации о счёте
@@ -226,4 +226,4 @@ func select_wallet(id: int) -> Array: return select(Tables.WALLETS, "*", "id="+s
 func select_section(id: int) -> Array: return select(Tables.SECTIONS, "*", "id="+str(id))
 
 # Получение займа по индексу
-func select_loan(id: int) -> Array: return select("cash_flows cf", "cf.*, l.title", "section_id=3 AND wallet_2_id="+str(id), "", "loans l ON l.id=wallet_2_id")
+func select_loan(id: int) -> Array: return select("cash_flows cf", "cf.*, l.title", "section_id=2 AND wallet_2_id="+str(id), "", "loans l ON l.id=wallet_2_id")

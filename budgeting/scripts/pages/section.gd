@@ -10,7 +10,7 @@ func _ready() -> void:
 	Global.emit_signal("update_page")
 
 # Изменение данных на графике
-func update_page(): PieChart.set_values(Request.select_sections(Filter.filter.where, Filter.filter.date, Filter.filter.order))
+func update_page(_close: bool = false): PieChart.set_values(Request.select_sections(Filter.filter.where, Filter.filter.date, Filter.filter.order))
 	
 # Обработка нажатия кнопки создания нового счета
 func _on_add_sections_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SECTION)
