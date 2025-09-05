@@ -38,7 +38,7 @@ func get_values() -> Array:
 			"Value", "Month_Limit": values.append(float(i.get_text()))
 			"Income": values.append(int(i.button_pressed))
 			"Date": values.append('"'+i.get_date()+'"')
-			"Wallet_Id": values.append(Global.get_OB_id(i))
+			"Wallet_Id", "Wallet", "Extra": values.append(Global.get_OB_id(i))
 	return values
 	
 # Проверка введенных данных

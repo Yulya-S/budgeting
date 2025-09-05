@@ -96,7 +96,7 @@ func select(table, columns: String = "*", where: String = "", order: String = ""
 
 # Проверка достаточно ли данных в базе для создания движения средств
 func select_possibility_opening_cashFlow() -> bool:
-	return len(select(Tables.WALLETS)) != 0 and len(select(Tables.SECTIONS)) > 3
+	return len(select(Tables.WALLETS)) != 0 and len(select(Tables.SECTIONS)) > 4
 
 # Получение текущего суммарного бюджета
 func select_budget() -> float:
