@@ -159,7 +159,8 @@ func select_general_wallets_movement() -> float:
 # Получение списка разделов
 func select_sections(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
 	return select("`sections` s", "*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+""") value,
-		(SELECT cf.date FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+" ORDER BY cf.date DESC) last_date", where, order)
+		(SELECT cf.date FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+""" ORDER BY cf.date DESC) last_date,
+		(SELECT cf.id FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+" ORDER BY cf.date DESC) last_id", where, order)
 
 # Получение названия объекта под определенным индексом
 func _select_title(table: Tables, id: int) -> String: return select(table, "title", "id="+str(id))[0].title
@@ -215,8 +216,8 @@ func select_wallet_inf(id: int) -> Dictionary:
 	var value: Dictionary = select_inf_value(Tables.WALLETS, id)
 	if value == {}: return value
 	var total: Array = select_wallets_movement(id)
-	value["total_count"] = total[0]
-	value["total_value"] = total[1]
+	value["total_value"] = total[0]
+	value["total_count"] = total[1]
 	return value
 
 # Получение кошелька по индексу

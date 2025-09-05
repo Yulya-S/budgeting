@@ -53,7 +53,7 @@ OB_items = {
 "3": "s.month_limit=-1"
 },
 "Order": {
-"0": "last_date DESC",
+"0": "last_date DESC, last_id DESC",
 "1": "id",
 "2": "title",
 "3": "value",
