@@ -17,4 +17,4 @@ func _on_cash_flow_button_down() -> void:
 
 # Обработка нажатия кнопки переноса средств между счетами
 func _on_transaction_button_down() -> void:
-	if Objects.obj_count() > 1: Global.emit_signal("open_window", Global.Pages.TRANSFER)
+	if Objects.obj_count() > 2: Global.emit_signal("open_window", Global.Pages.TRANSFER)

@@ -14,19 +14,19 @@ class_name Movement
 func _ready() -> void:
 	Global.fill_optionButton(Wallet, Request.select(Request.Tables.WALLETS))
 	Global.fill_optionButton(Extra, Request.select(second_table))
-	_on_wallet_item_selected()
-	_on_extra_item_selected()
+	_on_wallet_item_selected(0, false)
+	_on_extra_item_selected(0, false)
 	
 # Изменение объекта
 func set_object(obj_id, parent = null) -> void:
 	if obj_id is Array:
-		_on_wallet_item_selected(obj_id[0])
-		_on_extra_item_selected(obj_id[1])
+		_on_wallet_item_selected(obj_id[0], false)
+		_on_extra_item_selected(obj_id[1], false)
 		return
 	match parent:
-		Request.Tables.WALLETS:	_on_wallet_item_selected(obj_id) 
+		Request.Tables.WALLETS:	_on_wallet_item_selected(obj_id, false) 
 		null: set_all(obj_id)
-		_: _on_extra_item_selected(obj_id) 
+		_: _on_extra_item_selected(obj_id, false) 
 
 # Изменение всей информации об объекте
 func set_all(obj_id: int) -> void:
@@ -58,20 +58,20 @@ func check_object(_new_circle: bool = true) -> bool:
 func _extra_errors() -> bool: return Error.visible
 
 # Изменение выбранного счета
-func _on_wallet_item_selected(index: int = 0) -> void:
+func _on_wallet_item_selected(index: int = 0, check: bool = true) -> void:
 	Wallet.selected = index
 	set_wallet(index)
-	check_object()
+	if check: check_object()
 
 # Изменение информации о счете
 func set_wallet(wallet_idx: int = 0) -> void:
 	Count.set_text(str(Request.select(Request.Tables.WALLETS, "*", "id="+str(Global.get_OB_id(Wallet)))[0].value))
 
 # Изменение выбранного дополнительного параметра
-func _on_extra_item_selected(index: int = 0) -> void:
+func _on_extra_item_selected(index: int = 0, check: bool = true) -> void:
 	Extra.selected = index
 	set_extra(index)
-	check_object()
+	if check: check_object()
 
 # Изменение информации о дополнительном параметре
 func set_extra(_extra_idx: int = 0) -> void: pass
