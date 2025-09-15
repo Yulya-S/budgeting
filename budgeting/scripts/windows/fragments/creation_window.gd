@@ -16,7 +16,8 @@ func set_object(obj_id: int, _parent = null) -> void:
 	Delete.visible = true
 	if "@" in name: name = get_parent().get_child(-2).name.to_lower().replace("inf", "")
 	var value: Array = Request.call("select_"+name.to_lower(), id)
-	if len(value) < 0: return
+	if len(value) <= 0: return
+	id = value[0].id
 	set_values(value[0])
 
 # Изменение данных на странице
@@ -81,4 +82,4 @@ func _on_month_limit_text_changed() -> void:
 	check_object()
 
 # Изменение выбранного счета
-func _on_wallet_item_selected(index: int) -> void: check_object()
+func _on_wallet_item_selected(_index: int) -> void: check_object()

@@ -45,14 +45,14 @@ theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
 theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 
-[node name="Wallet" type="OptionButton" parent="."]
+[node name="Wallet_Id" type="OptionButton" parent="."]
 layout_mode = 0
 offset_left = 320.0
 offset_top = 153.0
 offset_right = 693.0
 offset_bottom = 184.0
 
-[node name="Label" type="Label" parent="Wallet"]
+[node name="Label" type="Label" parent="Wallet_Id"]
 layout_mode = 0
 offset_left = -210.0
 offset_right = -5.0
@@ -139,6 +139,6 @@ offset_right = 693.0
 offset_bottom = 504.0
 wrap_mode = 1
 
-[connection signal="item_selected" from="Wallet" to="." method="_on_wallet_item_selected"]
+[connection signal="item_selected" from="Wallet_Id" to="." method="_on_wallet_item_selected"]
 [connection signal="item_selected" from="Extra" to="." method="_on_extra_item_selected"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]

@@ -1,6 +1,6 @@
 extends Node
 # Перечисление
-enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, PAYMENTS, SQLITE_SEQUENCE} # Таблицы в базе данных
+enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, SQLITE_SEQUENCE} # Таблицы в базе данных
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -97,6 +97,10 @@ func select(table, columns: String = "*", where: String = "", order: String = ""
 # Проверка достаточно ли данных в базе для создания движения средств
 func select_possibility_opening_cashFlow() -> bool:
 	return len(select(Tables.WALLETS)) != 0 and len(select(Tables.SECTIONS)) > 4
+
+# Проверка достаточно ли данных в базе для создания платежа и добавления процентов по займу
+func select_possibility_opening_payment() -> bool:
+	return len(select(Tables.WALLETS)) != 0 and len(select(Tables.LOANS, "*", "total>0")) != 0
 
 # Получение текущего суммарного бюджета
 func select_budget() -> float:

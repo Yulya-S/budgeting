@@ -48,7 +48,7 @@ color = Color(0.627451, 0.913725, 0.894118, 1)
 script = ExtResource("3_8gck2")
 OB_items = {
 "Order": {
-"0": "cf.date DESC",
+"0": "cf.date DESC, cf.id DESC",
 "1": "s.title",
 "2": "cf.value",
 "3": "cf.value DESC",

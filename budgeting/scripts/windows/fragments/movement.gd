@@ -2,7 +2,7 @@ extends CreationWindow
 class_name Movement
 # Подключение путей к объектам в сцене
 @onready var Count = $Count
-@onready var Wallet = $Wallet
+@onready var Wallet = $Wallet_Id
 @onready var Extra = $Extra
 @onready var Value = $Value
 
@@ -39,13 +39,13 @@ func set_all(obj_id: int) -> void:
 # Изменение данных на странице
 func set_values(data: Dictionary) -> void:
 	for i in get_children():
-		if i.name.to_lower() not in data.keys(): continue
+		if i.name.to_lower() not in data.keys() + ["extra"]: continue
 		match i.get_class():
 			"TextEdit": i.set_text(str(data[i.name.to_lower()]))
 			"ColorRect": if i.name == "Date": i.set_date(data[i.name.to_lower()])
 			"OptionButton":
-				if i.name == "Extra": i.selected = data[second_column] - 1
-				else: i.selected = data.wallet_id - 1
+				if i.name == "Extra": _on_extra_item_selected(data[second_column] - 1, false)
+				else: _on_wallet_item_selected(data.wallet_id - 1, false)
 
 # Проверка заполненности полей
 func check_object(_new_circle: bool = true) -> bool:
@@ -64,7 +64,7 @@ func _on_wallet_item_selected(index: int = 0, check: bool = true) -> void:
 	if check: check_object()
 
 # Изменение информации о счете
-func set_wallet(wallet_idx: int = 0) -> void:
+func set_wallet(_wallet_idx: int = 0) -> void:
 	Count.set_text(str(Request.select(Request.Tables.WALLETS, "*", "id="+str(Global.get_OB_id(Wallet)))[0].value))
 
 # Изменение выбранного дополнительного параметра

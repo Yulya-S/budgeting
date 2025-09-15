@@ -2,10 +2,10 @@ extends Node
 # Сигналы
 signal open_window(page: Pages, id, dir: Dirs, parent) # Открытие окна
 signal open_new_page(page: Pages, id, parent) # Открытие окна с предварительной очисткой
-signal update_page(close: bool) # Обновление данных на странице
+signal update_page(close_page: String) # Обновление данных на странице
 
 # Перечисления
-enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, TRANSFER, WALLET_INF, LOAN_INF} # Страницы приложения
+enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, TRANSFER, PAYMENT, WALLET_INF, LOAN_INF} # Страницы приложения
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
@@ -65,5 +65,6 @@ func text_changed_TextEdit(container: TextEdit, is_numeric: bool = false) -> voi
 
 # Заполнение выпадающего списка объектами
 func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool = true) -> void:
+	if not container: return
 	if clear_OB: container.clear()
 	for i in objects: container.add_item(i.title, i.id)

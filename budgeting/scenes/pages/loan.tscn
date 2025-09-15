@@ -155,4 +155,5 @@ offset_bottom = 643.0
 obj = 4
 
 [connection signal="button_down" from="Menu/AddLoan" to="." method="_on_add_loan_button_down"]
+[connection signal="button_down" from="Menu/AddPayment" to="." method="_on_add_payment_button_down"]
 [connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]

@@ -12,5 +12,7 @@ func set_values(data: Dictionary) -> void:
 		2:
 			WalletTitle.next_page = Global.Pages.LOAN_INF
 			Title.next_page = Global.Pages.LOAN
-		3: pass
+		3:
+			Wallet2Title.next_page = Global.Pages.LOAN_INF
+			Title.next_page = Global.Pages.PAYMENT
 	if data.get("wallet_2_title"): Wallet2Title.get_child(0).visible = true

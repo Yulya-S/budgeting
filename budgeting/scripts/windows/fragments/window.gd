@@ -14,7 +14,7 @@ func _on_apply_button_down() -> void:
 # Обработка нажатия кнопки удаления
 func _on_delete_button_down() -> void:
 	get_parent().delete_obj()
-	Global.emit_signal("update_page", true)
+	Global.emit_signal("update_page", get_parent().name)
 	on_close_button_down()
 
 # Отправка сигнала о изменении объекта

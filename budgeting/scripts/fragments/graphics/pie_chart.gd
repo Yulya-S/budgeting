@@ -25,6 +25,7 @@ func _draw() -> void:
 		var new_color: Color = ColorScheme.get_color(i, len(values) - 1.)
 		if higliter_idx == i: new_color = Color.AQUAMARINE
 		var arc_size: float = (values[i] * 360.) / sum
+		if arc_size < 2: continue
 		# Отрисовка секции
 		draw_arc(Vector2(radius, radius), (radius/2.)+2., deg_to_rad(deg-2.), deg_to_rad(deg+arc_size+2.), int(arc_size+4), Color.BLACK, radius)
 		draw_arc(Vector2(radius, radius), radius/2., deg_to_rad(deg), deg_to_rad(deg+arc_size), int(arc_size), new_color, radius)
