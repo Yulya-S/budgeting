@@ -13,3 +13,6 @@ func _on_update_button_down() -> void: Global.emit_signal("open_window", Global.
 
 # Обработка нажатия кнопки погашения займа
 func _on_add_payment_button_down() -> void: Global.emit_signal("open_window", Global.Pages.PAYMENT, id, Global.Dirs.WINDOWS, Request.Tables.LOANS)
+
+# Обработка нажатия кнопки добавления процентов по займу
+func _on_add_interest_button_down() -> void: Global.emit_signal("open_window", Global.Pages.PERCENT, id, Global.Dirs.WINDOWS, Request.Tables.LOANS)

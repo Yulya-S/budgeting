@@ -168,5 +168,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [connection signal="button_down" from="Menu/Update" to="." method="_on_update_button_down"]
+[connection signal="button_down" from="Menu/AddInterest" to="." method="_on_add_interest_button_down"]
 [connection signal="button_down" from="Menu/AddPayment" to="." method="_on_add_payment_button_down"]
 [connection signal="button_down" from="Label/Back" to="." method="_on_back_button_down"]

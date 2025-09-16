@@ -37,10 +37,7 @@ func check_object(_new_circle: bool = true) -> bool:
 	Error.visible = false
 	if float(Count.get_text().split(" ")[0]) <= 0: Global.set_error(Error, "Значение должно быть больше нуля")
 	super.check_object(not Error.visible)
-	return _extra_errors()
-	
-# Проведение дополнительных проверок на верность данных
-func _extra_errors() -> bool: return Error.visible
+	return Error.visible
 
 # Установка текста результата добавления процентов по займу
 func set_result() -> void:
@@ -49,7 +46,7 @@ func set_result() -> void:
 
 # Изменение выбранного дополнительного параметра
 func _on_loan_item_selected(index: int = 0, check: bool = true) -> void:
-	Loan.selected = index
+	Loan.selected = Request.select(Request.Tables.LOANS, "COUNT(id) id", "total>0 and id<"+str(index))[0].id
 	set_result()
 	if check: check_object()
 	
