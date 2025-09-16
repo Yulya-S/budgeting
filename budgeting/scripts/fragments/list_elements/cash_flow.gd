@@ -15,4 +15,8 @@ func set_values(data: Dictionary) -> void:
 		3:
 			Wallet2Title.next_page = Global.Pages.LOAN_INF
 			Title.next_page = Global.Pages.PAYMENT
-	if data.get("wallet_2_title"): Wallet2Title.get_child(0).visible = true
+		4:
+			WalletTitle.set_text("")
+			Wallet2Title.next_page = Global.Pages.LOAN_INF
+			Title.next_page = Global.Pages.PERCENT
+	if data.get("wallet_2_title") and data.section_id != 4: Wallet2Title.get_child(0).visible = true

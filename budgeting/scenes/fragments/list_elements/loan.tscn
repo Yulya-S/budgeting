@@ -22,7 +22,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Название займа"
 script = ExtResource("2_13s73")
-next_page = 8
+next_page = 9
 
 [node name="Wallet_Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)

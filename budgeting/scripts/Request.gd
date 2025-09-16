@@ -184,7 +184,7 @@ func select_cash_flows(where: String = "", date: String = Time.get_datetime_stri
 				var save_id: int = values[i].wallet_id
 				values[i].wallet_id = values[i].wallet_2_id
 				values[i].wallet_2_id = save_id
-			3: values[i]["wallet_2_title"] = _select_title(Tables.LOANS, values[i].wallet_2_id)
+			3, 4: values[i]["wallet_2_title"] = _select_title(Tables.LOANS, values[i].wallet_2_id)
 	return values
 
 # Получение суммы движений средств распределенных по дням
