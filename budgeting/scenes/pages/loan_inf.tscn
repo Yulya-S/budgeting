@@ -56,9 +56,9 @@ color = Color(0.627451, 0.913725, 0.894118, 1)
 
 [node name="Label" type="Label" parent="Label"]
 layout_mode = 0
-offset_left = 230.0
+offset_left = 225.0
 offset_top = 9.0
-offset_right = 1095.0
+offset_right = 507.0
 offset_bottom = 49.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
@@ -134,6 +134,25 @@ theme_override_font_sizes/font_size = 20
 text = "Изначальная сумма"
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="Percents" type="Label" parent="Info"]
+layout_mode = 0
+offset_left = 1004.0
+offset_top = -47.0
+offset_right = 1145.0
+offset_bottom = -12.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "0.0%"
+
+[node name="Ladel" type="Label" parent="Info/Percents"]
+layout_mode = 0
+offset_left = -351.0
+offset_right = -5.0
+offset_bottom = 35.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "Средний процент по займу"
 
 [node name="ObjArray" parent="." instance=ExtResource("3_36teq")]
 layout_mode = 0

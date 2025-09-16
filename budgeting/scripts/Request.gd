@@ -213,6 +213,7 @@ func select_loan_inf(id: int) -> Dictionary:
 	var value: Dictionary = select_inf_value(Tables.LOANS, id)
 	if value == {}: return value
 	value["value"] = select(Tables.CASH_FLOWS, "*", "section_id=2 AND wallet_2_id="+str(id))[0].value
+	value["percents"] = str(select_loan_percent(id)) + "%"
 	return value
 	
 # Получение информации о счёте
@@ -232,3 +233,21 @@ func select_section(id: int) -> Array: return select(Tables.SECTIONS, "*", "id="
 
 # Получение займа по индексу
 func select_loan(id: int) -> Array: return select("cash_flows cf", "cf.*, l.title", "section_id=2 AND wallet_2_id="+str(id), "", "loans l ON l.id=wallet_2_id")
+
+# Получение среднего процента по займу при учете процесса погашения займа
+func select_loan_percent(id: int) -> int:
+	db.query("SELECT * FROM cash_flows WHERE section_id IN (2, 3, 4) AND wallet_2_id="+str(id)+" ORDER BY date")
+	var summ: float = 0.0
+	var percents: Array = []
+	for i in db.query_result:
+		match i.section_id:
+			2: summ = i.value
+			3: summ -= i.value
+			4:
+				percents.append((i.value * 100.) / summ)
+				summ += i.value
+	if len(percents) == 0: return 0
+	var result: float = 0
+	for i in percents:
+		result += i
+	return int(round(result / len(percents)))
