@@ -97,7 +97,7 @@ scale = Vector2(0.31, 0.31)
 tooltip_text = "Кредиты"
 icon = ExtResource("6_cpvs2")
 
-[node name="Calendar" type="Button" parent="."]
+[node name="Event" type="Button" parent="."]
 layout_mode = 0
 offset_left = 320.0
 offset_top = 5.0
@@ -170,5 +170,5 @@ offset_bottom = 648.0
 [connection signal="button_down" from="Section" to="." method="_on_section_button_down"]
 [connection signal="button_down" from="Flow" to="." method="_on_flow_button_down"]
 [connection signal="button_down" from="Loan" to="." method="_on_loan_button_down"]
-[connection signal="button_down" from="Calendar" to="." method="_on_calendar_button_down"]
+[connection signal="button_down" from="Event" to="." method="_on_event_button_down"]
 [connection signal="button_down" from="Report" to="." method="_on_report_button_down"]

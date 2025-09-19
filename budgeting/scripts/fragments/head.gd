@@ -24,7 +24,7 @@ func _on_flow_button_down() -> void: Global.emit_signal("open_new_page", Global.
 func _on_loan_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.LOAN)
 
 # Обработка нажатия кнопки событий 
-func _on_calendar_button_down() -> void: pass
+func _on_event_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.EVENT)
 
 # Обработка нажатия кнопки отчетов 
 func _on_report_button_down() -> void: pass

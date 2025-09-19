@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://1o8fdt54m50i"]
+
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/fragment.gd" id="1_f8bn8"]
+[ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_7rb7u"]
+
+[node name="Event" type="ColorRect"]
+custom_minimum_size = Vector2(969, 23)
+offset_right = 969.0
+offset_bottom = 23.0
+mouse_filter = 1
+color = Color(0.955963, 0.955963, 0.955963, 1)
+script = ExtResource("1_f8bn8")
+
+[node name="Title" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 0
+offset_left = 10.0
+offset_right = 479.5
+offset_bottom = 23.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Название займа"
+script = ExtResource("2_7rb7u")
+next_page = 5
+next_page_dir = 1
+
+[node name="Date" type="Label" parent="."]
+layout_mode = 0
+offset_left = 490.0
+offset_right = 959.5
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Дата"
+horizontal_alignment = 2
+
+[connection signal="mouse_entered" from="Title" to="Title" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Title" to="Title" method="_on_mouse_exited"]

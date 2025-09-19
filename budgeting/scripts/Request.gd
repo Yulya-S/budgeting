@@ -1,6 +1,6 @@
 extends Node
 # Перечисление
-enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, SQLITE_SEQUENCE} # Таблицы в базе данных
+enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SQLITE_SEQUENCE} # Таблицы в базе данных
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -201,6 +201,14 @@ func select_loan_list(where: String = "", order: String = "") -> Array:
 	if order != "": order = " ORDER BY " + order
 	db.query("SELECT l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=2 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id"+where+order+";")
 	return db.query_result
+	
+# Получение списка событий
+func select_events(where: String, date: String, order: String) -> Array:
+	if where != "": where = " WHERE " + where
+	if order != "": order = " ORDER BY " + order
+	db.query("SELECT *, CASE WHEN strftime('%m-%d',date)<strftime('%m-%d','"+date+\
+		"') THEN id+(SELECT seq FROM sqlite_sequence WHERE name='events') ELSE id END new_id FROM events"+where+order)
+	return db.query_result
 
 # Получение информации об объекте с учетом возможности его отсутствия
 func select_inf_value(table: Tables, id: int) -> Dictionary:
@@ -233,6 +241,9 @@ func select_section(id: int) -> Array: return select(Tables.SECTIONS, "*", "id="
 
 # Получение займа по индексу
 func select_loan(id: int) -> Array: return select("cash_flows cf", "cf.*, l.title", "section_id=2 AND wallet_2_id="+str(id), "", "loans l ON l.id=wallet_2_id")
+
+# Получение события по индексу
+func select_event(id: int) -> Array: return select(Tables.EVENTS, "*", "id="+str(id))
 
 # Получение среднего процента по займу при учете процесса погашения займа
 func select_loan_percent(id: int) -> int:

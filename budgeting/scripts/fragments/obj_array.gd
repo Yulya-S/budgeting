@@ -6,7 +6,7 @@ extends ScrollContainer
 @export var obj: ListObjects = ListObjects.WALLET # Выбранный объект списка
 
 # Перечисление
-enum ListObjects {WALLET, WALLET_TRANSACTION, SECTION, CASH_FLOW, LOAN} # Объекты списка
+enum ListObjects {WALLET, WALLET_TRANSACTION, SECTION, CASH_FLOW, LOAN, EVENT} # Объекты списка
 
 # Переменные
 var data: Dictionary = {"where": "", "date": Time.get_date_string_from_system(), "order": ""} # Фрагменты запроса
@@ -45,6 +45,7 @@ func select() -> Array:
 		ListObjects.LOAN: return Request.select_loan_list(data.where, data.order)
 		ListObjects.SECTION: return Request.select_sections(data.where, data.date, data.order)
 		ListObjects.CASH_FLOW: return Request.select_cash_flows(data.where, data.date, data.order)
+		ListObjects.EVENT: return Request.select_events(data.where, data.date, data.order)
 	return []
 
 # Заполнение страницы
