@@ -28,6 +28,7 @@ func _draw() -> void:
 	# Отрисовка
 	for i in range(day_count): draw_string(ThemeDB.fallback_font, Vector2(x_step*i, 120), str(i+1.), HORIZONTAL_ALIGNMENT_CENTER, x_step, 9, Color.BLACK)
 	for i in values:
+		if i.value == 0: continue
 		var y_size: float = 50. * abs(i.value) / abs(max_value)
 		if i.value < 0:
 			draw_rect(Rect2(Vector2(x_step*(int(i.day)-1), 60), Vector2(x_step, y_size)),Color.FIREBRICK)

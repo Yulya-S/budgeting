@@ -1,13 +1,12 @@
 extends Control
 # Подключение пути к объектам в сцене
-@onready var Total = $Total
+@onready var Filter = $Filter
 @onready var Objects = $ObjArray
 
 # Подключение сигнала
-func _ready() -> void: Global.emit_signal("update_page")
-
-# Изменение значения итоговой суммы по счетам
-func update_page() -> void: Total.set_text(str(Request.select(Request.Tables.WALLETS, "COALESCE(SUM(value), 0) value")[0].value))
+func _ready() -> void:
+	Filter.get_filter()
+	Global.emit_signal("update_page")
 
 # Обработка нажатия кнопки создания нового счета
 func _on_add_wallet_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET)
@@ -18,4 +17,4 @@ func _on_cash_flow_button_down() -> void:
 
 # Обработка нажатия кнопки переноса средств между счетами
 func _on_transaction_button_down() -> void:
-	if Objects.obj_count() > 1: Global.emit_signal("open_window", Global.Pages.TRANSFER)
+	if Objects.obj_count() > 2: Global.emit_signal("open_window", Global.Pages.TRANSFER)

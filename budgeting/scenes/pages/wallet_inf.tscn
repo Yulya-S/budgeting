@@ -1,30 +1,88 @@
-[gd_scene load_steps=8 format=3 uid="uid://dogi0k768li3"]
+[gd_scene load_steps=5 format=3 uid="uid://dogi0k768li3"]
 
 [ext_resource type="Script" uid="uid://de6p1m8lb4i5x" path="res://scripts/pages/wallet_inf.gd" id="1_y0peq"]
-[ext_resource type="PackedScene" uid="uid://bbt21rt2cm5gt" path="res://scenes/pages/page.tscn" id="2_6imgx"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_37dcs"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_oy6n0"]
 [ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="4_3ta84"]
-[ext_resource type="Texture2D" uid="uid://dpw6qwab15i7s" path="res://img/update/update_wallet.png" id="5_37dcs"]
-[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="6_oy6n0"]
-[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="7_pha3d"]
 
-[node name="WalletsInfo" type="Control"]
+[node name="WalletInf" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_y0peq")
 
-[node name="Page" parent="." instance=ExtResource("2_6imgx")]
-
-[node name="Wallet" type="ColorRect" parent="."]
+[node name="Head" parent="." instance=ExtResource("2_37dcs")]
 layout_mode = 0
-offset_top = 118.0
+
+[node name="Menu" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 50.0
 offset_right = 1152.0
-offset_bottom = 164.0
+offset_bottom = 100.0
+color = Color(0.376471, 0.72549, 0.698039, 1)
+
+[node name="Update" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 9.5
+offset_right = 150.0
+offset_bottom = 40.5
+text = "Изменить счет"
+
+[node name="CashFlow" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 9.5
+offset_right = 411.0
+offset_bottom = 40.5
+text = "Добавить движение средств"
+
+[node name="Transactions" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 9.5
+offset_right = 598.0
+offset_bottom = 40.5
+text = "Список транзакций"
+
+[node name="Label" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 100.0
+offset_right = 1152.0
+offset_bottom = 156.0
+color = Color(0.627451, 0.913725, 0.894118, 1)
+
+[node name="Label" type="Label" parent="Label"]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 11.5
+offset_right = 1097.0
+offset_bottom = 46.5
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "Информация о счете, за месяц"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Back" type="Button" parent="Label"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 9.0
+offset_right = 148.0
+offset_bottom = 137.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Назад"
+icon = ExtResource("4_3ta84")
+
+[node name="Info" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 156.0
+offset_right = 1152.0
+offset_bottom = 202.0
 color = Color(0.873298, 0.873299, 0.873298, 1)
 
-[node name="Title" type="Label" parent="Wallet"]
+[node name="Title" type="Label" parent="Info"]
 layout_mode = 2
 offset_left = 51.0
 offset_right = 499.0
@@ -34,18 +92,7 @@ theme_override_font_sizes/font_size = 20
 text = "Название счета"
 vertical_alignment = 1
 
-[node name="LableValue" type="Label" parent="Wallet"]
-layout_mode = 2
-offset_left = 526.0
-offset_right = 780.0
-offset_bottom = 46.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Значение счета:"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Value" type="Label" parent="Wallet"]
+[node name="Value" type="Label" parent="Info"]
 layout_mode = 2
 offset_left = 791.0
 offset_right = 1112.0
@@ -55,23 +102,25 @@ theme_override_font_sizes/font_size = 20
 text = "0.0"
 vertical_alignment = 1
 
-[node name="ObjArray" parent="." instance=ExtResource("3_oy6n0")]
-layout_mode = 0
-offset_top = 174.0
-offset_right = 1152.0
-offset_bottom = 542.0
-table = 2
-next_page = 3
-signal_name = "open_new_page"
+[node name="Lable" type="Label" parent="Info/Value"]
+layout_mode = 2
+offset_left = -265.0
+offset_right = -11.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Значение счета:"
+horizontal_alignment = 2
+vertical_alignment = 1
 
-[node name="Total" type="ColorRect" parent="."]
+[node name="Total" type="ColorRect" parent="Info"]
 layout_mode = 0
-offset_top = 542.0
+offset_top = 446.0
 offset_right = 1152.0
-offset_bottom = 588.0
+offset_bottom = 492.0
 color = Color(0.873298, 0.873299, 0.873298, 1)
 
-[node name="Lable" type="Label" parent="Total"]
+[node name="Lable" type="Label" parent="Info/Total"]
 layout_mode = 2
 offset_left = 51.0
 offset_right = 121.0
@@ -81,7 +130,7 @@ theme_override_font_sizes/font_size = 20
 text = "Итог:"
 vertical_alignment = 1
 
-[node name="Count" type="Label" parent="Total"]
+[node name="Total_Count" type="Label" parent="Info/Total"]
 layout_mode = 2
 offset_left = 415.0
 offset_right = 709.0
@@ -91,7 +140,7 @@ theme_override_font_sizes/font_size = 20
 text = "0"
 vertical_alignment = 1
 
-[node name="Lable" type="Label" parent="Total/Count"]
+[node name="Lable" type="Label" parent="Info/Total/Total_Count"]
 layout_mode = 2
 offset_left = -271.0
 offset_right = -7.0
@@ -102,7 +151,7 @@ text = "Количество транзакций:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Value" type="Label" parent="Total"]
+[node name="Total_Value" type="Label" parent="Info/Total"]
 layout_mode = 2
 offset_left = 862.0
 offset_right = 1112.0
@@ -112,7 +161,7 @@ theme_override_font_sizes/font_size = 20
 text = "0.0"
 vertical_alignment = 1
 
-[node name="Lable" type="Label" parent="Total/Value"]
+[node name="Lable" type="Label" parent="Info/Total/Total_Value"]
 layout_mode = 2
 offset_left = -153.0
 offset_right = -7.0
@@ -123,59 +172,14 @@ text = "Сумма:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="."]
+[node name="ObjArray" parent="." instance=ExtResource("3_oy6n0")]
 layout_mode = 0
-offset_left = 233.0
-offset_top = 66.5
-offset_right = 1098.0
-offset_bottom = 101.5
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 25
-text = "Информация о счете, за месяц"
-horizontal_alignment = 2
-vertical_alignment = 1
+offset_top = 207.0
+offset_right = 1152.0
+offset_bottom = 597.0
+obj = 1
 
-[node name="Back" type="Button" parent="."]
-layout_mode = 0
-offset_left = 21.0
-offset_top = 64.0
-offset_right = 149.0
-offset_bottom = 192.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Назад"
-icon = ExtResource("4_3ta84")
-
-[node name="Update" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1017.0
-offset_top = 603.0
-offset_right = 1145.0
-offset_bottom = 731.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Изменить счет"
-icon = ExtResource("5_37dcs")
-
-[node name="CashFlow" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1062.0
-offset_top = 603.0
-offset_right = 1190.0
-offset_bottom = 731.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Добавить движение средств"
-icon = ExtResource("6_oy6n0")
-
-[node name="Transactions" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1107.0
-offset_top = 603.0
-offset_right = 1235.0
-offset_bottom = 731.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Список транзакций"
-icon = ExtResource("7_pha3d")
-
-[connection signal="button_down" from="Back" to="." method="_on_back_button_down"]
-[connection signal="button_down" from="Update" to="." method="_on_update_button_down"]
-[connection signal="button_down" from="CashFlow" to="." method="_on_cash_flow_button_down"]
-[connection signal="button_down" from="Transactions" to="." method="_on_transactions_button_down"]
+[connection signal="button_down" from="Menu/Update" to="." method="_on_update_button_down"]
+[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
+[connection signal="button_down" from="Menu/Transactions" to="." method="_on_transactions_button_down"]
+[connection signal="button_down" from="Label/Back" to="." method="_on_back_button_down"]

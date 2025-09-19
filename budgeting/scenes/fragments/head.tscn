@@ -16,7 +16,7 @@
 [node name="Head" type="ColorRect"]
 offset_right = 1152.0
 offset_bottom = 50.0
-color = Color(0.286275, 0.545098, 0.52549, 1)
+color = Color(0.227451, 0.596078, 0.568627, 1)
 script = ExtResource("1_3qfej")
 
 [node name="Marker" type="ColorRect" parent="."]
@@ -25,6 +25,7 @@ offset_left = 3.0
 offset_top = 3.0
 offset_right = 47.0
 offset_bottom = 50.0
+color = Color(0.376471, 0.72549, 0.698039, 1)
 
 [node name="Hints" type="Button" parent="."]
 layout_mode = 0
@@ -157,6 +158,12 @@ offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Выход"
 icon = ExtResource("10_xpsv6")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 50.0
+offset_right = 1152.0
+offset_bottom = 648.0
 
 [connection signal="button_down" from="Main" to="." method="_on_main_button_down"]
 [connection signal="button_down" from="Wallet" to="." method="_on_wallet_button_down"]

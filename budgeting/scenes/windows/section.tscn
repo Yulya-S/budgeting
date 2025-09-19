@@ -32,6 +32,8 @@ offset_left = 485.0
 offset_top = 225.0
 offset_right = 906.0
 offset_bottom = 256.0
+focus_next = NodePath("../Income")
+focus_previous = NodePath("../Month_Limit")
 placeholder_text = "Название"
 autowrap_mode = 1
 scroll_past_end_of_file = true
@@ -47,33 +49,20 @@ text = "Название раздела"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="ConsumptionIncome" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 263.0
-offset_right = 793.0
-offset_bottom = 294.0
-theme_override_colors/font_disabled_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_hover_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-text = "Расход"
-alignment = 2
-
-[node name="Value" type="TextEdit" parent="."]
+[node name="Month_Limit" type="TextEdit" parent="."]
 clip_contents = false
 layout_mode = 0
 offset_left = 485.0
 offset_top = 299.0
 offset_right = 906.0
 offset_bottom = 330.0
+focus_next = NodePath("../Title")
+focus_previous = NodePath("../Income")
 text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
-[node name="Label" type="Label" parent="Value"]
+[node name="Label" type="Label" parent="Month_Limit"]
 layout_mode = 0
 offset_left = -325.0
 offset_right = -7.0
@@ -84,39 +73,23 @@ text = "Ежемесячное ограничение"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Delete" type="Button" parent="."]
-visible = false
+[node name="Income" type="CheckButton" parent="."]
 layout_mode = 0
-offset_left = 160.0
-offset_top = 538.0
-offset_right = 470.0
-offset_bottom = 580.0
-theme_override_font_sizes/font_size = 24
-text = "Удалить раздел"
-
-[node name="Apply" type="Button" parent="."]
-layout_mode = 0
-offset_left = 682.0
-offset_top = 538.0
-offset_right = 992.0
-offset_bottom = 580.0
-theme_override_font_sizes/font_size = 24
-text = "Сохранить раздел"
-
-[node name="Close" type="Button" parent="."]
-layout_mode = 0
-offset_left = 998.0
-offset_top = 54.0
-offset_right = 1048.0
-offset_bottom = 96.0
-tooltip_text = "Отменить изменения"
-theme_override_constants/outline_size = 14
-theme_override_font_sizes/font_size = 24
-text = "X"
+offset_left = 648.0
+offset_top = 263.0
+offset_right = 793.0
+offset_bottom = 294.0
+focus_next = NodePath("../Month_Limit")
+focus_previous = NodePath("../Title")
+theme_override_colors/font_disabled_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_hover_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+text = "Расход"
+alignment = 2
 
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
-[connection signal="toggled" from="ConsumptionIncome" to="." method="_on_consumption_income_toggled"]
-[connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
-[connection signal="button_down" from="Delete" to="." method="_on_delete_button_down"]
-[connection signal="button_down" from="Apply" to="." method="_on_apply_button_down"]
-[connection signal="button_down" from="Close" to="." method="_on_close_button_down"]
+[connection signal="text_changed" from="Month_Limit" to="." method="_on_month_limit_text_changed"]
+[connection signal="toggled" from="Income" to="." method="_on_consumption_income_toggled"]

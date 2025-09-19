@@ -1,6 +1,6 @@
 extends Node
 # Перечисление
-enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, PAYMENTS, SQLITE_SEQUENCE} # Таблицы в базе данных
+enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, SQLITE_SEQUENCE} # Таблицы в базе данных
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -26,10 +26,10 @@ func create_tables() -> void:
 	_create_table("wallets", "title VARCHAR(255), value FLOAT")
 	_create_table("sections", "title VARCHAR(255), month_limit FLOAT, income BOOLEAN")
 	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)",	"FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`section_id`) REFERENCES `sections`(`id`)")
-	_create_table("loans", "title VARCHAR(255), date DATE, total FLOAT")
+	_create_table("loans", "title VARCHAR(255), total FLOAT, date DATE")
 	_create_table("events", "title VARCHAR(255), date DATE, note VARCHAR(255)")
 	if len(select(Tables.SECTIONS)) != 0: return
-	for i in ["Переводы", "Платежи", "Заём"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
+	for i in ["Переводы", "Заём", "Платежи по займам", "Проценты по займу"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
 	
 # Получить название таблицы из enum Tables
 func _get_table_name(table) -> String:
@@ -80,7 +80,7 @@ func update_record(table, id: int, values: Array) -> void:
 func delete(table, id: int) -> void:
 	db.query("DELETE FROM `"+_get_table_name(table)+"` WHERE id="+str(id)+";")
 	update(Tables.SQLITE_SEQUENCE, "seq=seq-1", 'name="'+_get_table_name(table)+'"')
-	update(Tables.WALLETS, "id=id-1", "id>"+str(id))
+	update(table, "id=id-1", "id>"+str(id))
 
 # Сборка даты
 func where_date(date: String = Time.get_datetime_string_from_system(), column: String = "date") -> String:
@@ -96,15 +96,19 @@ func select(table, columns: String = "*", where: String = "", order: String = ""
 
 # Проверка достаточно ли данных в базе для создания движения средств
 func select_possibility_opening_cashFlow() -> bool:
-	return len(Request.select(Request.Tables.WALLETS)) != 0 and len(Request.select(Request.Tables.SECTIONS)) > 3
+	return len(select(Tables.WALLETS)) != 0 and len(select(Tables.SECTIONS)) > 4
+
+# Проверка достаточно ли данных в базе для создания платежа и добавления процентов по займу
+func select_possibility_opening_payment() -> bool:
+	return len(select(Tables.WALLETS)) != 0 and len(select(Tables.LOANS, "*", "total>0")) != 0
 
 # Получение текущего суммарного бюджета
 func select_budget() -> float:
 	var wallets_sum: float = select(Tables.WALLETS, "COALESCE(SUM(value), 0) value")[0].value
-	return wallets_sum + (select(Tables.LOANS, "COALESCE(SUM(total), 0) value")[0].value * 2.)
+	return wallets_sum - (select(Tables.LOANS, "COALESCE(SUM(total), 0) value")[0].value)
 
 # Запрос на получение суммы и количества транзакций сгруппированных по разделам
-func select_sections_cash_movement(id, date: String = Time.get_datetime_string_from_system()) -> Array:
+func select_sections_cash_movement(id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
 	db.query("SELECT cf.wallet_id, cf.section_id, sum(cf.value) value, count(cf.id) count, s.title, s.income FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id "+\
 		"WHERE cf.wallet_id="+str(id)+" AND s.month_limit>=0 AND "+where_date(date, "cf.date")+" GROUP BY s.id;")
 	var result: Array = db.query_result
@@ -112,7 +116,7 @@ func select_sections_cash_movement(id, date: String = Time.get_datetime_string_f
 	return result
 
 # Запрос на получение суммы и количества транзакций сгруппированных по специальным разделам
-func select_special_sections_cash_movement(id, date: String = Time.get_datetime_string_from_system()) -> Array:
+func select_special_sections_cash_movement(id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
 	db.query("SELECT cf.*, s.title, SUM(cf.value) value, COUNT(cf.id) count FROM cash_flows cf LEFT JOIN sections s ON cf.section_id = s.id "+\
 		"WHERE (cf.wallet_id="+str(id)+" OR (cf.wallet_2_id="+str(id)+" AND s.id=1)) AND s.month_limit=-1 AND "+where_date(date, "cf.date")+" GROUP BY section_id, wallet_id, wallet_2_id;")
 	var sections: Array = []
@@ -129,6 +133,7 @@ func select_special_sections_cash_movement(id, date: String = Time.get_datetime_
 
 # Объединение результатов двух запросов на сумму и количество транзакций сгруппированных по разделам
 func select_general_sections_cash_movement(id, date: String = Time.get_datetime_string_from_system()) -> Array:
+	if not id: return []
 	return select_special_sections_cash_movement(id, date) + select_sections_cash_movement(id, date)
 	
 # Получение суммы движений средств на счете
@@ -138,6 +143,16 @@ func select_wallets_movement(id: int, date: String = Time.get_datetime_string_fr
 		result[0] += i.value 
 		result[1] += i.count
 	return result
+
+# Получение списка счетов
+func select_wallets_list(where: String, order: String) -> Array:
+	if where: where = " WHERE "+where
+	if order: order = " ORDER BY "+order
+	db.query("""SELECT *, (SELECT cf.date FROM cash_flows cf WHERE (cf.section_id NOT IN (2, 3, 4)
+		AND cf.wallet_2_id=w.id) OR cf.wallet_id=w.id ORDER BY cf.date DESC) last_date FROM wallets w"""+where+order+";")
+	var wallets: Array = db.query_result
+	for i in range(len(wallets)): wallets[i]["cash_flow"] = select_wallets_movement(wallets[i].id)[0]
+	return wallets
 	
 # Получение движенения средств суммарно для всех кошельков
 func select_general_wallets_movement() -> float:
@@ -146,20 +161,93 @@ func select_general_wallets_movement() -> float:
 	return sum
 	
 # Получение списка разделов
-func select_sections(where: String = "", date: String = Time.get_datetime_string_from_system()) -> Array:
-	return select("`sections` s", "s.*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+") value", where)
+func select_sections(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
+	return select("`sections` s", "*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+""") value,
+		(SELECT cf.date FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+""" ORDER BY cf.date DESC) last_date,
+		(SELECT cf.id FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+" ORDER BY cf.date DESC) last_id", where, order)
+
+# Получение названия объекта под определенным индексом
+func _select_title(table: Tables, id: int) -> String: return select(table, "title", "id="+str(id))[0].title
 
 # Получение списка движений средств
-func select_cash_flows(where: String = "", date: String = Time.get_datetime_string_from_system()) -> Array:
-	if where != "": where += " AND " + where_date(date)
-	else: where = where_date(date)
-	return select("`cash_flows` cf", "cf.*, s.title, w.title wallet_title", where, "cf.date DESC", "sections s ON cf.section_id=s.id LEFT JOIN wallets w ON cf.wallet_id=w.id")
+func select_cash_flows(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
+	if date != "":
+		if where != "": where += " AND " + where_date(date)
+		else: where = where_date(date)
+	var values: Array = select("`cash_flows` cf", "cf.*, s.title, w.title wallet_title", where, order, "sections s ON cf.section_id=s.id LEFT JOIN wallets w ON cf.wallet_id=w.id")
+	for i in range(len(values)):
+		match values[i].section_id:
+			1: values[i]["wallet_2_title"] = _select_title(Tables.WALLETS, values[i].wallet_2_id)
+			2:
+				values[i]["wallet_2_title"] = values[i].wallet_title
+				values[i].wallet_title = _select_title(Tables.LOANS, values[i].wallet_2_id)
+				var save_id: int = values[i].wallet_id
+				values[i].wallet_id = values[i].wallet_2_id
+				values[i].wallet_2_id = save_id
+			3, 4: values[i]["wallet_2_title"] = _select_title(Tables.LOANS, values[i].wallet_2_id)
+	return values
 
 # Получение суммы движений средств распределенных по дням
 func select_daily_transactions(where: String, date: String = Time.get_datetime_string_from_system()) -> Array:
 	if where != "": where = " WHERE " + where
-	db.query("""SELECT COALESCE(SUM(value), 0) value, strftime('%d', date) day FROM (SELECT cf.date, CASE WHEN cf.section_id = 1 THEN 0
-		WHEN cf.section_id = 2 THEN cf.value * -1 WHEN s.income = 0 THEN cf.value * -1 ELSE cf.value END value FROM cash_flows cf
+	db.query("""SELECT COALESCE(SUM(value), 0) value, strftime('%d', date) day FROM (SELECT cf.date, CASE WHEN cf.section_id IN (1, 4) THEN 0
+		WHEN cf.section_id = 3 THEN cf.value * -1 WHEN s.income = 0 AND s.month_limit<>-1 THEN cf.value * -1 ELSE cf.value END value FROM cash_flows cf
 		LEFT JOIN sections s ON cf.section_id=s.id"""+where+") WHERE "+where_date(date)+" GROUP BY date")
 	return db.query_result
 	
+# Получение списка займов
+func select_loan_list(where: String = "", order: String = "") -> Array:
+	if where != "": where = " WHERE " + where
+	if order != "": order = " ORDER BY " + order
+	db.query("SELECT l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=2 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id"+where+order+";")
+	return db.query_result
+
+# Получение информации об объекте с учетом возможности его отсутствия
+func select_inf_value(table: Tables, id: int) -> Dictionary:
+	var value: Array = select(table, "*", "id="+str(id))
+	if len(value) == 0: return {}
+	return value[0]
+	
+# Получение информации о займе
+func select_loan_inf(id: int) -> Dictionary:
+	var value: Dictionary = select_inf_value(Tables.LOANS, id)
+	if value == {}: return value
+	value["value"] = select(Tables.CASH_FLOWS, "*", "section_id=2 AND wallet_2_id="+str(id))[0].value
+	value["percents"] = str(select_loan_percent(id)) + "%"
+	return value
+	
+# Получение информации о счёте
+func select_wallet_inf(id: int) -> Dictionary:
+	var value: Dictionary = select_inf_value(Tables.WALLETS, id)
+	if value == {}: return value
+	var total: Array = select_wallets_movement(id)
+	value["total_value"] = total[0]
+	value["total_count"] = total[1]
+	return value
+
+# Получение кошелька по индексу
+func select_wallet(id: int) -> Array: return select(Tables.WALLETS, "*", "id="+str(id))
+
+# Получение раздела по индексу
+func select_section(id: int) -> Array: return select(Tables.SECTIONS, "*", "id="+str(id))
+
+# Получение займа по индексу
+func select_loan(id: int) -> Array: return select("cash_flows cf", "cf.*, l.title", "section_id=2 AND wallet_2_id="+str(id), "", "loans l ON l.id=wallet_2_id")
+
+# Получение среднего процента по займу при учете процесса погашения займа
+func select_loan_percent(id: int) -> int:
+	db.query("SELECT * FROM cash_flows WHERE section_id IN (2, 3, 4) AND wallet_2_id="+str(id)+" ORDER BY date")
+	var summ: float = 0.0
+	var percents: Array = []
+	for i in db.query_result:
+		match i.section_id:
+			2: summ = i.value
+			3: summ -= i.value
+			4:
+				percents.append((i.value * 100.) / summ)
+				summ += i.value
+	if len(percents) == 0: return 0
+	var result: float = 0
+	for i in percents:
+		result += i
+	return int(round(result / len(percents)))

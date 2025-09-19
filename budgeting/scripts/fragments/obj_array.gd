@@ -2,23 +2,20 @@ extends ScrollContainer
 # Подключение пути к объектам в сцене
 @onready var Objects = $Objects
 
-# Экспортируемые переменные
-@export var table: Request.Tables = Request.Tables.WALLETS # Таблица связанная со списком
-@export var data: Dictionary = {"columns": "*", "where": "", "order": "",
-	"date": Time.get_date_string_from_system()} # Фрагменты запроса
-@export var name_fragment: String = "" # Фрагмент названия пути к объекту списка
+# Экспортируемая переменная
+@export var obj: ListObjects = ListObjects.WALLET # Выбранный объект списка
+
+# Перечисление
+enum ListObjects {WALLET, WALLET_TRANSACTION, SECTION, CASH_FLOW, LOAN} # Объекты списка
 
 # Переменные
+var data: Dictionary = {"where": "", "date": Time.get_date_string_from_system(), "order": ""} # Фрагменты запроса
 var obj_path: Resource = null # Подгружаемый объект
 var lines: Array = [] # Список объектов для создания на странице
 
 # Создание сцены
 func _ready() -> void:
-	# Создание сцены объекта
-	var obj_name: String = Global.enum_key(Request.Tables, table)
-	obj_name[-1] = "."
-	obj_path = load("res://scenes/fragments/"+name_fragment+obj_name+"tscn")
-	# Подключение сигнала
+	obj_path = load("res://scenes/fragments/list_elements/"+Global.enum_key(ListObjects, obj)+".tscn")
 	Global.connect("update_page", Callable(self, "update_page"))
 	
 # Получение количества объектов
@@ -34,29 +31,28 @@ func _process(_delta: float) -> void:
 		Objects.get_child(-1).set_values(lines.pop_front())
 	
 # Изменение параметров запроса
-func set_data(columns: String = "", where: String = "", order: String = "", date: String = "") -> void:
-	if columns != "": data.columns = columns
+func set_data(where: String = "", date: String = "", order: String = "") -> void:
 	if where != "" or data.where != "": data.where = where
-	if order != "" or data.order != "": data.order = order
 	if date != "": data.date = date
+	if order != "" or data.order != "": data.order = order
 	update_page()
 
 # Получение списка элементов списка
 func select() -> Array:
-	match table:
-		Request.Tables.CASH_FLOWS:
-			if get_parent().get("id"): return Request.select_general_sections_cash_movement(get_parent().id, data.date)
-			return Request.select_cash_flows(data.where, data.date)
-		Request.Tables.SECTIONS: return Request.select_sections(data.where, data.date)
-	return Request.select(table, data.columns, data.where, data.order)
+	match obj:
+		ListObjects.WALLET: return Request.select_wallets_list(data.where, data.order)
+		ListObjects.WALLET_TRANSACTION: return Request.select_general_sections_cash_movement(get_parent().id, data.date)
+		ListObjects.LOAN: return Request.select_loan_list(data.where, data.order)
+		ListObjects.SECTION: return Request.select_sections(data.where, data.date, data.order)
+		ListObjects.CASH_FLOW: return Request.select_cash_flows(data.where, data.date, data.order)
+	return []
 
 # Заполнение страницы
-func update_page():
+func update_page(close_page: String = ""):
 	for i in Objects.get_children():
 		i.queue_free()
 		Objects.remove_child(i)
 	Objects.add_child(obj_path.instantiate())
 	Objects.get_child(-1).color = Color.html("#dfdfdf")
 	lines = select()
-	if len(lines) > 0 and null in lines[0].values(): lines = []
-	if get_parent().get("update_page"): get_parent().update_page()
+	if get_parent().get("update_page"):	get_parent().update_page(close_page)
