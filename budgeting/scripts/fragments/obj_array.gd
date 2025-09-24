@@ -17,6 +17,11 @@ var lines: Array = [] # Список объектов для создания н
 func _ready() -> void:
 	obj_path = load("res://scenes/fragments/list_elements/"+Global.enum_key(ListObjects, obj)+".tscn")
 	Global.connect("update_page", Callable(self, "update_page"))
+
+# Применение нового объекта списка
+func set_obj(new_obj: ListObjects) -> void:
+	obj = new_obj
+	obj_path = load("res://scenes/fragments/list_elements/"+Global.enum_key(ListObjects, obj)+".tscn")
 	
 # Получение количества объектов
 func obj_count() -> int: return Objects.get_child_count()

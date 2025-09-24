@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://h73m6svxm2de"]
+
+[ext_resource type="Script" uid="uid://cu5kqv5efq27f" path="res://scripts/pages/events/calendar.gd" id="1_kwdma"]
+
+[node name="Calendar" type="GridContainer"]
+custom_minimum_size = Vector2(456, 0)
+offset_right = 1152.0
+offset_bottom = 473.0
+theme_override_constants/h_separation = -2
+theme_override_constants/v_separation = -2
+columns = 7
+script = ExtResource("1_kwdma")
