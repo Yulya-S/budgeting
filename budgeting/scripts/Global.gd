@@ -68,3 +68,34 @@ func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool =
 	if not container: return
 	if clear_OB: container.clear()
 	for i in objects: container.add_item(i.title, i.id)
+	
+# Получение первого числа следующего/предыдущего месяца
+func get_other_month(date: Dictionary, next: bool = true) -> Dictionary:
+	var date_copy: Dictionary = date.duplicate()
+	if next:
+		date_copy.month += 1
+		if date_copy.month > 12:
+			date_copy.month = 1
+			date_copy.year +=1
+	else:
+		date_copy.month -= 1
+		if date_copy.month <= 0:
+			date_copy.month = 12
+			date_copy.year -= 1
+	return date_copy
+
+# Сравнение дат	
+func date_comparison(date1: Dictionary, date2: Dictionary, operator: String, account_day: bool = true) -> bool:
+	match operator:
+		"==":
+			if date1.year == date2.year and date1.month == date2.month:
+				return not account_day or date1.day == date2.day
+		">":
+			if date1.year > date2.year: return true
+			if date1.year == date2.year and date1.month > date2.month: return true
+			return account_day and date1.year == date2.year and date1.month == date2.month and date1.day > date2.day
+		"<":
+			if date1.year < date2.year: return true
+			if date1.year == date2.year and date1.month < date2.month: return true
+			return account_day and date1.year == date2.year and date1.month == date2.month and date1.day < date2.day
+	return false

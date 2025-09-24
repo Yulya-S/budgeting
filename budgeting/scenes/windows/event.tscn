@@ -30,9 +30,9 @@ horizontal_alignment = 1
 clip_contents = false
 layout_mode = 0
 offset_left = 320.0
-offset_top = 199.0
+offset_top = 194.0
 offset_right = 693.0
-offset_bottom = 230.0
+offset_bottom = 225.0
 focus_previous = NodePath("../Note")
 autowrap_mode = 1
 scroll_past_end_of_file = true
@@ -48,6 +48,41 @@ text = "Название события"
 horizontal_alignment = 2
 vertical_alignment = 1
 
+[node name="Repetition_Rate" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 240.0
+offset_right = 693.0
+offset_bottom = 271.0
+focus_next = NodePath("../Value")
+focus_previous = NodePath("../Title")
+selected = 0
+item_count = 5
+popup/item_0/text = "Один раз"
+popup/item_0/id = 0
+popup/item_1/text = "Каждые два дня"
+popup/item_1/id = 1
+popup/item_2/text = "Раз в неделю"
+popup/item_2/id = 2
+popup/item_3/text = "Раз в месяц"
+popup/item_3/id = 3
+popup/item_4/text = "Раз в год"
+popup/item_4/id = 4
+
+[node name="Label" type="Label" parent="Repetition_Rate"]
+layout_mode = 0
+offset_left = -210.0
+offset_top = -9.0
+offset_right = -5.0
+offset_bottom = 37.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 20
+text = "Частота повторения"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 3
+
 [node name="Date" parent="." instance=ExtResource("3_xmdrw")]
 layout_mode = 0
 offset_left = 709.0
@@ -58,9 +93,9 @@ offset_bottom = 473.0
 [node name="NoteLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 160.0
-offset_top = 259.0
+offset_top = 295.0
 offset_right = 308.0
-offset_bottom = 287.0
+offset_bottom = 323.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Комментарий:"
@@ -68,7 +103,7 @@ text = "Комментарий:"
 [node name="Note" type="TextEdit" parent="."]
 layout_mode = 0
 offset_left = 160.0
-offset_top = 291.0
+offset_top = 327.0
 offset_right = 693.0
-offset_bottom = 430.0
+offset_bottom = 466.0
 wrap_mode = 1

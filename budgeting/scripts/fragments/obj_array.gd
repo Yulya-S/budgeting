@@ -45,7 +45,7 @@ func select() -> Array:
 		ListObjects.LOAN: return Request.select_loan_list(data.where, data.order)
 		ListObjects.SECTION: return Request.select_sections(data.where, data.date, data.order)
 		ListObjects.CASH_FLOW: return Request.select_cash_flows(data.where, data.date, data.order)
-		ListObjects.EVENT: return Request.select_events(data.where, data.date, data.order)
+		ListObjects.EVENT: return Request.select_events(data.date)
 	return []
 
 # Заполнение страницы

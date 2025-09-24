@@ -46,27 +46,25 @@ OB_items = {
 }
 }
 
-[node name="Title" type="TextEdit" parent="Filter"]
-clip_contents = false
+[node name="Year" type="OptionButton" parent="Filter"]
 layout_mode = 0
 offset_left = 33.0
 offset_top = 24.0
 offset_right = 373.0
 offset_bottom = 55.0
-autowrap_mode = 1
-scroll_past_end_of_file = true
+alignment = 1
 
-[node name="Label" type="Label" parent="Filter/Title"]
+[node name="Label" type="Label" parent="Filter/Year"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = -24.0
 offset_right = 262.0
 offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Фрагмент названия"
+text = "Год фильтрации"
 vertical_alignment = 1
 
-[node name="Order" type="OptionButton" parent="Filter"]
+[node name="Month" type="OptionButton" parent="Filter"]
 layout_mode = 0
 offset_left = 406.0
 offset_top = 24.0
@@ -74,20 +72,40 @@ offset_right = 746.0
 offset_bottom = 55.0
 alignment = 1
 selected = 0
-item_count = 2
-popup/item_0/text = "В порядке ожидания"
+item_count = 12
+popup/item_0/text = "Январь"
 popup/item_0/id = 0
-popup/item_1/text = "По дате добавления"
+popup/item_1/text = "Февраль"
 popup/item_1/id = 1
+popup/item_2/text = "Март"
+popup/item_2/id = 2
+popup/item_3/text = "Апрель"
+popup/item_3/id = 3
+popup/item_4/text = "Май"
+popup/item_4/id = 4
+popup/item_5/text = "Июнь"
+popup/item_5/id = 5
+popup/item_6/text = "Июль"
+popup/item_6/id = 6
+popup/item_7/text = "Август"
+popup/item_7/id = 7
+popup/item_8/text = "Сентябрь"
+popup/item_8/id = 8
+popup/item_9/text = "Октябрь"
+popup/item_9/id = 9
+popup/item_10/text = "Ноябрь"
+popup/item_10/id = 10
+popup/item_11/text = "Декабрь"
+popup/item_11/id = 11
 
-[node name="Label" type="Label" parent="Filter/Order"]
+[node name="Label" type="Label" parent="Filter/Month"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = -24.0
 offset_right = 262.0
 offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Порядок сортировки"
+text = "Месяц фильтрации"
 vertical_alignment = 1
 
 [node name="Button" type="Button" parent="Filter"]
@@ -106,4 +124,5 @@ offset_bottom = 643.0
 obj = 5
 
 [connection signal="button_down" from="Menu/AddEvent" to="." method="_on_add_event_button_down"]
+[connection signal="item_selected" from="Filter/Year" to="Filter" method="_on_year_item_selected"]
 [connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]

@@ -1,9 +1,9 @@
 extends Control
 # Подключение пути к объектам в сцене
-@onready var Filter = $Filter
 @onready var Objects = $ObjArray
+@onready var Filter = $Filter
 
-# Подключение сигнала
+# Запуск фильтрации
 func _ready() -> void: Filter.get_filter()
 
 # Обработка нажатия кнопки создания события
