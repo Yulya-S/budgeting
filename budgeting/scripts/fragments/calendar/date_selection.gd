@@ -10,7 +10,7 @@ const month_list: Array = ["Январь", "Февраль", "Март", "Апр
 
 # Переменные
 var selected_day: Dictionary = {} # Номер выбранного дня
-var cell_path = load("res://scenes/fragments/calendar/cell.tscn") # Путь к сцене ячеек календаря
+var cell_path: Resource = load("res://scenes/fragments/calendar/cell.tscn") # Путь к сцене ячеек календаря
 
 # Получение текущей даты
 func _ready() -> void:

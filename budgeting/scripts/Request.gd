@@ -213,14 +213,14 @@ func select_monthly_events(date: String) -> Array:
 	db.query("SELECT *, Date(julianday(date)+CASE "+\
 		"WHEN "+query_fragment+"<0 THEN 0 "+\
 		"WHEN repetition_rate=1 THEN IIF("+query_fragment+"%2==0, "+query_fragment+", "+query_fragment+"+1) "+\
-		"WHEN repetition_rate=2 THEN IIF("+query_fragment+"%7==0, "+query_fragment+", "+query_fragment+"+("+query_fragment+"%7)-1) "+\
+		"WHEN repetition_rate=2 THEN IIF("+query_fragment+"%7==0, "+query_fragment+", "+query_fragment+"+(7-"+query_fragment+"%7)) "+\
 		"ELSE 0 END) new_date FROM events WHERE strftime('%Y-%m', date)<=strftime('%Y-%m', Date('"+date+"'));")
 	return db.query_result
 
 # Добавление событий во временную таблицу
 func insert_event(value: Dictionary, date, completed: bool) -> void:
 	if date is Dictionary: date = Time.get_datetime_string_from_datetime_dict(date, true).split(" ")[0]
-	insert_record("temporary", ["'"+value.title+"'", "'"+date+"'", "'"+value.note+"'", completed])
+	insert_record("temporary", ["'"+value.title+"'", "'"+date+"'", "'"+value.note+"'", completed, value.id])
 
 # Добавление событий во временную таблицу с выбранным шагом
 func insert_events_with_step(value: Dictionary, new_date: Dictionary, current_date: Dictionary, day_count: int, step: int) -> void:
@@ -237,7 +237,7 @@ func select_events(date: String) -> Array:
 	var last_month_day_count: int = select_day_count(Time.get_datetime_string_from_datetime_dict(Global.get_other_month(selected_date, false), false))
 	var values: Array = select_monthly_events(date) # Получение первоначальных данных для временной таблицы
 	# Заполнение временной таблицы
-	_create_table("temporary", "title VARCHAR(255), date DATE, note VARCHAR(255), completed BOOLEAN")
+	_create_table("temporary", "title VARCHAR(255), date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
 	for i in values:
 		var new_date: Dictionary = Time.get_datetime_dict_from_datetime_string(i.new_date, false)
 		match i.repetition_rate:
@@ -288,7 +288,10 @@ func select_section(id: int) -> Array: return select(Tables.SECTIONS, "*", "id="
 func select_loan(id: int) -> Array: return select("cash_flows cf", "cf.*, l.title", "section_id=2 AND wallet_2_id="+str(id), "", "loans l ON l.id=wallet_2_id")
 
 # Получение события по индексу
-func select_event(id: int) -> Array: return select(Tables.EVENTS, "*", "id="+str(id))
+func select_event(id: int) -> Array:
+	var results: Array = select(Tables.EVENTS, "*", "id="+str(id))
+	for i in range(len(results)): results[i].repetition_rate += 1
+	return results
 
 # Получение среднего процента по займу при учете процесса погашения займа
 func select_loan_percent(id: int) -> int:
