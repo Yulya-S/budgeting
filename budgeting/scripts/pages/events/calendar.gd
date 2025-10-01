@@ -44,7 +44,7 @@ func set_data(_where: String = "", new_date: String = "", _order: String = "") -
 	update_page()
 	
 # Заполнение страницы
-func update_page(close_page: String = ""):
+func update_page(close_page: String = "") -> void:
 	# Очистка страницы
 	for i in [Calendar, Legend]: for l in i.get_children():
 		l.queue_free()

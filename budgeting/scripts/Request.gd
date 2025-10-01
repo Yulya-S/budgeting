@@ -255,7 +255,7 @@ func select_events(date: String) -> Array:
 					insert_event(i, selected_date, Global.date_comparison(current_date, selected_date, ">"))
 				if new_date.month == selected_date.month and new_date.day <= current_month_day_count:
 					insert_event(i, new_date, Global.date_comparison(current_date, new_date, ">"))
-	values = select("temporary", "*", "", "date") # Получение результата расчета
+	values = select("temporary", "*", "date>='"+date.split(" ")[0]+"'", "date") # Получение результата расчета
 	db.query("DROP TABLE IF EXISTS temporary;") # Удаление временной таблицы
 	return values
 

@@ -15,7 +15,7 @@ var current_page: Pages = Pages.BASIC # Текущая страница
 # Изменение даты под формат запроса
 func date_to_sql_date(text: String) -> String:
 	var value: Dictionary = Time.get_datetime_dict_from_datetime_string(text, false)
-	return Time.get_datetime_string_from_datetime_dict(value, false)
+	return Time.get_datetime_string_from_datetime_dict(value, true)
 
 # Получить имя объекта из перечисления
 func enum_key(enums, object) -> String: return enums.keys()[object].to_lower()
@@ -82,6 +82,7 @@ func get_other_month(date: Dictionary, next: bool = true) -> Dictionary:
 		if date_copy.month <= 0:
 			date_copy.month = 12
 			date_copy.year -= 1
+	date_copy.day = 1
 	return date_copy
 
 # Сравнение дат	
@@ -99,3 +100,7 @@ func date_comparison(date1: Dictionary, date2: Dictionary, operator: String, acc
 			if date1.year == date2.year and date1.month < date2.month: return true
 			return account_day and date1.year == date2.year and date1.month == date2.month and date1.day < date2.day
 	return false
+
+# Перевод словоря даты в текстовый формат
+func dictionary_date_to_str(date: Dictionary) -> String:
+	return Time.get_datetime_string_from_datetime_dict(date, true)
