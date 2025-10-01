@@ -1,16 +1,8 @@
-extends Control
-# Подключение путей к объектам в сцене
-@onready var Calendar = $Calendar
+extends FillingCalendar
+# Подключение пути к объектам в сцене
 @onready var Legend = $Legend/VBoxContainer
 
 # Переменные
-# Переменные календаря
-var date: String = Time.get_date_string_from_system() # Выборанная дата
-var day_count: int = Request.select_day_count(date) # Количество дней в выбранном месяце
-var lines: Array = [] # Список объектов для создания на странице
-var events_color: Dictionary = {} # Цвета добавленных событий
-var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Путь к сцене ячеек календаря
-# Переменные легенды
 var legend_objects: Array = [] # Список объектов для заполнения легенды
 var legend_element_path: Resource = load("res://scenes/fragments/list_elements/event_legend.tscn") # Путь к сцене элемента легенды
 
@@ -18,19 +10,8 @@ var legend_element_path: Resource = load("res://scenes/fragments/list_elements/e
 func _ready() -> void: Global.connect("update_page", Callable(self, "update_page"))
 
 # Постепенное заполнение календаря
-func _process(_delta: float) -> void:
-	# Заполнение календаря
-	if Calendar.get_child_count() < 42:
-		Calendar.add_child(cell_path.instantiate()) # Добавление ячейки
-		# Вычисление даты
-		var current_day: Dictionary = Time.get_datetime_dict_from_datetime_string(date, true)
-		if current_day.weekday == 0: current_day.weedkay = 7
-		current_day.weekday -= 1
-		current_day.day = Calendar.get_child_count() - current_day.weekday
-		if current_day.day > 0 and current_day.day <= day_count:
-			# Применение значения номера ячейки
-			Calendar.get_child(-1).set_object(current_day.day, Global.date_comparison(current_day, Time.get_datetime_dict_from_system(), "=="),
-				Global.date_comparison(current_day, Time.get_datetime_dict_from_system(), "<"))
+func _process(delta: float) -> void:
+	super._process(delta)
 	# Заполнение легенды
 	if len(legend_objects) > 0:
 		Legend.add_child(legend_element_path.instantiate())
@@ -41,6 +22,7 @@ func set_data(_where: String = "", new_date: String = "", _order: String = "") -
 	if new_date != "":
 		date = new_date
 		day_count = Request.select_day_count(date)
+	if _where == "" and new_date == "" and _order == "": return
 	update_page()
 	
 # Заполнение страницы

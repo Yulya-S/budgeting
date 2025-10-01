@@ -208,6 +208,7 @@ func select_loan_list(where: String = "", order: String = "") -> Array:
 
 # Получение количества дней в текущем месяце
 func select_day_count(date: String) -> int:
+	if not db: return 30
 	db.query("SELECT STRFTIME('%d', DATE('"+date+"', 'start of month', '+1 month', '-1 day')) day_count")
 	return int(db.query_result[0].day_count)
 

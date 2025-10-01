@@ -70,7 +70,8 @@ func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool =
 	for i in objects: container.add_item(i.title, i.id)
 	
 # Получение первого числа следующего/предыдущего месяца
-func get_other_month(date: Dictionary, next: bool = true) -> Dictionary:
+func get_other_month(date, next: bool = true) -> Dictionary:
+	if date is String: date = Time.get_datetime_dict_from_datetime_string(date, true)
 	var date_copy: Dictionary = date.duplicate()
 	if next:
 		date_copy.month += 1
