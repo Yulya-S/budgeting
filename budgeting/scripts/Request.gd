@@ -1,6 +1,6 @@
 extends Node
 # Перечисление
-enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SQLITE_SEQUENCE} # Таблицы в базе данных
+enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -17,9 +17,10 @@ func connection_user_db() -> void:
 	_create_table("users", "login VARCHAR(255), password VARCHAR(255), base VARCHAR(255)")
 
 # Подключение базы данных
-func connection_db() -> void:
+func connection_db(db_name: String) -> void:
+	print(db_name)
 	db = SQLite.new()
-	db.path = "res://bases/base.db"
+	db.path = "res://bases/"+db_name+".db"
 	db.open_db()
 	create_tables()
 
