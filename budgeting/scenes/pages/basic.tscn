@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bxbo401tituxp"]
+[gd_scene load_steps=6 format=3 uid="uid://bxbo401tituxp"]
 
 [ext_resource type="Script" uid="uid://cfajdl5x507of" path="res://scripts/pages/basic.gd" id="1_eejbm"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_mrggl"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_ii1de"]
+[ext_resource type="Script" uid="uid://c7qf0bno4g5qa" path="res://scripts/pages/events/filling_calendar.gd" id="5_1kehw"]
 [ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="6_yvt7d"]
 
 [node name="Basic" type="Control"]
@@ -120,49 +121,26 @@ points = PackedVector2Array(0, 0, 1152, 0)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(1060, 106)
+[node name="Events" type="Control" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
-color = Color(0.817521, 0.817521, 0.817521, 1)
+script = ExtResource("5_1kehw")
+cell_count = 14
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/ColorRect2"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Events"]
 layout_mode = 2
 offset_left = 25.0
-offset_top = -38.0
-offset_right = 1152.0
-offset_bottom = -10.0
+offset_top = 12.0
+offset_right = 1147.0
+offset_bottom = 40.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "События"
+text = "Ближайшие события"
 
-[node name="ColorRect" type="ColorRect" parent="ScrollContainer/VBoxContainer/ColorRect2"]
+[node name="Calendar" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Events"]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 155.0
-offset_bottom = 96.0
-color = Color(0.707967, 0.707966, 0.707966, 1)
-
-[node name="ColorRect1" type="ColorRect" parent="ScrollContainer/VBoxContainer/ColorRect2"]
-layout_mode = 0
-offset_left = 165.0
-offset_top = 10.0
-offset_right = 310.0
-offset_bottom = 96.0
-color = Color(0.707967, 0.707966, 0.707966, 1)
-
-[node name="ColorRect2" type="ColorRect" parent="ScrollContainer/VBoxContainer/ColorRect2"]
-layout_mode = 0
-offset_left = 320.0
-offset_top = 10.0
-offset_right = 465.0
-offset_bottom = 96.0
-color = Color(0.707967, 0.707966, 0.707966, 1)
-
-[node name="ColorRect3" type="ColorRect" parent="ScrollContainer/VBoxContainer/ColorRect2"]
-layout_mode = 0
-offset_left = 475.0
-offset_top = 10.0
-offset_right = 620.0
-offset_bottom = 96.0
-color = Color(0.707967, 0.707966, 0.707966, 1)
+offset_left = 5.0
+offset_top = 55.0
+offset_right = 1147.0
+offset_bottom = 133.0
+theme_override_constants/separation = -2

@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://3wm073766y03"]
+
+[ext_resource type="Script" uid="uid://dtkax2dvvooqi" path="res://scripts/fragments/list_elements/color_event.gd" id="1_i334y"]
+
+[node name="ColorEvent" type="ColorRect"]
+custom_minimum_size = Vector2(74, 10)
+mouse_default_cursor_shape = 2
+script = ExtResource("1_i334y")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 10, 74, 10)
+width = 1.0
+default_color = Color(0, 0, 0, 1)
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

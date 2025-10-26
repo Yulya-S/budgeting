@@ -5,17 +5,18 @@ signal open_new_page(page: Pages, id, parent) # Открытие окна с п�
 signal update_page(close_page: String) # Обновление данных на странице
 
 # Перечисления
-enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, TRANSFER, PAYMENT, PERCENT, WALLET_INF, LOAN_INF} # Страницы приложения
+enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, TRANSFER, PAYMENT, PERCENT, WALLET_INF, LOAN_INF} # Страницы приложения
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
-# Переменная
+# Переменные
 var current_page: Pages = Pages.BASIC # Текущая страница
+var date: Dictionary = Time.get_datetime_dict_from_system() # Текущая дата
 
 # Изменение даты под формат запроса
 func date_to_sql_date(text: String) -> String:
 	var value: Dictionary = Time.get_datetime_dict_from_datetime_string(text, false)
-	return Time.get_datetime_string_from_datetime_dict(value, false)
+	return Time.get_datetime_string_from_datetime_dict(value, true)
 
 # Получить имя объекта из перечисления
 func enum_key(enums, object) -> String: return enums.keys()[object].to_lower()
@@ -68,3 +69,40 @@ func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool =
 	if not container: return
 	if clear_OB: container.clear()
 	for i in objects: container.add_item(i.title, i.id)
+	
+# Получение первого числа следующего/предыдущего месяца
+func get_other_month(date, next: bool = true) -> Dictionary:
+	if date is String: date = Time.get_datetime_dict_from_datetime_string(date, true)
+	var date_copy: Dictionary = date.duplicate()
+	if next:
+		date_copy.month += 1
+		if date_copy.month > 12:
+			date_copy.month = 1
+			date_copy.year +=1
+	else:
+		date_copy.month -= 1
+		if date_copy.month <= 0:
+			date_copy.month = 12
+			date_copy.year -= 1
+	date_copy.day = 1
+	return date_copy
+
+# Сравнение дат	
+func date_comparison(date1: Dictionary, date2: Dictionary, operator: String, account_day: bool = true) -> bool:
+	match operator:
+		"==":
+			if date1.year == date2.year and date1.month == date2.month:
+				return not account_day or date1.day == date2.day
+		">":
+			if date1.year > date2.year: return true
+			if date1.year == date2.year and date1.month > date2.month: return true
+			return account_day and date1.year == date2.year and date1.month == date2.month and date1.day > date2.day
+		"<":
+			if date1.year < date2.year: return true
+			if date1.year == date2.year and date1.month < date2.month: return true
+			return account_day and date1.year == date2.year and date1.month == date2.month and date1.day < date2.day
+	return false
+
+# Перевод словоря даты в текстовый формат
+func dictionary_date_to_str(date: Dictionary) -> String:
+	return Time.get_datetime_string_from_datetime_dict(date, true)

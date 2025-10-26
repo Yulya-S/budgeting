@@ -1,6 +1,6 @@
 extends Node
 # Перечисление
-enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, SQLITE_SEQUENCE} # Таблицы в базе данных
+enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SQLITE_SEQUENCE} # Таблицы в базе данных
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -23,11 +23,15 @@ func _create_table(title: String, columns: String, other: String = "") -> void:
 
 # Создание таблиц в базе
 func create_tables() -> void:
+	# Создание основных таблиц
 	_create_table("wallets", "title VARCHAR(255), value FLOAT")
 	_create_table("sections", "title VARCHAR(255), month_limit FLOAT, income BOOLEAN")
 	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)",	"FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`section_id`) REFERENCES `sections`(`id`)")
 	_create_table("loans", "title VARCHAR(255), total FLOAT, date DATE")
-	_create_table("events", "title VARCHAR(255), date DATE, note VARCHAR(255)")
+	_create_table("events", "title VARCHAR(255), repetition_rate INT, date DATE, note VARCHAR(255)")
+	# Создание таблиц для персонализации приложения
+	_create_table("settings", "color_preset INT, color_1 VARCHAR(255), color_2 VARCHAR(255), dark_theme BOOLEAN, event_page_calendar BOOLEAN, last_entry DATE")
+	_create_table("notifications", "title INT, date DATE")
 	if len(select(Tables.SECTIONS)) != 0: return
 	for i in ["Переводы", "Заём", "Платежи по займам", "Проценты по займу"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
 	
@@ -202,6 +206,60 @@ func select_loan_list(where: String = "", order: String = "") -> Array:
 	db.query("SELECT l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=2 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id"+where+order+";")
 	return db.query_result
 
+# Получение количества дней в текущем месяце
+func select_day_count(date: String) -> int:
+	if not db: return 30
+	db.query("SELECT STRFTIME('%d', DATE('"+date+"', 'start of month', '+1 month', '-1 day')) day_count")
+	return int(db.query_result[0].day_count)
+
+# Получение событий в текущем месяце с датой первого появления
+func select_monthly_events(date: String) -> Array:
+	var query_fragment: String = "(julianday(Date('"+date+"'))-julianday(date))"
+	db.query("SELECT *, Date(julianday(date)+CASE "+\
+		"WHEN "+query_fragment+"<0 THEN 0 "+\
+		"WHEN repetition_rate=1 THEN IIF("+query_fragment+"%2==0, "+query_fragment+", "+query_fragment+"+1) "+\
+		"WHEN repetition_rate=2 THEN IIF("+query_fragment+"%7==0, "+query_fragment+", "+query_fragment+"+(7-"+query_fragment+"%7)) "+\
+		"ELSE 0 END) new_date FROM events WHERE strftime('%Y-%m', date)<=strftime('%Y-%m', Date('"+date+"'));")
+	return db.query_result
+
+# Добавление событий во временную таблицу
+func insert_event(value: Dictionary, date, completed: bool) -> void:
+	if date is Dictionary: date = Time.get_datetime_string_from_datetime_dict(date, true).split(" ")[0]
+	insert_record("temporary", ["'"+value.title+"'", "'"+date+"'", "'"+value.note+"'", completed, value.id])
+
+# Добавление событий во временную таблицу с выбранным шагом
+func insert_events_with_step(value: Dictionary, new_date: Dictionary, current_date: Dictionary, day_count: int, step: int) -> void:
+	while new_date.day <= day_count:
+		insert_event(value, new_date, Global.date_comparison(current_date, new_date, ">"))
+		new_date.day += step
+
+# Получение списка событий
+func select_events(date: String) -> Array:
+	# подготовка данных о месяце для формирования событий
+	var current_date: Dictionary = Time.get_datetime_dict_from_system()
+	var selected_date: Dictionary = Time.get_datetime_dict_from_datetime_string(date, false)
+	var current_month_day_count: int = select_day_count(date)
+	var last_month_day_count: int = select_day_count(Time.get_datetime_string_from_datetime_dict(Global.get_other_month(selected_date, false), false))
+	var values: Array = select_monthly_events(date) # Получение первоначальных данных для временной таблицы
+	# Заполнение временной таблицы
+	_create_table("temporary", "title VARCHAR(255), date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
+	for i in values:
+		var new_date: Dictionary = Time.get_datetime_dict_from_datetime_string(i.new_date, false)
+		match i.repetition_rate:
+			0: if Global.date_comparison(selected_date, new_date, "==", false): insert_event(i, i.new_date, Global.date_comparison(current_date, new_date, ">"))
+			1: insert_events_with_step(i, new_date, current_date, current_month_day_count, 2)
+			2: insert_events_with_step(i, new_date, current_date, current_month_day_count, 7)
+			3, 4:
+				new_date.year = selected_date.year
+				if i.repetition_rate == 3: new_date.month = selected_date.month
+				if last_month_day_count < new_date.day:
+					insert_event(i, selected_date, Global.date_comparison(current_date, selected_date, ">"))
+				if new_date.month == selected_date.month and new_date.day <= current_month_day_count:
+					insert_event(i, new_date, Global.date_comparison(current_date, new_date, ">"))
+	values = select("temporary", "*", "date>='"+date.split(" ")[0]+"'", "date") # Получение результата расчета
+	db.query("DROP TABLE IF EXISTS temporary;") # Удаление временной таблицы
+	return values
+
 # Получение информации об объекте с учетом возможности его отсутствия
 func select_inf_value(table: Tables, id: int) -> Dictionary:
 	var value: Array = select(table, "*", "id="+str(id))
@@ -233,6 +291,12 @@ func select_section(id: int) -> Array: return select(Tables.SECTIONS, "*", "id="
 
 # Получение займа по индексу
 func select_loan(id: int) -> Array: return select("cash_flows cf", "cf.*, l.title", "section_id=2 AND wallet_2_id="+str(id), "", "loans l ON l.id=wallet_2_id")
+
+# Получение события по индексу
+func select_event(id: int) -> Array:
+	var results: Array = select(Tables.EVENTS, "*", "id="+str(id))
+	for i in range(len(results)): results[i].repetition_rate += 1
+	return results
 
 # Получение среднего процента по займу при учете процесса погашения займа
 func select_loan_percent(id: int) -> int:

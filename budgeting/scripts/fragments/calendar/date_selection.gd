@@ -10,7 +10,7 @@ const month_list: Array = ["Январь", "Февраль", "Март", "Апр
 
 # Переменные
 var selected_day: Dictionary = {} # Номер выбранного дня
-var cell_path = load("res://scenes/fragments/calendar/cell.tscn") # Путь к сцене ячеек календаря
+var cell_path: Resource = load("res://scenes/fragments/calendar/cell.tscn") # Путь к сцене ячеек календаря
 
 # Получение текущей даты
 func _ready() -> void:
@@ -43,27 +43,18 @@ func _create_days() -> void:
 	for i in Cells.get_children():
 		i.queue_free()
 		Cells.remove_child(i)
-		
-	# Сдвиг месяца и года
-	var next_month_idx: int = selected_day.month + 1
-	var next_year: int = int(Year.get_item_text(Year.selected))
-	if next_month_idx > len(month_list):
-		next_month_idx = 1
-		next_year += 1
-		
-	# Получение первых чисел этого и следующего месяцев
-	var current: Dictionary = Time.get_datetime_dict_from_datetime_string("-".join([selected_day.year, selected_day.month, 1]), true)
-	var next: Dictionary = Time.get_datetime_dict_from_datetime_string("-".join([next_year, next_month_idx, 1]), true)
-	# Смена индекса воскресения
-	if current.weekday == 0: current.weekday = 7
-	if next.weekday == 0: next.weekday = 7
+	# Получение данных о месяце
+	var current_month: Dictionary = Time.get_datetime_dict_from_datetime_string("-".join([selected_day.year, selected_day.month, 1]), true)
+	var day_count: int = Request.select_day_count(Time.get_datetime_string_from_datetime_dict(current_month, true).split(" ")[0])
+	if current_month.weekday == 0: current_month.weekday = 7 # Смена индекса воскресения
+	current_month.weekday -= 1
 	# Создание ячеек
 	var start_draw: bool = false
-	for i in range(42):
-		if i-current.weekday > 26 and (i + 1) % 7 == next.weekday: start_draw = false
-		elif current.weekday - 1 == i: start_draw = true
+	for i in range(1, 43):
+		if i - current_month.weekday > day_count: start_draw = false
+		elif i >= current_month.weekday: start_draw = true
 		Cells.add_child(cell_path.instantiate())
-		if start_draw: Cells.get_child(-1).set_object(i-current.weekday+2, i-current.weekday+2 == selected_day.day)
+		if start_draw: Cells.get_child(-1).set_object(i-current_month.weekday, i-current_month.weekday== selected_day.day)
 
 # Изменение номера дня
 func update_day(day: int) -> void:

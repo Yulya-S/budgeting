@@ -1,0 +1,120 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6d610a2pedcw"]
+
+[ext_resource type="Script" uid="uid://b060ylp6a7ds5" path="res://scripts/pages/event.gd" id="1_2gacm"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_gfpd1"]
+[ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_4xp27"]
+
+[node name="Event" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("1_2gacm")
+
+[node name="Head" parent="." instance=ExtResource("2_gfpd1")]
+layout_mode = 0
+
+[node name="Menu" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 50.0
+offset_right = 1152.0
+offset_bottom = 100.0
+color = Color(0.376471, 0.72549, 0.698039, 1)
+
+[node name="AddEvent" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 9.5
+offset_right = 148.0
+offset_bottom = 40.5
+text = "Создать событие"
+
+[node name="Filter" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1152, 65)
+layout_mode = 2
+offset_top = 100.0
+offset_right = 1152.0
+offset_bottom = 165.0
+color = Color(0.627451, 0.913725, 0.894118, 1)
+script = ExtResource("3_4xp27")
+OB_items = {
+"Order": {
+"0": "new_id DESC",
+"1": "id",
+"filter": "order"
+}
+}
+
+[node name="Year" type="OptionButton" parent="Filter"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 24.0
+offset_right = 373.0
+offset_bottom = 55.0
+alignment = 1
+
+[node name="Label" type="Label" parent="Filter/Year"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Год фильтрации"
+vertical_alignment = 1
+
+[node name="Month" type="OptionButton" parent="Filter"]
+layout_mode = 0
+offset_left = 406.0
+offset_top = 24.0
+offset_right = 746.0
+offset_bottom = 55.0
+alignment = 1
+selected = 0
+item_count = 12
+popup/item_0/text = "Январь"
+popup/item_0/id = 0
+popup/item_1/text = "Февраль"
+popup/item_1/id = 1
+popup/item_2/text = "Март"
+popup/item_2/id = 2
+popup/item_3/text = "Апрель"
+popup/item_3/id = 3
+popup/item_4/text = "Май"
+popup/item_4/id = 4
+popup/item_5/text = "Июнь"
+popup/item_5/id = 5
+popup/item_6/text = "Июль"
+popup/item_6/id = 6
+popup/item_7/text = "Август"
+popup/item_7/id = 7
+popup/item_8/text = "Сентябрь"
+popup/item_8/id = 8
+popup/item_9/text = "Октябрь"
+popup/item_9/id = 9
+popup/item_10/text = "Ноябрь"
+popup/item_10/id = 10
+popup/item_11/text = "Декабрь"
+popup/item_11/id = 11
+
+[node name="Label" type="Label" parent="Filter/Month"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 262.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Месяц фильтрации"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Filter"]
+layout_mode = 0
+offset_left = 779.0
+offset_top = 24.0
+offset_right = 1119.0
+offset_bottom = 55.0
+text = "Применить"
+
+[connection signal="button_down" from="Menu/AddEvent" to="." method="_on_add_event_button_down"]
+[connection signal="item_selected" from="Filter/Year" to="Filter" method="_on_year_item_selected"]
+[connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]

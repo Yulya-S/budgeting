@@ -23,4 +23,5 @@ func set_values(data: Dictionary) -> void:
 				for l in special_elements[i.name.to_lower()]: id.append(data[l])
 			if data[i.name.to_lower()] == null: continue
 			i.set_object(data[i.name.to_lower()], id)
+		elif i is ColorRect: i.visible = data[i.name.to_lower()]
 		else: i.set_text(str(data[i.name.to_lower()]))

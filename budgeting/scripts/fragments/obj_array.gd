@@ -6,7 +6,7 @@ extends ScrollContainer
 @export var obj: ListObjects = ListObjects.WALLET # Выбранный объект списка
 
 # Перечисление
-enum ListObjects {WALLET, WALLET_TRANSACTION, SECTION, CASH_FLOW, LOAN} # Объекты списка
+enum ListObjects {WALLET, WALLET_TRANSACTION, SECTION, CASH_FLOW, LOAN, EVENT} # Объекты списка
 
 # Переменные
 var data: Dictionary = {"where": "", "date": Time.get_date_string_from_system(), "order": ""} # Фрагменты запроса
@@ -17,6 +17,11 @@ var lines: Array = [] # Список объектов для создания н
 func _ready() -> void:
 	obj_path = load("res://scenes/fragments/list_elements/"+Global.enum_key(ListObjects, obj)+".tscn")
 	Global.connect("update_page", Callable(self, "update_page"))
+
+# Применение нового объекта списка
+func set_obj(new_obj: ListObjects) -> void:
+	obj = new_obj
+	obj_path = load("res://scenes/fragments/list_elements/"+Global.enum_key(ListObjects, obj)+".tscn")
 	
 # Получение количества объектов
 func obj_count() -> int: return Objects.get_child_count()
@@ -45,6 +50,7 @@ func select() -> Array:
 		ListObjects.LOAN: return Request.select_loan_list(data.where, data.order)
 		ListObjects.SECTION: return Request.select_sections(data.where, data.date, data.order)
 		ListObjects.CASH_FLOW: return Request.select_cash_flows(data.where, data.date, data.order)
+		ListObjects.EVENT: return Request.select_events(data.date)
 	return []
 
 # Заполнение страницы
