@@ -2,11 +2,13 @@ extends ColorRect
 # Подключение пути к объектам в сцене
 @onready var Marker = $Marker
 @onready var Date = $Date
+@onready var DayEnd = $Timer
 
 # Изменение положения маркера страницы
 func _ready() -> void:
 	Marker.position.x = (5 * (Global.current_page + 3)) + (39.68 * (Global.current_page + 2)) - 1
-	Date.set_text(Time.get_date_string_from_system())
+	Date.set_text(Global.dictionary_date_to_str(Global.date).split(" ")[0])
+	DayEnd.start((60 - Global.date.second) + (60 * (60 - Global.date.minute)) + (60 * 60 * (24 - Global.date.hour)))
 
 # Обработка нажатия кнопки главная 
 func _on_main_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.BASIC)
@@ -28,3 +30,9 @@ func _on_event_button_down() -> void: Global.emit_signal("open_new_page", Global
 
 # Обработка нажатия кнопки отчетов 
 func _on_report_button_down() -> void: pass
+
+# Обработка окончания работы таймера
+func _on_timer_timeout() -> void:
+	DayEnd.start(60 * 60 * 24)
+	Global.date = Time.get_datetime_dict_from_system()
+	Date.set_text(Global.date)

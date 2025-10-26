@@ -165,6 +165,8 @@ offset_top = 50.0
 offset_right = 1152.0
 offset_bottom = 648.0
 
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="button_down" from="Main" to="." method="_on_main_button_down"]
 [connection signal="button_down" from="Wallet" to="." method="_on_wallet_button_down"]
 [connection signal="button_down" from="Section" to="." method="_on_section_button_down"]
@@ -172,3 +174,4 @@ offset_bottom = 648.0
 [connection signal="button_down" from="Loan" to="." method="_on_loan_button_down"]
 [connection signal="button_down" from="Event" to="." method="_on_event_button_down"]
 [connection signal="button_down" from="Report" to="." method="_on_report_button_down"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

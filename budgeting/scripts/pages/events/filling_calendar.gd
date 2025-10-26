@@ -25,8 +25,10 @@ func _process(_delta: float) -> void:
 		var current_day: Dictionary = Time.get_datetime_dict_from_datetime_string(date, true)
 		if current_day.weekday == 0: current_day.weedkay = 7
 		current_day.weekday -= 1
-		current_day.day = Calendar.get_child_count() - current_day.weekday
-		if cell_count < 28: current_day.day += current_day.weekday
+		if cell_count < 28:
+			current_day.day += Calendar.get_child_count() - 1
+			if current_day.day >= day_count: current_day.day = int(Calendar.get_child(-1).Number) + 1
+		else: current_day.day = Calendar.get_child_count() - current_day.weekday
 		if (current_day.day > 0 and current_day.day <= day_count) or cell_count < 28:
 			# Применение значения номера ячейки
 			Calendar.get_child(-1).set_object(current_day.day, Global.date_comparison(current_day, Time.get_datetime_dict_from_system(), "=="),

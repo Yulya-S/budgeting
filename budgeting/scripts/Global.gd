@@ -9,8 +9,9 @@ enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, TRANSFER, PAYMENT, P
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
-# Переменная
+# Переменные
 var current_page: Pages = Pages.BASIC # Текущая страница
+var date: Dictionary = Time.get_datetime_dict_from_system() # Текущая дата
 
 # Изменение даты под формат запроса
 func date_to_sql_date(text: String) -> String:
