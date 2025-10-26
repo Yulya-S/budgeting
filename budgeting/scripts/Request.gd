@@ -6,15 +6,22 @@ enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SQLITE_SEQUENCE} # Т
 var db: SQLite = null # Подключенная база данных
 
 # Создание и подключение базы данных
-func _ready() -> void:
-	connection_db()
-	create_tables()
+func _ready() -> void: connection_user_db()
+
+# Подключение базы данных пользователей
+func connection_user_db() -> void:
+	db = SQLite.new()
+	db.path = "res://bases/users.db"
+	db.open_db()
+	# Создание таблицы в базе данных пользователей
+	_create_table("users", "login VARCHAR(255), password VARCHAR(255), base VARCHAR(255)")
 
 # Подключение базы данных
 func connection_db() -> void:
 	db = SQLite.new()
 	db.path = "res://bases/base.db"
 	db.open_db()
+	create_tables()
 
 # Запрос на создание таблицы
 func _create_table(title: String, columns: String, other: String = "") -> void:
