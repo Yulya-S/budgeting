@@ -18,7 +18,6 @@ func connection_user_db() -> void:
 
 # Подключение базы данных
 func connection_db(db_name: String) -> void:
-	print(db_name)
 	db = SQLite.new()
 	db.path = "res://bases/"+db_name+".db"
 	db.open_db()

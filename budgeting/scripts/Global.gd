@@ -13,7 +13,7 @@ enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 var current_page: Pages = Pages.BASIC # Текущая страница
 var date: Dictionary = Time.get_datetime_dict_from_system() # Текущая дата
 var config: Dictionary = {"enter": false} # Настройки программы
-const ConfigFilePath: String = "res://bin/config.json" # Путь к файлу настроек
+const ConfigFilePath: String = "res://bases/config.json" # Путь к файлу настроек
 
 # Создание файла конфигураций при запуске программы
 func _ready() -> void: create_config()

@@ -26,10 +26,6 @@ offset_top = 9.34
 offset_right = 1147.0
 offset_bottom = 40.34
 alignment = 2
-selected = 0
-item_count = 1
-popup/item_0/text = "ru"
-popup/item_0/id = 0
 
 [node name="Label" type="Label" parent="Language"]
 layout_mode = 0
@@ -37,7 +33,7 @@ offset_left = -383.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Язык интерфейса:"
+text = "Язык:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -148,6 +144,7 @@ offset_bottom = 638.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "budgeting - 1.0"
 
+[connection signal="item_selected" from="Language" to="." method="_on_language_item_selected"]
 [connection signal="toggled" from="Password/Show" to="." method="_on_show_password_toggled"]
 [connection signal="button_down" from="Registration" to="." method="_on_registration_button_down"]
 [connection signal="button_down" from="Enter" to="." method="_on_enter_button_down"]

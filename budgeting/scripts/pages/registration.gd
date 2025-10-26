@@ -1,10 +1,17 @@
 extends Control
 # Подключение пути к объектам в сцене
-@onready var ShowPassword = $Password/Show
+@onready var Language = $Language
 @onready var Password = $Password
+@onready var ShowPassword = $Password/Show
 @onready var Remember = $Remember
 @onready var Error = $Error
 
+# Заполнение списка языков программы
+func _ready() -> void:
+	File.load_lang(Language)
+	File.set_lang(self)
+
+# Автоматический вход
 func _process(delta: float) -> void: if Global.config.enter: _on_enter_button_down(false)
 
 # Обработка изменения параметра отображения пароля
@@ -57,3 +64,8 @@ func _on_enter_button_down(check_field: bool = true) -> void:
 		if not Error.visible: Global.set_error(Error, "Неверный логин или пароль")
 		return
 	entrance()
+
+
+func _on_language_item_selected(index: int) -> void:
+	File.read_lang(Language.get_item_text(index))
+	File.set_lang(self)
