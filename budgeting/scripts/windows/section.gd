@@ -13,10 +13,9 @@ func set_object(obj_id: int, parent = null) -> void:
 	if "-1" in MonthLimit.get_text(): $Window.on_close_button_down()
 
 # Проверка введенных данных
-func check_object(_new_circle: bool = true) -> bool:
-	Error.visible = false
-	if float(MonthLimit.get_text()) <= 0 and not Income.button_pressed: Global.set_error(Error, "Значение должно быть больше нуля")
-	super.check_object(not Error.visible)
+func check_object() -> bool:
+	super.check_object()
+	if float(MonthLimit.get_text()) <= 0 and not Income.button_pressed: Error.set_state(Error.States._E05)
 	return _set_error(Request.select(table, "id", 'title="'+Title.get_text()+'" AND income='+str(int(Income.button_pressed))))
 	
 # Изменение значения типа статьи

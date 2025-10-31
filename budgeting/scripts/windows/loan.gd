@@ -13,10 +13,10 @@ func _ready() -> void: Global.fill_optionButton(Wallet, Request.select(Request.T
 func get_loan_id() -> int: return Request.select(Request.Tables.CASH_FLOWS, "*", "id="+str(id))[0].wallet_2_id
 
 # Проверка введенных данных
-func check_object(_new_circle: bool = true) -> bool:
+func check_object() -> bool:
+	super.check_object()
 	Error.visible = false
-	if float(Value.get_text()) <= 0: Global.set_error(Error, "Значение должно быть больше нуля")
-	super.check_object(not Error.visible)
+	if float(Value.get_text()) <= 0: Error.set_state(Error.States._E05)
 	return _set_error(Request.select(table, "id", 'title="'+Title.get_text()+'" AND total<>0'))
 
 # Изменение значение счета после проведения транзакции

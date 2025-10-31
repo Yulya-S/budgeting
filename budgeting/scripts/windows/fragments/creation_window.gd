@@ -44,19 +44,17 @@ func get_values() -> Array:
 	return values
 	
 # Проверка введенных данных
-func check_object(new_circle: bool = true) -> bool:
-	Error.visible = not new_circle
+func check_object() -> bool:
+	Error.clear()
 	for i in get_children():
-		if i is TextEdit and i.name != "Note" and i.get_text() == "":
-			Global.set_error(Error, "Все поля должны быть заполнены")
-			return Error.visible
+		if i is TextEdit and i.name != "Note": return Error.check_mandatory_fields(i)
 	return Error.visible
 		
 # Проверка существуют ли подобные записи
 func _set_error(values: Array) -> bool:
 	if len(values) == 0: return Error.visible
-	elif not id: Global.set_error(Error, "Объект уже существует")
-	else: for i in values: if id != i.id:  Global.set_error(Error, "Объект уже существует")
+	elif not id: Error.set_state(Error.States._E04)
+	else: for i in values: if id != i.id: Error.set_state(Error.States._E04)
 	return Error.visible
 	
 # Создание или изменение объекта

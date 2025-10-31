@@ -32,13 +32,6 @@ func get_OB_id(button: OptionButton) -> int: return button.get_item_id(button.se
 # Получить текст выбранного элемента выпадающего списка
 func get_OB_text(button: OptionButton) -> String: return button.get_item_text(button.selected)
 
-# Изменение текста ошибки
-func set_error(container: Label, text: String) -> bool:
-	container.visible = true
-	text[0] = text[0].to_upper()
-	container.set_text(text+"!")
-	return true
-
 # Проверка что текст — это число
 func valide_numeric_text(text_container: TextEdit) -> void:
 	var text = text_container.get_text()
@@ -135,7 +128,7 @@ func read_config() -> void:
 	file.close()
 	
 # Шифрование данных
-func hide_data(data: String) -> String: return Marshalls.utf8_to_base64(data)
+func hide_data(data: String) -> String:	return Marshalls.utf8_to_base64(data)
 
 # Дешифрование данных
 func show_data(data: String) -> String: return Marshalls.base64_to_utf8(data)

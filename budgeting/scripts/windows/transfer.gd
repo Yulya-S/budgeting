@@ -7,7 +7,7 @@ func _ready() -> void:
 	
 # Проведение дополнительных проверок на верность данных
 func _extra_errors() -> bool:
-	if float(Count.get_text())-float(Value.get_text()) < 0: Global.set_error(Error, "На счету недостаточно средств")
+	if float(Count.get_text())-float(Value.get_text()) < 0: Error.set_state(Error.States._E06)
 	return Error.visible
 
 # Изменение информации о счете

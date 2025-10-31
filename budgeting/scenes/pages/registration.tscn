@@ -54,7 +54,7 @@ offset_left = -166.0
 offset_right = -8.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Логин:"
+text = "*Логин:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -75,7 +75,7 @@ offset_left = -166.0
 offset_right = -8.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Пароль:"
+text = "*Пароль:"
 horizontal_alignment = 2
 vertical_alignment = 1
 

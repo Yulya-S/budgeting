@@ -48,10 +48,9 @@ func set_values(data: Dictionary) -> void:
 				else: _on_wallet_item_selected(data.wallet_id - 1, false)
 
 # Проверка заполненности полей
-func check_object(_new_circle: bool = true) -> bool:
-	Error.visible = false
-	if float(Value.get_text()) <= 0: Global.set_error(Error, "Значение должно быть больше нуля")
-	super.check_object(not Error.visible)
+func check_object() -> bool:
+	super.check_object()
+	if float(Value.get_text()) <= 0: Error.set_state(Error.States._E05)
 	return _extra_errors()
 	
 # Проведение дополнительных проверок на верность данных

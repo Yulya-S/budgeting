@@ -56,16 +56,20 @@ func _cr_ru() -> void:
 	_cr_lang_file("ru", JSON.stringify({
 		"Registration": {
 			"Language": { "Label": "Язык:" },
-			"Login": { "Label": "Логин" },
-			"Password": { "Label": "Пароль", "Show": "Показать пароль" },
+			"Login": { "Label": "*Логин:" },
+			"Password": { "Label": "*Пароль:", "Show": "Показать пароль" },
 			"Remember": "Запомни меня",
 			"Registration": "Регистрация",
 			"Enter": "Вход",
 		},
 		"_Errors": {
-			"_E01": "Все поля должны быть заполнены",
+			"_E01": "Обязательные поля должны быть заполнены",
 			"_E02": "Имя пользователя занято",
-			"_E03": "Неверный логин или пароль"
+			"_E03": "Неверный логин или пароль",
+			"_E04": "Объект уже существует",
+			"_E05": "Значение должно быть больше нуля",
+			"_E06": "На счету недостаточно средств",
+			"_E07": "Введенное значение привышает необходимое значение для полного погашения займа"
 		}
 	}))
 
@@ -74,15 +78,19 @@ func _cr_en() -> void:
 	_cr_lang_file("en", JSON.stringify({
 		"Registration": {
 			"Language": { "Label": "Language:" },
-			"Login": { "Label": "Login" },
-			"Password": { "Label": "Password", "Show": "Show password" },
+			"Login": { "Label": "*Login:" },
+			"Password": { "Label": "*Password:", "Show": "Show password" },
 			"Remember": "Remember me",
 			"Registration": "Registration",
 			"Enter": "Entry",
 		},
 		"_Errors": {
-			"_E01": "All fields must be filled in",
+			"_E01": "Required fields must be filled in",
 			"_E02": "Username taken",
-			"_E03": "Incorrect login or password"
+			"_E03": "Incorrect login or password",
+			"_E04": "The object already exists",
+			"_E05": "Value must be greater than zero",
+			"_E06": "There are insufficient funds in the account",
+			"_E07": "The entered value exceeds the required value for full repayment of the loan"
 		}
 	}))

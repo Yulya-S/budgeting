@@ -1,6 +1,6 @@
 extends Label
 # Переменные
-enum States {NONE, _E01, _E02, _E03, _E04} # Список кодов возможных ошибок
+enum States {NONE, _E01, _E02, _E03, _E04, _E05, _E06, _E07} # Список кодов возможных ошибок
 var state: States = States.NONE # Код текущей ошибки
 
 # Очистка ошибки
@@ -25,7 +25,6 @@ func _set_error_text(erro_text: String) -> void:
 	erro_text[0] = erro_text[0].to_upper()
 	set_text(erro_text + "!")
 	
-# Обработчики ошибок
 # Проверка обязательных к заполнению полей
 func check_mandatory_fields(field: TextEdit) -> bool:
 	if field.get_text() == "":

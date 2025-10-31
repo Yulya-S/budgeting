@@ -10,18 +10,15 @@ extends Control
 func _ready() -> void: File.load_lang(Language)
 
 # Автоматический вход
-func _process(delta: float) -> void: if Global.config.enter: _on_enter_button_down(false)
+func _process(_delta: float) -> void: if Global.config.enter: _on_enter_button_down(false)
 
 # Проверка возможности использования пароля
 func check_user(login: bool, check_field: bool = true) -> bool:
-	Error.visible = false
+	Error.clear()
 	# Заполнение файла конфигурации
 	if check_field: for i in get_children():
 		if i is TextEdit:
-			if i.get_text() == "":
-				Global.set_error(Error, File.lang._Errors._E01)
-				Error.set_state(Error.States._E01)
-				return false
+			if Error.check_mandatory_fields(i):	return false
 			Global.config[i.name.to_lower()] = Global.hide_data(i.get_text())
 	# Получение результата из базы данных
 	var req: String = 'login="'+Global.config["login"]+'"'
@@ -50,9 +47,7 @@ func entrance() -> void:
 # Обработка нажатия кнопки регистрации
 func _on_registration_button_down() -> void:
 	if not check_user(false):
-		if not Error.visible:
-			Global.set_error(Error, File.lang._Errors._E02)
-			Error.set_state(Error.States._E02)
+		Error.set_state(Error.States._E02)
 		return
 	Request.insert_record(Request.Tables.USERS, ['"'+Global.config.login+'"', '"'+Global.config.password+'"', '"'+generate_db_name()+'"'])
 	entrance()
@@ -60,9 +55,7 @@ func _on_registration_button_down() -> void:
 # Обработка нажатия кнопки входа
 func _on_enter_button_down(check_field: bool = true) -> void:
 	if not check_user(true, check_field):
-		if not Error.visible:
-			Global.set_error(Error, File.lang._Errors._E03)
-			Error.set_state(Error.States._E03)
+		Error.set_state(Error.States._E03)
 		return
 	entrance()
 	
@@ -71,4 +64,4 @@ func _on_show_password_toggled(toggled_on: bool) -> void:
 	Password.add_theme_color_override("font_color", Color.WHITE if toggled_on else Color.html("#00000000"))
 
 # Обработка смены языка интерфейса
-func _on_language_item_selected(index: int) -> void: File.read_lang(Language)
+func _on_language_item_selected(_index: int) -> void: File.read_lang(Language)
