@@ -17,7 +17,7 @@ func load_lang(container: OptionButton) -> void:
 			container.add_item(i.split(".")[0])
 			if i.split(".")[0] == config.lang:
 				container.select(container.item_count-1)
-				read_lang(i.split(".")[0])
+				read_lang(container)
 			
 # Создание файлов языков
 func _create_langs() -> void:
@@ -32,12 +32,13 @@ func _cr_lang_file(f_name: String, value: String) -> void:
 	file.close()
 
 # Считывание перевода
-func read_lang(l_name: String) -> void:
-	var file = FileAccess.open(LangDir+l_name+".json", FileAccess.READ)
+func read_lang(container: OptionButton) -> void:
+	var file = FileAccess.open(LangDir+Global.get_OB_text(container)+".json", FileAccess.READ)
 	var json = JSON.new()
 	if not json.parse(file.get_line()) == OK: return
 	lang = json.data
 	file.close()
+	set_lang(container.get_parent())
 	
 # Применение перевода
 func set_lang(obj, lang_fragment = lang) -> void:
@@ -45,7 +46,9 @@ func set_lang(obj, lang_fragment = lang) -> void:
 	if lang_fragment is String:
 		obj.set_text(lang_fragment)
 		return
-	for i in obj.get_children(): if i.name in lang_fragment.keys(): set_lang(i, lang_fragment[i.name])
+	for i in obj.get_children():
+		if i.name in lang_fragment.keys(): set_lang(i, lang_fragment[i.name])
+		elif i.name == "Error": i.update_lang()
 
 # Создание базовых языков
 # Русский
@@ -58,6 +61,11 @@ func _cr_ru() -> void:
 			"Remember": "Запомни меня",
 			"Registration": "Регистрация",
 			"Enter": "Вход",
+		},
+		"_Errors": {
+			"_E01": "Все поля должны быть заполнены",
+			"_E02": "Имя пользователя занято",
+			"_E03": "Неверный логин или пароль"
 		}
 	}))
 
@@ -71,5 +79,10 @@ func _cr_en() -> void:
 			"Remember": "Remember me",
 			"Registration": "Registration",
 			"Enter": "Entry",
+		},
+		"_Errors": {
+			"_E01": "All fields must be filled in",
+			"_E02": "Username taken",
+			"_E03": "Incorrect login or password"
 		}
 	}))
