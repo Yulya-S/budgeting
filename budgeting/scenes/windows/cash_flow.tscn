@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cma0tkdwn1ppo"]
+[gd_scene load_steps=5 format=3 uid="uid://cma0tkdwn1ppo"]
 
 [ext_resource type="Script" uid="uid://c8tfwlokk7kaq" path="res://scripts/windows/cash_flow.gd" id="1_h45nr"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_nmpp4"]
+[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_dh78s"]
 [ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/calendar/date_selection.tscn" id="3_nmpp4"]
 
 [node name="CashFlow" type="Control"]
@@ -44,6 +45,7 @@ offset_bottom = 147.0
 theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
 theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
+script = ExtResource("3_dh78s")
 
 [node name="Wallet_Id" type="OptionButton" parent="."]
 layout_mode = 0
@@ -105,12 +107,12 @@ scroll_past_end_of_file = true
 
 [node name="Label" type="Label" parent="Value"]
 layout_mode = 0
-offset_left = -210.0
+offset_left = -223.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Сумма транзакции"
+theme_override_font_sizes/font_size = 19
+text = "*Сумма транзакции:"
 horizontal_alignment = 2
 vertical_alignment = 1
 

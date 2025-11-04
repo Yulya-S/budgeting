@@ -9,8 +9,8 @@ func _ready() -> void:
 
 # Проведение дополнительных проверок на верность данных
 func _extra_errors() -> bool:
-	if float(Count.get_text())-float(Value.get_text()) < 0: Global.set_error(Error, "На счету недостаточно средств")
-	elif float(Total.get_text())-float(Value.get_text()) < 0: Global.set_error(Error, "Введенное значение привышает необходимое значение для полного погашения займа")
+	if float(Count.get_text())-float(Value.get_text()) < 0: Error.set_state(Error.States._E06)
+	elif float(Total.get_text())-float(Value.get_text()) < 0: Error.set_state(Error.States._E07)
 	return Error.visible
 	
 # Изменение раздела расхода

@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cw6q5bugmshsg"]
+[gd_scene load_steps=3 format=3 uid="uid://cw6q5bugmshsg"]
 
 [ext_resource type="Texture2D" uid="uid://dnib8h85vflf7" path="res://img/question.png" id="1_1pm6t"]
 [ext_resource type="Script" uid="uid://d1gya3o6q3fro" path="res://scripts/pages/registration.gd" id="1_lygme"]
-[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_grr8u"]
 
 [node name="Registration" type="Control"]
 layout_mode = 3
@@ -27,6 +26,10 @@ offset_top = 9.34
 offset_right = 1147.0
 offset_bottom = 40.34
 alignment = 2
+selected = 0
+item_count = 1
+popup/item_0/text = "ru"
+popup/item_0/id = 0
 
 [node name="Label" type="Label" parent="Language"]
 layout_mode = 0
@@ -34,7 +37,7 @@ offset_left = -383.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Язык:"
+text = "Язык интерфейса:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -54,7 +57,7 @@ offset_left = -166.0
 offset_right = -8.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "*Логин:"
+text = "Логин:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -75,7 +78,7 @@ offset_left = -166.0
 offset_right = -8.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "*Пароль:"
+text = "Пароль:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -135,7 +138,6 @@ offset_bottom = 496.0
 theme_override_colors/font_color = Color(0.756863, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
-script = ExtResource("3_grr8u")
 
 [node name="Version" type="Label" parent="."]
 layout_mode = 0
@@ -146,7 +148,6 @@ offset_bottom = 638.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "budgeting - 1.0"
 
-[connection signal="item_selected" from="Language" to="." method="_on_language_item_selected"]
 [connection signal="toggled" from="Password/Show" to="." method="_on_show_password_toggled"]
 [connection signal="button_down" from="Registration" to="." method="_on_registration_button_down"]
 [connection signal="button_down" from="Enter" to="." method="_on_enter_button_down"]

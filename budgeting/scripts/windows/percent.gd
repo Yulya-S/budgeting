@@ -33,10 +33,9 @@ func set_all(obj_id: int) -> void:
 	set_result()
 	
 # Проверка заполненности полей
-func check_object(_new_circle: bool = true) -> bool:
-	Error.visible = false
-	if float(Count.get_text().split(" ")[0]) <= 0: Global.set_error(Error, "Значение должно быть больше нуля")
-	super.check_object(not Error.visible)
+func check_object() -> bool:
+	super.check_object()
+	if float(Count.get_text().split(" ")[0]) <= 0: Error.set_state(Error.States._E05)
 	return Error.visible
 
 # Установка текста результата добавления процентов по займу

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://42d46ou8bkds"]
+[gd_scene load_steps=5 format=3 uid="uid://42d46ou8bkds"]
 
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="1_804o2"]
 [ext_resource type="Script" uid="uid://chq5jeut7oy4g" path="res://scripts/windows/loan.gd" id="1_kl61x"]
 [ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/calendar/date_selection.tscn" id="2_kl61x"]
+[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_8pp1o"]
 
 [node name="Loan" type="Control"]
 layout_mode = 3
@@ -25,6 +26,7 @@ offset_bottom = 147.0
 theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
 theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
+script = ExtResource("3_8pp1o")
 
 [node name="Wallet_Id" type="OptionButton" parent="."]
 layout_mode = 0
@@ -65,7 +67,7 @@ offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Имя займа"
+text = "*Имя займа:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -89,7 +91,7 @@ offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Сумма займа"
+text = "*Сумма займа:"
 horizontal_alignment = 2
 vertical_alignment = 1
 

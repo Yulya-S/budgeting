@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 Request="*res://scripts/Request.gd"
 Global="*res://scripts/Global.gd"
 ColorScheme="*res://scripts/ColorScheme.gd"
+File="*res://scripts/File.gd"
 
 [display]
 

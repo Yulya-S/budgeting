@@ -27,7 +27,8 @@ func _process(_delta: float) -> void:
 		current_day.weekday -= 1
 		if cell_count < 28:
 			current_day.day += Calendar.get_child_count() - 1
-			if current_day.day >= day_count: current_day.day = int(Calendar.get_child(-1).Number) + 1
+			if current_day.day >= day_count:
+				current_day.day = int(Calendar.get_child(-1).Number.get_text()) + 1
 		else: current_day.day = Calendar.get_child_count() - current_day.weekday
 		if (current_day.day > 0 and current_day.day <= day_count) or cell_count < 28:
 			# Применение значения номера ячейки

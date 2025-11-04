@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bm8d2roc1o62"]
+[gd_scene load_steps=4 format=3 uid="uid://bm8d2roc1o62"]
 
 [ext_resource type="Script" uid="uid://bme8i7rc6pnvh" path="res://scripts/windows/section.gd" id="1_r1ear"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_lnpay"]
+[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_lnpay"]
 
 [node name="Section" type="Control"]
 layout_mode = 3
@@ -24,6 +25,7 @@ offset_bottom = 225.0
 theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
 theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
+script = ExtResource("3_lnpay")
 
 [node name="Title" type="TextEdit" parent="."]
 clip_contents = false
@@ -45,7 +47,7 @@ offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Название раздела"
+text = "*Название раздела:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -69,7 +71,7 @@ offset_right = -7.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Ежемесячное ограничение"
+text = "*Ежемесячное ограничение:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
