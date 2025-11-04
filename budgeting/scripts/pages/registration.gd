@@ -1,5 +1,5 @@
 extends Control
-# Подключение пути к объектам в сцене
+# Подключение путей к объектам в сцене
 @onready var Language = $Language
 @onready var Password = $Password
 @onready var ShowPassword = $Password/Show
@@ -13,55 +13,50 @@ func _ready() -> void: File.load_lang(Language)
 func _process(_delta: float) -> void: if Global.config.enter: _on_enter_button_down(false)
 
 # Проверка возможности использования пароля
-func check_user(login: bool, check_field: bool = true) -> bool:
+func _check_user(login: bool, check_field: bool = true) -> bool:
 	Error.clear()
 	# Заполнение файла конфигурации
 	if check_field: for i in get_children():
 		if i is TextEdit:
 			if Error.check_mandatory_fields(i):	return false
 			Global.config[i.name.to_lower()] = Global.hide_data(i.get_text())
-	# Получение результата из базы данных
-	var req: String = 'login="'+Global.config["login"]+'"'
-	if login: req += ' AND password="'+Global.config["password"]+'"'
-	return Request.select(Request.Tables.USERS, "COUNT(id)=="+str(int(login))+" res", req)[0].res
+	return Request.select_existence_user(login) # Получение результата проверки из базы данных
 
 # Генерация названия базы данных
-func generate_db_name() -> String:
+func _generate_db_name() -> String:
 	var base_name: String = ""
 	const chars: String = 'abcdefghijklmnopqrstuvwxyz1234567890'
 	for i in range(10): base_name += chars[randi()%len(chars)]
 	return Global.hide_data(base_name)
 
 # Вход в программу
-func entrance() -> void:
+func _entrance() -> void:
+	# Сохранение файла конфигурации для автоматического входа
 	Global.config.enter = Remember.button_pressed
-	var user_data: Array = []
-	for i in Global.config.keys():
-		if i == "enter": continue
-		user_data.append(i+'="'+Global.config[i]+'"')
-	var data: Dictionary = Request.select(Request.Tables.USERS, "*", " AND ".join(user_data))[0]
 	if Global.config.enter: Global.update_config()
+	# Вход в аккаунт
+	var data: Dictionary = Request.select_user()
 	Request.connection_db(Global.show_data(data.base))
 	Global.emit_signal("open_new_page", Global.Pages.BASIC)
 
-# Обработка нажатия кнопки регистрации
-func _on_registration_button_down() -> void:
-	if not check_user(false):
-		Error.set_state(Error.States._E02)
-		return
-	Request.insert_record(Request.Tables.USERS, ['"'+Global.config.login+'"', '"'+Global.config.password+'"', '"'+generate_db_name()+'"'])
-	entrance()
-
-# Обработка нажатия кнопки входа
-func _on_enter_button_down(check_field: bool = true) -> void:
-	if not check_user(true, check_field):
-		Error.set_state(Error.States._E03)
-		return
-	entrance()
-	
 # Обработка изменения параметра отображения пароля
 func _on_show_password_toggled(toggled_on: bool) -> void:
 	Password.add_theme_color_override("font_color", Color.WHITE if toggled_on else Color.html("#00000000"))
 
 # Обработка смены языка интерфейса
 func _on_language_item_selected(_index: int) -> void: File.read_lang(Language)
+
+# Обработка нажатия кнопки регистрации
+func _on_registration_button_down() -> void:
+	if not _check_user(false):
+		Error.set_state(Error.States._E02)
+		return
+	Request.insert_record(Request.Tables.USERS, ['"'+Global.config.login+'"', '"'+Global.config.password+'"', '"'+_generate_db_name()+'"'])
+	_entrance()
+
+# Обработка нажатия кнопки входа
+func _on_enter_button_down(check_field: bool = true) -> void:
+	if not _check_user(true, check_field):
+		Error.set_state(Error.States._E03)
+		return
+	_entrance()

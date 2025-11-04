@@ -322,3 +322,15 @@ func select_loan_percent(id: int) -> int:
 	for i in percents:
 		result += i
 	return int(round(result / len(percents)))
+	
+func select_existence_user(login: bool) -> bool:
+	var req: String = 'login="'+Global.config["login"]+'"'
+	if login: req += ' AND password="'+Global.config["password"]+'"'
+	return Request.select(Request.Tables.USERS, "COUNT(id)=="+str(int(login))+" res", req)[0].res
+
+func select_user() -> Dictionary:
+	var user_data: Array = []
+	for i in Global.config.keys():
+		if i == "enter": continue
+		user_data.append(i+'="'+Global.config[i]+'"')
+	return Request.select(Request.Tables.USERS, "*", " AND ".join(user_data))[0]
