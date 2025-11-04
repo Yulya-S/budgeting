@@ -10,6 +10,9 @@ func _ready() -> void:
 	Date.set_text(Global.dictionary_date_to_str(Global.date).split(" ")[0])
 	DayEnd.start((60 - Global.date.second) + (60 * (60 - Global.date.minute)) + (60 * 60 * (24 - Global.date.hour)))
 
+# Обработка нажатия кнопки настройки 
+func _on_setting_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SETTINGS, null, Global.Dirs.PAGES)
+
 # Обработка нажатия кнопки главная 
 func _on_main_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.BASIC)
 

@@ -1,0 +1,222 @@
+[gd_scene load_steps=2 format=3 uid="uid://drgo1ryoy3y2h"]
+
+[ext_resource type="Script" uid="uid://cmek8chi7c38d" path="res://scripts/pages/settings.gd" id="1_dqp6w"]
+
+[node name="Settings" type="ColorRect"]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.670588, 0.733333, 0.72549, 1)
+script = ExtResource("1_dqp6w")
+
+[node name="Login" type="TextEdit" parent="."]
+clip_contents = false
+layout_mode = 0
+offset_left = 300.0
+offset_top = 52.0
+offset_right = 721.0
+offset_bottom = 83.0
+autowrap_mode = 1
+scroll_past_end_of_file = true
+
+[node name="Label" type="Label" parent="Login"]
+layout_mode = 0
+offset_left = -166.0
+offset_right = -8.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Логин:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ColorPreset" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 129.0
+offset_right = 721.0
+offset_bottom = 160.0
+
+[node name="Label" type="Label" parent="ColorPreset"]
+layout_mode = 0
+offset_left = -166.0
+offset_right = -8.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Цветовая тема"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CheckButton" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 770.0
+offset_top = 129.0
+offset_right = 927.0
+offset_bottom = 160.0
+theme_override_colors/font_disabled_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_hover_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+text = "Светлая тема"
+
+[node name="Color1" type="ColorPickerButton" parent="."]
+layout_mode = 2
+offset_left = 196.0
+offset_top = 200.0
+offset_right = 306.0
+offset_bottom = 231.0
+color = Color(0.282353, 0.282353, 0.282353, 1)
+edit_alpha = false
+
+[node name="Label" type="Label" parent="Color1"]
+layout_mode = 0
+offset_left = -166.0
+offset_right = -8.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Цвет 1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Color2" type="ColorPickerButton" parent="."]
+layout_mode = 2
+offset_left = 417.0
+offset_top = 200.0
+offset_right = 527.0
+offset_bottom = 231.0
+color = Color(0.372549, 0.372549, 0.372549, 1)
+
+[node name="Label" type="Label" parent="Color2"]
+layout_mode = 0
+offset_left = -166.0
+offset_right = -8.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Цвет 2"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Color3" type="ColorPickerButton" parent="."]
+layout_mode = 2
+offset_left = 638.0
+offset_top = 200.0
+offset_right = 748.0
+offset_bottom = 231.0
+color = Color(0.470588, 0.470588, 0.470588, 1)
+
+[node name="Label" type="Label" parent="Color3"]
+layout_mode = 0
+offset_left = -166.0
+offset_right = -8.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Цвет 3"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Color4" type="ColorPickerButton" parent="."]
+layout_mode = 2
+offset_left = 859.0
+offset_top = 200.0
+offset_right = 969.0
+offset_bottom = 231.0
+color = Color(0.8, 0.8, 0.8, 1)
+
+[node name="Label" type="Label" parent="Color4"]
+layout_mode = 0
+offset_left = -166.0
+offset_right = -8.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Цвет 4"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Example" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 307.0
+offset_right = 1087.0
+offset_bottom = 560.0
+color = Color(0.164706, 0.164706, 0.164706, 1)
+
+[node name="ColorRect1" type="ColorRect" parent="Example"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 1017.0
+offset_bottom = 248.0
+
+[node name="ColorRect6" type="ColorRect" parent="Example"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 180.0
+offset_right = 1017.0
+offset_bottom = 213.0
+color = Color(0.800491, 0.800491, 0.800491, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="Example"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 142.0
+offset_right = 1017.0
+offset_bottom = 175.0
+color = Color(0.695503, 0.695503, 0.695503, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="Example"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 93.0
+offset_right = 1017.0
+offset_bottom = 137.0
+color = Color(0.470076, 0.470076, 0.470076, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="Example"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 49.0
+offset_right = 1017.0
+offset_bottom = 93.0
+color = Color(0.374139, 0.374139, 0.374139, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Example"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 1017.0
+offset_bottom = 49.0
+color = Color(0.282353, 0.282353, 0.282353, 1)
+
+[node name="Delete" type="Button" parent="."]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 577.0
+offset_right = 470.0
+offset_bottom = 619.0
+theme_override_font_sizes/font_size = 24
+text = "Удалить пользователя"
+
+[node name="Apply" type="Button" parent="."]
+layout_mode = 0
+offset_left = 682.0
+offset_top = 577.0
+offset_right = 992.0
+offset_bottom = 619.0
+theme_override_font_sizes/font_size = 24
+text = "Сохранить"
+
+[node name="Close" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1092.0
+offset_top = 10.0
+offset_right = 1142.0
+offset_bottom = 52.0
+tooltip_text = "Отменить изменения"
+theme_override_constants/outline_size = 14
+theme_override_font_sizes/font_size = 24
+text = "X"
+
+[connection signal="color_changed" from="Color1" to="." method="_on_color_1_color_changed"]
+[connection signal="color_changed" from="Color2" to="." method="_on_color_2_color_changed"]
+[connection signal="color_changed" from="Color3" to="." method="_on_color_3_color_changed"]
+[connection signal="color_changed" from="Color4" to="." method="_on_color_4_color_changed"]

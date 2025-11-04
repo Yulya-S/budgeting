@@ -2,6 +2,7 @@ extends Node
 # Переменные
 var chart_gradient: Gradient = Gradient.new() # Градиент для графиков
 var scales_gradient: Gradient = Gradient.new() # Градиент для шкал
+var system_gradient: Gradient = Gradient.new() # Градиент для шкал
 
 # Установка цветового градиента
 func _ready() -> void:

@@ -37,7 +37,7 @@ func create_tables() -> void:
 	_create_table("loans", "title VARCHAR(255), total FLOAT, date DATE")
 	_create_table("events", "title VARCHAR(255), repetition_rate INT, date DATE, note VARCHAR(255)")
 	# Создание таблиц для персонализации приложения
-	_create_table("settings", "color_preset INT, color_1 VARCHAR(255), color_2 VARCHAR(255), dark_theme BOOLEAN, event_page_calendar BOOLEAN, last_entry DATE")
+	_create_table("settings", "color_preset INT, color_1 VARCHAR(255), color_2 VARCHAR(255), color_3 VARCHAR(255), color_4 VARCHAR(255), dark_theme BOOLEAN, event_page_calendar BOOLEAN, last_entry DATE")
 	_create_table("notifications", "title INT, date DATE")
 	if len(select(Tables.SECTIONS)) != 0: return
 	for i in ["Переводы", "Заём", "Платежи по займам", "Проценты по займу"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
