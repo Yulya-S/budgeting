@@ -4,9 +4,13 @@ extends ColorRect
 @onready var cp3 = $Color3
 @onready var cp4 = $Color4
 
+@onready var Language = $Language
+@onready var Login = $Login
 @onready var Example = $Example
 
 func _ready() -> void:
+	Login.set_text(Global.show_data(Global.config.login))
+	File.load_lang(Language)
 	for i in get_children():
 		if i is ColorPickerButton:
 			var picker = i.get_picker()
@@ -17,11 +21,16 @@ func _ready() -> void:
 	changed_color()		
 
 func changed_color():
-	ColorScheme.system_gradient.colors = PackedColorArray([Color(0, 0, 0), cp1.color, cp2.color, cp3.color, cp4.color, Color(1, 1, 1)])
-	ColorScheme.system_gradient.offsets = PackedFloat32Array([0, 0.2, 0.4, 0.6, 0.8, 1])
+	#ColorScheme.system_gradient.colors = PackedColorArray([Color(0, 0, 0), cp1.color, cp2.color, cp3.color, cp4.color, Color(1, 1, 1)])
+	#ColorScheme.system_gradient.offsets = PackedFloat32Array([0, 0.2, 0.4, 0.6, 0.8, 1])
+	
+	ColorScheme.system_gradient.colors = PackedColorArray([Color(0, 0, 0), Color.from_rgba8(58, 152, 145), Color.from_rgba8(200, 200, 200), Color(1, 1, 1)])
+	ColorScheme.system_gradient.offsets = PackedFloat32Array([0, 0.2, 0.6, 1])
+	
 	var idx = 6
 	for i in Example.get_children():
 		i.color = ColorScheme.get_color(idx, 6, ColorScheme.system_gradient)
+		print(idx / 6.)
 		idx -= 1
 
 func _on_color_1_color_changed(color: Color) -> void: changed_color()
@@ -31,3 +40,10 @@ func _on_color_2_color_changed(color: Color) -> void: changed_color()
 func _on_color_3_color_changed(color: Color) -> void: changed_color()
 
 func _on_color_4_color_changed(color: Color) -> void: changed_color()
+
+# Обработка изменения языка приложения
+func _on_language_item_selected(index: int) -> void: File.read_lang(Language)
+
+# Обработка изменения Логина
+func _on_login_text_changed() -> void: pass
+	

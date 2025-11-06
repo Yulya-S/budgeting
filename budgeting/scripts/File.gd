@@ -62,6 +62,14 @@ func _cr_ru() -> void:
 			"Registration": "Регистрация",
 			"Enter": "Вход",
 		},
+		"Settings": {
+			"Login": { "Label": "Логин:" },
+			"ColorPreset": {"Label": "Цветовая тема:"},
+			"DarkTheme": "Светлая тема",
+			"Color": {"Label": "Цвет"},
+			"Delete": "Удалить пользователя",
+			"Apply": "Сохранить",
+		},
 		"_Errors": {
 			"_E01": "Обязательные поля должны быть заполнены",
 			"_E02": "Имя пользователя занято",
@@ -83,6 +91,14 @@ func _cr_en() -> void:
 			"Remember": "Remember me",
 			"Registration": "Registration",
 			"Enter": "Entry",
+		},
+		"Settings": {
+			"Login": { "Label": "Login:" },
+			"ColorPreset": {"Label": "Color theme:"},
+			"DarkTheme": "Light theme",
+			"Color": {"Label": "Color"},
+			"Delete": "Delete user",
+			"Apply": "Save",
 		},
 		"_Errors": {
 			"_E01": "Required fields must be filled in",

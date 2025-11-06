@@ -128,7 +128,7 @@ theme_override_font_sizes/font_size = 28
 text = "05.08.2025"
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="."]
+[node name="Login" type="Label" parent="."]
 layout_mode = 0
 offset_left = 896.0
 offset_top = 5.0
