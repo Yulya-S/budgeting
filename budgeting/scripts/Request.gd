@@ -1,6 +1,6 @@
 extends Node
 # Перечисление
-enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
+enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -326,7 +326,9 @@ func select_loan_percent(id: int) -> int:
 func select_existence_user(login: bool) -> bool:
 	var req: String = 'login="'+Global.config["login"]+'"'
 	if login: req += ' AND password="'+Global.config["password"]+'"'
-	return Request.select(Request.Tables.USERS, "COUNT(id)=="+str(int(login))+" res", req)[0].res
+	var res: Array = Request.select(Request.Tables.USERS, "COUNT(id)=="+str(int(login))+" res", req)
+	if len(res) == 0: return false
+	return res[0].res
 
 func select_user() -> Dictionary:
 	var user_data: Array = []
@@ -334,3 +336,14 @@ func select_user() -> Dictionary:
 		if i == "enter": continue
 		user_data.append(i+'="'+Global.config[i]+'"')
 	return Request.select(Request.Tables.USERS, "*", " AND ".join(user_data))[0]
+
+# Удаление при знании условия
+func delete_user():
+	Request.connection_user_db()
+	var data: Dictionary = select(Tables.USERS, "*", 'login="'+Global.config.login+'"')[0]
+	DirAccess.remove_absolute("res://bases/"+Global.show_data(data.base)+".db")
+	delete(Tables.USERS, data.id)
+	for i in ["login", "password"]: Global.config[i] = ""
+	Global.config.enter = false
+	
+	

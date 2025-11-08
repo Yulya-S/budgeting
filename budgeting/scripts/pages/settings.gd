@@ -9,22 +9,31 @@ extends ColorRect
 @onready var ColorSchemeCus = $ColorSchemeCus
 # Цвета
 @onready var Colors = $Colors
-@onready var color1 = $Colors/Color1
-@onready var color2 = $Colors/Color2
+@onready var color1 = $Colors/Color_1
+@onready var color2 = $Colors/Color_2
 # Пример оформления
 @onready var Example = $Example
 
 # Стартовое изменение страницы настроек
 func _ready() -> void:
 	File.load_lang(Language)
-	for i in get_children():
+	var data: Dictionary = Request.select(Request.Tables.SETTINGS)[0]
+	EventType.button_pressed = bool(data.event_page_calendar)
+	for i in Colors.get_children():
 		if i is ColorPickerButton:
 			var picker = i.get_picker()
 			picker.picker_shape = 2
 			picker.color_modes_visible = false
 			picker.sliders_visible = false
 			picker.presets_visible = false
-	_on_color_scheme_pre_item_selected(ColorSchemePre.selected)
+			i.color = Color("#"+data[i.name.to_lower()])
+	_on_preinstalled_toggled(bool(data.color_preset))
+	DarkTheme.button_pressed = bool(data.dark_theme)
+	if data.color_preset: _on_color_scheme_cus_item_selected(data.color_scheme)
+	else: _on_color_scheme_pre_item_selected(data.color_scheme)
+	
+			
+	#_on_color_scheme_pre_item_selected(ColorSchemePre.selected)
 
 # Изменение цветов в примере отображения
 func changed_color():
@@ -78,11 +87,16 @@ func _on_event_type_toggled(toggled_on: bool) -> void: File.set_CB(EventType)
 
 # Обработка изменения темы оформления между предустановленной и персонализированной
 func _on_preinstalled_toggled(toggled_on: bool) -> void:
+	Preinstalled.button_pressed = toggled_on
 	File.set_CB(Preinstalled)
 	ColorSchemeCus.visible = toggled_on
 	ColorSchemePre.visible = not toggled_on
-	if toggled_on: show_colors()
-	else: hide_colors()
+	if toggled_on:
+		show_colors()
+		_on_color_scheme_cus_item_selected(ColorSchemeCus.selected)
+	else:
+		hide_colors()
+		_on_color_scheme_pre_item_selected(ColorSchemePre.selected)
 	changed_color()
 	
 # Обработка изменения светлой и тёмной темы
@@ -92,12 +106,14 @@ func _on_dark_theme_toggled(_toggled_on: bool) -> void:
 	else: changed_color()
 
 # Обработка выбра количества цветов
-func _on_color_scheme_cus_item_selected(_index: int) -> void:
+func _on_color_scheme_cus_item_selected(index: int) -> void:
+	ColorSchemeCus.selected = index
 	show_colors()
 	changed_color()
 
 # Стандартные цветовые схемы
 func _on_color_scheme_pre_item_selected(index: int) -> void:
+	ColorSchemePre.selected = index
 	ColorSchemeCus.selected = 1
 	match index:
 		0: _change_theme("3a9891", "c8c8c8", "3aa49c", "414141")
@@ -110,7 +126,29 @@ func _on_color_scheme_pre_item_selected(index: int) -> void:
 			color1.color = Color("#484848")
 	changed_color()
 
-# Обработка нажжатия кнопки закрытия окна
+# Обработка нажатия кнопки закрытия окна
 func _on_close_button_down() -> void:
 	queue_free()
 	get_parent().remove_child(self)
+
+# Обработка нажатия кнопки удаления пользователя
+func _on_delete_button_down() -> void:
+	$ConfirmationDialog.visible = true
+
+# Обработка подтверждения удаления пользователя
+func _on_confirmation_dialog_confirmed() -> void:
+	Request.delete_user()
+	Global.emit_signal("open_new_page", Global.Pages.REGISTRATION)
+
+# Обработка нажатия кнопки сохранения настроек
+func _on_apply_button_down() -> void:
+	var values: Array = []
+	for i in get_children():
+		if not i.visible: continue
+		match i.get_class():
+			"CheckButton": values.append(i.button_pressed)
+			"OptionButton": values.append(i.selected)
+			"Control": for l in i.get_children(): values.append('"'+l.color.to_html()+'"')
+	values.pop_front()
+	values.append('"'+Time.get_date_string_from_system()+'"')
+	Request.update_record(Request.Tables.SETTINGS, 1, values)
