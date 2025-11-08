@@ -10,7 +10,8 @@ extends Control
 func _ready() -> void: File.load_lang(Language)
 
 # Автоматический вход
-func _process(_delta: float) -> void: if Global.config.enter: _on_enter_button_down(false)
+func _process(_delta: float) -> void:
+	if Global.config.enter:	_on_enter_button_down(false)
 
 # Проверка возможности использования пароля
 func _check_user(login: bool, check_field: bool = true) -> bool:
@@ -57,6 +58,7 @@ func _on_registration_button_down() -> void:
 # Обработка нажатия кнопки входа
 func _on_enter_button_down(check_field: bool = true) -> void:
 	if not _check_user(true, check_field):
+		Global.config.enter = false
 		Error.set_state(Error.States._E03)
 		return
 	_entrance()
