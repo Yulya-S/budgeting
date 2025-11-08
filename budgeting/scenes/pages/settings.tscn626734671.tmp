@@ -308,7 +308,6 @@ text = "X"
 [connection signal="text_changed" from="Login" to="." method="_on_login_text_changed"]
 [connection signal="toggled" from="DarkTheme" to="." method="_on_dark_theme_toggled"]
 [connection signal="toggled" from="Preinstalled" to="." method="_on_preinstalled_toggled"]
-[connection signal="item_selected" from="ColorSchemePre" to="." method="_on_color_scheme_pre_item_selected"]
 [connection signal="item_selected" from="ColorSchemeCus" to="." method="_on_color_scheme_cus_item_selected"]
 [connection signal="color_changed" from="Colors/Color1" to="." method="_on_color_1_color_changed"]
 [connection signal="color_changed" from="Colors/Color2" to="." method="_on_color_2_color_changed"]

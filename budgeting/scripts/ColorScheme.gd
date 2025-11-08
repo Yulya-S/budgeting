@@ -14,3 +14,16 @@ func _ready() -> void:
 # Получение значения цвета из градиента по индексу объекта
 func get_color(index: float, count: float, gradient: Gradient = chart_gradient) -> Color:
 	return gradient.sample(index / count)
+	
+# Составление цветовой палитры
+func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, theme: bool):
+	if theme:
+		g_colors.append(Color(0, 0, 0))
+		g_offsets.append(1)
+	else:
+		g_colors = PackedColorArray([Color(0, 0, 0)]) + g_colors
+		g_offsets = PackedFloat32Array([0]) + g_offsets
+		g_colors.append(Color(1, 1, 1))
+		g_offsets.append(1)
+	ColorScheme.system_gradient.colors = g_colors
+	ColorScheme.system_gradient.offsets = g_offsets

@@ -39,7 +39,27 @@ func read_lang(container: OptionButton) -> void:
 	lang = json.data
 	file.close()
 	set_lang(container.get_parent())
-	
+
+# Применение значение используя поиск корневой сцены
+func pathfinding(obj) -> Variant:
+	# Получение пути до main
+	var path: Array = []
+	while obj.name != "main":
+		path.append(obj.name)
+		obj = obj.get_parent()
+	# Получение текстового фрагмента из словаря перевода
+	var lang_fragment = lang.duplicate()
+	while len(path) > 0:
+		if path[-1] not in lang_fragment.keys(): return ""
+		lang_fragment = lang_fragment[path[-1]]
+		path.pop_back()
+	return lang_fragment
+
+# Изменениие текста состояния кнопки переключателя
+func set_CB(obj: CheckButton) -> void:
+	var new_text = File.pathfinding(obj)
+	if new_text is Array and len(new_text) >= 2: obj.set_text(new_text[int(obj.button_pressed)]) 
+
 # Применение перевода
 func set_lang(obj, lang_fragment = lang) -> void:
 	if lang_fragment is Dictionary and lang_fragment == lang: lang_fragment = lang[obj.name]
@@ -65,7 +85,8 @@ func _cr_ru() -> void:
 		"Settings": {
 			"Login": { "Label": "Логин:" },
 			"ColorPreset": {"Label": "Цветовая тема:"},
-			"DarkTheme": "Светлая тема",
+			"Preinstalled": ["Предустановленная тема", "Пользовательская тема"],
+			"DarkTheme": ["Светлая тема", "Тёмная тема"],
 			"Color": {"Label": "Цвет"},
 			"Delete": "Удалить пользователя",
 			"Apply": "Сохранить",
