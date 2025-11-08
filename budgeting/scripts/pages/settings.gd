@@ -2,9 +2,9 @@ extends ColorRect
 # Подключение путей к объектам в сцене
 # Параметры
 @onready var Language = $Language
-@onready var Login = $Login
-@onready var DarkTheme = $DarkTheme
+@onready var EventType = $EventType
 @onready var Preinstalled = $Preinstalled
+@onready var DarkTheme = $DarkTheme
 @onready var ColorSchemePre = $ColorSchemePre
 @onready var ColorSchemeCus = $ColorSchemeCus
 # Цвета
@@ -16,7 +16,6 @@ extends ColorRect
 
 # Стартовое изменение страницы настроек
 func _ready() -> void:
-	Login.set_text(Global.show_data(Global.config.login))
 	File.load_lang(Language)
 	for i in get_children():
 		if i is ColorPickerButton:
@@ -74,9 +73,9 @@ func _on_color_4_color_changed(color: Color) -> void: changed_color()
 # Обработка изменения языка приложения
 func _on_language_item_selected(index: int) -> void: File.read_lang(Language)
 
-# Обработка изменения Логина
-func _on_login_text_changed() -> void: pass
-	
+# Обработка изменения способа отображения календаря
+func _on_event_type_toggled(toggled_on: bool) -> void: File.set_CB(EventType)
+
 # Обработка изменения темы оформления между предустановленной и персонализированной
 func _on_preinstalled_toggled(toggled_on: bool) -> void:
 	File.set_CB(Preinstalled)
@@ -110,3 +109,8 @@ func _on_color_scheme_pre_item_selected(index: int) -> void:
 			ColorSchemeCus.selected = 0
 			color1.color = Color("#484848")
 	changed_color()
+
+# Обработка нажжатия кнопки закрытия окна
+func _on_close_button_down() -> void:
+	queue_free()
+	get_parent().remove_child(self)
