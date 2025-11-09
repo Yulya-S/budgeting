@@ -49,7 +49,7 @@ func _create_config() -> void:
 	save_config()
 
 # Сохранение данных конфигураций в файл
-func save_config() -> void: _store_json(ConfigFilePath, config)
+func save_config() -> void:	_store_json(ConfigFilePath, config)
 	
 # Чтение файла конфигураций
 func read_config() -> void: config = _read_file(ConfigFilePath)
@@ -108,19 +108,37 @@ func pathfinding(obj) -> Variant:
 	return lang_fragment
 
 # Изменение текста состояния кнопки переключателя
-func set_CB(obj: CheckButton) -> void:
-	var new_text = File.pathfinding(obj)
-	if new_text is Array and len(new_text) >= 2: obj.set_text(new_text[int(obj.button_pressed)]) 
+func set_CB(obj: CheckButton, values: Variant = []) -> void:
+	if values == []: values = pathfinding(obj)
+	if values is Array and len(values) >= 2: obj.set_text(values[int(obj.button_pressed)]) 
 
 # Применение перевода - нужно изменить
 func set_lang(obj, lang_fragment = lang) -> void:
 	if lang_fragment is Dictionary and lang_fragment == lang: lang_fragment = lang[obj.name]
-	if lang_fragment is String:
-		obj.set_text(lang_fragment)
-		return
-	for i in obj.get_children():
-		if i.name in lang_fragment.keys(): set_lang(i, lang_fragment[i.name])
-		elif i.name == "Error": i.update_lang()
+	match obj.get_class():
+		"OptionButton":
+			if "_values" in lang_fragment.keys() and len(lang_fragment._values) >= obj.get_item_count():
+				for i in range(obj.get_item_count()):
+					obj.set_item_text(i, lang_fragment._values[i])
+		"Button":
+			if lang_fragment is Dictionary:
+				obj.tooltip_text = lang_fragment._tooltip
+				if "_text" in lang_fragment.keys(): obj.set_text(lang_fragment._text)
+			else: obj.set_text(lang_fragment)
+		"CheckButton": set_CB(obj, lang_fragment)
+		"Control":
+			if obj.name == "Colors":
+				for i in obj.get_children(): set_lang(i, lang_fragment)
+				return
+		"ColorPickerButton":
+			obj.get_child(-1).set_text(lang_fragment+" "+obj.name.split("_")[-1])
+			return
+		_:
+			if obj.name == "Error": obj.update_lang()
+			elif obj.get("set_text") and lang_fragment is String: obj.set_text(lang_fragment)
+	
+	for i in obj.get_children(): if i.name in lang_fragment.keys(): set_lang(i, lang_fragment[i.name])
+	
 
 # Создание стандартных вариантов локализации
 # Русский
@@ -138,9 +156,12 @@ func _cr_ru() -> void:
 			"EventType": ["Календарь событий", "Список событий"],
 			"Preinstalled": ["Предустановленная тема", "Пользовательская тема"],
 			"DarkTheme": ["Светлая тема", "Тёмная тема"],
-			"ColorSchemePre": {"Label": "Цветовое оформление"},
-			"ColorSchemeCus": {"Label": "Количество цветов"},
-			"Colors": {"Label": "Цвет"},
+			"ColorSchemePre": {"Label": "Цветовое оформление",
+				"_values": ["Стандартный", "Серый", "Лимон со смородиной", "Ржавый металл", "Лиса на поляне", "Ягода на ветке"] },
+			"ColorSchemeCus": {"Label": "Количество цветов",
+				"_values": ["Моно", "Контраст", "Триада", "Тетрада"]},
+			"Colors": "Цвет",
+			"Close": {"_tooltip": "Отменить изменения"},
 			"Delete": "Удалить пользователя",
 			"Apply": "Сохранить",
 		},
@@ -167,10 +188,15 @@ func _cr_en() -> void:
 			"Enter": "Entry",
 		},
 		"Settings": {
-			"Login": { "Label": "Login:" },
-			"ColorPreset": {"Label": "Color theme:"},
-			"DarkTheme": "Light theme",
-			"Color": {"Label": "Color"},
+			"EventType": ["Events calendar", "List of events"],
+			"Preinstalled": ["Pre-installed theme", "Custom Theme"],
+			"DarkTheme": ["Light theme", "Dark theme"],
+			"ColorSchemePre": {"Label": "Color design",
+				"_values": ["Standard", "Grey", "Lemon with currants", "Rusty metal", "A fox in a clearing", "Berry on a branch"] },
+			"ColorSchemeCus": {"Label": "Number of colors",
+				"_values": ["Mono", "Contrast", "Triad", "Tetrad"]},
+			"Colors": "Color",
+			"Close": {"_tooltip": "Cancel changes"},
 			"Delete": "Delete user",
 			"Apply": "Save",
 		},
