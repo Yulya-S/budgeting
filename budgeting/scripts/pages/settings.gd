@@ -34,7 +34,7 @@ func _ready() -> void:
 	else: _on_color_scheme_pre_item_selected(data.color_scheme)
 
 # Изменение цветов в примере отображения
-func changed_color():
+func changed_color() -> void:
 	_color_reading()
 	var idx = 6
 	for i in Example.get_children():
@@ -42,7 +42,7 @@ func changed_color():
 		idx -= 1
 		
 # Составление цветовой палитры
-func _color_reading():
+func _color_reading() -> void:
 	var g_colors: PackedColorArray = PackedColorArray([])
 	var g_offsets: PackedFloat32Array = PackedFloat32Array([])
 	for i in range(ColorSchemeCus.selected + 1):
