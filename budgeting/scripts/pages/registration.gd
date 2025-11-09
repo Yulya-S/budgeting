@@ -10,7 +10,7 @@ extends Control
 func _ready() -> void: File.load_lang(Language)
 
 # Автоматический вход
-func _process(_delta: float) -> void: if File.config.enter: _on_enter_button_down(false)
+func _process(_delta: float) -> void: if File.config.enter: _on_enter_button_down(false, true)
 
 # Проверка возможности использования пароля
 func _check_user(login: bool, check_field: bool = true) -> bool:
@@ -30,10 +30,11 @@ func _generate_db_name() -> String:
 	return File.hide_data(base_name)
 
 # Вход в программу
-func _entrance() -> void:
+func _entrance(auto: bool = false) -> void:
 	# Сохранение файла конфигурации для автоматического входа
-	File.config.enter = Remember.button_pressed
-	if File.config.enter: File.save_config()
+	if not auto:
+		File.config.enter = Remember.button_pressed
+		if File.config.enter: File.save_config()
 	# Вход в аккаунт
 	var data: Dictionary = Request.select_user()
 	Request.connection_db(File.show_data(data.base))
@@ -55,9 +56,9 @@ func _on_registration_button_down() -> void:
 	_entrance()
 
 # Обработка нажатия кнопки входа
-func _on_enter_button_down(check_field: bool = true) -> void:
+func _on_enter_button_down(check_field: bool = true, auto: bool = false) -> void:
 	if not _check_user(true, check_field):
 		File.clear_config()
 		Error.set_state(Error.States._E03)
 		return
-	_entrance()
+	_entrance(auto)

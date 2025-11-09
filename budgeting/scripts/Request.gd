@@ -341,7 +341,6 @@ func delete_user():
 	var data: Dictionary = select(Tables.USERS, "*", 'login="'+File.config.login+'"')[0]
 	DirAccess.remove_absolute("res://bases/"+File.show_data(data.base)+".db")
 	delete(Tables.USERS, data.id)
-	for i in ["login", "password"]: File.config[i] = ""
-	File.config.enter = false
+	File.clear_config()
 	
 	
