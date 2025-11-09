@@ -7,10 +7,31 @@ const ConfigFilePath: String = "res://bases/config.json" # Путь к файл�
 var lang: Dictionary = {} # Язык
 const LangDir: String = "res://bases/language/" # Директория языков
 
-# Стартовый вызов функций
+# Общая часть
+# Создание файлов
 func _ready() -> void:
-	_create_langs()
 	_create_config()
+	_create_langs()
+
+# Сохранение данных в файл
+func _store_json(file_path: String, data: Dictionary) -> void:
+	var file = FileAccess.open(file_path, FileAccess.WRITE)
+	file.store_line(JSON.stringify(data))
+	file.close()
+	
+# Чтение данных из файла
+func _read_file(file_path: String) -> Dictionary:
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	var json = JSON.new()
+	if not json.parse(file.get_line()) == OK: return {}
+	file.close()
+	return json.data
+	
+# Шифрование данных
+func hide_data(data: String) -> String:	return Marshalls.utf8_to_base64(data)
+
+# Дешифрование данных
+func show_data(data: String) -> String: return Marshalls.base64_to_utf8(data)
 
 # Файл конфигураций
 # Проверка наличия созданного файла конфигураций
@@ -20,61 +41,47 @@ func _create_config() -> void:
 		return
 	save_config()
 
-#  Сохранение файла конфигураций
-func save_config() -> void:
-	var file = FileAccess.open(ConfigFilePath, FileAccess.WRITE)
-	file.store_line(JSON.stringify(config))
-	file.close()
+# Сохранение данных конфигураций в файл
+func save_config() -> void: _store_json(ConfigFilePath, config)
 	
 # Чтение файла конфигураций
-func read_config() -> void:
-	var file = FileAccess.open(ConfigFilePath, FileAccess.READ)
-	var json = JSON.new()
-	if not json.parse(file.get_line()) == OK: return
-	config = json.data
-	file.close()
-	
-# Шифрование данных
-func hide_data(data: String) -> String:	return Marshalls.utf8_to_base64(data)
-
-# Дешифрование данных
-func show_data(data: String) -> String: return Marshalls.base64_to_utf8(data)
+func read_config() -> void: config = _read_file(ConfigFilePath)
 
 # Очистка данных пользователя
 func clear_config() -> void:
 	config = {"enter": false, "lang": "ru", "login": "", "password": ""}
 	save_config()
 
-# Файл локализации	
+# Файл локализации
 # Заполнение поля выбора языка
 func load_lang(container: OptionButton) -> void:
 	for i in DirAccess.get_files_at(LangDir):
 		if "json" in i and len(i.split(".")) == 2:
 			container.add_item(i.split(".")[0])
+			# Применение языка, если он соответствует выбранному в файле конфигураций
 			if i.split(".")[0] == config.lang:
 				container.select(container.item_count-1)
 				read_lang(container)
 			
 # Создание файлов языков
 func _create_langs() -> void:
+	# Убрать этот фрагмент - он нужен что бы не удалять каждый раз файлы локализации в ручную
+	DirAccess.remove_absolute("res://bases/language/ru.json")
+	DirAccess.remove_absolute("res://bases/language/en.json")
+	
 	_cr_ru()
 	_cr_en()
 	
-# Создание файла
-func _cr_lang_file(f_name: String, value: String) -> void:
+# Создание файла перевода
+func _cr_lang_file(f_name: String, value: Dictionary) -> void:
 	if FileAccess.file_exists(LangDir+f_name+".json"): return
-	var file = FileAccess.open(LangDir+f_name+".json", FileAccess.WRITE)
-	file.store_line(value)
-	file.close()
-
+	_store_json(LangDir+f_name+".json", value)
+	
 # Считывание перевода
 func read_lang(container: OptionButton) -> void:
-	var file = FileAccess.open(LangDir+Global.get_OB_text(container)+".json", FileAccess.READ)
-	var json = JSON.new()
-	if not json.parse(file.get_line()) == OK: return
-	lang = json.data
-	file.close()
+	lang = _read_file(LangDir+Global.get_OB_text(container)+".json")
 	set_lang(container.get_parent())
+	# Сохранение выбора в файле конфигураций
 	config.lang = Global.get_OB_text(container)
 	save_config()
 
@@ -93,12 +100,12 @@ func pathfinding(obj) -> Variant:
 		path.pop_back()
 	return lang_fragment
 
-# Изменениие текста состояния кнопки переключателя
+# Изменение текста состояния кнопки переключателя
 func set_CB(obj: CheckButton) -> void:
 	var new_text = File.pathfinding(obj)
 	if new_text is Array and len(new_text) >= 2: obj.set_text(new_text[int(obj.button_pressed)]) 
 
-# Применение перевода
+# Применение перевода - нужно изменить
 func set_lang(obj, lang_fragment = lang) -> void:
 	if lang_fragment is Dictionary and lang_fragment == lang: lang_fragment = lang[obj.name]
 	if lang_fragment is String:
@@ -108,10 +115,10 @@ func set_lang(obj, lang_fragment = lang) -> void:
 		if i.name in lang_fragment.keys(): set_lang(i, lang_fragment[i.name])
 		elif i.name == "Error": i.update_lang()
 
-# Создание базовых языков
+# Создание стандартных вариантов локализации
 # Русский
 func _cr_ru() -> void:
-	_cr_lang_file("ru", JSON.stringify({
+	_cr_lang_file("ru", {
 		"Registration": {
 			"Language": { "Label": "Язык:" },
 			"Login": { "Label": "*Логин:" },
@@ -139,11 +146,11 @@ func _cr_ru() -> void:
 			"_E06": "На счету недостаточно средств",
 			"_E07": "Введенное значение привышает необходимое значение для полного погашения займа"
 		}
-	}))
+	})
 
 # Английский
 func _cr_en() -> void:
-	_cr_lang_file("en", JSON.stringify({
+	_cr_lang_file("en", {
 		"Registration": {
 			"Language": { "Label": "Language:" },
 			"Login": { "Label": "*Login:" },
@@ -169,4 +176,4 @@ func _cr_en() -> void:
 			"_E06": "There are insufficient funds in the account",
 			"_E07": "The entered value exceeds the required value for full repayment of the loan"
 		}
-	}))
+	})
