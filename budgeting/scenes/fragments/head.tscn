@@ -175,4 +175,5 @@ offset_bottom = 648.0
 [connection signal="button_down" from="Loan" to="." method="_on_loan_button_down"]
 [connection signal="button_down" from="Event" to="." method="_on_event_button_down"]
 [connection signal="button_down" from="Report" to="." method="_on_report_button_down"]
+[connection signal="button_down" from="Exit" to="." method="_on_exit_button_down"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
