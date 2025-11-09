@@ -12,11 +12,12 @@ enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 # Переменные
 var current_page: Pages = Pages.BASIC # Текущая страница
 var date: Dictionary = Time.get_datetime_dict_from_system() # Текущая дата
-var config: Dictionary = {"enter": false} # Настройки программы
-const ConfigFilePath: String = "res://bases/config.json" # Путь к файлу настроек
 
-# Создание файла конфигураций при запуске программы
-func _ready() -> void: create_config()
+#var config: Dictionary = {"enter": false} # Настройки программы
+#const ConfigFilePath: String = "res://bases/config.json" # Путь к файлу настроек
+#
+## Создание файла конфигураций при запуске программы
+#func _ready() -> void: create_config()
 
 # Изменение даты под формат запроса
 func date_to_sql_date(text: String) -> String:
@@ -107,25 +108,25 @@ func dictionary_date_to_str(date: Dictionary) -> String:
 
 # Файл конфигураций
 # Проверка наличия созданного файла конфигураций
-func create_config() -> void:
-	if FileAccess.file_exists(ConfigFilePath):
-		read_config()
-		return
-	update_config()
-
-# Изменить данные в файле конфигурации
-func update_config() -> void:
-	var file = FileAccess.open(ConfigFilePath, FileAccess.WRITE)
-	file.store_line(JSON.stringify(config))
-	file.close()
-	
-# Загрузка настроек
-func read_config() -> void:
-	var file = FileAccess.open(ConfigFilePath, FileAccess.READ)
-	var json = JSON.new()
-	if not json.parse(file.get_line()) == OK: return
-	config = json.data
-	file.close()
+#func create_config() -> void:
+	#if FileAccess.file_exists(ConfigFilePath):
+		#read_config()
+		#return
+	#update_config()
+#
+## Изменить данные в файле конфигурации
+#func update_config() -> void:
+	#var file = FileAccess.open(ConfigFilePath, FileAccess.WRITE)
+	#file.store_line(JSON.stringify(config))
+	#file.close()
+	#
+## Загрузка настроек
+#func read_config() -> void:
+	#var file = FileAccess.open(ConfigFilePath, FileAccess.READ)
+	#var json = JSON.new()
+	#if not json.parse(file.get_line()) == OK: return
+	#config = json.data
+	#file.close()
 	
 # Шифрование данных
 func hide_data(data: String) -> String:	return Marshalls.utf8_to_base64(data)

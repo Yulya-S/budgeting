@@ -324,26 +324,24 @@ func select_loan_percent(id: int) -> int:
 	return int(round(result / len(percents)))
 	
 func select_existence_user(login: bool) -> bool:
-	var req: String = 'login="'+Global.config["login"]+'"'
-	if login: req += ' AND password="'+Global.config["password"]+'"'
-	var res: Array = Request.select(Request.Tables.USERS, "COUNT(id)=="+str(int(login))+" res", req)
+	var req: String = 'login="'+File.config["login"]+'"'
+	if login: req += ' AND password="'+File.config["password"]+'"'
+	var res: Array = Request.select(Tables.USERS, "COUNT(id)=="+str(int(login))+" res", req)
 	if len(res) == 0: return false
 	return res[0].res
 
 func select_user() -> Dictionary:
 	var user_data: Array = []
-	for i in Global.config.keys():
-		if i == "enter": continue
-		user_data.append(i+'="'+Global.config[i]+'"')
-	return Request.select(Request.Tables.USERS, "*", " AND ".join(user_data))[0]
+	for i in File.config.keys(): if i in _get_columns(Tables.USERS): user_data.append(i+'="'+File.config[i]+'"')
+	return Request.select(Tables.USERS, "*", " AND ".join(user_data))[0]
 
 # Удаление при знании условия
 func delete_user():
 	Request.connection_user_db()
-	var data: Dictionary = select(Tables.USERS, "*", 'login="'+Global.config.login+'"')[0]
-	DirAccess.remove_absolute("res://bases/"+Global.show_data(data.base)+".db")
+	var data: Dictionary = select(Tables.USERS, "*", 'login="'+File.config.login+'"')[0]
+	DirAccess.remove_absolute("res://bases/"+File.show_data(data.base)+".db")
 	delete(Tables.USERS, data.id)
-	for i in ["login", "password"]: Global.config[i] = ""
-	Global.config.enter = false
+	for i in ["login", "password"]: File.config[i] = ""
+	File.config.enter = false
 	
 	

@@ -1,15 +1,51 @@
 extends Node
+# Переменные
 # Файл конфигураций
-var config: Dictionary = {"enter": false, "lang": "ru"} # Конфигурации
+var config: Dictionary = {"enter": false, "lang": "ru", "login": "", "password": ""} # Конфигурации
 const ConfigFilePath: String = "res://bases/config.json" # Путь к файлу конфигураций
-
 # Файл языка приложения
 var lang: Dictionary = {} # Язык
 const LangDir: String = "res://bases/language/" # Директория языков
 
 # Стартовый вызов функций
-func _ready() -> void: _create_langs()
+func _ready() -> void:
+	_create_langs()
+	_create_config()
+
+# Файл конфигураций
+# Проверка наличия созданного файла конфигураций
+func _create_config() -> void:
+	if FileAccess.file_exists(ConfigFilePath):
+		read_config()
+		return
+	update_config()
+
+#  Сохранение файла конфигураций
+func update_config() -> void:
+	var file = FileAccess.open(ConfigFilePath, FileAccess.WRITE)
+	file.store_line(JSON.stringify(config))
+	file.close()
 	
+# Чтение файла конфигураций
+func read_config() -> void:
+	var file = FileAccess.open(ConfigFilePath, FileAccess.READ)
+	var json = JSON.new()
+	if not json.parse(file.get_line()) == OK: return
+	config = json.data
+	file.close()
+	
+# Шифрование данных
+func hide_data(data: String) -> String:	return Marshalls.utf8_to_base64(data)
+
+# Дешифрование данных
+func show_data(data: String) -> String: return Marshalls.base64_to_utf8(data)
+
+# Очистка данных пользователя
+func clear_config() -> void:
+	config = {"enter": false, "lang": "ru", "login": "", "password": ""}
+	update_config()
+
+# Файл локализации	
 # Заполнение поля выбора языка
 func load_lang(container: OptionButton) -> void:
 	for i in DirAccess.get_files_at(LangDir):
