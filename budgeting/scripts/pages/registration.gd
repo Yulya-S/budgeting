@@ -33,7 +33,7 @@ func _generate_db_name() -> String:
 func _entrance() -> void:
 	# Сохранение файла конфигурации для автоматического входа
 	File.config.enter = Remember.button_pressed
-	if File.config.enter: File.update_config()
+	if File.config.enter: File.save_config()
 	# Вход в аккаунт
 	var data: Dictionary = Request.select_user()
 	Request.connection_db(File.show_data(data.base))

@@ -18,10 +18,10 @@ func _create_config() -> void:
 	if FileAccess.file_exists(ConfigFilePath):
 		read_config()
 		return
-	update_config()
+	save_config()
 
 #  Сохранение файла конфигураций
-func update_config() -> void:
+func save_config() -> void:
 	var file = FileAccess.open(ConfigFilePath, FileAccess.WRITE)
 	file.store_line(JSON.stringify(config))
 	file.close()
@@ -43,7 +43,7 @@ func show_data(data: String) -> String: return Marshalls.base64_to_utf8(data)
 # Очистка данных пользователя
 func clear_config() -> void:
 	config = {"enter": false, "lang": "ru", "login": "", "password": ""}
-	update_config()
+	save_config()
 
 # Файл локализации	
 # Заполнение поля выбора языка
@@ -75,6 +75,8 @@ func read_lang(container: OptionButton) -> void:
 	lang = json.data
 	file.close()
 	set_lang(container.get_parent())
+	config.lang = Global.get_OB_text(container)
+	save_config()
 
 # Применение значение используя поиск корневой сцены
 func pathfinding(obj) -> Variant:
