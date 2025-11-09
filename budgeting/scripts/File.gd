@@ -1,17 +1,24 @@
 extends Node
 # Переменные
+const BasesPath: String = "res://bases/"
 # Файл конфигураций
 var config: Dictionary = {"enter": false, "lang": "ru", "login": "", "password": ""} # Конфигурации
-const ConfigFilePath: String = "res://bases/config.json" # Путь к файлу конфигураций
+const ConfigFilePath: String = BasesPath + "config.json" # Путь к файлу конфигураций
 # Файл языка приложения
 var lang: Dictionary = {} # Язык
-const LangDir: String = "res://bases/language/" # Директория языков
+const LangDir: String = BasesPath + "language/" # Директория языков
 
 # Общая часть
 # Создание файлов
 func _ready() -> void:
+	_create_dirs()
 	_create_config()
 	_create_langs()
+
+# Создание папок для хранения данных
+func _create_dirs() -> void:
+	if not DirAccess.dir_exists_absolute(BasesPath): DirAccess.make_dir_absolute(BasesPath)
+	if not DirAccess.dir_exists_absolute(LangDir): DirAccess.make_dir_absolute(LangDir)
 
 # Сохранение данных в файл
 func _store_json(file_path: String, data: Dictionary) -> void:
