@@ -45,4 +45,5 @@ func _on_timer_timeout() -> void:
 
 func _on_exit_button_down() -> void:
 	File.clear_config()
+	Request.connection_user_db()
 	Global.emit_signal("open_new_page", Global.Pages.REGISTRATION)
