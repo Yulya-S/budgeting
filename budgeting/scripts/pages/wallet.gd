@@ -6,6 +6,7 @@ extends Control
 # Подключение сигнала
 func _ready() -> void:
 	Filter.get_filter()
+	ColorScheme.repainting(self)
 	Global.emit_signal("update_page")
 
 # Обработка нажатия кнопки создания нового счета

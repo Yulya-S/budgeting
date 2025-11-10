@@ -38,6 +38,7 @@ func _entrance(auto: bool = false) -> void:
 	# Вход в аккаунт
 	var data: Dictionary = Request.select_user()
 	Request.connection_db(File.show_data(data.base))
+	ColorScheme.color_reading()
 	Global.emit_signal("open_new_page", Global.Pages.BASIC)
 
 # Обработка изменения параметра отображения пароля

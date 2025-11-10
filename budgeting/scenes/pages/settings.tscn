@@ -211,22 +211,14 @@ offset_right = 1087.0
 offset_bottom = 533.0
 color = Color(0.164706, 0.164706, 0.164706, 1)
 
-[node name="ColorRect1" type="ColorRect" parent="Example"]
+[node name="Background" type="ColorRect" parent="Example"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 5.0
 offset_right = 1017.0
 offset_bottom = 248.0
 
-[node name="ColorRect6" type="ColorRect" parent="Example"]
-layout_mode = 0
-offset_left = 5.0
-offset_top = 180.0
-offset_right = 1017.0
-offset_bottom = 213.0
-color = Color(0.800491, 0.800491, 0.800491, 1)
-
-[node name="ColorRect5" type="ColorRect" parent="Example"]
+[node name="Label" type="ColorRect" parent="Example"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 142.0
@@ -234,7 +226,31 @@ offset_right = 1017.0
 offset_bottom = 175.0
 color = Color(0.695503, 0.695503, 0.695503, 1)
 
-[node name="ColorRect4" type="ColorRect" parent="Example"]
+[node name="Label" type="Label" parent="Example/Label"]
+offset_left = 13.0
+offset_right = 319.0
+offset_bottom = 33.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Пример текста"
+vertical_alignment = 1
+
+[node name="Object" type="ColorRect" parent="Example"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 180.0
+offset_right = 1017.0
+offset_bottom = 213.0
+color = Color(0.800491, 0.800491, 0.800491, 1)
+
+[node name="Label" type="Label" parent="Example/Object"]
+offset_left = 13.0
+offset_right = 319.0
+offset_bottom = 33.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Пример текста"
+vertical_alignment = 1
+
+[node name="Filter" type="ColorRect" parent="Example"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 93.0
@@ -242,7 +258,22 @@ offset_right = 1017.0
 offset_bottom = 137.0
 color = Color(0.470076, 0.470076, 0.470076, 1)
 
-[node name="ColorRect3" type="ColorRect" parent="Example"]
+[node name="Label" type="Label" parent="Example/Filter"]
+offset_left = 13.0
+offset_right = 319.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Пример текста"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Example/Filter"]
+offset_left = 781.0
+offset_top = 6.0
+offset_right = 1004.0
+offset_bottom = 37.0
+text = "Пример кнопки"
+
+[node name="Menu" type="ColorRect" parent="Example"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 49.0
@@ -250,13 +281,45 @@ offset_right = 1017.0
 offset_bottom = 93.0
 color = Color(0.374139, 0.374139, 0.374139, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="Example"]
+[node name="Label" type="Label" parent="Example/Menu"]
+offset_left = 13.0
+offset_right = 319.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Пример текста"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Example/Menu"]
+offset_left = 781.0
+offset_top = 6.0
+offset_right = 1004.0
+offset_bottom = 37.0
+text = "Пример кнопки"
+
+[node name="Head" type="ColorRect" parent="Example"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 5.0
 offset_right = 1017.0
 offset_bottom = 49.0
 color = Color(0.282353, 0.282353, 0.282353, 1)
+
+[node name="Label" type="Label" parent="Example/Head"]
+layout_mode = 0
+offset_left = 13.0
+offset_right = 319.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Пример текста"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Example/Head"]
+layout_mode = 0
+offset_left = 781.0
+offset_top = 6.0
+offset_right = 1004.0
+offset_bottom = 37.0
+text = "Пример кнопки"
 
 [node name="Delete" type="Button" parent="."]
 layout_mode = 0

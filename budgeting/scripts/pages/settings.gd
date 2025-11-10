@@ -36,10 +36,7 @@ func _ready() -> void:
 # Изменение цветов в примере отображения
 func changed_color() -> void:
 	_color_reading()
-	var idx = 6
-	for i in Example.get_children():
-		i.color = ColorScheme.get_color(idx, 6, ColorScheme.system_gradient)
-		idx -= 1
+	ColorScheme.repainting(Example)
 		
 # Составление цветовой палитры
 func _color_reading() -> void:
@@ -119,7 +116,7 @@ func _on_color_scheme_pre_item_selected(index: int) -> void:
 		5: _change_theme("e198ae", "b9e198", "801938", "44622b") # Ягода на ветке
 		_: # Серая
 			ColorSchemeCus.selected = 0
-			color1.color = Color("#484848")
+			color1.color = Color("#636363")
 	changed_color()
 
 # Обработка нажатия кнопки закрытия окна

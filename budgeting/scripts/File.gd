@@ -126,6 +126,11 @@ func set_lang(obj, lang_fragment = lang) -> void:
 				if "_text" in lang_fragment.keys(): obj.set_text(lang_fragment._text)
 			else: obj.set_text(lang_fragment)
 		"CheckButton": set_CB(obj, lang_fragment)
+		"ColorRect":
+			if obj.name == "Example": # Частный случай одинакового текста на разных уровнях
+				for i in obj.get_children(): for l in i.get_children():
+					l.set_text(lang_fragment[l.get_class()])
+				return
 		"Control":
 			if obj.name == "Colors": # Частный случай элементов с одинаковыми именами 
 				for i in obj.get_children(): set_lang(i, lang_fragment)
@@ -161,6 +166,7 @@ func _cr_ru() -> void:
 			"ColorSchemeCus": {"Label": "Количество цветов",
 				"_values": ["Моно", "Контраст", "Триада", "Тетрада"]},
 			"Colors": "Цвет",
+			"Example": {"Button": "Пример кнопки", "Label": "Пример текста"},
 			"Close": {"_tooltip": "Отменить изменения"},
 			"Delete": "Удалить пользователя",
 			"Apply": "Сохранить",
@@ -196,6 +202,7 @@ func _cr_en() -> void:
 			"ColorSchemeCus": {"Label": "Number of colors",
 				"_values": ["Mono", "Contrast", "Triad", "Tetrad"]},
 			"Colors": "Color",
+			"Example": {"Button": "Button example", "Label": "Example text"},
 			"Close": {"_tooltip": "Cancel changes"},
 			"Delete": "Delete user",
 			"Apply": "Save",
