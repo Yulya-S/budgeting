@@ -112,7 +112,7 @@ func set_CB(obj: CheckButton, values: Variant = []) -> void:
 	if values == []: values = pathfinding(obj)
 	if values is Array and len(values) >= 2: obj.set_text(values[int(obj.button_pressed)]) 
 
-# Применение перевода - нужно изменить
+# Применение перевода
 func set_lang(obj, lang_fragment = lang) -> void:
 	if lang_fragment is Dictionary and lang_fragment == lang: lang_fragment = lang[obj.name]
 	match obj.get_class():
@@ -127,7 +127,7 @@ func set_lang(obj, lang_fragment = lang) -> void:
 			else: obj.set_text(lang_fragment)
 		"CheckButton": set_CB(obj, lang_fragment)
 		"Control":
-			if obj.name == "Colors":
+			if obj.name == "Colors": # Частный случай элементов с одинаковыми именами 
 				for i in obj.get_children(): set_lang(i, lang_fragment)
 				return
 		"ColorPickerButton":
