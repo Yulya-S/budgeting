@@ -227,6 +227,7 @@ offset_bottom = 175.0
 color = Color(0.695503, 0.695503, 0.695503, 1)
 
 [node name="Label" type="Label" parent="Example/Label"]
+layout_mode = 0
 offset_left = 13.0
 offset_right = 319.0
 offset_bottom = 33.0
@@ -243,6 +244,7 @@ offset_bottom = 213.0
 color = Color(0.800491, 0.800491, 0.800491, 1)
 
 [node name="Label" type="Label" parent="Example/Object"]
+layout_mode = 0
 offset_left = 13.0
 offset_right = 319.0
 offset_bottom = 33.0
@@ -259,6 +261,7 @@ offset_bottom = 137.0
 color = Color(0.470076, 0.470076, 0.470076, 1)
 
 [node name="Label" type="Label" parent="Example/Filter"]
+layout_mode = 0
 offset_left = 13.0
 offset_right = 319.0
 offset_bottom = 44.0
@@ -267,6 +270,7 @@ text = "Пример текста"
 vertical_alignment = 1
 
 [node name="Button" type="Button" parent="Example/Filter"]
+layout_mode = 0
 offset_left = 781.0
 offset_top = 6.0
 offset_right = 1004.0
@@ -282,6 +286,7 @@ offset_bottom = 93.0
 color = Color(0.374139, 0.374139, 0.374139, 1)
 
 [node name="Label" type="Label" parent="Example/Menu"]
+layout_mode = 0
 offset_left = 13.0
 offset_right = 319.0
 offset_bottom = 44.0
@@ -290,6 +295,7 @@ text = "Пример текста"
 vertical_alignment = 1
 
 [node name="Button" type="Button" parent="Example/Menu"]
+layout_mode = 0
 offset_left = 781.0
 offset_top = 6.0
 offset_right = 1004.0

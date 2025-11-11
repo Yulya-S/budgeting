@@ -66,19 +66,19 @@ func _change_theme(c1_l: String, c2_l: String, c1_d: String, c2_d: String) -> vo
 	else: _contrast(c1_l, c2_l)
 
 # Изменение цветов
-func _on_color_1_color_changed(color: Color) -> void: changed_color()
+func _on_color_1_color_changed(_color: Color) -> void: changed_color()
 
-func _on_color_2_color_changed(color: Color) -> void: changed_color()
+func _on_color_2_color_changed(_color: Color) -> void: changed_color()
 
-func _on_color_3_color_changed(color: Color) -> void: changed_color()
+func _on_color_3_color_changed(_color: Color) -> void: changed_color()
 
-func _on_color_4_color_changed(color: Color) -> void: changed_color()
+func _on_color_4_color_changed(_color: Color) -> void: changed_color()
 
 # Обработка изменения языка приложения
-func _on_language_item_selected(index: int) -> void: File.read_lang(Language)
+func _on_language_item_selected(_index: int) -> void: File.read_lang(Language)
 
 # Обработка изменения способа отображения календаря
-func _on_event_type_toggled(toggled_on: bool) -> void: File.set_CB(EventType)
+func _on_event_type_toggled(_toggled_on: bool) -> void: File.set_CB(EventType)
 
 # Обработка изменения темы оформления между предустановленной и персонализированной
 func _on_preinstalled_toggled(toggled_on: bool) -> void:

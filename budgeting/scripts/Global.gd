@@ -5,19 +5,13 @@ signal open_new_page(page: Pages, id, parent) # Открытие окна с п�
 signal update_page(close_page: String) # Обновление данных на странице
 
 # Перечисления
-enum Pages {REGISTRATION, SETTINGS, BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, TRANSFER, PAYMENT, PERCENT, WALLET_INF, LOAN_INF} # Страницы приложения
+enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, TRANSFER, PAYMENT, PERCENT, WALLET_INF, LOAN_INF, REPORTS, REGISTRATION, SETTINGS} # Страницы приложения
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменные
 var current_page: Pages = Pages.BASIC # Текущая страница
 var date: Dictionary = Time.get_datetime_dict_from_system() # Текущая дата
-
-#var config: Dictionary = {"enter": false} # Настройки программы
-#const ConfigFilePath: String = "res://bases/config.json" # Путь к файлу настроек
-#
-## Создание файла конфигураций при запуске программы
-#func _ready() -> void: create_config()
 
 # Изменение даты под формат запроса
 func date_to_sql_date(text: String) -> String:
@@ -105,9 +99,3 @@ func date_comparison(date1: Dictionary, date2: Dictionary, operator: String, acc
 # Перевод словоря даты в текстовый формат
 func dictionary_date_to_str(date: Dictionary) -> String:
 	return Time.get_datetime_string_from_datetime_dict(date, true)
-	
-# Шифрование данных
-func hide_data(data: String) -> String:	return Marshalls.utf8_to_base64(data)
-
-# Дешифрование данных
-func show_data(data: String) -> String: return Marshalls.base64_to_utf8(data)
