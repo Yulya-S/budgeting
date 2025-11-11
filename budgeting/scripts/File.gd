@@ -10,10 +10,14 @@ const LangDir: String = BasesPath + "language/" # Директория язык�
 
 # Общая часть
 # Создание файлов
-func _ready() -> void:
+func _ready() -> void: create_files()
+
+# Создание необходимых для работы программы файлов
+func create_files() -> void:
 	_create_dirs()
 	_create_config()
 	_create_langs()
+
 
 # Создание папок для хранения данных
 func _create_dirs() -> void:

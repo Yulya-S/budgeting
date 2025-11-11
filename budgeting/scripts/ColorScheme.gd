@@ -15,8 +15,6 @@ func _ready() -> void:
 func get_color(index: float, count: float, gradient: Gradient = chart_gradient) -> Color:
 	return gradient.sample(index / count)
 
-# Стандартные цветовые темы
-
 # Получение цветов из базы данных
 func color_reading() -> void:
 	var g_colors: PackedColorArray = PackedColorArray([])
@@ -33,7 +31,7 @@ func color_reading() -> void:
 	ColorScheme.color_assembly(g_colors, g_offsets, data.dark_theme)
 	
 # Составление цветовой палитры
-func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, theme: bool):
+func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, theme: bool) -> void:
 	g_colors = PackedColorArray([Color(int(theme), int(theme), int(theme))]) + g_colors
 	g_offsets = PackedFloat32Array([0]) + g_offsets
 	g_colors.append(Color(int(not theme), int(not theme), int(not theme)))

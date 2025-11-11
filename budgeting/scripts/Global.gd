@@ -105,28 +105,6 @@ func date_comparison(date1: Dictionary, date2: Dictionary, operator: String, acc
 # Перевод словоря даты в текстовый формат
 func dictionary_date_to_str(date: Dictionary) -> String:
 	return Time.get_datetime_string_from_datetime_dict(date, true)
-
-# Файл конфигураций
-# Проверка наличия созданного файла конфигураций
-#func create_config() -> void:
-	#if FileAccess.file_exists(ConfigFilePath):
-		#read_config()
-		#return
-	#update_config()
-#
-## Изменить данные в файле конфигурации
-#func update_config() -> void:
-	#var file = FileAccess.open(ConfigFilePath, FileAccess.WRITE)
-	#file.store_line(JSON.stringify(config))
-	#file.close()
-	#
-## Загрузка настроек
-#func read_config() -> void:
-	#var file = FileAccess.open(ConfigFilePath, FileAccess.READ)
-	#var json = JSON.new()
-	#if not json.parse(file.get_line()) == OK: return
-	#config = json.data
-	#file.close()
 	
 # Шифрование данных
 func hide_data(data: String) -> String:	return Marshalls.utf8_to_base64(data)

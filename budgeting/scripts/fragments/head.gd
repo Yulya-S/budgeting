@@ -42,7 +42,7 @@ func _on_timer_timeout() -> void:
 	Global.date = Time.get_datetime_dict_from_system()
 	Date.set_text(Global.date)
 
-
+# Обработка нажатия кнопки выхода из аккаунта
 func _on_exit_button_down() -> void:
 	File.clear_config()
 	Request.connection_user_db()
