@@ -18,7 +18,6 @@ func create_files() -> void:
 	_create_config()
 	_create_langs()
 
-
 # Создание папок для хранения данных
 func _create_dirs() -> void:
 	if not DirAccess.dir_exists_absolute(BasesPath): DirAccess.make_dir_absolute(BasesPath)
@@ -135,6 +134,11 @@ func set_lang(obj, lang_fragment = lang) -> void:
 				for i in obj.get_children(): for l in i.get_children():
 					l.set_text(lang_fragment[l.get_class()])
 				return
+		"ConfirmationDialog":
+			if "cancel" in lang_fragment.keys(): obj.set_cancel_button_text(lang_fragment["cancel"])
+			if "ok" in lang_fragment.keys(): obj.set_ok_button_text(lang_fragment["ok"])
+			if "text" in lang_fragment.keys(): obj.set_text(lang_fragment["text"])
+			if "title" in lang_fragment.keys(): obj.set_title(lang_fragment["title"])
 		"Control":
 			if obj.name == "Colors": # Частный случай элементов с одинаковыми именами 
 				for i in obj.get_children(): set_lang(i, lang_fragment)
@@ -174,6 +178,7 @@ func _cr_ru() -> void:
 			"Close": {"_tooltip": "Отменить изменения"},
 			"Delete": "Удалить пользователя",
 			"Apply": "Сохранить",
+			"ConfirmationDialog": {"cancel": "Нет", "ok": "Да", "text": "Вы уверены? Все данные пользователя будут удалены", "title": "Удаление пользователя"}
 		},
 		"_Errors": {
 			"_E01": "Обязательные поля должны быть заполнены",
@@ -210,6 +215,7 @@ func _cr_en() -> void:
 			"Close": {"_tooltip": "Cancel changes"},
 			"Delete": "Delete user",
 			"Apply": "Save",
+			"ConfirmationDialog": {"cancel": "No", "ok": "Yes", "text": "Are you sure? All user data will be deleted", "title": "Deleting a user"}
 		},
 		"_Errors": {
 			"_E01": "Required fields must be filled in",
