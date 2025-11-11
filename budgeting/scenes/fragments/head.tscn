@@ -128,7 +128,7 @@ theme_override_font_sizes/font_size = 28
 text = "05.08.2025"
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="."]
+[node name="Login" type="Label" parent="."]
 layout_mode = 0
 offset_left = 896.0
 offset_top = 5.0
@@ -146,8 +146,16 @@ offset_top = 5.0
 offset_right = 1190.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
-tooltip_text = "Выход"
 icon = ExtResource("11_alv4j")
+
+[node name="New" type="Line2D" parent="Notification"]
+visible = false
+position = Vector2(90, 40)
+points = PackedVector2Array(0, 0, 0.05, 0)
+width = 50.0
+default_color = Color(1, 0, 0, 1)
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="Exit" type="Button" parent="."]
 layout_mode = 0
@@ -175,4 +183,5 @@ offset_bottom = 648.0
 [connection signal="button_down" from="Loan" to="." method="_on_loan_button_down"]
 [connection signal="button_down" from="Event" to="." method="_on_event_button_down"]
 [connection signal="button_down" from="Report" to="." method="_on_report_button_down"]
+[connection signal="button_down" from="Exit" to="." method="_on_exit_button_down"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

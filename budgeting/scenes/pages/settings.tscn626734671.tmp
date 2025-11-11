@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://drgo1ryoy3y2h"]
+[gd_scene load_steps=3 format=3 uid="uid://drgo1ryoy3y2h"]
 
 [ext_resource type="Script" uid="uid://cmek8chi7c38d" path="res://scripts/pages/settings.gd" id="1_dqp6w"]
+[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="2_5pmsx"]
 
 [node name="Settings" type="ColorRect"]
 offset_right = 1152.0
@@ -15,12 +16,58 @@ offset_top = 10.0
 offset_right = 114.0
 offset_bottom = 41.0
 
+[node name="Error" type="Label" parent="."]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 17.0
+offset_right = 797.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0.756863, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+script = ExtResource("2_5pmsx")
+
+[node name="Login" type="TextEdit" parent="."]
+clip_contents = false
+layout_mode = 0
+offset_left = 300.0
+offset_top = 52.0
+offset_right = 721.0
+offset_bottom = 83.0
+autowrap_mode = 1
+scroll_past_end_of_file = true
+
+[node name="Label" type="Label" parent="Login"]
+layout_mode = 0
+offset_left = -166.0
+offset_right = -8.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Логин:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="DarkTheme" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 646.0
+offset_top = 129.0
+offset_right = 927.0
+offset_bottom = 160.0
+theme_override_colors/font_disabled_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_hover_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+text = "Светлая тема"
+alignment = 2
+
 [node name="Preinstalled" type="CheckButton" parent="."]
 layout_mode = 0
 offset_left = 134.0
-offset_top = 102.0
+offset_top = 129.0
 offset_right = 505.0
-offset_bottom = 133.0
+offset_bottom = 160.0
 theme_override_colors/font_disabled_color = Color(0.364706, 0.364706, 0.364706, 1)
 theme_override_colors/font_hover_pressed_color = Color(0.364706, 0.364706, 0.364706, 1)
 theme_override_colors/font_hover_color = Color(0.364706, 0.364706, 0.364706, 1)
@@ -33,16 +80,16 @@ alignment = 2
 [node name="ColorSchemePre" type="OptionButton" parent="."]
 layout_mode = 0
 offset_left = 300.0
-offset_top = 160.0
+offset_top = 187.0
 offset_right = 721.0
-offset_bottom = 191.0
+offset_bottom = 218.0
 selected = 0
 item_count = 6
 popup/item_0/text = "Стандартная"
 popup/item_0/id = 0
 popup/item_1/text = "Серая"
 popup/item_1/id = 1
-popup/item_2/text = "Лимон со смородиной"
+popup/item_2/text = "Лемон со смородиной"
 popup/item_2/id = 2
 popup/item_3/text = "Ржавый металл"
 popup/item_3/id = 3
@@ -65,9 +112,9 @@ vertical_alignment = 1
 visible = false
 layout_mode = 0
 offset_left = 300.0
-offset_top = 160.0
+offset_top = 187.0
 offset_right = 721.0
-offset_bottom = 191.0
+offset_bottom = 218.0
 selected = 0
 item_count = 4
 popup/item_0/text = "Моно"
@@ -92,11 +139,11 @@ vertical_alignment = 1
 [node name="Colors" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 300.0
-offset_top = 160.0
+offset_top = 187.0
 offset_right = 340.0
-offset_bottom = 200.0
+offset_bottom = 227.0
 
-[node name="Color_1" type="ColorPickerButton" parent="Colors"]
+[node name="Color1" type="ColorPickerButton" parent="Colors"]
 visible = false
 layout_mode = 2
 offset_left = -104.0
@@ -106,7 +153,7 @@ offset_bottom = 93.0
 color = Color(0.282353, 0.282353, 0.282353, 1)
 edit_alpha = false
 
-[node name="Label" type="Label" parent="Colors/Color_1"]
+[node name="Label" type="Label" parent="Colors/Color1"]
 layout_mode = 0
 offset_left = -166.0
 offset_right = -8.0
@@ -116,7 +163,7 @@ text = "Цвет 1"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Color_2" type="ColorPickerButton" parent="Colors"]
+[node name="Color2" type="ColorPickerButton" parent="Colors"]
 visible = false
 layout_mode = 2
 offset_left = 117.0
@@ -125,7 +172,7 @@ offset_right = 227.0
 offset_bottom = 93.0
 color = Color(0.372549, 0.372549, 0.372549, 1)
 
-[node name="Label" type="Label" parent="Colors/Color_2"]
+[node name="Label" type="Label" parent="Colors/Color2"]
 layout_mode = 0
 offset_left = -166.0
 offset_right = -8.0
@@ -135,7 +182,7 @@ text = "Цвет 2"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Color_3" type="ColorPickerButton" parent="Colors"]
+[node name="Color3" type="ColorPickerButton" parent="Colors"]
 visible = false
 layout_mode = 2
 offset_left = 338.0
@@ -144,7 +191,7 @@ offset_right = 448.0
 offset_bottom = 93.0
 color = Color(0.470588, 0.470588, 0.470588, 1)
 
-[node name="Label" type="Label" parent="Colors/Color_3"]
+[node name="Label" type="Label" parent="Colors/Color3"]
 layout_mode = 0
 offset_left = -166.0
 offset_right = -8.0
@@ -154,7 +201,7 @@ text = "Цвет 3"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Color_4" type="ColorPickerButton" parent="Colors"]
+[node name="Color4" type="ColorPickerButton" parent="Colors"]
 visible = false
 layout_mode = 2
 offset_left = 559.0
@@ -163,7 +210,7 @@ offset_right = 669.0
 offset_bottom = 93.0
 color = Color(0.8, 0.8, 0.8, 1)
 
-[node name="Label" type="Label" parent="Colors/Color_4"]
+[node name="Label" type="Label" parent="Colors/Color4"]
 layout_mode = 0
 offset_left = -166.0
 offset_right = -8.0
@@ -173,69 +220,22 @@ text = "Цвет 4"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="DarkTheme" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 646.0
-offset_top = 102.0
-offset_right = 927.0
-offset_bottom = 133.0
-theme_override_colors/font_disabled_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_hover_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-text = "Светлая тема"
-alignment = 2
-
-[node name="EventType" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 134.0
-offset_top = 51.0
-offset_right = 505.0
-offset_bottom = 82.0
-theme_override_colors/font_disabled_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_hover_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-text = "Календарь событий"
-alignment = 2
-
 [node name="Example" type="ColorRect" parent="."]
 layout_mode = 0
 offset_left = 65.0
-offset_top = 280.0
+offset_top = 307.0
 offset_right = 1087.0
-offset_bottom = 533.0
+offset_bottom = 560.0
 color = Color(0.164706, 0.164706, 0.164706, 1)
 
-[node name="Background" type="ColorRect" parent="Example"]
+[node name="ColorRect1" type="ColorRect" parent="Example"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 5.0
 offset_right = 1017.0
 offset_bottom = 248.0
 
-[node name="Label" type="ColorRect" parent="Example"]
-layout_mode = 0
-offset_left = 5.0
-offset_top = 142.0
-offset_right = 1017.0
-offset_bottom = 175.0
-color = Color(0.695503, 0.695503, 0.695503, 1)
-
-[node name="Label" type="Label" parent="Example/Label"]
-layout_mode = 0
-offset_left = 13.0
-offset_right = 319.0
-offset_bottom = 33.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Пример текста"
-vertical_alignment = 1
-
-[node name="Object" type="ColorRect" parent="Example"]
+[node name="ColorRect6" type="ColorRect" parent="Example"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 180.0
@@ -243,16 +243,15 @@ offset_right = 1017.0
 offset_bottom = 213.0
 color = Color(0.800491, 0.800491, 0.800491, 1)
 
-[node name="Label" type="Label" parent="Example/Object"]
+[node name="ColorRect5" type="ColorRect" parent="Example"]
 layout_mode = 0
-offset_left = 13.0
-offset_right = 319.0
-offset_bottom = 33.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Пример текста"
-vertical_alignment = 1
+offset_left = 5.0
+offset_top = 142.0
+offset_right = 1017.0
+offset_bottom = 175.0
+color = Color(0.695503, 0.695503, 0.695503, 1)
 
-[node name="Filter" type="ColorRect" parent="Example"]
+[node name="ColorRect4" type="ColorRect" parent="Example"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 93.0
@@ -260,24 +259,7 @@ offset_right = 1017.0
 offset_bottom = 137.0
 color = Color(0.470076, 0.470076, 0.470076, 1)
 
-[node name="Label" type="Label" parent="Example/Filter"]
-layout_mode = 0
-offset_left = 13.0
-offset_right = 319.0
-offset_bottom = 44.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Пример текста"
-vertical_alignment = 1
-
-[node name="Button" type="Button" parent="Example/Filter"]
-layout_mode = 0
-offset_left = 781.0
-offset_top = 6.0
-offset_right = 1004.0
-offset_bottom = 37.0
-text = "Пример кнопки"
-
-[node name="Menu" type="ColorRect" parent="Example"]
+[node name="ColorRect3" type="ColorRect" parent="Example"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 49.0
@@ -285,47 +267,13 @@ offset_right = 1017.0
 offset_bottom = 93.0
 color = Color(0.374139, 0.374139, 0.374139, 1)
 
-[node name="Label" type="Label" parent="Example/Menu"]
-layout_mode = 0
-offset_left = 13.0
-offset_right = 319.0
-offset_bottom = 44.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Пример текста"
-vertical_alignment = 1
-
-[node name="Button" type="Button" parent="Example/Menu"]
-layout_mode = 0
-offset_left = 781.0
-offset_top = 6.0
-offset_right = 1004.0
-offset_bottom = 37.0
-text = "Пример кнопки"
-
-[node name="Head" type="ColorRect" parent="Example"]
+[node name="ColorRect2" type="ColorRect" parent="Example"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 5.0
 offset_right = 1017.0
 offset_bottom = 49.0
 color = Color(0.282353, 0.282353, 0.282353, 1)
-
-[node name="Label" type="Label" parent="Example/Head"]
-layout_mode = 0
-offset_left = 13.0
-offset_right = 319.0
-offset_bottom = 44.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Пример текста"
-vertical_alignment = 1
-
-[node name="Button" type="Button" parent="Example/Head"]
-layout_mode = 0
-offset_left = 781.0
-offset_top = 6.0
-offset_right = 1004.0
-offset_bottom = 37.0
-text = "Пример кнопки"
 
 [node name="Delete" type="Button" parent="."]
 layout_mode = 0
@@ -356,25 +304,12 @@ theme_override_constants/outline_size = 14
 theme_override_font_sizes/font_size = 24
 text = "X"
 
-[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
-title = "Удаление пользователя"
-initial_position = 1
-size = Vector2i(459, 100)
-ok_button_text = "Да"
-dialog_text = "Вы уверены? Все данные пользователя будут удалены"
-cancel_button_text = "Нет"
-
 [connection signal="item_selected" from="Language" to="." method="_on_language_item_selected"]
-[connection signal="toggled" from="Preinstalled" to="." method="_on_preinstalled_toggled"]
-[connection signal="item_selected" from="ColorSchemePre" to="." method="_on_color_scheme_pre_item_selected"]
-[connection signal="item_selected" from="ColorSchemeCus" to="." method="_on_color_scheme_cus_item_selected"]
-[connection signal="color_changed" from="Colors/Color_1" to="." method="_on_color_1_color_changed"]
-[connection signal="color_changed" from="Colors/Color_2" to="." method="_on_color_2_color_changed"]
-[connection signal="color_changed" from="Colors/Color_3" to="." method="_on_color_3_color_changed"]
-[connection signal="color_changed" from="Colors/Color_4" to="." method="_on_color_4_color_changed"]
+[connection signal="text_changed" from="Login" to="." method="_on_login_text_changed"]
 [connection signal="toggled" from="DarkTheme" to="." method="_on_dark_theme_toggled"]
-[connection signal="toggled" from="EventType" to="." method="_on_event_type_toggled"]
-[connection signal="button_down" from="Delete" to="." method="_on_delete_button_down"]
-[connection signal="button_down" from="Apply" to="." method="_on_apply_button_down"]
-[connection signal="button_down" from="Close" to="." method="_on_close_button_down"]
-[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_confirmed"]
+[connection signal="toggled" from="Preinstalled" to="." method="_on_preinstalled_toggled"]
+[connection signal="item_selected" from="ColorSchemeCus" to="." method="_on_color_scheme_cus_item_selected"]
+[connection signal="color_changed" from="Colors/Color1" to="." method="_on_color_1_color_changed"]
+[connection signal="color_changed" from="Colors/Color2" to="." method="_on_color_2_color_changed"]
+[connection signal="color_changed" from="Colors/Color3" to="." method="_on_color_3_color_changed"]
+[connection signal="color_changed" from="Colors/Color4" to="." method="_on_color_4_color_changed"]
