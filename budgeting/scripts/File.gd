@@ -130,7 +130,8 @@ func set_lang(obj, lang_fragment = lang) -> void:
 			else: obj.set_text(lang_fragment)
 		"CheckButton": set_CB(obj, lang_fragment)
 		"ColorRect":
-			if obj.name == "Example": # Частный случай одинакового текста на разных уровнях
+			if obj.name == "Head": lang_fragment = lang["Head"] # Смена уровня глубины перевода при изменении локализации шапки приложения
+			elif obj.name == "Example": # Частный случай одинакового текста на разных уровнях
 				for i in obj.get_children(): for l in i.get_children():
 					l.set_text(lang_fragment[l.get_class()])
 				return
@@ -157,6 +158,18 @@ func set_lang(obj, lang_fragment = lang) -> void:
 # Русский
 func _cr_ru() -> void:
 	_cr_lang_file("ru", {
+		"Head": {
+			"Hints": {"_tooltip": "Инструкция"},
+			"Setting": {"_tooltip": "Настройки"},
+			"Main": {"_tooltip": "Главная"},
+			"Wallet": {"_tooltip": "Кошельки"},
+			"Section": {"_tooltip": "Разделы"},
+			"Flow": {"_tooltip": "Движения средств"},
+			"Loan": {"_tooltip": "Кредиты"},
+			"Event": {"_tooltip": "События"},
+			"Report": {"_tooltip": "Отчеты"},
+			"Exit": {"_tooltip": "Выход"}
+		},
 		"Registration": {
 			"Language": { "Label": "Язык:" },
 			"Login": { "Label": "*Логин:" },
