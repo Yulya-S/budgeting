@@ -1,14 +1,12 @@
 extends ColorRect
 # Подключение пути к объектам в сцене
-@onready var Marker = $Marker
 @onready var Date = $Date
 @onready var DayEnd = $Timer
-@onready var Login = $Login
 
 # Изменение положения маркера страницы
 func _ready() -> void:
-	Login.set_text(File.show_data(File.config.login))
-	Marker.position.x = (5 * (Global.current_page + 3)) + (39.68 * (Global.current_page + 2)) - 1
+	$Login.set_text(File.show_data(File.config.login))
+	$Marker.position.x = (5 * (Global.current_page + 3)) + (39.68 * (Global.current_page + 2)) - 1
 	Date.set_text(Global.dictionary_date_to_str(Global.date).split(" ")[0])
 	DayEnd.start((60 - Global.date.second) + (60 * (60 - Global.date.minute)) + (60 * 60 * (24 - Global.date.hour)))
 
