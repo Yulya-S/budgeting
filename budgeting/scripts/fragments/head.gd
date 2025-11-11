@@ -16,6 +16,7 @@ func _on_timer_timeout() -> void:
 	DayEnd.start(60 * 60 * 24)
 	Global.date = Time.get_datetime_dict_from_system()
 	Date.set_text(Global.date)
+	Global.emit_signal("update_page")
 
 # Обработка нажатия кнопки настройки 
 func _on_setting_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SETTINGS, null, Global.Dirs.PAGES)
