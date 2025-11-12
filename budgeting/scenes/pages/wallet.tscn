@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://c01ukoc123grl"]
+[gd_scene load_steps=8 format=3 uid="uid://c01ukoc123grl"]
 
 [ext_resource type="Script" uid="uid://cs4wnmk22cw27" path="res://scripts/pages/wallet.gd" id="1_xahbi"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_v2g8m"]
 [ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_gx72k"]
+[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/add/plus.png" id="3_me2yt"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_v2g8m"]
+[ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="4_c5ew4"]
+[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="5_cer6g"]
 
 [node name="Wallets" type="Control"]
 layout_mode = 3
@@ -25,27 +28,32 @@ color = Color(0.376471, 0.72549, 0.698039, 1)
 [node name="AddWallet" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 9.5
-offset_right = 133.0
-offset_bottom = 40.5
+offset_top = 5.0
+offset_right = 148.0
+offset_bottom = 133.0
+scale = Vector2(0.31, 0.31)
 tooltip_text = "Создать счет"
-text = "Создать счет"
+icon = ExtResource("3_me2yt")
 
 [node name="Transaction" type="Button" parent="Menu"]
 layout_mode = 0
-offset_left = 153.0
-offset_top = 9.5
-offset_right = 464.0
-offset_bottom = 40.5
-text = "Переносить средства между счетами"
+offset_left = 80.0
+offset_top = 5.0
+offset_right = 208.0
+offset_bottom = 133.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Переносить средства между счетами"
+icon = ExtResource("4_c5ew4")
 
 [node name="CashFlow" type="Button" parent="Menu"]
 layout_mode = 0
-offset_left = 484.0
-offset_top = 9.5
-offset_right = 722.0
-offset_bottom = 40.5
-text = "Записать движение средств"
+offset_left = 140.0
+offset_top = 5.0
+offset_right = 268.0
+offset_bottom = 133.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Записать движение средств"
+icon = ExtResource("5_cer6g")
 
 [node name="Filter" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(1152, 65)

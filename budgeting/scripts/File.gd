@@ -171,6 +171,12 @@ func _cr_ru() -> void:
 			"Report": {"_tooltip": "Отчеты"},
 			"Exit": {"_tooltip": "Выход"}
 		},
+		"Wallet": {
+			"Menu": {"AddWallet": {"_tooltip": "Создать счет"}, "Transaction": {"_tooltip": "Переносить средства между счетами"}, "CashFlow": {"_tooltip": "Записать движение средств"}},
+			"Filter": {
+				"Title": {"Label": "Фрагмент названия"}, "Button": "Применить",
+				"Order": {"Label": "Порядок сортировки", "_values": ["", "По дате добавления", "По алфавиту", "По текущей сумме"]}}
+		},
 		"Registration": {
 			"Language": { "Label": "Язык:" },
 			"Login": { "Label": "*Логин:" },
@@ -215,6 +221,12 @@ func _cr_en() -> void:
 			"Remember": "Remember me",
 			"Registration": "Registration",
 			"Enter": "Entry",
+		},
+		"Wallets": {
+			"Menu": {"AddWallet": {"_tooltip": "Create an account"}, "Transaction": {"_tooltip": "Transfer funds between accounts"}, "CashFlow": {"_tooltip": "Record the movement of funds"}},
+			"Filter": {
+				"Title": {"Label": "Title fragment"}, "Button": "Apply",
+				"Order": {"Label": "Sorting order", "_values": ["", "By date added", "Alphabetically", "According to the current amount"]}}
 		},
 		"Settings": {
 			"EventType": ["Events calendar", "List of events"],
