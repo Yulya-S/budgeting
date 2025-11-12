@@ -58,5 +58,5 @@ func repainting(obj) -> void:
 				"Label": set_font_color(obj)
 				"CheckButton": for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
 			if obj.get_parent().get_class() == "VBoxContainer":
-				obj.color = get_color(4 + int(obj.get_parent().get_child_count() == 0), 6, system_gradient)
+				obj.color = get_color(4 + int(obj.get_parent().get_child_count() != 1), 6, system_gradient)
 	for i in obj.get_children(): repainting(i)
