@@ -117,7 +117,8 @@ func set_CB(obj: CheckButton, values: Variant = []) -> void:
 
 # Применение перевода
 func set_lang(obj, lang_fragment = lang) -> void:
-	if lang_fragment is Dictionary and lang_fragment == lang: lang_fragment = lang[obj.name]
+	if lang_fragment is Dictionary and lang_fragment == lang and obj.name in lang_fragment.keys():
+		lang_fragment = lang[obj.name]
 	match obj.get_class():
 		"OptionButton":
 			if "_values" in lang_fragment.keys() and len(lang_fragment._values) >= obj.get_item_count():

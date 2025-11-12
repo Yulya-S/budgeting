@@ -5,9 +5,14 @@ extends Control
 
 # Подключение сигнала
 func _ready() -> void:
-	Filter.get_filter()
+	Global.connect("update_page", Callable(self, "_update_page"))
+	_update_page()
+
+# Запуск обновления данных на странице
+func _update_page() -> void:
 	ColorScheme.repainting(self)
-	Global.emit_signal("update_page")
+	File.set_lang(self)
+	Filter.get_filter()
 
 # Обработка нажатия кнопки создания нового счета
 func _on_add_wallet_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET)
