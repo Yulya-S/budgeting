@@ -338,6 +338,7 @@ func select_wallets_movement(id: int, date: String = Time.get_datetime_string_fr
 
 
 # Годится
+# Запрос на полцчение списка кошельков
 func _select_wallets_list(where: String, order: String) -> Array:
 	if where: where = " WHERE "+where
 	if order: order = " ORDER BY "+order
@@ -352,12 +353,14 @@ func _update_wallets_list(line: Dictionary, date: String = Time.get_datetime_str
 	line["cash_flow"] = db.query_result[0].value
 	return line
 
+# Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, where: String = "", order: String = "") -> Array:
 	match list_element:
 		ObjectVariants.WALLET: return _select_wallets_list(where, order)
 		_: pass
 	return []
-	
+
+# Распределение запросов на обновление элементов списков на страницах
 func match_update_list_element(list_element: ObjectVariants, line: Dictionary) -> Dictionary:
 	match list_element:
 		ObjectVariants.WALLET: return _update_wallets_list(line)
