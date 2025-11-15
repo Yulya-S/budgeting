@@ -345,8 +345,11 @@ func _select_wallets_list(where: String, order: String) -> Array:
 		AND cf.wallet_2_id=w.id) OR cf.wallet_id=w.id ORDER BY cf.date DESC) last_date FROM wallets w"""+where+order+";")
 	return db.query_result
 
-func _update_wallets_list(line: Dictionary) -> Dictionary:
-	line["cash_flow"] = select_wallets_movement(line.id)[0]
+# Запрос на получение движения средств в течении месяца
+func _update_wallets_list(line: Dictionary, date: String = Time.get_datetime_string_from_system()) -> Dictionary:
+	db.query("SELECT SUM(IIF((cf.section_id=1 and cf.wallet_id="+str(line.id)+""")OR cf.section_id=3 OR (s.income=0 and cf.section_id>4), cf.value*-1, cf.value)) value
+		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE (cf.wallet_id="""+str(line.id)+" or (cf.wallet_2_id="+str(line.id)+" and cf.section_id=1)) AND "+where_date(date, "cf.date"))
+	line["cash_flow"] = db.query_result[0].value
 	return line
 
 func match_select(list_element: ObjectVariants, where: String = "", order: String = "") -> Array:
