@@ -15,26 +15,23 @@ var lines: Array = [] # Список объектов для создания н
 
 # Параметры для смегчения динамического создания объектов
 var change_list: Array = []
-var start_draw: bool = false
 
 # Создание сцены
 func _ready() -> void: obj_path = load("res://scenes/fragments/list_elements/"+Global.enum_key(Request.ObjectVariants, obj)+".tscn")
 	
 # Получение количества объектов
-func obj_count() -> int: return Objects.get_child_count()
+func obj_count() -> int: return Objects.get_child_count() - 1
 
 # Существуют ли объекты в списке
 func lack_objects() -> bool: return Objects.get_child_count() > 1
 
 # Динамическое заполнение страницы
 func _process(_delta: float) -> void:
-	if start_draw:
-		if len(lines) > 0:
-			Objects.add_child(obj_path.instantiate())
-			Objects.get_child(-1).set_values(lines.pop_front())
-	else: # Обновление списка при необходимости дополнительного изменения данных
-		if len(change_list) > 0: lines.append(Request.match_update_list_element(obj, change_list.pop_front(), self))
-		start_draw = len(change_list) == 0
+	if len(lines) > 0:
+		Objects.add_child(obj_path.instantiate())
+		Objects.get_child(-1).set_values(lines.pop_front())
+	# Обновление списка при необходимости дополнительного изменения данных
+	if len(change_list) > 0: lines.append(Request.match_update_list_element(obj, change_list.pop_front(), self))
 	
 # Удалить позже
 # Изменение параметров запроса
@@ -65,7 +62,6 @@ func data_update() -> void:
 	Objects.add_child(obj_path.instantiate())
 	lines = []
 	change_list = Request.match_select(obj)
-	start_draw = false
 
 # Заполнение страницы - удалить это
 func update_page(close_page: String = ""):

@@ -357,7 +357,7 @@ func _select_sections_list(where: String = "", date: String = Time.get_datetime_
 	
 # Запрос на изменение списка разделов
 func _update_sections_list(line: Dictionary, parent, date: String = Time.get_datetime_string_from_system()) -> Dictionary:
-	line["marker"] = ColorScheme.get_color(len(parent.lines), len(parent.change_list) + len(parent.lines))
+	line["marker"] = ColorScheme.get_color(parent.obj_count(), len(parent.change_list) + parent.obj_count())
 	line["progress"] = (100. * line.value) / line.month_limit
 	return line
 
