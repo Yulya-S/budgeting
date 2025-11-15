@@ -6,8 +6,15 @@ extends Control
 
 # Стартовое применение фильтров
 func _ready() -> void:
+	Global.connect("update_page", Callable(self, "_update_page"))
+	_update_page()
+	
+# Запуск обновления данных на странице
+func _update_page() -> void:
+	ColorScheme.repainting(self)
+	File.set_lang(self)
 	Filter.get_filter()
-	Global.emit_signal("update_page")
+	Objects.data_update()
 
 # Изменение данных на графике
 func update_page(_close_page: String = ""): PieChart.set_values(Request.select_sections(Filter.filter.where, Filter.filter.date, Filter.filter.order))

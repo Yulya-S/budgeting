@@ -227,7 +227,7 @@ layout_mode = 0
 offset_top = 220.0
 offset_right = 1152.0
 offset_bottom = 643.0
-obj = 2
+obj = 1
 
 [connection signal="button_down" from="Menu/AddSections" to="." method="_on_add_sections_button_down"]
 [connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]

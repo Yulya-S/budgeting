@@ -1,7 +1,7 @@
 extends Node
 # Перечисление
 enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
-enum ObjectVariants {WALLET, WALLET_TRANSACTION, SECTION, CASH_FLOW, LOAN, EVENT} # Варианты списков объектов по которым могут быть запросы
+enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -125,12 +125,6 @@ func select_general_wallets_movement() -> float:
 	for i in select(Tables.WALLETS, "id"): sum += select_wallets_movement(i.id)[0]
 	return sum
 	
-# Получение списка разделов
-func select_sections(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
-	return select("`sections` s", "*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+""") value,
-		(SELECT cf.date FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+""" ORDER BY cf.date DESC) last_date,
-		(SELECT cf.id FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+" ORDER BY cf.date DESC) last_id", where, order)
-
 # Получение названия объекта под определенным индексом
 func _select_title(table: Tables, id: int) -> String: return select(table, "title", "id="+str(id))[0].title
 
@@ -352,11 +346,18 @@ func _update_wallets_list(line: Dictionary, date: String = Time.get_datetime_str
 		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE (cf.wallet_id="""+str(line.id)+" or (cf.wallet_2_id="+str(line.id)+" and cf.section_id=1)) AND "+where_date(date, "cf.date"))
 	line["cash_flow"] = db.query_result[0].value
 	return line
+	
+# Получение списка разделов
+func _select_sections_list(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
+	return select("`sections` s", "*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+""") value,
+		(SELECT cf.date FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+""" ORDER BY cf.date DESC) last_date,
+		(SELECT cf.id FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+" ORDER BY cf.date DESC) last_id", where, order)
 
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, where: String = "", order: String = "") -> Array:
 	match list_element:
 		ObjectVariants.WALLET: return _select_wallets_list(where, order)
+		ObjectVariants.SECTION: return _select_sections_list(where)
 		_: pass
 	return []
 
@@ -364,6 +365,9 @@ func match_select(list_element: ObjectVariants, where: String = "", order: Strin
 func match_update_list_element(list_element: ObjectVariants, line: Dictionary) -> Dictionary:
 	match list_element:
 		ObjectVariants.WALLET: return _update_wallets_list(line)
+		ObjectVariants.SECTION:
+			print(line)
+			return line
 		_: pass
 	return {}
 	

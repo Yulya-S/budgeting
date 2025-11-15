@@ -18,7 +18,7 @@ var change_list: Array = []
 var start_draw: bool = false
 
 # Создание сцены
-func _ready() -> void: obj_path = load("res://scenes/fragments/list_elements/"+Global.enum_key(ListObjects, obj)+".tscn")
+func _ready() -> void: obj_path = load("res://scenes/fragments/list_elements/"+Global.enum_key(Request.ObjectVariants, obj)+".tscn")
 	
 # Получение количества объектов
 func obj_count() -> int: return Objects.get_child_count()
