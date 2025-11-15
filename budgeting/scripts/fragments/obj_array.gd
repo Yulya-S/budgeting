@@ -33,7 +33,7 @@ func _process(_delta: float) -> void:
 			Objects.add_child(obj_path.instantiate())
 			Objects.get_child(-1).set_values(lines.pop_front())
 	else: # Обновление списка при необходимости дополнительного изменения данных
-		if len(change_list) > 0: lines.append(Request.match_update_list_element(obj, change_list.pop_front()))
+		if len(change_list) > 0: lines.append(Request.match_update_list_element(obj, change_list.pop_front(), self))
 		start_draw = len(change_list) == 0
 	
 # Удалить позже
@@ -69,11 +69,11 @@ func data_update() -> void:
 
 # Заполнение страницы - удалить это
 func update_page(close_page: String = ""):
-	return
-	for i in Objects.get_children():
-		i.queue_free()
-		Objects.remove_child(i)
-	Objects.add_child(obj_path.instantiate())
-	Objects.get_child(-1).color = Color.html("#dfdfdf")
-	lines = select()
-	if get_parent().get("update_page"):	get_parent().update_page(close_page)
+	pass
+	#for i in Objects.get_children():
+		#i.queue_free()
+		#Objects.remove_child(i)
+	#Objects.add_child(obj_path.instantiate())
+	#Objects.get_child(-1).color = Color.html("#dfdfdf")
+	#lines = select()
+	#if get_parent().get("update_page"):	get_parent().update_page(close_page)

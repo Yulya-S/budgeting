@@ -332,7 +332,7 @@ func select_wallets_movement(id: int, date: String = Time.get_datetime_string_fr
 
 
 # Годится
-# Запрос на полцчение списка кошельков
+# Запрос на получение списка кошельков
 func _select_wallets_list(where: String, order: String) -> Array:
 	if where: where = " WHERE "+where
 	if order: order = " ORDER BY "+order
@@ -340,18 +340,26 @@ func _select_wallets_list(where: String, order: String) -> Array:
 		AND cf.wallet_2_id=w.id) OR cf.wallet_id=w.id ORDER BY cf.date DESC) last_date FROM wallets w"""+where+order+";")
 	return db.query_result
 
-# Запрос на получение движения средств в течении месяца
+# Запрос на изменение списка кошельков
 func _update_wallets_list(line: Dictionary, date: String = Time.get_datetime_string_from_system()) -> Dictionary:
 	db.query("SELECT SUM(IIF((cf.section_id=1 and cf.wallet_id="+str(line.id)+""")OR cf.section_id=3 OR (s.income=0 and cf.section_id>4), cf.value*-1, cf.value)) value
 		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE (cf.wallet_id="""+str(line.id)+" or (cf.wallet_2_id="+str(line.id)+" and cf.section_id=1)) AND "+where_date(date, "cf.date"))
 	line["cash_flow"] = db.query_result[0].value
 	return line
 	
-# Получение списка разделов
+# Запрос на получение списка разделов
 func _select_sections_list(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
-	return select("`sections` s", "*, (SELECT COALESCE(SUM(cf.value), 0.0) FROM `cash_flows` cf WHERE cf.section_id = s.id AND "+where_date(date)+""") value,
-		(SELECT cf.date FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+""" ORDER BY cf.date DESC) last_date,
-		(SELECT cf.id FROM cash_flows cf WHERE cf.section_id = s.id AND """+where_date(date)+" ORDER BY cf.date DESC) last_id", where, order)
+	if where: where = " WHERE "+where
+	if order: order = " ORDER BY "+order
+	db.query("""SELECT s.*, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM `sections` s LEFT JOIN
+		(SELECT cf.section_id, SUM(cf.value) v, cf.date last_date, cf.id last_id FROM `cash_flows` cf WHERE """+where_date(date)+" GROUP BY cf.section_id) j ON s.id=j.section_id"+where+order+";")
+	return db.query_result
+	
+# Запрос на изменение списка разделов
+func _update_sections_list(line: Dictionary, parent, date: String = Time.get_datetime_string_from_system()) -> Dictionary:
+	line["marker"] = ColorScheme.get_color(len(parent.lines), len(parent.change_list) + len(parent.lines))
+	line["progress"] = (100. * line.value) / line.month_limit
+	return line
 
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, where: String = "", order: String = "") -> Array:
@@ -362,12 +370,10 @@ func match_select(list_element: ObjectVariants, where: String = "", order: Strin
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах
-func match_update_list_element(list_element: ObjectVariants, line: Dictionary) -> Dictionary:
+func match_update_list_element(list_element: ObjectVariants, line: Dictionary, parent = null) -> Dictionary:
 	match list_element:
 		ObjectVariants.WALLET: return _update_wallets_list(line)
-		ObjectVariants.SECTION:
-			print(line)
-			return line
+		ObjectVariants.SECTION:	return _update_sections_list(line, parent)
 		_: pass
 	return {}
 	
