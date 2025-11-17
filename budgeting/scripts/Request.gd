@@ -348,7 +348,7 @@ func _update_wallets_list(line: Dictionary, date: String = Time.get_datetime_str
 	return line
 	
 # Запрос на получение списка разделов
-func _select_sections_list(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
+func select_sections_list(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
 	if where: where = " WHERE "+where
 	if order: order = " ORDER BY "+order
 	db.query("""SELECT s.*, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM `sections` s LEFT JOIN
@@ -365,7 +365,7 @@ func _update_sections_list(line: Dictionary, parent, date: String = Time.get_dat
 func match_select(list_element: ObjectVariants, where: String = "", order: String = "") -> Array:
 	match list_element:
 		ObjectVariants.WALLET: return _select_wallets_list(where, order)
-		ObjectVariants.SECTION: return _select_sections_list(where)
+		ObjectVariants.SECTION: return select_sections_list(where)
 		_: pass
 	return []
 
