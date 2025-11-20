@@ -32,9 +32,10 @@ func _draw() -> void:
 		deg += arc_size
 
 # Заполнение списка значений
-func set_values(key: String = "value") -> void:
+func set_values(Filter: ColorRect, key: String = "value") -> void:
+	var filter_data: Dictionary = Filter.get_filter()
 	values = []
-	for i in Request.select_sections_list(): values.append(i[key])
+	for i in Request.select_sections_list(filter_data.where, filter_data.date, filter_data.order): values.append(i[key])
 	queue_redraw()
 	
 # Выделение области

@@ -15,6 +15,7 @@ var lines: Array = [] # Список объектов для создания н
 
 # Параметры для смегчения динамического создания объектов
 var change_list: Array = []
+var filter_data: Dictionary = {"where": "", "order": {}, "data": ""} # Сохраненные параметры фильтрации
 
 # Создание сцены
 func _ready() -> void: obj_path = load("res://scenes/fragments/list_elements/"+Global.enum_key(Request.ObjectVariants, obj)+".tscn")
@@ -27,6 +28,7 @@ func lack_objects() -> bool: return Objects.get_child_count() > 1
 
 # Динамическое заполнение страницы
 func _process(_delta: float) -> void:
+	# Добавление объекта на экран
 	if len(lines) > 0:
 		Objects.add_child(obj_path.instantiate())
 		Objects.get_child(-1).set_values(lines.pop_front())
@@ -54,14 +56,16 @@ func select() -> Array:
 	return []
 
 # Получение данных для списка
-func data_update() -> void:
+func data_update(filter: ColorRect) -> void:
+	filter_data = filter.get_filter() # Получение настроек фильтрации
+	# Очистка списка
 	for i in Objects.get_children():
 		i.queue_free()
 		Objects.remove_child(i)
 	# Добавление первого элемента списка
 	Objects.add_child(obj_path.instantiate())
 	lines = []
-	change_list = Request.match_select(obj)
+	change_list = Request.match_select(obj, filter_data)
 
 # Заполнение страницы - удалить это
 func update_page(close_page: String = ""):

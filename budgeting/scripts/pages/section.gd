@@ -1,6 +1,5 @@
 extends Control
 # Подключение путей к объектам в сцене
-@onready var Filter = $Filter
 @onready var Objects = $ObjArray
 @onready var PieChart = $PieChart
 
@@ -13,9 +12,12 @@ func _ready() -> void:
 func _update_page() -> void:
 	ColorScheme.repainting(self)
 	File.set_lang(self)
-	Filter.get_filter()
-	Objects.data_update()
-	PieChart.set_values()
+	update_date()
+
+# Обновление данных
+func update_date() -> void:
+	Objects.data_update($Filter)
+	PieChart.set_values($Filter)
 
 # Применение выделений секций на круговой диаграмме
 func highlighting_graph_sections(idx: int, set_highlighting: bool = true) -> void:

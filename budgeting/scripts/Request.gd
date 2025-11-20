@@ -343,7 +343,7 @@ func _select_wallets_list(where: String, order: String) -> Array:
 # Запрос на изменение списка кошельков
 func _update_wallets_list(line: Dictionary, date: String = Time.get_datetime_string_from_system()) -> Dictionary:
 	db.query("SELECT SUM(IIF((cf.section_id=1 and cf.wallet_id="+str(line.id)+""")OR cf.section_id=3 OR (s.income=0 and cf.section_id>4), cf.value*-1, cf.value)) value
-		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE (cf.wallet_id="""+str(line.id)+" or (cf.wallet_2_id="+str(line.id)+" and cf.section_id=1)) AND "+where_date(date, "cf.date"))
+		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE (cf.wallet_id="""+str(line.id)+" or (cf.wallet_2_id="+str(line.id)+" and cf.section_id=1)) AND "+where_date(date, "cf.date")+";")
 	line["cash_flow"] = db.query_result[0].value
 	return line
 	
@@ -356,16 +356,16 @@ func select_sections_list(where: String = "", date: String = Time.get_datetime_s
 	return db.query_result
 	
 # Запрос на изменение списка разделов
-func _update_sections_list(line: Dictionary, parent, date: String = Time.get_datetime_string_from_system()) -> Dictionary:
+func _update_sections_list(line: Dictionary, parent) -> Dictionary:
 	line["marker"] = ColorScheme.get_color(parent.obj_count(), len(parent.change_list) + parent.obj_count())
 	line["progress"] = (100. * line.value) / line.month_limit
 	return line
 
 # Распределение запросов для заполнения списков на страницах
-func match_select(list_element: ObjectVariants, where: String = "", order: String = "") -> Array:
+func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Array:
 	match list_element:
-		ObjectVariants.WALLET: return _select_wallets_list(where, order)
-		ObjectVariants.SECTION: return select_sections_list(where)
+		ObjectVariants.WALLET: return _select_wallets_list(filter_data.where, filter_data.order)
+		ObjectVariants.SECTION: return select_sections_list(filter_data.where, filter_data.date, filter_data.order)
 		_: pass
 	return []
 

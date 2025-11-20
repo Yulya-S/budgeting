@@ -1,6 +1,5 @@
 extends Control
 # Подключение пути к объектам в сцене
-@onready var Filter = $Filter
 @onready var Objects = $ObjArray
 
 # Подключение сигнала
@@ -12,8 +11,10 @@ func _ready() -> void:
 func _update_page() -> void:
 	ColorScheme.repainting(self)
 	File.set_lang(self)
-	Filter.get_filter()
-	Objects.data_update()
+	update_date()
+	
+# Обновление данных
+func update_date() -> void: Objects.data_update($Filter)
 
 # Обработка нажатия кнопки создания нового счета
 func _on_add_wallet_button_down() -> void: Global.emit_signal("open_window", Global.Pages.WALLET)
