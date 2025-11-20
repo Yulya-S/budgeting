@@ -13,6 +13,7 @@ func _ready() -> void:
 
 # Получение значения цвета из градиента по индексу объекта
 func get_color(index: float, count: float, gradient: Gradient = chart_gradient) -> Color:
+	if count == 0: count = 1
 	return gradient.sample(index / count)
 
 # Получение цветов из базы данных
