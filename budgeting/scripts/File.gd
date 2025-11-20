@@ -121,8 +121,8 @@ func set_lang(obj, lang_fragment = lang) -> void:
 		lang_fragment = lang[obj.name]
 	match obj.get_class():
 		"OptionButton":
-			if "_values" in lang_fragment.keys() and len(lang_fragment._values) >= obj.get_item_count():
-				for i in range(obj.get_item_count()):
+			if "_values" in lang_fragment.keys() and len(lang_fragment._values) <= obj.get_item_count():
+				for i in range(len(lang_fragment._values)):
 					obj.set_item_text(i, lang_fragment._values[i])
 		"Button":
 			if lang_fragment is Dictionary:
