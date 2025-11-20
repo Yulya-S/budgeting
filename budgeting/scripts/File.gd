@@ -131,7 +131,7 @@ func set_lang(obj, lang_fragment = lang) -> void:
 			else: obj.set_text(lang_fragment)
 		"CheckButton": set_CB(obj, lang_fragment)
 		"ColorRect":
-			if obj.name == "Head": lang_fragment = lang["Head"] # Смена уровня глубины перевода при изменении локализации шапки приложения
+			if obj.name == "Head" and "Head" in lang.keys(): lang_fragment = lang["Head"] # Смена уровня глубины перевода при изменении локализации шапки приложения
 			elif obj.name == "Example": # Частный случай одинакового текста на разных уровнях
 				for i in obj.get_children(): for l in i.get_children():
 					l.set_text(lang_fragment[l.get_class()])
@@ -152,7 +152,10 @@ func set_lang(obj, lang_fragment = lang) -> void:
 			if obj.name == "Error": obj.update_lang()
 			elif obj.get("set_text") and lang_fragment is String: obj.set_text(lang_fragment)
 	
-	for i in obj.get_children(): if i.name in lang_fragment.keys(): set_lang(i, lang_fragment[i.name])
+	for i in obj.get_children():
+		
+		if i.name in lang_fragment.keys(): set_lang(i, lang_fragment[i.name])
+		elif i.name == "Head": set_lang(i)
 	
 
 # Создание стандартных вариантов локализации
