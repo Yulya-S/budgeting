@@ -68,7 +68,7 @@ func data_update(filter: ColorRect) -> void:
 	change_list = Request.match_select(obj, filter_data)
 
 # Заполнение страницы - удалить это
-func update_page(close_page: String = ""):
+func update_page(_close_page: String = ""):
 	pass
 	#for i in Objects.get_children():
 		#i.queue_free()

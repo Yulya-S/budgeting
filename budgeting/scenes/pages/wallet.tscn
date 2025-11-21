@@ -37,9 +37,9 @@ icon = ExtResource("3_me2yt")
 
 [node name="Transaction" type="Button" parent="Menu"]
 layout_mode = 0
-offset_left = 80.0
+offset_left = 65.0
 offset_top = 5.0
-offset_right = 208.0
+offset_right = 193.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Переносить средства между счетами"
@@ -47,9 +47,9 @@ icon = ExtResource("4_c5ew4")
 
 [node name="CashFlow" type="Button" parent="Menu"]
 layout_mode = 0
-offset_left = 140.0
+offset_left = 110.0
 offset_top = 5.0
-offset_right = 268.0
+offset_right = 238.0
 offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Записать движение средств"

@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://kb12kdasv2yv"]
+[gd_scene load_steps=8 format=3 uid="uid://kb12kdasv2yv"]
 
 [ext_resource type="Script" uid="uid://djxfcsdvyoykq" path="res://scripts/pages/section.gd" id="1_42u4g"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_4yy0k"]
+[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/add/plus.png" id="3_21h3v"]
 [ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_42u4g"]
 [ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/graphics/pie_chart.tscn" id="4_4yy0k"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_21h3v"]
+[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="4_y5ii3"]
 
 [node name="Section" type="Control"]
 layout_mode = 3
@@ -26,18 +28,22 @@ color = Color(0.376471, 0.72549, 0.698039, 1)
 [node name="AddSections" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 9.5
-offset_right = 154.0
-offset_bottom = 40.5
-text = "Создать раздел"
+offset_top = 5.0
+offset_right = 148.0
+offset_bottom = 133.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Создать раздел"
+icon = ExtResource("3_21h3v")
 
 [node name="CashFlow" type="Button" parent="Menu"]
 layout_mode = 0
-offset_left = 174.0
-offset_top = 9.5
-offset_right = 412.0
-offset_bottom = 40.5
-text = "Записать движение средств"
+offset_left = 65.0
+offset_top = 5.0
+offset_right = 193.0
+offset_bottom = 133.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Записать движение средств"
+icon = ExtResource("4_y5ii3")
 
 [node name="Filter" type="ColorRect" parent="."]
 layout_mode = 0
@@ -120,7 +126,7 @@ offset_bottom = 54.0
 alignment = 1
 selected = 0
 item_count = 6
-popup/item_0/text = "По дате последней транзакций"
+popup/item_0/text = "По дате последней транзакции"
 popup/item_0/id = 0
 popup/item_1/text = "По дате добавления"
 popup/item_1/id = 1

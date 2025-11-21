@@ -5,10 +5,10 @@ class_name PageFragment
 
 # Смена размера цветовой линии под размер родителя
 func _ready() -> void:
+	if get_parent().get_child_count() == 1: File.set_lang_list_elements(self)
 	custom_minimum_size[0] = get_parent().get_parent().size[0]
 	update_minimum_size()
 	ColorScheme.repainting(self)
-	if get_parent().get_child_count() == 1: File.set_lang(self)
 	
 # Изменение значений в сцене
 func set_values(data: Dictionary) -> void:

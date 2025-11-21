@@ -113,7 +113,7 @@ func pathfinding(obj) -> Variant:
 # Изменение текста состояния кнопки переключателя
 func set_CB(obj: CheckButton, values: Variant = []) -> void:
 	if values == []: values = pathfinding(obj)
-	if values is Array and len(values) >= 2: obj.set_text(values[int(obj.button_pressed)]) 
+	if values is Array and len(values) >= 2: obj.set_text(values[int(obj.button_pressed)])
 
 # Применение перевода
 func set_lang(obj, lang_fragment = lang) -> void:
@@ -122,11 +122,10 @@ func set_lang(obj, lang_fragment = lang) -> void:
 	match obj.get_class():
 		"OptionButton":
 			if "_values" in lang_fragment.keys() and len(lang_fragment._values) <= obj.get_item_count():
-				for i in range(len(lang_fragment._values)):
-					obj.set_item_text(i, lang_fragment._values[i])
+				for i in range(len(lang_fragment._values)): obj.set_item_text(i, lang_fragment._values[i])
 		"Button":
 			if lang_fragment is Dictionary:
-				obj.tooltip_text = lang_fragment._tooltip
+				if "_tooltip" in lang_fragment.keys(): obj.tooltip_text = lang_fragment._tooltip
 				if "_text" in lang_fragment.keys(): obj.set_text(lang_fragment._text)
 			else: obj.set_text(lang_fragment)
 		"CheckButton": set_CB(obj, lang_fragment)
@@ -150,13 +149,25 @@ func set_lang(obj, lang_fragment = lang) -> void:
 			return
 		_:
 			if obj.name == "Error": obj.update_lang()
+			elif lang_fragment is Array and obj.text.is_valid_int() and len(lang_fragment) > int(obj.text):
+				obj.set_text(lang_fragment[int(obj.text)])
 			elif obj.get("set_text") and lang_fragment is String: obj.set_text(lang_fragment)
-	
+	# Перевод дочерних элементов
 	for i in obj.get_children():
-		
 		if i.name in lang_fragment.keys(): set_lang(i, lang_fragment[i.name])
 		elif i.name == "Head": set_lang(i)
-	
+		if i.name == "Month" and i is OptionButton and "_Months" in lang.keys():
+			for l in range(len(lang._Months)): i.set_item_text(l, lang._Months[l])
+
+# Применение перевода первой строки списков
+func set_lang_list_elements(obj) -> void:
+	if "_Elements" in lang.keys() and obj.get_parent().get_child(0).name in lang._Elements.keys():
+		set_lang(obj, lang._Elements[obj.get_parent().get_child(0).name])
+		
+# Применение перевода названий стандартных разделов
+func set_lang_DB(obj, idx: int) -> void:
+	if "_Table" not in lang.keys() or lang._Table is not Array or idx > 4 or len(lang._Table) < idx: return
+	obj.set_text(lang._Table[idx-1])
 
 # Создание стандартных вариантов локализации
 # Русский
@@ -179,6 +190,14 @@ func _cr_ru() -> void:
 			"Filter": {
 				"Title": {"Label": "Фрагмент названия"}, "Button": "Применить",
 				"Order": {"Label": "Порядок сортировки", "_values": ["", "По дате добавления", "По алфавиту", "По текущей сумме"]}}
+		},
+		"Section": {
+			"Menu": {"AddSections": {"_tooltip": "Создать раздел"}, "CashFlow": {"_tooltip": "Записать движение средств"}},
+			"Filter": {
+				"Title": {"Label": "Фрагмент названия"}, "Button": "Применить",
+				"ConsumptionIncome": {"Label": "Тип статьи", "_values": ["Все типы", "Расходы", "Доходы", "Займы"]},
+				"Order": {"Label": "Порядок сортировки", "_values": ["По дате последней транзакции", "По дате добавления", "По алфавиту", "По возрастанию суммы", "По убыванию суммы", "По ежемесячному лимиту"]},
+				"Year": {"Label": "Год фильтрации"}, "Month": {"Label": "Месяц фильтрации"}}
 		},
 		"Registration": {
 			"Language": { "Label": "Язык:" },
@@ -203,6 +222,11 @@ func _cr_ru() -> void:
 			"Apply": "Сохранить",
 			"ConfirmationDialog": {"cancel": "Нет", "ok": "Да", "text": "Вы уверены? Все данные пользователя будут удалены", "title": "Удаление пользователя"}
 		},
+		"_Months": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+		"_Elements": {
+			"Wallet": {"Title": "Название кошелька", "Value": "Текущее значение счета", "Cash_Flow": "Движение средств"},
+			"Section": {"Title": "Название раздела", "Value": "Текущее значение", "Month_Limit": "Ограничение", "ConsumptionIncome": ["Расход", "Доход"]},
+		},
 		"_Errors": {
 			"_E01": "Обязательные поля должны быть заполнены",
 			"_E02": "Имя пользователя занято",
@@ -211,7 +235,8 @@ func _cr_ru() -> void:
 			"_E05": "Значение должно быть больше нуля",
 			"_E06": "На счету недостаточно средств",
 			"_E07": "Введенное значение привышает необходимое значение для полного погашения займа"
-		}
+		},
+		"_Table": ["Переводы", "Заём", "Платежи по займам", "Проценты по займу"]
 	})
 
 # Английский
@@ -231,6 +256,14 @@ func _cr_en() -> void:
 				"Title": {"Label": "Title fragment"}, "Button": "Apply",
 				"Order": {"Label": "Sorting order", "_values": ["", "By date added", "Alphabetically", "According to the current amount"]}}
 		},
+		"Section": {
+			"Menu": {"AddSections": {"_tooltip": "Create a section"}, "CashFlow": {"_tooltip": "Record the movement of funds"}},
+			"Filter": {
+				"Title": {"Label": "Title fragment"}, "Button": "Apply",
+				"ConsumptionIncome": {"Label": "Article type", "_values": ["All types", "Expenses", "Income", "Loans"]},
+				"Order": {"Label": "Sorting order", "_values": ["By last transaction date", "By date added", "Alphabetically", "Ascending amount", "In descending order of amount", "By monthly limit"]},
+				"Year": {"Label": "Year of filtration"}, "Month": {"Label": "Month of filtering"}}
+		},
 		"Settings": {
 			"EventType": ["Events calendar", "List of events"],
 			"Preinstalled": ["Pre-installed theme", "Custom Theme"],
@@ -246,6 +279,11 @@ func _cr_en() -> void:
 			"Apply": "Save",
 			"ConfirmationDialog": {"cancel": "No", "ok": "Yes", "text": "Are you sure? All user data will be deleted", "title": "Deleting a user"}
 		},
+		"_Months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+		"_Elements": {
+			"Wallet": {"Title": "Wallet name", "Value": "Current account value", "Cash_Flow": "Movement of funds"},
+			"Section": {"Title": "Section title", "Value": "Current value", "Month_Limit": "Limit", "ConsumptionIncome": ["Consumption", "Income"]},
+		},
 		"_Errors": {
 			"_E01": "Required fields must be filled in",
 			"_E02": "Username taken",
@@ -254,5 +292,6 @@ func _cr_en() -> void:
 			"_E05": "Value must be greater than zero",
 			"_E06": "There are insufficient funds in the account",
 			"_E07": "The entered value exceeds the required value for full repayment of the loan"
-		}
+		},
+		"_Table": ["Transfers", "Loan", "Loan Payments", "Loan Interest"]
 	})
