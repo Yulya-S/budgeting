@@ -12,13 +12,12 @@ var m_index: int = 0 # Индекс объекта для изменения ц�
 
 # Изменение значений
 func set_values(data: Dictionary) -> void:
-	ConsumptionIncome.set_text("" if data.id <= 4 else str(data.income))
-	File.set_lang_list_elements(self)
+	ConsumptionIncome.set_text("" if data.id <= 4 else "__CI" + str(data.income))
 	super.set_values(data)
 	if data.month_limit <= 0 or data.income: MonthLimit.set_text("")
 	m_index = get_parent().get_child_count() - 2
 	Progress.visible = not data.income and data.month_limit > 0
-	if data.id <= 4: File.set_lang_DB(Title, data.id)
+	File.set_lang(self)
 	
 # Обработка наведения мыши на контейнер
 func _on_mouse_entered() -> void:

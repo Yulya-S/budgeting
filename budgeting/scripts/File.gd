@@ -52,14 +52,17 @@ func _create_config() -> void:
 	save_config()
 
 # Сохранение данных конфигураций в файл
-func save_config() -> void:	_store_json(ConfigFilePath, config)
+func save_config() -> void: _store_json(ConfigFilePath, config)
 	
 # Чтение файла конфигураций
-func read_config() -> void: config = _read_file(ConfigFilePath)
+func read_config() -> void:
+	var new: Dictionary = _read_file(ConfigFilePath)
+	if new.keys() == config.keys(): config = new
+	else: save_config()
 
 # Очистка данных пользователя
 func clear_config() -> void:
-	config = {"enter": false, "lang": "ru", "login": "", "password": ""}
+	config = {"enter": false, "lang": config.lang, "login": "", "password": ""}
 	save_config()
 
 # Файл локализации
@@ -110,123 +113,91 @@ func pathfinding(obj) -> Variant:
 		path.pop_back()
 	return lang_fragment
 
+# Поиск ключа в базе перевода
+func _find_lang_keys(obj, key: String = "") -> String:
+	if obj.name == "main": return ""
+	key = obj.name + key
+	if "_" in key and key.split("_")[1].is_valid_int(): key = key.split("_")[0]
+	if key not in lang.keys(): return _find_lang_keys(obj.get_parent(), key)
+	else: return key
+
+# Изменение текста объекта в зависимости от типа объекта
+func _lang_match(obj, key: String) -> void:
+	match obj.get_class():
+		"Label", "CheckBox":
+			if obj.text != "" and not obj.text.is_valid_int() and not obj.text.is_valid_float(): obj.set_text(lang[key])
+		"Button":
+			if obj.text in ["", "X"]: obj.tooltip_text = lang[key]
+			else: obj.set_text(lang[key])
+		"CheckButton": set_CB(obj)
+		"ColorPickerButton": obj.get_child(0).set_text(lang[key]+" "+obj.name.split("_")[1])
+		"OptionButton":
+			if lang[key] is Array: for i in range(len(lang[key])):
+				if i > obj.get_item_count(): return
+				obj.set_item_text(i, lang[key][i])
+		"ConfirmationDialog":
+			if "_ConfirmationDialog" in lang.keys():
+				if "cancel" in lang._ConfirmationDialog.keys(): obj.set_cancel_button_text(lang._ConfirmationDialog.cancel)
+				if "ok" in lang._ConfirmationDialog.keys(): obj.set_ok_button_text(lang._ConfirmationDialog.ok)
+			if "text" in lang[key].keys(): obj.set_text(lang[key].text)
+			if "title" in lang[key].keys(): obj.set_title(lang[key].title)
+			
 # Изменение текста состояния кнопки переключателя
-func set_CB(obj: CheckButton, values: Variant = []) -> void:
-	if values == []: values = pathfinding(obj)
-	if values is Array and len(values) >= 2: obj.set_text(values[int(obj.button_pressed)])
+func set_CB(obj: CheckButton) -> void:
+	var key: String = _find_lang_keys(obj)
+	if key == "": return
+	if lang[key] is Array: if len(lang[key]) >= int(obj.button_pressed):
+		obj.set_text(lang[key][int(obj.button_pressed)])
+	else: obj.set_text(lang[key])
 
 # Применение перевода
-func set_lang(obj, lang_fragment = lang) -> void:
-	if lang_fragment is Dictionary and lang_fragment == lang and obj.name in lang_fragment.keys():
-		lang_fragment = lang[obj.name]
-	match obj.get_class():
-		"OptionButton":
-			if "_values" in lang_fragment.keys() and len(lang_fragment._values) <= obj.get_item_count():
-				for i in range(len(lang_fragment._values)): obj.set_item_text(i, lang_fragment._values[i])
-		"Button":
-			if lang_fragment is Dictionary:
-				if "_tooltip" in lang_fragment.keys(): obj.tooltip_text = lang_fragment._tooltip
-				if "_text" in lang_fragment.keys(): obj.set_text(lang_fragment._text)
-			else: obj.set_text(lang_fragment)
-		"CheckButton": set_CB(obj, lang_fragment)
-		"ColorRect":
-			if obj.name == "Head" and "Head" in lang.keys(): lang_fragment = lang["Head"] # Смена уровня глубины перевода при изменении локализации шапки приложения
-			elif obj.name == "Example": # Частный случай одинакового текста на разных уровнях
-				for i in obj.get_children(): for l in i.get_children():
-					l.set_text(lang_fragment[l.get_class()])
-				return
-		"ConfirmationDialog":
-			if "cancel" in lang_fragment.keys(): obj.set_cancel_button_text(lang_fragment["cancel"])
-			if "ok" in lang_fragment.keys(): obj.set_ok_button_text(lang_fragment["ok"])
-			if "text" in lang_fragment.keys(): obj.set_text(lang_fragment["text"])
-			if "title" in lang_fragment.keys(): obj.set_title(lang_fragment["title"])
-		"Control":
-			if obj.name == "Colors": # Частный случай элементов с одинаковыми именами 
-				for i in obj.get_children(): set_lang(i, lang_fragment)
-				return
-		"ColorPickerButton":
-			obj.get_child(-1).set_text(lang_fragment+" "+obj.name.split("_")[-1])
-			return
-		_:
-			if obj.name == "Error": obj.update_lang()
-			elif lang_fragment is Array and obj.text.is_valid_int() and len(lang_fragment) > int(obj.text):
-				obj.set_text(lang_fragment[int(obj.text)])
-			elif obj.get("set_text") and lang_fragment is String: obj.set_text(lang_fragment)
-	# Перевод дочерних элементов
-	for i in obj.get_children():
-		if i.name in lang_fragment.keys(): set_lang(i, lang_fragment[i.name])
-		elif i.name == "Head": set_lang(i)
-		if i.name == "Month" and i is OptionButton and "_Months" in lang.keys():
-			for l in range(len(lang._Months)): i.set_item_text(l, lang._Months[l])
-
-# Применение перевода первой строки списков
-func set_lang_list_elements(obj) -> void:
-	if "_Elements" in lang.keys() and obj.get_parent().get_child(0).name in lang._Elements.keys():
-		set_lang(obj, lang._Elements[obj.get_parent().get_child(0).name])
-		
-# Применение перевода названий стандартных разделов
-func set_lang_DB(obj, idx: int) -> void:
-	if "_Table" not in lang.keys() or lang._Table is not Array or idx > 4 or len(lang._Table) < idx: return
-	obj.set_text(lang._Table[idx-1])
+func set_lang(obj) -> void:
+	var key: String = _find_lang_keys(obj)
+	if obj is OptionButton and obj.name == "Month": key = "_Months"
+	elif obj is Label and "__" in obj.text and obj.text in lang.keys(): key = obj.text
+	if key != "": _lang_match(obj, key)
+	for i in obj.get_children(): set_lang(i)
 
 # Создание стандартных вариантов локализации
-# Русский
-func _cr_ru() -> void:
-	_cr_lang_file("ru", {
-		"Head": {
-			"Hints": {"_tooltip": "Инструкция"},
-			"Setting": {"_tooltip": "Настройки"},
-			"Main": {"_tooltip": "Главная"},
-			"Wallet": {"_tooltip": "Кошельки"},
-			"Section": {"_tooltip": "Разделы"},
-			"Flow": {"_tooltip": "Движения средств"},
-			"Loan": {"_tooltip": "Кредиты"},
-			"Event": {"_tooltip": "События"},
-			"Report": {"_tooltip": "Отчеты"},
-			"Exit": {"_tooltip": "Выход"}
-		},
-		"Wallet": {
-			"Menu": {"AddWallet": {"_tooltip": "Создать счет"}, "Transaction": {"_tooltip": "Переносить средства между счетами"}, "CashFlow": {"_tooltip": "Записать движение средств"}},
-			"Filter": {
-				"Title": {"Label": "Фрагмент названия"}, "Button": "Применить",
-				"Order": {"Label": "Порядок сортировки", "_values": ["", "По дате добавления", "По алфавиту", "По текущей сумме"]}}
-		},
-		"Section": {
-			"Menu": {"AddSections": {"_tooltip": "Создать раздел"}, "CashFlow": {"_tooltip": "Записать движение средств"}},
-			"Filter": {
-				"Title": {"Label": "Фрагмент названия"}, "Button": "Применить",
-				"ConsumptionIncome": {"Label": "Тип статьи", "_values": ["Все типы", "Расходы", "Доходы", "Займы"]},
-				"Order": {"Label": "Порядок сортировки", "_values": ["По дате последней транзакции", "По дате добавления", "По алфавиту", "По возрастанию суммы", "По убыванию суммы", "По ежемесячному лимиту"]},
-				"Year": {"Label": "Год фильтрации"}, "Month": {"Label": "Месяц фильтрации"}}
-		},
-		"Registration": {
-			"Language": { "Label": "Язык:" },
-			"Login": { "Label": "*Логин:" },
-			"Password": { "Label": "*Пароль:", "Show": "Показать пароль" },
-			"Remember": "Запомни меня",
-			"Registration": "Регистрация",
-			"Enter": "Вход",
-		},
-		"Settings": {
-			"EventType": ["Календарь событий", "Список событий"],
-			"Preinstalled": ["Предустановленная тема", "Пользовательская тема"],
-			"DarkTheme": ["Светлая тема", "Тёмная тема"],
-			"ColorSchemePre": {"Label": "Цветовое оформление",
-				"_values": ["Стандартный", "Серый", "Лимон со смородиной", "Ржавый металл", "Лиса на поляне", "Ягода на ветке"] },
-			"ColorSchemeCus": {"Label": "Количество цветов",
-				"_values": ["Моно", "Контраст", "Триада", "Тетрада"]},
-			"Colors": "Цвет",
-			"Example": {"Button": "Пример кнопки", "Label": "Пример текста"},
-			"Close": {"_tooltip": "Отменить изменения"},
-			"Delete": "Удалить пользователя",
-			"Apply": "Сохранить",
-			"ConfirmationDialog": {"cancel": "Нет", "ok": "Да", "text": "Вы уверены? Все данные пользователя будут удалены", "title": "Удаление пользователя"}
-		},
+func _standard_language() -> Dictionary:
+	return {
+		# Шапка
+		"Hints": "Инструкция", "Setting": "Настройки", "Main": "Главная", "Wallet": "Кошельки", "Section": "Разделы",
+		"Flow": "Движения средств", "Loan": "Кредиты", "Event": "События", "Report": "Отчеты", "Exit": "Выход",
+		# Регистрация
+		"Registration": "Регистрация", "Enter": "Вход", "LanguageLabel": "Язык:", "LoginLabel": "*Логин:",
+		"PasswordLabel": "*Пароль:", "Remember": "Запомни меня", "Show": "Показать пароль",
+		# Настройки
+		"DeleteUser": "Удалить пользователя", "ColorSchemePreLabel": "Цветовое оформление",
+		"ColorSchemeCusLabel": "Количество цветов", "TestButton": "Пример кнопки", "ColorsColor": "Цвет",
+		"TestLabel": "Пример текста", "DarkTheme": ["Светлая тема", "Тёмная тема"],
+		"EventType": ["Календарь событий", "Список событий"],
+		"Preinstalled": ["Предустановленная тема", "Пользовательская тема"],
+		"ColorSchemePre": ["Стандартный", "Серый", "Лимон со смородиной", "Ржавый металл", "Лиса на поляне", "Ягода на ветке"],
+		"ColorSchemeCus": ["Моно", "Контраст", "Триада", "Тетрада"],
+		"SettingsConfirmationDialog": {"text": "Вы уверены? Все данные пользователя будут удалены", "title": "Удаление пользователя"},
+		# Окна создания / изменения
+		"Apply": "Сохранить", "Close": "Отменить изменения",
+		# Фильтры
+		"FilterTitleLabel": "Фрагмент названия", "FilterOrderLabel": "Порядок сортировки",
+		"YearLabel": "Год фильтрации", "MonthLabel": "Месяц фильтрации", "FilterButton": "Применить",
+		# Окно подтверждения
+		"_ConfirmationDialog": {"cancel": "Нет", "ok": "Да"},
+		# Страница кошельков
+		"AddWallet": "Создать счет", "Transaction": "Переносить средства между счетами",
+		"CashFlow": "Записать движение средств", "WalletTitle": "Название кошелька",
+		"WalletFilterOrder": ["", "По дате добавления", "По алфавиту", "По текущей сумме"],
+		"WalletValue": "Текущее значение счета", "WalletCash_Flow": "Движение средств",
+		# Страница разделов
+		"AddSections": "Создать раздел", "FilterConsumptionIncomeLabel": "Тип статьи",
+		"FilterConsumptionIncome": ["Все типы", "Расходы", "Доходы", "Займы"],
+		"SectionFilterOrder": ["По дате последней транзакции", "По дате добавления", "По алфавиту", "По возрастанию суммы", "По убыванию суммы", "По ежемесячному лимиту"],
+		"SectionTitle": "Название раздела", "SectionValue": "Текущее значение", "Month_Limit": "Ограничение",
+		"__CI0": "Расход", "__CI1": "Доход",
+		# Объекты из базы данных
+		"__ST1": "Переводы", "__ST2": "Заём", "__ST3": "Платежи по займам", "__ST4": "Проценты по займу",
+		
 		"_Months": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-		"_Elements": {
-			"Wallet": {"Title": "Название кошелька", "Value": "Текущее значение счета", "Cash_Flow": "Движение средств"},
-			"Section": {"Title": "Название раздела", "Value": "Текущее значение", "Month_Limit": "Ограничение", "ConsumptionIncome": ["Расход", "Доход"]},
-		},
 		"_Errors": {
 			"_E01": "Обязательные поля должны быть заполнены",
 			"_E02": "Имя пользователя занято",
@@ -235,55 +206,52 @@ func _cr_ru() -> void:
 			"_E05": "Значение должно быть больше нуля",
 			"_E06": "На счету недостаточно средств",
 			"_E07": "Введенное значение привышает необходимое значение для полного погашения займа"
-		},
-		"_Table": ["Переводы", "Заём", "Платежи по займам", "Проценты по займу"]
-	})
+		}}
+
+# Русский
+func _cr_ru() -> void:
+	_cr_lang_file("ru", _standard_language())
 
 # Английский
 func _cr_en() -> void:
 	_cr_lang_file("en", {
-		"Registration": {
-			"Language": { "Label": "Language:" },
-			"Login": { "Label": "*Login:" },
-			"Password": { "Label": "*Password:", "Show": "Show password" },
-			"Remember": "Remember me",
-			"Registration": "Registration",
-			"Enter": "Entry",
-		},
-		"Wallets": {
-			"Menu": {"AddWallet": {"_tooltip": "Create an account"}, "Transaction": {"_tooltip": "Transfer funds between accounts"}, "CashFlow": {"_tooltip": "Record the movement of funds"}},
-			"Filter": {
-				"Title": {"Label": "Title fragment"}, "Button": "Apply",
-				"Order": {"Label": "Sorting order", "_values": ["", "By date added", "Alphabetically", "According to the current amount"]}}
-		},
-		"Section": {
-			"Menu": {"AddSections": {"_tooltip": "Create a section"}, "CashFlow": {"_tooltip": "Record the movement of funds"}},
-			"Filter": {
-				"Title": {"Label": "Title fragment"}, "Button": "Apply",
-				"ConsumptionIncome": {"Label": "Article type", "_values": ["All types", "Expenses", "Income", "Loans"]},
-				"Order": {"Label": "Sorting order", "_values": ["By last transaction date", "By date added", "Alphabetically", "Ascending amount", "In descending order of amount", "By monthly limit"]},
-				"Year": {"Label": "Year of filtration"}, "Month": {"Label": "Month of filtering"}}
-		},
-		"Settings": {
-			"EventType": ["Events calendar", "List of events"],
-			"Preinstalled": ["Pre-installed theme", "Custom Theme"],
-			"DarkTheme": ["Light theme", "Dark theme"],
-			"ColorSchemePre": {"Label": "Color design",
-				"_values": ["Standard", "Grey", "Lemon with currants", "Rusty metal", "A fox in a clearing", "Berry on a branch"] },
-			"ColorSchemeCus": {"Label": "Number of colors",
-				"_values": ["Mono", "Contrast", "Triad", "Tetrad"]},
-			"Colors": "Color",
-			"Example": {"Button": "Button example", "Label": "Example text"},
-			"Close": {"_tooltip": "Cancel changes"},
-			"Delete": "Delete user",
-			"Apply": "Save",
-			"ConfirmationDialog": {"cancel": "No", "ok": "Yes", "text": "Are you sure? All user data will be deleted", "title": "Deleting a user"}
-		},
+		# Шапка
+		"Hints": "Instructions", "Setting": "Settings", "Main": "Home", "Wallet": "Wallets", "Section": "Sections",
+		"Flow": "Movements of funds", "Loan": "Loans", "Event": "Events", "Report": "Reports", "Exit": "Exit",
+		# Регистрация
+		"Registration": "Registration", "Enter": "Entry", "LanguageLabel": "Language:", "LoginLabel": "*Login:",
+		"PasswordLabel": "*Password:", "Remember": "Remember me", "Show": "Show password",
+		# Настройки
+		"DeleteUser": "Delete user", "ColorSchemePreLabel": "Color design", "ColorsColor": "Color",
+		"ColorSchemeCusLabel": "Number of colors", "TestButton": "Button example",
+		"TestLabel": "Example text", "DarkTheme": ["Light theme", "Dark theme"],
+		"EventType": ["Events calendar", "List of events"],
+		"Preinstalled": ["Pre-installed theme", "Custom Theme"],
+		"ColorSchemePre": ["Standard", "Grey", "Lemon with currants", "Rusty metal", "A fox in a clearing", "Berry on a branch"],
+		"ColorSchemeCus": ["Mono", "Contrast", "Triad", "Tetrad"],
+		"SettingsConfirmationDialog": {"text": "Are you sure? All user data will be deleted", "title": "Deleting a user"},
+		# Окна создания / изменения
+		"Apply": "Save", "Close": "Cancel changes",
+		# Фильтры
+		"FilterTitleLabel": "Title fragment", "FilterOrderLabel": "Sorting order",
+		"YearLabel": "Year of filtration", "MonthLabel": "Month of filtering", "FilterButton": "Apply",
+		# Окно подтверждения
+		"_ConfirmationDialog": {"cancel": "No", "ok": "Yes"},
+		# Страница кошельков
+		"AddWallet": "Create an account", "Transaction": "Transfer funds between accounts",
+		"CashFlow": "Record the movement of funds", "WalletTitle": "Wallet name",
+		"WalletFilterOrder": ["", "By date added", "Alphabetically", "According to the current amount"],
+		"WalletValue": "Current account value", "WalletCash_Flow": "Movement of funds",
+		# Страница разделов
+		"AddSections": "Create a section", "FilterConsumptionIncomeLabel": "Article type",
+		"FilterConsumptionIncome": ["All types", "Expenses", "Income", "Loans"],
+		"SectionFilterOrder": ["By last transaction date", "By date added", "Alphabetically", "Ascending amount", "In descending order of amount", "By monthly limit"],
+		"SectionTitle": "Section title", "SectionValue": "Current value", "Month_Limit": "Limit",
+		"__CI0": "Consumption", "__CI1": "Income",
+		# Объекты из базы данных
+		"__ST1": "Transfers", "__ST2": "Loan", "__ST3": "Loan Payments", "__ST4": "Loan Interest",
+		
 		"_Months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-		"_Elements": {
-			"Wallet": {"Title": "Wallet name", "Value": "Current account value", "Cash_Flow": "Movement of funds"},
-			"Section": {"Title": "Section title", "Value": "Current value", "Month_Limit": "Limit", "ConsumptionIncome": ["Consumption", "Income"]},
-		},
 		"_Errors": {
 			"_E01": "Required fields must be filled in",
 			"_E02": "Username taken",
@@ -292,6 +260,5 @@ func _cr_en() -> void:
 			"_E05": "Value must be greater than zero",
 			"_E06": "There are insufficient funds in the account",
 			"_E07": "The entered value exceeds the required value for full repayment of the loan"
-		},
-		"_Table": ["Transfers", "Loan", "Loan Payments", "Loan Interest"]
+		}
 	})
