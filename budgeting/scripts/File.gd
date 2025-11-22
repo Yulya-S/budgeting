@@ -117,7 +117,7 @@ func pathfinding(obj) -> Variant:
 func _find_lang_keys(obj, key: String = "") -> String:
 	if obj.name == "main": return ""
 	key = obj.name + key
-	if "_" in key and key.split("_")[1].is_valid_int(): key = key.split("_")[0]
+	if "_" in key and len(key.split("_")) <= 2 and key.split("_")[1].is_valid_int(): key = key.split("_")[0]
 	if key not in lang.keys(): return _find_lang_keys(obj.get_parent(), key)
 	else: return key
 
@@ -149,6 +149,9 @@ func set_CB(obj: CheckButton) -> void:
 	if lang[key] is Array: if len(lang[key]) >= int(obj.button_pressed):
 		obj.set_text(lang[key][int(obj.button_pressed)])
 	else: obj.set_text(lang[key])
+
+func set_OB_elements(obj: OptionButton) -> void:
+	for i in range(obj.get_item_count()): if obj.get_item_text(i) in lang.keys(): obj.set_item_text(i, lang[obj.get_item_text(i)])
 
 # Применение перевода
 func set_lang(obj) -> void:
@@ -194,6 +197,7 @@ func _standard_language() -> Dictionary:
 		"SectionFilterOrder": ["По дате последней транзакции", "По дате добавления", "По алфавиту", "По возрастанию суммы", "По убыванию суммы", "По ежемесячному лимиту"],
 		"SectionTitle": "Название раздела", "SectionValue": "Текущее значение", "Month_Limit": "Ограничение",
 		"__CI0": "Расход", "__CI1": "Доход",
+		# Страница движений средств
 		# Объекты из базы данных
 		"__ST1": "Переводы", "__ST2": "Заём", "__ST3": "Платежи по займам", "__ST4": "Проценты по займу",
 		
@@ -248,6 +252,7 @@ func _cr_en() -> void:
 		"SectionFilterOrder": ["By last transaction date", "By date added", "Alphabetically", "Ascending amount", "In descending order of amount", "By monthly limit"],
 		"SectionTitle": "Section title", "SectionValue": "Current value", "Month_Limit": "Limit",
 		"__CI0": "Consumption", "__CI1": "Income",
+		# Страница движений средств
 		# Объекты из базы данных
 		"__ST1": "Transfers", "__ST2": "Loan", "__ST3": "Loan Payments", "__ST4": "Loan Interest",
 		

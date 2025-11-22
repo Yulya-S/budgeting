@@ -19,7 +19,10 @@ func set_filter(obj, value: int) -> void: obj.selected = value
 # Заполнение выпадающего списка в фильтре
 func set_OB_items(table: Request.Tables) -> void:
 	var node_name: String = Global.enum_key(Request.Tables, table)
-	Global.fill_optionButton(get_node(node_name[0].to_upper() + node_name.substr(1, len(node_name)-2)), Request.select(table), false)
+	var node: OptionButton = get_node(node_name[0].to_upper() + node_name.substr(1, len(node_name)-2))
+	node.clear()
+	node.add_item("", 0)
+	Global.fill_optionButton(node, Request.select(table), false)
 
 # Сборка фильтра
 func get_filter() -> Dictionary:

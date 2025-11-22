@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://kdy6ds4fx23h"]
+[gd_scene load_steps=8 format=3 uid="uid://kdy6ds4fx23h"]
 
 [ext_resource type="Script" uid="uid://kbdd4pa6livs" path="res://scripts/pages/cash_flow.gd" id="1_2tflp"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_8gck2"]
 [ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_8gck2"]
 [ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="3_mkcc5"]
+[ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="3_njwxx"]
+[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/add/plus.png" id="4_06gde"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_tbl8u"]
 
 [node name="CashFlow" type="Control"]
@@ -26,18 +28,22 @@ color = Color(0.376471, 0.72549, 0.698039, 1)
 [node name="Transaction" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 9.5
-offset_right = 321.0
-offset_bottom = 40.5
-text = "Перенести средства между счетами"
+offset_top = 5.0
+offset_right = 148.0
+offset_bottom = 133.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Перенести средства между счетами"
+icon = ExtResource("3_njwxx")
 
 [node name="CashFlow" type="Button" parent="Menu"]
 layout_mode = 0
-offset_left = 341.0
-offset_top = 9.5
-offset_right = 579.0
-offset_bottom = 40.5
-text = "Записать движение средств"
+offset_left = 65.0
+offset_top = 5.0
+offset_right = 193.0
+offset_bottom = 133.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Записать движение средств"
+icon = ExtResource("4_06gde")
 
 [node name="Filter" type="ColorRect" parent="."]
 layout_mode = 0
@@ -217,7 +223,7 @@ layout_mode = 0
 offset_top = 340.0
 offset_right = 1152.0
 offset_bottom = 643.0
-obj = 3
+obj = 2
 
 [connection signal="button_down" from="Menu/Transaction" to="." method="_on_transaction_button_down"]
 [connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]

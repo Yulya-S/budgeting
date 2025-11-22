@@ -361,11 +361,33 @@ func _update_sections_list(line: Dictionary, parent) -> Dictionary:
 	line["progress"] = (100. * line.value) / line.month_limit
 	return line
 
+# Запрос на получение списка движений средств
+func _select_cash_flows_list(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
+	if where: where = " AND "+where
+	if order: order = " ORDER BY "+order
+	db.query("""SELECT cf.*, s.title, w.title wallet_title FROM `cash_flows` cf LEFT JOIN sections s ON cf.section_id=s.id
+		LEFT JOIN wallets w ON cf.wallet_id=w.id WHERE """+where_date(date)+where+order+";")
+	return db.query_result
+
+# Запрос на изменение списка разделов
+func _update_cash_flows_list(line: Dictionary) -> Dictionary:
+	match line.section_id:
+		1: line["wallet_2_title"] = _select_title(Tables.WALLETS, line.wallet_2_id)
+		3, 4: line["wallet_2_title"] = _select_title(Tables.LOANS, line.wallet_2_id)
+		2:
+			line["wallet_2_title"] = line.wallet_title
+			line.wallet_title = _select_title(Tables.LOANS, line.wallet_2_id)
+			var save_id: int = line.wallet_id
+			line.wallet_id = line.wallet_2_id
+			line.wallet_2_id = save_id
+	return line
+
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Array:
 	match list_element:
 		ObjectVariants.WALLET: return _select_wallets_list(filter_data.where, filter_data.order)
 		ObjectVariants.SECTION: return select_sections_list(filter_data.where, filter_data.date, filter_data.order)
+		ObjectVariants.CASH_FLOW: return _select_cash_flows_list(filter_data.where, filter_data.date, filter_data.order)
 		_: pass
 	return []
 
@@ -374,6 +396,7 @@ func match_update_list_element(list_element: ObjectVariants, line: Dictionary, p
 	match list_element:
 		ObjectVariants.WALLET: return _update_wallets_list(line)
 		ObjectVariants.SECTION:	return _update_sections_list(line, parent)
+		ObjectVariants.CASH_FLOW: return _update_cash_flows_list(line)
 		_: pass
 	return {}
 	

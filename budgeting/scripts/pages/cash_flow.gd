@@ -6,11 +6,25 @@ extends Control
 @onready var Objects = $ObjArray
 @onready var Schedule = $Schedule
 
-# Стартовое применение фильтров
+# Подключение сигнала
 func _ready() -> void:
-	for i in [Request.Tables.SECTIONS, Request.Tables.WALLETS]: Filter.set_OB_items(i)
-	Filter.get_filter()
-	Global.emit_signal("update_page")
+	Filter.set_OB_items(Request.Tables.WALLETS) # Заполнение списка кошельков
+	Global.connect("update_page", Callable(self, "_update_page"))
+	_update_page()
+	
+# Запуск обновления данных на странице
+func _update_page() -> void:
+	ColorScheme.repainting(self)
+	File.set_lang(self)
+	var save_selected_section: int = FilterSection.selected
+	Filter.set_OB_items(Request.Tables.SECTIONS) # Заполнение списка разделов
+	FilterSection.selected = save_selected_section
+	File.set_OB_elements(FilterSection) # Применение перевода для списка разделов
+	update_date()
+	
+# Обновление данных
+func update_date() -> void:
+	Objects.data_update(Filter)
 	
 # Изменение значений фильтрации извне
 func set_object(obj_id, _parent = null) -> void:
