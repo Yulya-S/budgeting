@@ -93,6 +93,7 @@ func _cr_lang_file(f_name: String, value: Dictionary) -> void:
 # Считывание перевода
 func read_lang(container: OptionButton) -> void:
 	lang = _read_file(LangDir+Global.get_OB_text(container)+".json")
+	_supplement_translation() 
 	set_lang(container.get_parent())
 	# Сохранение выбора в файле конфигураций
 	config.lang = Global.get_OB_text(container)
@@ -162,12 +163,19 @@ func set_lang(obj) -> void:
 	for i in obj.get_children(): set_lang(i)
 
 # Дополнение выбранного перевода отсутствующими фрагментами из стандартной локализации
-func _supplement_translation() -> void:
-	var slang = _standard_language().duplicate()
-	slang.update(lang)
-	lang = slang
-	print(slang.keys())
-	print(_standard_language().keys())
+func _supplement_translation() -> void: _supplement_cycle(lang, _standard_language())
+
+# Цикл дополнения перевода недастающими фрагментами
+func _supplement_cycle(lang_fragment: Dictionary, s_lang_fragment: Dictionary) -> void:
+	for i in s_lang_fragment.keys():
+		if i not in lang_fragment.keys() or typeof(lang_fragment[i]) != typeof(s_lang_fragment[i]):
+			lang_fragment[i] = s_lang_fragment[i]
+		elif lang_fragment[i] is Dictionary: _supplement_cycle(lang_fragment[i], s_lang_fragment[i])
+		elif lang_fragment[i] is Array:
+			for l in range(len(s_lang_fragment[i])):
+				if len(lang_fragment[i]) <= l: lang_fragment[i].append(s_lang_fragment[i][l])
+				elif typeof(lang_fragment[i][l]) != typeof(s_lang_fragment[i][l]):
+					lang_fragment[i][l] = s_lang_fragment[i][l]
 
 # Создание стандартных вариантов локализации
 func _standard_language() -> Dictionary:
@@ -206,6 +214,8 @@ func _standard_language() -> Dictionary:
 		"SectionTitle": "Название раздела", "SectionValue": "Текущее значение", "Month_Limit": "Ограничение",
 		"__CI0": "Расход", "__CI1": "Доход",
 		# Страница движений средств
+		"FilterWalletLabel": "Имя счёта", "FilterSectionLabel": "Статья",
+		
 		# Объекты из базы данных
 		"__ST1": "Переводы", "__ST2": "Заём", "__ST3": "Платежи по займам", "__ST4": "Проценты по займу",
 		
