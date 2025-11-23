@@ -161,6 +161,14 @@ func set_lang(obj) -> void:
 	if key != "": _lang_match(obj, key)
 	for i in obj.get_children(): set_lang(i)
 
+# Дополнение выбранного перевода отсутствующими фрагментами из стандартной локализации
+func _supplement_translation() -> void:
+	var slang = _standard_language().duplicate()
+	slang.update(lang)
+	lang = slang
+	print(slang.keys())
+	print(_standard_language().keys())
+
 # Создание стандартных вариантов локализации
 func _standard_language() -> Dictionary:
 	return {
