@@ -4,7 +4,7 @@ extends Control
 @onready var FilterWallet = $Filter/Wallet
 @onready var FilterSection = $Filter/Section
 @onready var Objects = $ObjArray
-@onready var Schedule = $Schedule
+@onready var Schedule = $DailyTransactions
 
 # Подключение сигнала
 func _ready() -> void:
@@ -14,17 +14,20 @@ func _ready() -> void:
 	
 # Запуск обновления данных на странице
 func _update_page() -> void:
-	ColorScheme.repainting(self)
-	File.set_lang(self)
+	# Изменение списка разделов что бы при смене языка названия разделов переводились
 	var save_selected_section: int = FilterSection.selected
 	Filter.set_OB_items(Request.Tables.SECTIONS) # Заполнение списка разделов
 	FilterSection.selected = save_selected_section
 	File.set_OB_elements(FilterSection) # Применение перевода для списка разделов
+	# Обновление данных на странице
+	ColorScheme.repainting(self)
+	File.set_lang(self)
 	update_date()
 	
 # Обновление данных
 func update_date() -> void:
 	Objects.data_update(Filter)
+	Schedule.update_schedule(Filter)
 	
 # Изменение значений фильтрации извне
 func set_object(obj_id, _parent = null) -> void:
@@ -33,11 +36,6 @@ func set_object(obj_id, _parent = null) -> void:
 		Filter.set_filter(FilterSection, obj_id[1])
 	else: Filter.set_filter(FilterWallet, obj_id)
 	Filter.get_filter()
-
-# Применение фильтров
-func set_filter() -> void:
-	if not Filter: return
-	Schedule.update_schedule(Filter.filter.where, Filter.filter.date)
 
 # Обработка нажатия кнопки создания движения средств
 func _on_cash_flow_button_down() -> void:

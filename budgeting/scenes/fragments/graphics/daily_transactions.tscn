@@ -12,3 +12,8 @@ script = ExtResource("1_mwc83")
 points = PackedVector2Array(10, 59, 1142, 59)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
+
+[node name="Border" type="Line2D" parent="."]
+points = PackedVector2Array(0, 125, 1151, 125)
+width = 2.0
+default_color = Color(0, 0, 0, 1)

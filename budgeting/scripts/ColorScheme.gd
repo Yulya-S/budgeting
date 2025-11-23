@@ -49,11 +49,12 @@ func repainting(obj) -> void:
 	match obj.name:
 		"Head": obj.color = get_color(1, 6, system_gradient)
 		"Menu", "Marker": obj.color = get_color(2, 6, system_gradient)
-		"Background": obj.color = get_color(6, 6, system_gradient)
+		"Background", "DailyTransactions": obj.color = get_color(6, 6, system_gradient)
 		"Filter": obj.color = get_color(3, 6, system_gradient)
 		"Example": # Частный случай особого пакраса
 			obj.get_child(1).color = get_color(4, 6, system_gradient)
 			obj.get_child(2).color = get_color(5, 6, system_gradient)
+		"X", "Border": obj.default_color = get_color(0, 6, system_gradient)
 		_:
 			match obj.get_class():
 				"Label": set_font_color(obj)

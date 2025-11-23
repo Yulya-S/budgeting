@@ -62,11 +62,11 @@ OB_items = {
 },
 "Section": {
 "section": "id",
-"text": "section_id=__id__"
+"text": "cf.section_id=__id__"
 },
 "Wallet": {
 "section": "id",
-"text": "(section_id=1 AND wallet_2_id=__id__) OR wallet_id=__id__"
+"text": "(cf.section_id=1 AND cf.wallet_2_id=__id__) OR cf.wallet_id=__id__"
 }
 }
 
@@ -212,7 +212,7 @@ offset_right = 1131.0
 offset_bottom = 108.0
 text = "Применить"
 
-[node name="Schedule" parent="." instance=ExtResource("3_mkcc5")]
+[node name="DailyTransactions" parent="." instance=ExtResource("3_mkcc5")]
 layout_mode = 0
 offset_top = 215.0
 offset_right = 1152.0

@@ -381,6 +381,13 @@ func _update_cash_flows_list(line: Dictionary) -> Dictionary:
 			line.wallet_id = line.wallet_2_id
 			line.wallet_2_id = save_id
 	return line
+	
+# Получение суммы движений средств распределенных по дням
+func select_cash_flow_graphics(where: String, date: String = Time.get_datetime_string_from_system()) -> Array:
+	if where: where = " AND " + where
+	db.query("""SELECT SUM(CASE WHEN cf.section_id IN (1, 4) THEN 0 WHEN cf.section_id = 3 OR (s.income = 0 AND s.month_limit<>-1)  THEN cf.value * -1 ELSE cf.value END) value,
+		strftime('%d', cf.date) day FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE """+where_date(date)+where+" GROUP BY cf.date")
+	return db.query_result
 
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Array:
