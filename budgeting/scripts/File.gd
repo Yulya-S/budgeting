@@ -134,9 +134,13 @@ func _lang_match(obj, key: String) -> void:
 		"CheckButton": set_CB(obj)
 		"ColorPickerButton": obj.get_child(0).set_text(lang[key]+" "+obj.name.split("_")[1])
 		"OptionButton":
-			if lang[key] is Array: for i in range(len(lang[key])):
-				if i > obj.get_item_count(): return
-				obj.set_item_text(i, lang[key][i])
+			if lang[key] is Array:
+				var idx: int = 0
+				for i in range(len(lang[key])):
+					while idx < obj.get_item_count() and obj.get_item_text(idx) == "": idx += 1
+					if idx > obj.get_item_count(): return
+					obj.set_item_text(idx, lang[key][i])
+					idx += 1
 		"ConfirmationDialog":
 			if "_ConfirmationDialog" in lang.keys():
 				if "cancel" in lang._ConfirmationDialog.keys(): obj.set_cancel_button_text(lang._ConfirmationDialog.cancel)
