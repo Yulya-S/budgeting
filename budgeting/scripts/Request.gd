@@ -388,6 +388,13 @@ func select_cash_flow_graphics(where: String, date: String = Time.get_datetime_s
 	db.query("""SELECT SUM(CASE WHEN cf.section_id IN (1, 4) THEN 0 WHEN cf.section_id = 3 OR (s.income = 0 AND s.month_limit<>-1)  THEN cf.value * -1 ELSE cf.value END) value,
 		strftime('%d', cf.date) day FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE """+where_date(date)+where+" GROUP BY cf.date")
 	return db.query_result
+	
+# Получение списка займов
+func _select_loans_list(where: String = "", order: String = "") -> Array:
+	if where != "": where = " WHERE " + where
+	if order != "": order = " ORDER BY " + order
+	db.query("SELECT l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=2 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id"+where+order+";")
+	return db.query_result
 
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Array:
@@ -395,7 +402,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 		ObjectVariants.WALLET: return _select_wallets_list(filter_data.where, filter_data.order)
 		ObjectVariants.SECTION: return select_sections_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.CASH_FLOW: return _select_cash_flows_list(filter_data.where, filter_data.date, filter_data.order)
-		_: pass
+		ObjectVariants.LOAN: return _select_loans_list(filter_data.where, filter_data.order)
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах
@@ -404,7 +411,6 @@ func match_update_list_element(list_element: ObjectVariants, line: Dictionary, p
 		ObjectVariants.WALLET: return _update_wallets_list(line)
 		ObjectVariants.SECTION:	return _update_sections_list(line, parent)
 		ObjectVariants.CASH_FLOW: return _update_cash_flows_list(line)
-		_: pass
-	return {}
+	return line
 	
 	
