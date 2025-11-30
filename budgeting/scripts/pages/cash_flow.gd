@@ -1,16 +1,14 @@
-extends Control
+extends Page
 # Подключение путей к объектам в сцене
 @onready var Filter = $Filter
 @onready var FilterWallet = $Filter/Wallet
 @onready var FilterSection = $Filter/Section
-@onready var Objects = $ObjArray
 @onready var Schedule = $DailyTransactions
 
 # Подключение сигнала
 func _ready() -> void:
 	Filter.set_OB_items(Request.Tables.WALLETS) # Заполнение списка кошельков
-	Global.connect("update_page", Callable(self, "_update_page"))
-	_update_page()
+	super._ready()
 	
 # Запуск обновления данных на странице
 func _update_page() -> void:
@@ -19,14 +17,11 @@ func _update_page() -> void:
 	Filter.set_OB_items(Request.Tables.SECTIONS) # Заполнение списка разделов
 	FilterSection.selected = save_selected_section
 	File.set_OB_elements(FilterSection) # Применение перевода для списка разделов
-	# Обновление данных на странице
-	ColorScheme.repainting(self)
-	File.set_lang(self)
-	update_date()
+	super._update_page() # Обновление данных на странице
 	
 # Обновление данных
 func update_date() -> void:
-	Objects.data_update(Filter)
+	super.update_date()
 	Schedule.update_schedule(Filter)
 	
 # Изменение значений фильтрации извне

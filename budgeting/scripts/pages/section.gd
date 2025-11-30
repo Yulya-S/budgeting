@@ -1,22 +1,10 @@
-extends Control
+extends Page
 # Подключение путей к объектам в сцене
-@onready var Objects = $ObjArray
 @onready var PieChart = $PieChart
-
-# Стартовое применение фильтров
-func _ready() -> void:
-	Global.connect("update_page", Callable(self, "_update_page"))
-	_update_page()
-	
-# Запуск обновления данных на странице
-func _update_page() -> void:
-	ColorScheme.repainting(self)
-	File.set_lang(self)
-	update_date()
 
 # Обновление данных
 func update_date() -> void:
-	Objects.data_update($Filter)
+	super.update_date()
 	PieChart.set_values($Filter)
 
 # Применение выделений секций на круговой диаграмме
