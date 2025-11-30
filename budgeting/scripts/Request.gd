@@ -344,7 +344,7 @@ func _select_wallets_list(where: String, order: String) -> Array:
 func _update_wallets_list(line: Dictionary, date: String = Time.get_datetime_string_from_system()) -> Dictionary:
 	db.query("SELECT SUM(IIF((cf.section_id=1 and cf.wallet_id="+str(line.id)+""")OR cf.section_id=3 OR (s.income=0 and cf.section_id>4), cf.value*-1, cf.value)) value
 		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE (cf.wallet_id="""+str(line.id)+" or (cf.wallet_2_id="+str(line.id)+" and cf.section_id=1)) AND "+where_date(date, "cf.date")+";")
-	line["cash_flow"] = db.query_result[0].value
+	line["cash_flow"] = db.query_result[0].value if db.query_result[0].value else 0.
 	return line
 	
 # Запрос на получение списка разделов
