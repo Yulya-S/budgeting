@@ -123,6 +123,8 @@ func _on_color_scheme_pre_item_selected(index: int) -> void:
 func _on_close_button_down() -> void:
 	queue_free()
 	get_parent().remove_child(self)
+	ColorScheme.color_reading()
+	Global.emit_signal("update_page")
 
 # Обработка нажатия кнопки удаления пользователя
 func _on_delete_button_down() -> void: $ConfirmationDialog.visible = true
