@@ -135,11 +135,15 @@ func _lang_match(obj, key: String) -> void:
 		"ColorPickerButton": obj.get_child(0).set_text(lang[key]+" "+obj.name.split("_")[1])
 		"OptionButton":
 			if lang[key] is Array:
+				if obj.name == "Order": obj.get_parent().reset_order()
 				var idx: int = 0
-				for i in range(len(lang[key])):
-					while idx < obj.get_item_count() and obj.get_item_text(idx) == "": idx += 1
-					if idx > obj.get_item_count(): return
-					obj.set_item_text(idx, lang[key][i])
+				for i in range(obj.get_item_count()):
+					if obj.get_item_text(i) == "": continue
+					if obj.get_item_text(i) in lang.keys() and "__" in obj.get_item_text(i):
+						obj.set_item_text(i, lang[obj.get_item_text(i)])
+						continue
+					if idx >= len(lang[key]): return
+					obj.set_item_text(i, lang[key][idx])
 					idx += 1
 		"ConfirmationDialog":
 			if "_ConfirmationDialog" in lang.keys():
@@ -210,25 +214,27 @@ func _standard_language() -> Dictionary:
 		# Страница кошельков
 		"AddWallet": "Создать счет", "Transaction": "Переносить средства между счетами",
 		"CashFlow": "Записать движение средств", "WalletTitle": "Название кошелька",
-		"WalletFilterOrder": ["По дате добавления", "По алфавиту", "По текущей сумме"],
+		"WalletFilterOrder": ["По текущей сумме"],
 		"WalletValue": "Текущее значение счета", "WalletCash_Flow": "Движение средств",
 		# Страница разделов
 		"AddSections": "Создать раздел", "FilterConsumptionIncomeLabel": "Тип статьи",
 		"FilterConsumptionIncome": ["Все типы", "Расходы", "Доходы", "Займы"],
-		"SectionFilterOrder": ["По дате последней транзакции", "По дате добавления", "По алфавиту", "По возрастанию суммы", "По убыванию суммы", "По ежемесячному лимиту"],
+		"SectionFilterOrder": ["По дате последней транзакции", "По возрастанию суммы", "По убыванию суммы", "По ежемесячному лимиту"],
 		"SectionTitle": "Название раздела", "SectionValue": "Текущее значение", "Month_Limit": "Ограничение",
 		"__CI0": "Расход", "__CI1": "Доход",
 		# Страница движений средств
 		"FilterWalletLabel": "Имя счёта", "FilterSectionLabel": "Статья",
-		"CashFlowSectionFilterOrder": ["По дате добавления", "По статье", "По возрастанию суммы", "По убыванию суммы"],
+		"CashFlowSectionFilterOrder": ["По статье", "По возрастанию суммы", "По убыванию суммы"],
 		"CashFlowTitle": "Название раздела", "CashFlowWallet_Title": "Название кошелька",
 		"CashFlowValue": "Сумма", "Date": "Дата",
 		# Страница займов
 		"AddLoan": "Создать займ", "AddInterest": "Добавить проценты по займу", "AddPayment": "Добавить платёж по займу",
 		"FilterStatusLabel": "Статус", "FilterStatus": ["Выплачено", "В процессе"],
-		"LoanFilterOrder": ["По дате добавления", "По алфавиту", "По оставшейся сумме"],
+		"LoanFilterOrder": ["По оставшейся сумме"],
 		"LoanTitle": "Название займа", "LoanWallet_Title": "Название целевого счета",
 		"LoanValue": "Начальная сумма займа", "LoanTotal": "Оставшаяся сумма займа",
+		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
+		"__FO1": "По дате добавления", "__FO2": "По алфавиту",
 		# Объекты из базы данных
 		"__ST1": "Переводы", "__ST2": "Заём", "__ST3": "Платежи по займам", "__ST4": "Проценты по займу",
 		# Особые объекты
@@ -275,28 +281,30 @@ func _cr_en() -> void:
 		# Страница кошельков
 		"AddWallet": "Create an account", "Transaction": "Transfer funds between accounts",
 		"CashFlow": "Record the movement of funds", "WalletTitle": "Wallet name",
-		"WalletFilterOrder": ["By date added", "Alphabetically", "According to the current amount"],
+		"WalletFilterOrder": ["According to the current amount"],
 		"WalletValue": "Current account value", "WalletCash_Flow": "Movement of funds",
 		# Страница разделов
 		"AddSections": "Create a section", "FilterConsumptionIncomeLabel": "Article type",
 		"FilterConsumptionIncome": ["All types", "Expenses", "Income", "Loans"],
-		"SectionFilterOrder": ["By last transaction date", "By date added", "Alphabetically", "Ascending amount", "In descending order of amount", "By monthly limit"],
+		"SectionFilterOrder": ["By last transaction date", "Ascending amount", "In descending order of amount", "By monthly limit"],
 		"SectionTitle": "Section title", "SectionValue": "Current value", "Month_Limit": "Limit",
 		"__CI0": "Consumption", "__CI1": "Income",
 		# Страница движений средств
 		"FilterWalletLabel": "Account name", "FilterSectionLabel": "Article",
-		"CashFlowFilterOrder": ["By date added", "According to the article", "Ascending amount", "In descending order of amount"],
+		"CashFlowFilterOrder": ["According to the article", "Ascending amount", "In descending order of amount"],
 		"CashFlowTitle": "Section title", "CashFlowWallet_Title": "Wallet name",
 		"CashFlowValue": "Amount", "Date": "Date",
 		# Страница займов
 		"AddLoan": "Create a loan", "AddInterest": "Add interest to the loan", "AddPayment": "Add a loan payment",
 		"FilterStatusLabel": "Status", "FilterStatus": ["Paid", "In progress"],
-		"LoanFilterOrder": ["By date added", "Alphabetically", "by remaining amount"],
+		"LoanFilterOrder": ["By remaining amount"],
 		"LoanTitle": "Loan name", "LoanWallet_Title": "Name of the target wallet",
 		"LoanValue": "Initial loan amount", "LoanTotal": "The remaining loan amount",
+		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
+		"__FO1": "By date added", "__FO2": "Alphabetically",
 		# Объекты из базы данных
 		"__ST1": "Transfers", "__ST2": "Loan", "__ST3": "Loan Payments", "__ST4": "Loan Interest",
-		
+		# Особые объекты
 		"_Months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 		"_Errors": {
 			"_E01": "Required fields must be filled in",

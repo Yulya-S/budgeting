@@ -3,8 +3,9 @@ extends ColorRect
 @export var OB_items: Dictionary = {} # Дополнительные фильтры
 @export var title_pref: String = "" # Приставка для запроса по названию
 
-# Переменная
+# Переменные
 var filter: Dictionary = {"where": "", "date": "", "order": ""} # Параметры запроса фильтрации
+var order_item_texts: Array = []
 
 # Стартовое заполнение фильтров времени
 func _ready() -> void:
@@ -12,6 +13,10 @@ func _ready() -> void:
 		match i.name:
 			"Year": _on_year_item_selected(-1)
 			"Month": $Month.selected = Time.get_datetime_dict_from_system().month - 1
+	if $Order: for i in range($Order.get_item_count()): order_item_texts.append($Order.get_item_text(i))
+	
+# Сброс перевода способа сортировки
+func reset_order() -> void: if $Order: for i in range($Order.get_item_count()): $Order.set_item_text(i, order_item_texts[i])
 
 # Применение значений фильтра
 func set_filter(obj, value: int) -> void: obj.selected = value
