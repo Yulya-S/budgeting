@@ -9,13 +9,14 @@ func _ready() -> void:
 	$Marker.position.x = (5 * (Global.current_page + 3)) + (39.68 * (Global.current_page + 2)) - 1
 	Date.set_text(Global.dictionary_date_to_str(Global.date).split(" ")[0])
 	# Запуск таймера с учетом остатка времени до конца дня
-	DayEnd.start((60 - Global.date.second) + (60 * (60 - Global.date.minute)) + (60 * 60 * (24 - Global.date.hour)))
-
+	Global.date = Time.get_datetime_dict_from_system()
+	DayEnd.start((60. * 60. * 24.) - (Global.date.second + (60. * Global.date.minute) + (60. * 60. * Global.date.hour)))
+	
 # Обработка окончания работы таймера
 func _on_timer_timeout() -> void:
-	DayEnd.start(60 * 60 * 24)
+	DayEnd.start(60. * 60. * 24.)
 	Global.date = Time.get_datetime_dict_from_system()
-	Date.set_text(Global.date)
+	Date.set_text(Time.get_datetime_string_from_system().split("T")[0])
 	Global.emit_signal("update_page")
 
 # Обработка нажатия кнопки настройки 
