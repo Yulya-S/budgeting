@@ -114,6 +114,7 @@ func _on_color_scheme_pre_item_selected(index: int) -> void:
 		3: _change_theme("ad5252", "808080", "813333", "3b3b3b") # Ржавый металл
 		4: _change_theme("df8662", "72c8a3", "8f4e33", "2d5d57") # Лиса на поляне
 		5: _change_theme("e198ae", "b9e198", "801938", "44622b") # Ягода на ветке
+		6: _change_theme("981475", "3b9fc8", "ab3c96", "2c3498") # Ежевика
 		_: # Серая
 			ColorSchemeCus.selected = 0
 			color1.color = Color("#636363")
