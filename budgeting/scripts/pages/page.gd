@@ -12,7 +12,13 @@ func _ready() -> void:
 func _update_page() -> void:
 	ColorScheme.repainting(self)
 	File.set_lang(self)
-	update_date()
+	update_data()
 	
 # Обновление данных
-func update_date() -> void: Objects.data_update($Filter)
+func update_data() -> void: Objects.data_update($Filter)
+
+# Изменение данных после смены дня
+func new_day() -> void:
+	$Filter.reset_date_filters()
+	$Head.update_date()
+	update_data()

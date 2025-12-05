@@ -1,23 +1,15 @@
 extends ColorRect
 # Подключение пути к объектам в сцене
 @onready var Date = $Date
-@onready var DayEnd = $Timer
 
 # Изменение положения маркера страницы
 func _ready() -> void:
 	$Login.set_text(File.show_data(File.config.login))
 	$Marker.position.x = (5 * (Global.current_page + 3)) + (39.68 * (Global.current_page + 2)) - 1
-	Date.set_text(Global.dictionary_date_to_str(Global.date).split(" ")[0])
-	# Запуск таймера с учетом остатка времени до конца дня
-	Global.date = Time.get_datetime_dict_from_system()
-	DayEnd.start((60. * 60. * 24.) - (Global.date.second + (60. * Global.date.minute) + (60. * 60. * Global.date.hour)))
+	update_date()
 	
-# Обработка окончания работы таймера
-func _on_timer_timeout() -> void:
-	DayEnd.start(60. * 60. * 24.)
-	Global.date = Time.get_datetime_dict_from_system()
-	Date.set_text(Time.get_datetime_string_from_system().split("T")[0])
-	Global.emit_signal("update_page")
+# Обновление текста даты
+func update_date() -> void: Date.set_text(Global.dictionary_date_to_str(Global.date).split(" ")[0])
 
 # Обработка нажатия кнопки настройки 
 func _on_setting_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SETTINGS, null, Global.Dirs.PAGES)
