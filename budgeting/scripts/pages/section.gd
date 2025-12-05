@@ -4,7 +4,7 @@ extends Page
 
 # Обновление данных
 func update_date() -> void:
-	super.update_date()
+	super.update_data()
 	PieChart.set_values($Filter)
 
 # Применение выделений секций на круговой диаграмме

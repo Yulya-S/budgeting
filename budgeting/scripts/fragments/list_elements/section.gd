@@ -5,7 +5,7 @@ extends PageFragment
 @onready var Progress = $Progress
 @onready var MonthLimit = $Month_Limit
 @onready var ConsumptionIncome = $ConsumptionIncome
-@onready var Page = $"../../../"
+@onready var ParentPage = $"../../../"
 
 # Переменная
 var m_index: int = 0 # Индекс объекта для изменения цветового маркера
@@ -21,7 +21,7 @@ func set_values(data: Dictionary) -> void:
 	
 # Обработка наведения мыши на контейнер
 func _on_mouse_entered() -> void:
-	if Title.id and Page.get("highlighting_graph_sections"): Page.highlighting_graph_sections(m_index)
+	if Title.id and ParentPage.get("highlighting_graph_sections"): ParentPage.highlighting_graph_sections(m_index)
 
 func _on_mouse_exited() -> void:
-	if Title.id and Page.get("highlighting_graph_sections"): Page.highlighting_graph_sections(m_index, false)
+	if Title.id and ParentPage.get("highlighting_graph_sections"): ParentPage.highlighting_graph_sections(m_index, false)

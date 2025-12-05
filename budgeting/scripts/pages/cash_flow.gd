@@ -21,7 +21,7 @@ func _update_page() -> void:
 	
 # Обновление данных
 func update_date() -> void:
-	super.update_date()
+	super.update_data()
 	Schedule.update_schedule(Filter)
 	
 # Изменение значений фильтрации извне
