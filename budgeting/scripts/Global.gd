@@ -79,9 +79,18 @@ func get_other_month(date, next: bool = true) -> Dictionary:
 			date_copy.year -= 1
 	date_copy.day = 1
 	return date_copy
+	
+func get_last_month(date: Variant) -> Variant:
+	var new_date = date.duplicate() if date is Dictionary else Time.get_datetime_dict_from_datetime_string(date, true)
+	new_date.month -= 1
+	if new_date.month < 0:
+		new_date.year -= 1
+		new_date.month = 1
+	if date is Dictionary: return new_date
+	return Time.get_datetime_string_from_datetime_dict(new_date, false)
 
 # Сравнение дат	
-func date_comparison(date1: Dictionary, date2: Dictionary, operator: String, account_day: bool = true) -> bool:
+func date_comparison(date1: Dictionary, date2: Dictionary, operator: String = "==", account_day: bool = true) -> bool:
 	match operator:
 		"==":
 			if date1.year == date2.year and date1.month == date2.month:

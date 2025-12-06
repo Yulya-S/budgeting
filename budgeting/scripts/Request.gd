@@ -396,6 +396,53 @@ func _select_loans_list(where: String = "", order: String = "") -> Array:
 	db.query("SELECT l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=2 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id"+where+order+";")
 	return db.query_result
 
+# Добавление событий во временную таблицу
+func _insert_event(value: Dictionary, date: Dictionary) -> void:
+	var text_date: String = Time.get_datetime_string_from_datetime_dict(date, true).split(" ")[0]
+	insert_record("temporary", ["'"+value.title+"'", "'"+text_date+"'", "'"+value.note+"'", Global.date_comparison(Global.date, date, ">"), value.id])
+
+# Добавление событий во временную таблицу с выбранным шагом
+func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count: int, step: int) -> void:
+	while new_date.day <= day_count:
+		_insert_event(value, new_date)
+		new_date.day += step
+		
+# Получение событий в текущем месяце с датой первого появления
+func _select_events_list(date: String) -> Array:
+	db.query("""SELECT *, Date(julianday(date) + juli + CASE WHEN juli<0 THEN juli*-1 WHEN repetition_rate=1 THEN juli%2
+		WHEN repetition_rate=2 THEN 7-juli%7 ELSE 0 END) new_date FROM (SELECT *, (julianday(Date('"""+date+\
+		"'))-julianday(date)) juli FROM events) AS event WHERE strftime('%Y-%m', date)<=strftime('%Y-%m', Date('"+date+"')) ORDER BY new_date;")
+	return db.query_result
+
+# Создание временной таблицы событий
+func _create_temprary_table(date: String) -> Array:
+	# Подготовка данных о месяце для формирования событий
+	var selected_date: Dictionary = Time.get_datetime_dict_from_datetime_string(date, false)
+	var current_month_day_count: int = select_day_count(date)
+	var last_month_day_count: int = select_day_count(Global.get_last_month(date))
+	var values: Array = _select_events_list(date) # Получение первоначальных данных для временной таблицы
+	# Заполнение временной таблицы
+	_create_table("temporary", "title VARCHAR(255), date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
+	for i in values:
+		var new_date: Dictionary = Time.get_datetime_dict_from_datetime_string(i.new_date, false)
+		match i.repetition_rate:
+			0: if Global.date_comparison(selected_date, new_date, "==", false): _insert_event(i, new_date)
+			1: _insert_events_with_step(i, new_date, current_month_day_count, 2)
+			2: _insert_events_with_step(i, new_date, current_month_day_count, 7)
+			3, 4:
+				new_date.year = selected_date.year
+				if i.repetition_rate == 3:
+					new_date.month = selected_date.month
+					if last_month_day_count < new_date.day: _insert_event(i, new_date)
+					if current_month_day_count >= new_date.day: _insert_event(i, new_date)
+				elif new_date.month == selected_date.month and current_month_day_count >= new_date.day:
+					_insert_event(i, new_date)
+				elif new_date.month == Global.get_last_month(selected_date).month and last_month_day_count < new_date.day:
+					_insert_event(i, new_date)
+	values = select("temporary", "*", "", "date") # Получение результата расчета
+	db.query("DROP TABLE IF EXISTS temporary;") # Удаление временной таблицы
+	return values
+
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Array:
 	match list_element:
@@ -403,6 +450,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 		ObjectVariants.SECTION: return select_sections_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.CASH_FLOW: return _select_cash_flows_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.LOAN: return _select_loans_list(filter_data.where, filter_data.order)
+		ObjectVariants.EVENT: return _create_temprary_table(filter_data.date)
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах
