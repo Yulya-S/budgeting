@@ -1,6 +1,4 @@
 extends Page
-# Подключение пути к объектам в сцене
-@onready var Filter = $Filter
 
 # Подгружаемыу объекты
 var objArray = load("res://scenes/fragments/obj_array.tscn")

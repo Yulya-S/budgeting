@@ -78,4 +78,4 @@ func _on_year_item_selected(index: int) -> void:
 	$Year.selected = 9
 
 # Обработка нажатия на кнопку применения фильтра
-func _on_button_button_down() -> void: if get_parent().get("update_date"): get_parent().update_date()
+func _on_button_button_down() -> void: if get_parent().get("update_data"): get_parent().update_data()
