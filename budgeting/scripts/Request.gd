@@ -410,7 +410,7 @@ func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count
 # Получение событий в текущем месяце с датой первого появления
 func _select_events_list(date: String) -> Array:
 	db.query("""SELECT *, Date(julianday(date) + juli + CASE WHEN juli<0 THEN juli*-1 WHEN repetition_rate=1 THEN juli%2
-		WHEN repetition_rate=2 THEN 7-juli%7 ELSE 0 END) new_date FROM (SELECT *, (julianday(Date('"""+date+\
+		WHEN repetition_rate=2 THEN 7-juli%7 ELSE juli*-1 END) new_date FROM (SELECT *, (julianday(Date('"""+date+\
 		"'))-julianday(date)) juli FROM events) AS event WHERE strftime('%Y-%m', date)<=strftime('%Y-%m', Date('"+date+"')) ORDER BY new_date;")
 	return db.query_result
 
