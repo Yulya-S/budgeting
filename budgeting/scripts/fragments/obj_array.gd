@@ -3,7 +3,7 @@ extends ScrollContainer
 @onready var Objects = $Objects
 
 # Экспортируемая переменная
-@export var obj: Request.ObjectVariants = Request.ObjectVariants.WALLET # Выбранный объект списка
+@export var obj: Request.ObjectVariants = Request.ObjectVariants.EVENT # Выбранный объект списка
 
 # Перечисление
 enum ListObjects {WALLET, WALLET_TRANSACTION, SECTION, CASH_FLOW, LOAN, EVENT} # Объекты списка

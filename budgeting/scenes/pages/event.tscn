@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6d610a2pedcw"]
+[gd_scene load_steps=5 format=3 uid="uid://c6d610a2pedcw"]
 
 [ext_resource type="Script" uid="uid://b060ylp6a7ds5" path="res://scripts/pages/event.gd" id="1_2gacm"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_gfpd1"]
 [ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_4xp27"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_2gacm"]
 
 [node name="Event" type="Control"]
 layout_mode = 3
@@ -114,6 +115,9 @@ offset_top = 24.0
 offset_right = 1119.0
 offset_bottom = 55.0
 text = "Применить"
+
+[node name="ObjArray" parent="." instance=ExtResource("4_2gacm")]
+layout_mode = 0
 
 [connection signal="button_down" from="Menu/AddEvent" to="." method="_on_add_event_button_down"]
 [connection signal="item_selected" from="Filter/Year" to="Filter" method="_on_year_item_selected"]
