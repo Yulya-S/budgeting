@@ -199,7 +199,7 @@ func _standard_language() -> Dictionary:
 		"DeleteUser": "Удалить пользователя", "ColorSchemePreLabel": "Цветовое оформление",
 		"ColorSchemeCusLabel": "Количество цветов", "TestButton": "Пример кнопки", "ColorsColor": "Цвет",
 		"TestLabel": "Пример текста", "DarkTheme": ["Светлая тема", "Тёмная тема"],
-		"EventType": ["Календарь событий", "Список событий"],
+		"SettingsEventType": ["Календарь событий", "Список событий"],
 		"Preinstalled": ["Предустановленная тема", "Пользовательская тема"],
 		"ColorSchemePre": ["Стандартный", "Серый", "Лимон со смородиной", "Ржавый металл", "Лиса на поляне", "Ягода на ветке", "Ежевика"],
 		"ColorSchemeCus": ["Моно", "Контраст", "Триада", "Тетрада"],
@@ -233,6 +233,9 @@ func _standard_language() -> Dictionary:
 		"LoanFilterOrder": ["По оставшейся сумме"],
 		"LoanTitle": "Название займа", "LoanWallet_Title": "Название целевого счета",
 		"LoanValue": "Начальная сумма займа", "LoanTotal": "Оставшаяся сумма займа",
+		# Страница событий
+		"AddEvent": "Создать событие", "EventTitle": "Название события",
+		"__ET1": "Списание", "__ET2": "Приход",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "По дате добавления", "__FO2": "По алфавиту",
 		# Объекты из базы данных
@@ -266,7 +269,7 @@ func _cr_en() -> void:
 		"DeleteUser": "Delete user", "ColorSchemePreLabel": "Color design", "ColorsColor": "Color",
 		"ColorSchemeCusLabel": "Number of colors", "TestButton": "Button example",
 		"TestLabel": "Example text", "DarkTheme": ["Light theme", "Dark theme"],
-		"EventType": ["Events calendar", "List of events"],
+		"SettingsEventType": ["Events calendar", "List of events"],
 		"Preinstalled": ["Pre-installed theme", "Custom Theme"],
 		"ColorSchemePre": ["Standard", "Grey", "Lemon with currants", "Rusty metal", "A fox in a clearing", "Berry on a branch", "Blackberry"],
 		"ColorSchemeCus": ["Mono", "Contrast", "Triad", "Tetrad"],
@@ -300,6 +303,9 @@ func _cr_en() -> void:
 		"LoanFilterOrder": ["By remaining amount"],
 		"LoanTitle": "Loan name", "LoanWallet_Title": "Name of the target wallet",
 		"LoanValue": "Initial loan amount", "LoanTotal": "The remaining loan amount",
+		# Страница событий
+		"AddEvent": "Create an event", "EventTitle": "Event name",
+		"__ET1": "Write-off", "__ET2": "Receipt",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "By date added", "__FO2": "Alphabetically",
 		# Объекты из базы данных
