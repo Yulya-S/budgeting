@@ -5,7 +5,7 @@ extends ColorRect
 @onready var Objects = $ScrollContainer/VBoxContainer
 @onready var Completed = $Completed
 
-# Переменная
+# Подгружаемый объект
 var event_path: Resource = load("res://scenes/fragments/list_elements/color_event.tscn")
 
 # Изменение номера дня
