@@ -399,7 +399,7 @@ func _select_loans_list(where: String = "", order: String = "") -> Array:
 # Добавление событий во временную таблицу
 func _insert_event(value: Dictionary, date: Dictionary) -> void:
 	var text_date: String = Time.get_datetime_string_from_datetime_dict(date, true).split(" ")[0]
-	insert_record("temporary", ["'"+value.title+"'", "'"+text_date+"'", "'"+value.note+"'", Global.date_comparison(Global.date, date, ">"), value.id])
+	insert_record("temporary", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", "'"+value.note+"'", Global.date_comparison(Global.date, date, ">"), value.id])
 
 # Добавление событий во временную таблицу с выбранным шагом
 func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count: int, step: int) -> void:
@@ -422,7 +422,7 @@ func _create_temprary_table(date: String) -> Array:
 	var last_month_day_count: int = select_day_count(Global.get_last_month(date))
 	var values: Array = _select_events_list(date) # Получение первоначальных данных для временной таблицы
 	# Заполнение временной таблицы
-	_create_table("temporary", "title VARCHAR(255), date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
+	_create_table("temporary", "title VARCHAR(255), event_type INT, value FLOAT, date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
 	for i in values:
 		var new_date: Dictionary = Time.get_datetime_dict_from_datetime_string(i.new_date, false)
 		match i.repetition_rate:
