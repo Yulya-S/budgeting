@@ -3,6 +3,7 @@ extends Node
 var chart_gradient: Gradient = Gradient.new() # Градиент для графиков
 var scales_gradient: Gradient = Gradient.new() # Градиент для шкал
 var system_gradient: Gradient = Gradient.new() # Градиент для системы
+var highlighter_color: Color = Color.AQUAMARINE # Цвет подсветки
 
 # Установка цветового градиента
 func _ready() -> void:
@@ -41,7 +42,8 @@ func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, t
 	system_gradient.offsets = g_offsets
 	# Изменение градиента для графиков под выбранную цветовую тему
 	chart_gradient.colors = PackedColorArray([get_color(10, 100, system_gradient), get_color(55, 100, system_gradient)])
-	
+	# Изменение цвета подсветки
+	highlighter_color = Color.AQUAMARINE * get_color(50, 100, system_gradient)
 	
 # Замена цвета текста
 func set_font_color(object, column: String = "font_color") -> void:
@@ -61,7 +63,9 @@ func repainting(obj) -> void:
 		"X", "Border": obj.default_color = get_color(0, 6, system_gradient)
 		_:
 			match obj.get_class():
-				"Label": set_font_color(obj)
+				"Label":
+					set_font_color(obj)
+					obj.add_theme_color_override("font_outline_color", get_color(6, 6, system_gradient))
 				"CheckButton": for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
 			if obj.get_parent().get_class() == "VBoxContainer":
 				obj.color = get_color(4 + int(obj.get_parent().get_child_count() != 1), 6, system_gradient)

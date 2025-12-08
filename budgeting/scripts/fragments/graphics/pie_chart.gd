@@ -23,7 +23,7 @@ func _draw() -> void:
 	for i in range(len(values)):
 		if values[i] <= 0: continue
 		# Смена цвета для секции
-		var new_color: Color = Color.AQUAMARINE if higliter_idx == i else ColorScheme.get_color(i, len(values) - 1.)
+		var new_color: Color = ColorScheme.highlighter_color if higliter_idx == i else ColorScheme.get_color(i, len(values) - 1.)
 		var arc_size: float = (values[i] * 360.) / sum
 		if arc_size < 2: continue
 		# Отрисовка секции
