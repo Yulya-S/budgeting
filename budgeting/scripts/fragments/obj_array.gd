@@ -9,13 +9,11 @@ extends ScrollContainer
 enum ListObjects {WALLET, WALLET_TRANSACTION, SECTION, CASH_FLOW, LOAN, EVENT} # Объекты списка
 
 # Переменные
-var data: Dictionary = {"where": "", "date": Time.get_date_string_from_system(), "order": ""} # Фрагменты запроса
 var obj_path: Resource = null # Подгружаемый объект
 var lines: Array = [] # Список объектов для создания на странице
 
 # Параметры для смегчения динамического создания объектов
 var change_list: Array = []
-var filter_data: Dictionary = {"where": "", "order": {}, "data": ""} # Сохраненные параметры фильтрации
 
 # Создание сцены
 func _ready() -> void: obj_path = load("res://scenes/fragments/list_elements/"+Global.enum_key(Request.ObjectVariants, obj)+".tscn")
@@ -34,30 +32,21 @@ func _process(_delta: float) -> void:
 		Objects.get_child(-1).set_values(lines.pop_front())
 	# Обновление списка при необходимости дополнительного изменения данных
 	if len(change_list) > 0: lines.append(Request.match_update_list_element(obj, change_list.pop_front(), self))
-	
-# Удалить позже
-# Изменение параметров запроса
-func set_data(where: String = "", date: String = "", order: String = "") -> void:
-	if where != "" or data.where != "": data.where = where
-	if date != "": data.date = date
-	if order != "" or data.order != "": data.order = order
-	update_page()
 
 # Перенести в Requests
 # Получение списка элементов списка
-func select() -> Array:
-	match obj:
-		ListObjects.WALLET: return Request.select_wallets_list(data.where, data.order)
-		ListObjects.WALLET_TRANSACTION: return Request.select_general_sections_cash_movement(get_parent().id, data.date)
-		ListObjects.LOAN: return Request.select_loan_list(data.where, data.order)
-		ListObjects.SECTION: return Request.select_sections(data.where, data.date, data.order)
-		ListObjects.CASH_FLOW: return Request.select_cash_flows(data.where, data.date, data.order)
-		ListObjects.EVENT: return Request.select_events(data.date)
-	return []
+#func select() -> Array:
+	#match obj:
+		#ListObjects.WALLET: return Request.select_wallets_list(data.where, data.order)
+		#ListObjects.WALLET_TRANSACTION: return Request.select_general_sections_cash_movement(get_parent().id, data.date)
+		#ListObjects.LOAN: return Request.select_loan_list(data.where, data.order)
+		#ListObjects.SECTION: return Request.select_sections(data.where, data.date, data.order)
+		#ListObjects.CASH_FLOW: return Request.select_cash_flows(data.where, data.date, data.order)
+		#ListObjects.EVENT: return Request.select_events(data.date)
+	#return []
 
 # Получение данных для списка
 func data_update(filter: ColorRect) -> void:
-	filter_data = filter.get_filter() # Получение настроек фильтрации
 	# Очистка списка
 	for i in Objects.get_children():
 		i.queue_free()
@@ -65,7 +54,7 @@ func data_update(filter: ColorRect) -> void:
 	# Добавление первого элемента списка
 	Objects.add_child(obj_path.instantiate())
 	lines = []
-	change_list = Request.match_select(obj, filter_data)
+	change_list = Request.match_select(obj, filter.get_filter())
 
 # Заполнение страницы - удалить это
 func update_page(_close_page: String = ""):

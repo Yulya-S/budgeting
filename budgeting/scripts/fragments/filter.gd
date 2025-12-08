@@ -45,7 +45,6 @@ func get_filter() -> Dictionary:
 			_: _other_filters(i)
 	# Добавление фильтра времени
 	if filter.date is Array: filter.date = Global.date_to_sql_date("-".join(filter.date+[1]))
-	if get_parent().get("Objects"):	get_parent().Objects.set_data(filter.where, filter.date, filter.order)
 	if get_parent().get("set_filter"): get_parent().set_filter()
 	return filter
 
