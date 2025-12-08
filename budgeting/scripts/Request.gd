@@ -449,6 +449,14 @@ func _update_events_list(line: Dictionary, parent) -> Dictionary:
 		line["profit_accounting"] = select("wallets", "COALESCE(SUM(value), 0.0) value")[0].value + select("temporary", "COALESCE(SUM(value), 0.0) value", "event_type=1 AND id<"+str(line.id))[0].value - line.value
 	if len(parent.change_list) == 0: db.query("DROP TABLE IF EXISTS temporary;") # Удаление временной таблицы
 	return line
+	
+# Запрос на получение списка событий юуз дубликации записей
+func select_unique_events() -> Array:
+	db.query("SELECT title, event_id FROM temporary GROUP BY event_id;")
+	# Позже удалить
+	var value: Array = db.query_result
+	db.query("DROP TABLE IF EXISTS temporary;")
+	return value
 
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Array:

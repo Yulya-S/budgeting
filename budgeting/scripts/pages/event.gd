@@ -18,10 +18,9 @@ func _update_page() -> void:
 		get_child(-1).size = Vector2(1152, 473)
 		get_child(-1).position = Vector2(0, 170)
 	else:
-		pass
-		#add_child(calendar.instantiate())
-		#get_child(-1).size = Vector2(456, 473)
-		#get_child(-1).position = Vector2(0, 170)
+		add_child(calendar.instantiate())
+		get_child(-1).size = Vector2(456, 473)
+		get_child(-1).position = Vector2(0, 170)
 	Objects = get_child(-1) # Получение пути к списку событий
 	update_data() # Обновлениие данных в списке событий
 

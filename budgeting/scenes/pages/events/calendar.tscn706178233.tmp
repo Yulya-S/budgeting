@@ -8,6 +8,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 script = ExtResource("1_kwdma")
+cell_count = null
 
 [node name="Cells" type="GridContainer" parent="."]
 custom_minimum_size = Vector2(456, 473)
