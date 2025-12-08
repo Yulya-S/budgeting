@@ -20,7 +20,7 @@ func _update_page() -> void:
 	super._update_page() # Обновление данных на странице
 	
 # Обновление данных
-func update_date() -> void:
+func update_data() -> void:
 	super.update_data()
 	Schedule.update_schedule(Filter)
 	
