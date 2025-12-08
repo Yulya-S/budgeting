@@ -234,7 +234,7 @@ func _standard_language() -> Dictionary:
 		"LoanTitle": "Название займа", "LoanWallet_Title": "Название целевого счета",
 		"LoanValue": "Начальная сумма займа", "LoanTotal": "Оставшаяся сумма займа",
 		# Страница событий
-		"AddEvent": "Создать событие", "EventTitle": "Название события",
+		"AddEvent": "Создать событие", "EventTitle": "Название события", "EventTypeLabel": "Недостаточно средств",
 		"__ET1": "Списание", "__ET2": "Приход",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "По дате добавления", "__FO2": "По алфавиту",
@@ -304,7 +304,7 @@ func _cr_en() -> void:
 		"LoanTitle": "Loan name", "LoanWallet_Title": "Name of the target wallet",
 		"LoanValue": "Initial loan amount", "LoanTotal": "The remaining loan amount",
 		# Страница событий
-		"AddEvent": "Create an event", "EventTitle": "Event name",
+		"AddEvent": "Create an event", "EventTitle": "Event name", "EventTypeLabel": "Insufficient funds",
 		"__ET1": "Write-off", "__ET2": "Receipt",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "By date added", "__FO2": "Alphabetically",

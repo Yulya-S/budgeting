@@ -440,8 +440,15 @@ func _create_temprary_table(date: String) -> Array:
 				elif new_date.month == Global.get_last_month(selected_date).month and last_month_day_count < new_date.day:
 					_insert_event(i, new_date)
 	values = select("temporary", "*", "", "date") # Получение результата расчета
-	db.query("DROP TABLE IF EXISTS temporary;") # Удаление временной таблицы
 	return values
+
+# Запрос на изменение списка разделов
+func _update_events_list(line: Dictionary, parent) -> Dictionary:
+	if line.completed: return line
+	if line.event_type == 1:
+		line["profit_accounting"] = select("wallets", "COALESCE(SUM(value), 0.0) value")[0].value + select("temporary", "COALESCE(SUM(value), 0.0) value", "event_type=1 AND id<"+str(line.id))[0].value - line.value
+	if len(parent.change_list) == 0: db.query("DROP TABLE IF EXISTS temporary;") # Удаление временной таблицы
+	return line
 
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Array:
@@ -459,6 +466,7 @@ func match_update_list_element(list_element: ObjectVariants, line: Dictionary, p
 		ObjectVariants.WALLET: return _update_wallets_list(line)
 		ObjectVariants.SECTION:	return _update_sections_list(line, parent)
 		ObjectVariants.CASH_FLOW: return _update_cash_flows_list(line)
+		ObjectVariants.EVENT: return _update_events_list(line, parent)
 	return line
 	
 	
