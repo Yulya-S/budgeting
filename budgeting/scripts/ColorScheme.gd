@@ -31,6 +31,10 @@ func color_reading() -> void:
 		g_colors.append(data["color_" + str(i + 1)])
 		g_offsets.append(0.2 + ((0.8 / color_count) * i))
 	color_assembly(g_colors, g_offsets, data.dark_theme)
+	# Изменение градиента для графиков под выбранную цветовую тему
+	chart_gradient.colors = PackedColorArray([get_color(10, 100, system_gradient), get_color(55, 100, system_gradient)])
+	# Изменение цвета подсветки
+	highlighter_color = Color.AQUAMARINE * get_color(50, 100, system_gradient)
 	
 # Составление цветовой палитры
 func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, theme: bool) -> void:
@@ -40,10 +44,6 @@ func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, t
 	g_offsets.append(1)
 	system_gradient.colors = g_colors
 	system_gradient.offsets = g_offsets
-	# Изменение градиента для графиков под выбранную цветовую тему
-	chart_gradient.colors = PackedColorArray([get_color(10, 100, system_gradient), get_color(55, 100, system_gradient)])
-	# Изменение цвета подсветки
-	highlighter_color = Color.AQUAMARINE * get_color(50, 100, system_gradient)
 	
 # Замена цвета текста
 func set_font_color(object, column: String = "font_color") -> void:
