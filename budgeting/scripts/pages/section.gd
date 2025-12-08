@@ -3,7 +3,7 @@ extends Page
 @onready var PieChart = $PieChart
 
 # Обновление данных
-func update_date() -> void:
+func update_data() -> void:
 	super.update_data()
 	PieChart.set_values($Filter)
 

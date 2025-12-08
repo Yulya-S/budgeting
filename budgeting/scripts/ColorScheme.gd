@@ -2,12 +2,12 @@ extends Node
 # Переменные
 var chart_gradient: Gradient = Gradient.new() # Градиент для графиков
 var scales_gradient: Gradient = Gradient.new() # Градиент для шкал
-var system_gradient: Gradient = Gradient.new() # Градиент для шкал
+var system_gradient: Gradient = Gradient.new() # Градиент для системы
 
 # Установка цветового градиента
 func _ready() -> void:
-	chart_gradient.colors = PackedColorArray([Color(1, 0, 0), Color.from_rgba8(255, 96, 0), Color.from_rgba8(255, 156, 0), Color(1, 1, 0)])
-	chart_gradient.offsets = PackedFloat32Array([0, 0.33, 0.66, 1])
+	chart_gradient.colors = PackedColorArray([Color(1, 0, 0), Color(1, 1, 0)])
+	chart_gradient.offsets = PackedFloat32Array([0, 1])
 	scales_gradient.colors = PackedColorArray([Color.from_rgba8(0, 109, 0), Color(1, 1, 0), Color(1, 0, 0)])
 	scales_gradient.offsets = PackedFloat32Array([0, 0.5, 1])
 
@@ -29,7 +29,7 @@ func color_reading() -> void:
 	for i in range(color_count):
 		g_colors.append(data["color_" + str(i + 1)])
 		g_offsets.append(0.2 + ((0.8 / color_count) * i))
-	ColorScheme.color_assembly(g_colors, g_offsets, data.dark_theme)
+	color_assembly(g_colors, g_offsets, data.dark_theme)
 	
 # Составление цветовой палитры
 func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, theme: bool) -> void:
@@ -37,8 +37,11 @@ func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, t
 	g_offsets = PackedFloat32Array([0]) + g_offsets
 	g_colors.append(Color(int(not theme), int(not theme), int(not theme)))
 	g_offsets.append(1)
-	ColorScheme.system_gradient.colors = g_colors
-	ColorScheme.system_gradient.offsets = g_offsets
+	system_gradient.colors = g_colors
+	system_gradient.offsets = g_offsets
+	# Изменение градиента для графиков под выбранную цветовую тему
+	chart_gradient.colors = PackedColorArray([get_color(10, 100, system_gradient), get_color(55, 100, system_gradient)])
+	
 	
 # Замена цвета текста
 func set_font_color(object, column: String = "font_color") -> void:
@@ -54,6 +57,7 @@ func repainting(obj) -> void:
 		"Example": # Частный случай особого пакраса
 			obj.get_child(1).color = get_color(4, 6, system_gradient)
 			obj.get_child(2).color = get_color(5, 6, system_gradient)
+		"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
 		"X", "Border": obj.default_color = get_color(0, 6, system_gradient)
 		_:
 			match obj.get_class():
