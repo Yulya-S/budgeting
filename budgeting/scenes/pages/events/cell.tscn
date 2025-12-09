@@ -1,19 +1,13 @@
-[gd_scene format=3 uid="uid://m3f0plaic2iq"]
+[gd_scene load_steps=2 format=3 uid="uid://m3f0plaic2iq"]
+
+[ext_resource type="Script" uid="uid://dt7s0n1q1ej04" path="res://scripts/pages/events/cell.gd" id="1_1ycus"]
 
 [node name="Cell" type="ColorRect"]
 custom_minimum_size = Vector2(78, 78)
-offset_right = 60.0
-offset_bottom = 60.0
-color = Color(0, 0, 0, 1)
-
-[node name="Background" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(74, 74)
-layout_mode = 0
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 58.0
-offset_bottom = 58.0
+offset_right = 78.0
+offset_bottom = 78.0
 color = Color(0.77084, 0.770839, 0.770839, 1)
+script = ExtResource("1_1ycus")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
@@ -43,4 +37,10 @@ offset_top = 2.0
 offset_right = 76.0
 offset_bottom = 76.0
 mouse_filter = 2
-color = Color(1, 1, 1, 0.709804)
+color = Color(1, 1, 1, 0.47451)
+
+[node name="Frame" type="Line2D" parent="."]
+position = Vector2(2, 2)
+points = PackedVector2Array(-2, 75, 75, 75, 75, -1, -1, -1, -1, 75)
+width = 3.0
+default_color = Color(0, 0, 0, 1)

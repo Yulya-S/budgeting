@@ -6,8 +6,12 @@ extends Control
 # Переменные
 var legend_objects: Array = [] # Список объектов для заполнения легенды
 var legend_element_path: Resource = load("res://scenes/fragments/list_elements/event_legend.tscn") # Путь к сцене элемента легенды
+var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Путь к сцене ячеек календаря
 
 var lines: Array = [] # Список объектов для создания на странице
+
+var day_count: int = 30
+var date: Dictionary = {}
 
 # Параметры для смегчения динамического создания объектов
 var change_list: Array = []
@@ -22,15 +26,20 @@ func data_update(filter: ColorRect) -> void:
 	
 	Legend.add_child(legend_element_path.instantiate())
 	
-	change_list = Request.match_select(Request.ObjectVariants.EVENT, filter.get_filter())
+	var data_filter: Dictionary = filter.get_filter()
+	date = Time.get_datetime_dict_from_datetime_string(data_filter.date, true)
+	if date.weekday == 0: date.weekday = 6
+	day_count = Request.select_day_count(data_filter.date)
+	change_list = Request.match_select(Request.ObjectVariants.EVENT, data_filter)
 	legend_objects = Request.select_unique_events()
-	print(legend_objects)
 
 func _process(delta: float) -> void:
 	if len(legend_objects) > 0:
 		Legend.add_child(legend_element_path.instantiate())
 		Legend.get_child(-1).set_values(legend_objects.pop_front())
-		
+	if Cells.get_child_count() < day_count + date.weekday - 1 or Cells.get_child_count() % 7 != 0:
+		Cells.add_child(cell_path.instantiate())
+		Cells.get_child(-1).set_values(Cells.get_child_count() - date.weekday, Global.date_comparison(Global.date, date, "==", false), day_count)
 		
 
 

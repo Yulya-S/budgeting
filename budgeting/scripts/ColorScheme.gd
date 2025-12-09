@@ -61,6 +61,7 @@ func repainting(obj) -> void:
 			obj.get_child(2).color = get_color(5, 6, system_gradient)
 		"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
 		"X", "Border": obj.default_color = get_color(0, 6, system_gradient)
+		"Frame": obj.default_color = get_color(4, 6, system_gradient)
 		_:
 			match obj.get_class():
 				"Label":
@@ -69,4 +70,5 @@ func repainting(obj) -> void:
 				"CheckButton": for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
 			if obj.get_parent().get_class() == "VBoxContainer":
 				obj.color = get_color(4 + int(obj.get_parent().get_child_count() != 1), 6, system_gradient)
+			elif obj.get_parent().get_class() == "GridContainer": obj.color = get_color(5, 6, system_gradient)
 	for i in obj.get_children(): repainting(i)
