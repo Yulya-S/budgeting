@@ -37,6 +37,7 @@ func create_tables() -> void:
 	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)", "FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`section_id`) REFERENCES `sections`(`id`)")
 	_create_table("loans", "title VARCHAR(255), total FLOAT, date DATE")
 	_create_table("events", "title VARCHAR(255), event_type INT, value FLOAT, repetition_rate INT, date DATE, note VARCHAR(255)")
+	_create_table("multiplied_events", "title VARCHAR(255), event_type INT, value FLOAT, date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
 	# Создание таблиц для персонализации приложения
 	_create_table("settings", "color_preset BOOLEAN, color_scheme INT, color_1 VARCHAR(255), color_2 VARCHAR(255), color_3 VARCHAR(255), color_4 VARCHAR(255), dark_theme BOOLEAN, event_page_calendar BOOLEAN, last_entry DATE")
 	_create_table("notifications", "title INT, event_id INT, new BOOL", "FOREIGN KEY (`event_id`) REFERENCES `events`(`id`)")
@@ -414,15 +415,15 @@ func _select_events_list(date: String) -> Array:
 		"'))-julianday(date)) juli FROM events) AS event WHERE strftime('%Y-%m', date)<=strftime('%Y-%m', Date('"+date+"')) ORDER BY new_date;")
 	return db.query_result
 
-# Создание временной таблицы событий
-func _create_temprary_table(date: String) -> Array:
+# Заполнение таблицы размноженных событий
+func create_multiplied_events_table(date: String) -> void:
 	# Подготовка данных о месяце для формирования событий
 	var selected_date: Dictionary = Time.get_datetime_dict_from_datetime_string(date, false)
 	var current_month_day_count: int = select_day_count(date)
 	var last_month_day_count: int = select_day_count(Global.get_last_month(date))
-	var values: Array = _select_events_list(date) # Получение первоначальных данных для временной таблицы
-	# Заполнение временной таблицы
-	_create_table("temporary", "title VARCHAR(255), event_type INT, value FLOAT, date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
+	var values: Array = _select_events_list(date) # Получение первоначальных данных для таблицы
+	db.query("DELETE FROM multiplied_events")
+	# Заполнение таблицы
 	for i in values:
 		var new_date: Dictionary = Time.get_datetime_dict_from_datetime_string(i.new_date, false)
 		match i.repetition_rate:
@@ -439,24 +440,20 @@ func _create_temprary_table(date: String) -> Array:
 					_insert_event(i, new_date)
 				elif new_date.month == Global.get_last_month(selected_date).month and last_month_day_count < new_date.day:
 					_insert_event(i, new_date)
-	values = select("temporary", "*", "", "date") # Получение результата расчета
-	return values
+	
+func _select_multiplied_events_list(date: String) -> Array:
+	return select("multiplied_events", "*", "", "date")
 
 # Запрос на изменение списка разделов
 func _update_events_list(line: Dictionary, parent) -> Dictionary:
-	if line.completed: return line
 	if line.event_type == 1:
 		line["profit_accounting"] = select("wallets", "COALESCE(SUM(value), 0.0) value")[0].value + select("temporary", "COALESCE(SUM(value), 0.0) value", "event_type=1 AND id<"+str(line.id))[0].value - line.value
-	if len(parent.change_list) == 0: db.query("DROP TABLE IF EXISTS temporary;") # Удаление временной таблицы
 	return line
 	
 # Запрос на получение списка событий юуз дубликации записей
-func select_unique_events() -> Array:
-	db.query("SELECT title, event_id FROM temporary GROUP BY event_id;")
-	# Позже удалить
-	var value: Array = db.query_result
-	db.query("DROP TABLE IF EXISTS temporary;")
-	return value
+func _select_unique_events() -> Array:
+	db.query("SELECT title, event_id FROM multiplied_events GROUP BY event_id;")
+	return db.query_result
 
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Array:
@@ -465,7 +462,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 		ObjectVariants.SECTION: return select_sections_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.CASH_FLOW: return _select_cash_flows_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.LOAN: return _select_loans_list(filter_data.where, filter_data.order)
-		ObjectVariants.EVENT: return _create_temprary_table(filter_data.date)
+		ObjectVariants.EVENT: return _select_multiplied_events_list(filter_data.date)
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах
