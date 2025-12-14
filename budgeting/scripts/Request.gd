@@ -400,7 +400,7 @@ func _select_loans_list(where: String = "", order: String = "") -> Array:
 # Добавление событий во временную таблицу
 func _insert_event(value: Dictionary, date: Dictionary) -> void:
 	var text_date: String = Time.get_datetime_string_from_datetime_dict(date, true).split(" ")[0]
-	insert_record("temporary", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", "'"+value.note+"'", Global.date_comparison(Global.date, date, ">"), value.id])
+	insert_record("multiplied_events", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", "'"+value.note+"'", Global.date_comparison(Global.date, date, ">"), value.id])
 
 # Добавление событий во временную таблицу с выбранным шагом
 func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count: int, step: int) -> void:
@@ -423,6 +423,7 @@ func create_multiplied_events_table(date: String) -> void:
 	var last_month_day_count: int = select_day_count(Global.get_last_month(date))
 	var values: Array = _select_events_list(date) # Получение первоначальных данных для таблицы
 	db.query("DELETE FROM multiplied_events")
+	update(Tables.SQLITE_SEQUENCE, "seq=0", 'name="multiplied_events"')
 	# Заполнение таблицы
 	for i in values:
 		var new_date: Dictionary = Time.get_datetime_dict_from_datetime_string(i.new_date, false)
@@ -441,18 +442,24 @@ func create_multiplied_events_table(date: String) -> void:
 				elif new_date.month == Global.get_last_month(selected_date).month and last_month_day_count < new_date.day:
 					_insert_event(i, new_date)
 	
-func _select_multiplied_events_list(date: String) -> Array:
-	return select("multiplied_events", "*", "", "date")
+func select_multiplied_events_list(date: String, where: String = "") -> Array:
+	if where: where = "CAST(strftime('%d', date) AS INTEGER) = "+where
+	return select("multiplied_events", "*", where, "date")
 
 # Запрос на изменение списка разделов
 func _update_events_list(line: Dictionary, parent) -> Dictionary:
 	if line.event_type == 1:
-		line["profit_accounting"] = select("wallets", "COALESCE(SUM(value), 0.0) value")[0].value + select("temporary", "COALESCE(SUM(value), 0.0) value", "event_type=1 AND id<"+str(line.id))[0].value - line.value
+		line["profit_accounting"] = select("wallets", "COALESCE(SUM(value), 0.0) value")[0].value + select("multiplied_events", "COALESCE(SUM(value), 0.0) value", "event_type=1 AND id<"+str(line.id))[0].value - line.value
 	return line
 	
 # Запрос на получение списка событий юуз дубликации записей
 func _select_unique_events() -> Array:
 	db.query("SELECT title, event_id FROM multiplied_events GROUP BY event_id;")
+	return db.query_result
+
+# Получение списка дней с покрайней мере одним событием
+func _select_event_days() -> Array:
+	db.query("SELECT date FROM multiplied_events GROUP BY date;")
 	return db.query_result
 
 # Распределение запросов для заполнения списков на страницах
@@ -462,7 +469,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 		ObjectVariants.SECTION: return select_sections_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.CASH_FLOW: return _select_cash_flows_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.LOAN: return _select_loans_list(filter_data.where, filter_data.order)
-		ObjectVariants.EVENT: return _select_multiplied_events_list(filter_data.date)
+		ObjectVariants.EVENT: return select_multiplied_events_list(filter_data.date)
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах

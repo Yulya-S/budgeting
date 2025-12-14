@@ -11,7 +11,7 @@ enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменные
 var current_page: Pages = Pages.BASIC # Текущая страница
-var date: Dictionary = Time.get_datetime_dict_from_system() # Текущая дата
+var date: Dictionary = Time.get_datetime_dict_from_datetime_string("2025-12-01", true) # Текущая дата
 
 # Изменение даты под формат запроса
 func date_to_sql_date(text: String) -> String:

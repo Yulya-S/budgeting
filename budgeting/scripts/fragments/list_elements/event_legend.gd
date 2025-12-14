@@ -1,16 +1,10 @@
 extends PageFragment
-# Подключение путей к объектам в сцене
-@onready var Marker = $Marker
-@onready var Title = $Title
-@onready var ParentPage = $"../../../"
 
 # Изменение значений
 func set_values(data: Dictionary) -> void:
 	super.set_values(data)
-	$Marker.visible = true
-	$Marker.color = ColorScheme.get_color(get_parent().get_child_count()-1, len(ParentPage.legend_objects)+get_parent().get_child_count()-1)
-
-## Обработка наведения мыши на контейнер
-#func _on_mouse_entered() -> void: if Title.id: Calendar.mark_event(Title.id)
-#
-#func _on_mouse_exited() -> void: if Title.id: Calendar.deselect_event(Title.id, Marker.color)
+	$EventType.visible = data.event_type > 0
+	$EventType.text = "-" if data.event_type == 1 else "+"
+	$EventType/Value.text = str(data.value)
+	# Отображение информации о нехватке средств для "расходных" событий
+	if not data.completed and data.event_type == 1 and data.profit_accounting < 0: $EventType/Label.visible = true

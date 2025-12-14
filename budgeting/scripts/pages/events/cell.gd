@@ -1,9 +1,6 @@
 extends ColorRect
-# Подключение путей к объектам в сцене
-@onready var Objects = $ScrollContainer/VBoxContainer
 
-# Подгружаемый объект
-var event_path: Resource = load("res://scenes/fragments/list_elements/color_event.tscn")
+var lines: Array = []
 
 # Запуск изменения цвета ячейки
 func _ready() -> void: ColorScheme.repainting(self)
@@ -15,8 +12,7 @@ func set_values(idx: int, current_month: bool, day_count: int) -> void:
 	if not current_month or Global.date.day > idx + 1 or day_count <= idx:
 		$Completed.visible = true
 		$Completed.modulate = ColorScheme.get_color(95, 100)
-	elif Global.date.day == idx + 1:
-		color = ColorScheme.get_color(3, 6, ColorScheme.system_gradient)
+	elif Global.date.day == idx + 1: color = ColorScheme.get_color(3, 6, ColorScheme.system_gradient)
 	
 	
 	#Number.set_text(str(index))
@@ -29,7 +25,8 @@ func set_values(idx: int, current_month: bool, day_count: int) -> void:
 		#Objects.get_child(-1).set_object(get_parent().get_parent().lines[0], get_parent().get_parent().events_color)
 		#get_parent().get_parent().lines.pop_front()
 
-func add_event(event: Dictionary): pass
+func add_event(): $Marker.visible = true
+	
 
 ## Выделение событий цветом
 #func mark_event(id: int) -> void: for i in Objects.get_children(): if i.id == id: i.color = Color.AQUAMARINE
