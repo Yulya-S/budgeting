@@ -106,5 +106,7 @@ func date_comparison(date1: Dictionary, date2: Dictionary, operator: String = "=
 	return false
 
 # Перевод словоря даты в текстовый формат
-func dictionary_date_to_str(date: Dictionary) -> String:
-	return Time.get_datetime_string_from_datetime_dict(date, true)
+func date_to_str(date: Dictionary) -> String: return Time.get_datetime_string_from_datetime_dict(date, true)
+
+# Перевод текстовой даты в формат словаря
+func date_to_dict(date: String) -> Dictionary: return Time.get_datetime_dict_from_datetime_string(date, true)

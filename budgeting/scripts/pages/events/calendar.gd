@@ -51,8 +51,14 @@ func _update_legend(idx: int = 0) -> void:
 	
 	Legend.add_child(legend_element_path.instantiate())
 	
-	if not idx: idx = Global.date.day
-	change_list = Request.select_multiplied_events_list(filter.get_filter().date, str(idx))
+	var filter_date: Dictionary = filter.get_filter()
+	
+	if not idx:
+		idx = Global.date.day
+		if not Global.date_comparison(Time.get_datetime_dict_from_datetime_string(filter_date.date, true), Global.date, "==", false):
+			idx = 1
+	
+	change_list = Request.select_multiplied_events_list(filter_date.date, str(idx))
 
 func set_cell(index: String) -> void:
 	select_cell = int(index)

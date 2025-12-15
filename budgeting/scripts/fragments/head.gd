@@ -9,7 +9,7 @@ func _ready() -> void:
 	update_date()
 	
 # Обновление текста даты
-func update_date() -> void: Date.set_text(Global.dictionary_date_to_str(Global.date).split(" ")[0])
+func update_date() -> void: Date.set_text(Global.date_to_str(Global.date).split(" ")[0])
 
 # Обработка нажатия кнопки настройки 
 func _on_setting_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SETTINGS, null, Global.Dirs.PAGES)
