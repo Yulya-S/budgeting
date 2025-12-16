@@ -26,7 +26,7 @@ offset_top = 2.0
 offset_right = 76.0
 offset_bottom = 76.0
 mouse_filter = 2
-color = Color(1, 1, 1, 0.47451)
+color = Color(1, 1, 1, 0.278431)
 
 [node name="Marker" type="ColorRect" parent="."]
 visible = false
