@@ -448,8 +448,7 @@ func select_multiplied_events_list(where: String = "") -> Array:
 
 # Запрос на изменение списка разделов
 func _update_events_list(line: Dictionary) -> Dictionary:
-	if line.event_type == 1:
-		line["profit_accounting"] = select("wallets", "COALESCE(SUM(value), 0.0) value")[0].value + select("multiplied_events", "COALESCE(SUM(value), 0.0) value", "event_type=1 AND id<"+str(line.id))[0].value - line.value
+	if line.event_type == 1: line["profit_accounting"] = select("wallets", "COALESCE(SUM(value), 0.0) value")[0].value + select("multiplied_events", "COALESCE(SUM(value), 0.0) value", 'event_type=2 AND date<"'+line.date+'"')[0].value - line.value
 	return line
 	
 # Запрос на получение списка событий юуз дубликации записей
