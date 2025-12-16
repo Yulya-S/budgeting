@@ -18,7 +18,7 @@ var date: Dictionary = {} # Сохранение выбранной даты
 var select_cell: int = 0 # Индекс выбранной ячейки календаря
 
 # Постепенное создание элементов страницы
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if len(change_list) > 0: lines.append(Request.match_update_list_element(Request.ObjectVariants.EVENT, change_list.pop_front(), self))
 	if len(lines) > 0:
 		Legend.add_child(legend_element_path.instantiate())
@@ -57,9 +57,8 @@ func _update_legend(idx: int = 0) -> void:
 	# Изменение индекса выбранной ячейки если она отсутствует
 	if not idx:
 		idx = Global.date.day
-		if not Global.date_comparison(Time.get_datetime_dict_from_datetime_string(filter_date.date, true), Global.date, "==", false):
-			idx = 1
-	change_list = Request.select_multiplied_events_list(filter_date.date, str(idx))
+		if not Global.date_comparison(Global.date_to_dict(filter_date.date), Global.date, "==", false): idx = 1
+	change_list = Request.select_multiplied_events_list(str(idx))
 
 # Изменение списка при выборе ячейки календаря
 func set_cell(index: String) -> void:

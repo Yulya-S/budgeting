@@ -442,12 +442,12 @@ func create_multiplied_events_table(date: String) -> void:
 				elif new_date.month == Global.get_last_month(selected_date).month and last_month_day_count < new_date.day:
 					_insert_event(i, new_date)
 	
-func select_multiplied_events_list(date: String, where: String = "") -> Array:
+func select_multiplied_events_list(where: String = "") -> Array:
 	if where: where = "CAST(strftime('%d', date) AS INTEGER) = "+where
 	return select("multiplied_events", "*", where, "date")
 
 # Запрос на изменение списка разделов
-func _update_events_list(line: Dictionary, parent) -> Dictionary:
+func _update_events_list(line: Dictionary) -> Dictionary:
 	if line.event_type == 1:
 		line["profit_accounting"] = select("wallets", "COALESCE(SUM(value), 0.0) value")[0].value + select("multiplied_events", "COALESCE(SUM(value), 0.0) value", "event_type=1 AND id<"+str(line.id))[0].value - line.value
 	return line
@@ -469,7 +469,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 		ObjectVariants.SECTION: return select_sections_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.CASH_FLOW: return _select_cash_flows_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.LOAN: return _select_loans_list(filter_data.where, filter_data.order)
-		ObjectVariants.EVENT: return select_multiplied_events_list(filter_data.date)
+		ObjectVariants.EVENT: return select_multiplied_events_list()
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах
@@ -478,7 +478,7 @@ func match_update_list_element(list_element: ObjectVariants, line: Dictionary, p
 		ObjectVariants.WALLET: return _update_wallets_list(line)
 		ObjectVariants.SECTION:	return _update_sections_list(line, parent)
 		ObjectVariants.CASH_FLOW: return _update_cash_flows_list(line)
-		ObjectVariants.EVENT: return _update_events_list(line, parent)
+		ObjectVariants.EVENT: return _update_events_list(line)
 	return line
 	
 	
