@@ -47,7 +47,7 @@ func data_update(new_filter: ColorRect) -> void:
 	if date.weekday == 0: date.weekday = 7 # Смена индекса дня недели
 	day_count = Request.select_day_count(filter.date)	
 	event_days = Request._select_event_days()
-	_update_legend()
+	_update_legend(select_cell)
 
 # Основление списка событий в выбранном дне
 func _update_legend(idx: int = 0) -> void:
