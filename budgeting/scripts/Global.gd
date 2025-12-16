@@ -92,6 +92,8 @@ func get_last_month(date: Variant) -> Variant:
 # Сравнение дат	
 func date_comparison(date1: Dictionary, date2: Dictionary, operator: String = "==", account_day: bool = true) -> bool:
 	match operator:
+		"=>": return date_comparison(date1, date2, "==", account_day) or date_comparison(date1, date2, ">", account_day)
+		"=<": return date_comparison(date1, date2, "==", account_day) or date_comparison(date1, date2, "<", account_day)
 		"==":
 			if date1.year == date2.year and date1.month == date2.month:
 				return not account_day or date1.day == date2.day

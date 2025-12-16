@@ -25,7 +25,8 @@ func _process(_delta: float) -> void:
 		Legend.get_child(-1).set_values(lines.pop_front())
 	if Cells.get_child_count() < day_count + date.weekday - 1 or Cells.get_child_count() % 7 != 0:
 		Cells.add_child(cell_path.instantiate())
-		Cells.get_child(-1).set_values(Cells.get_child_count() - date.weekday, Global.date_comparison(Global.date, date, "==", false), day_count)
+		Cells.get_child(-1).set_values(Cells.get_child_count() - date.weekday, Global.date_comparison(Global.date, date, "==", false),
+			Global.date_comparison(Global.date, date, "=<", false), day_count)
 	elif len(event_days) > 0:
 		var value: Dictionary = event_days.pop_front()
 		Cells.get_child(int(value.date.split("-")[-1]) + date.weekday - 2).add_event()
