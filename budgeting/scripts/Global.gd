@@ -81,13 +81,13 @@ func get_other_month(date, next: bool = true) -> Dictionary:
 	return date_copy
 	
 func get_last_month(date: Variant) -> Variant:
-	var new_date = date.duplicate() if date is Dictionary else Time.get_datetime_dict_from_datetime_string(date, true)
+	var new_date = date.duplicate() if date is Dictionary else Global.date_to_dict(date)
 	new_date.month -= 1
-	if new_date.month < 0:
+	if new_date.month <= 0:
 		new_date.year -= 1
 		new_date.month = 1
 	if date is Dictionary: return new_date
-	return Time.get_datetime_string_from_datetime_dict(new_date, false)
+	return Global.date_to_str(new_date)
 
 # Сравнение дат	
 func date_comparison(date1: Dictionary, date2: Dictionary, operator: String = "==", account_day: bool = true) -> bool:
@@ -106,7 +106,7 @@ func date_comparison(date1: Dictionary, date2: Dictionary, operator: String = "=
 	return false
 
 # Перевод словоря даты в текстовый формат
-func date_to_str(date: Dictionary) -> String: return Time.get_datetime_string_from_datetime_dict(date, true)
+func date_to_str(date_to_update: Dictionary) -> String: return Time.get_datetime_string_from_datetime_dict(date_to_update, true)
 
 # Перевод текстовой даты в формат словаря
-func date_to_dict(date: String) -> Dictionary: return Time.get_datetime_dict_from_datetime_string(date, true)
+func date_to_dict(date_to_update: String) -> Dictionary: return Time.get_datetime_dict_from_datetime_string(date_to_update, true)
