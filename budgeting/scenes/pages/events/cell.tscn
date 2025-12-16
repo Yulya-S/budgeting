@@ -39,7 +39,8 @@ color = Color(0.74, 0, 0, 1)
 
 [node name="Frame" type="Line2D" parent="."]
 position = Vector2(2, 2)
-points = PackedVector2Array(-2, 75, 75, 75, 75, -1, -1, -1, -1, 70.0904, -1, 76)
+points = PackedVector2Array(-2, 75, 75, 75, 75, -1, -1, -1, -1, 70.0904)
+closed = true
 width = 3.0
 default_color = Color(0, 0, 0, 1)
 
