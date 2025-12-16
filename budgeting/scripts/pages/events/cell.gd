@@ -1,7 +1,6 @@
 extends ColorRect
+# Подключение пути к объектам в сцене
 @onready var Parent = $"../../"
-
-var lines: Array = []
 
 # Запуск изменения цвета ячейки
 func _ready() -> void: ColorScheme.repainting(self)
@@ -15,16 +14,10 @@ func set_values(idx: int, current_month: bool, day_count: int) -> void:
 		$Completed.modulate = ColorScheme.get_color(95, 100)
 	elif Global.date.day == idx + 1: color = ColorScheme.get_color(3, 6, ColorScheme.system_gradient)
 
+# Изменение видимости маркера наличия событий
 func add_event(): $Marker.visible = true
 	
-
-## Выделение событий цветом
-#func mark_event(id: int) -> void: for i in Objects.get_children(): if i.id == id: i.color = Color.AQUAMARINE
-#
-## Снятие выделения с события
-#func deselect_event(id: int, color: Color) -> void: for i in Objects.get_children(): if i.id == id: i.color = color
-
-
+# Обработка наведения курсоры мыши на ячейку
 func _on_mouse_entered() -> void: Parent.set_cell($Label.text)
 
 func _on_mouse_exited() -> void: Parent.reset_cell($Label.text)

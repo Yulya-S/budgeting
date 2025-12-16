@@ -11,9 +11,7 @@ enum ListObjects {WALLET, WALLET_TRANSACTION, SECTION, CASH_FLOW, LOAN, EVENT} #
 # Переменные
 var obj_path: Resource = null # Подгружаемый объект
 var lines: Array = [] # Список объектов для создания на странице
-
-# Параметры для смегчения динамического создания объектов
-var change_list: Array = []
+var change_list: Array = [] # Список для изменения объектов на странице
 
 # Создание сцены
 func _ready() -> void: obj_path = load("res://scenes/fragments/list_elements/"+Global.enum_key(Request.ObjectVariants, obj)+".tscn")
