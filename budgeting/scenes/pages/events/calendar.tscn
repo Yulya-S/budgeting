@@ -20,6 +20,12 @@ theme_override_constants/h_separation = -2
 theme_override_constants/v_separation = -2
 columns = 7
 
+[node name="SelectedCell" type="Line2D" parent="."]
+position = Vector2(50, 70)
+points = PackedVector2Array(0, 0, 78, 0, 78, 78, 0, 78)
+closed = true
+default_color = Color(1, 0, 0, 1)
+
 [node name="Legend" type="ScrollContainer" parent="."]
 layout_mode = 2
 offset_left = 606.0

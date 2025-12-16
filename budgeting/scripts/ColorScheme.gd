@@ -62,6 +62,7 @@ func repainting(obj) -> void:
 		"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
 		"X", "Border": obj.default_color = get_color(0, 6, system_gradient)
 		"Frame": obj.default_color = get_color(4, 6, system_gradient)
+		"SelectedCell": obj.default_color = get_color(1, 6, system_gradient)
 		_:
 			match obj.get_class():
 				"Label":

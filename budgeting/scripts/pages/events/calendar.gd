@@ -1,13 +1,13 @@
 extends Control
 # Подключение путей к объектам в сцене
-@onready var Legend = $Legend/VBoxContainer
 @onready var Cells = $Cells
+@onready var SelectedCell = $SelectedCell
+@onready var Legend = $Legend/VBoxContainer
 
 # Переменные
 # Ссылки
 var legend_element_path: Resource = load("res://scenes/fragments/list_elements/event_legend.tscn") # Путь к сцене элемента легенды
 var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Путь к сцене ячеек календаря
-var filter: ColorRect = null # Сохранение ссылки на фильтр
 # Списки
 var lines: Array = [] # Список объектов для создания на странице
 var change_list: Array = [] # Список для изменения объектов на странице
@@ -16,6 +16,9 @@ var event_days: Array = [] # Список дат для маркировки в 
 var day_count: int = 30 # Количество дней в выбранном месяце
 var date: Dictionary = {} # Сохранение выбранной даты
 var select_cell: int = 0 # Индекс выбранной ячейки календаря
+var filter: Dictionary = {} # Сохранение данные фильтра
+
+func _ready() -> void: ColorScheme.repainting(SelectedCell)
 
 # Постепенное создание элементов страницы
 func _process(_delta: float) -> void:
@@ -38,12 +41,11 @@ func data_update(new_filter: ColorRect) -> void:
 		i.queue_free()
 		Cells.remove_child(i)
 	# Получение новых данных для создания на странице
-	if not filter: filter = new_filter
-	var data_filter: Dictionary = filter.get_filter()
-	Request.create_multiplied_events_table(data_filter.date)
-	date = Global.date_to_dict(data_filter.date)
+	filter = new_filter.get_filter()
+	Request.create_multiplied_events_table(filter.date)
+	date = Global.date_to_dict(filter.date)
 	if date.weekday == 0: date.weekday = 7 # Смена индекса дня недели
-	day_count = Request.select_day_count(data_filter.date)	
+	day_count = Request.select_day_count(filter.date)	
 	event_days = Request._select_event_days()
 	_update_legend()
 
@@ -54,12 +56,21 @@ func _update_legend(idx: int = 0) -> void:
 		i.queue_free()
 		Legend.remove_child(i)
 	Legend.add_child(legend_element_path.instantiate()) # Создание заголовка
-	var filter_date: Dictionary = filter.get_filter()
+	var filter_date: Dictionary = Global.date_to_dict(filter.date)
 	# Изменение индекса выбранной ячейки если она отсутствует
 	if not idx:
 		idx = Global.date.day
-		if not Global.date_comparison(Global.date_to_dict(filter_date.date), Global.date, "==", false): idx = 1
+		if not Global.date_comparison(filter_date, Global.date, "==", false): idx = 1
 	change_list = Request.select_multiplied_events_list(str(idx))
+	# Изменение расположения маркера выбранной даты
+	# Получение позиции по горизонтали
+	var weekday: int = (filter_date.weekday - 1 + idx) % 7 - 1
+	if weekday < 0: weekday = 6
+	SelectedCell.position.x = (78 * weekday) + 45 - (2 * (weekday - 1))
+	# Получение позиции по вертикали
+	var week_number: int = int((filter_date.weekday - 1 + idx) / 7 - 1)
+	if weekday == 6: week_number -= 1
+	SelectedCell.position.y = (78 * week_number) + 80 - (2 * (week_number - 2))
 
 # Изменение списка при выборе ячейки календаря
 func set_cell(index: String) -> void:
