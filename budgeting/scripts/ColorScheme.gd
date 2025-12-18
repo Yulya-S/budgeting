@@ -17,6 +17,9 @@ func get_color(index: float, count: float, gradient: Gradient = chart_gradient) 
 	if count == 0: count = 1
 	return gradient.sample(index / count)
 
+# Получение значения цвета из градиента системы
+func get_sys_color(index: float, count: float = 6) -> Color: return get_color(index, count, system_gradient)
+
 # Получение цветов из базы данных
 func color_reading() -> void:
 	var g_colors: PackedColorArray = PackedColorArray([])
@@ -32,9 +35,9 @@ func color_reading() -> void:
 		g_offsets.append(0.2 + ((0.8 / color_count) * i))
 	color_assembly(g_colors, g_offsets, data.dark_theme)
 	# Изменение градиента для графиков под выбранную цветовую тему
-	chart_gradient.colors = PackedColorArray([get_color(10, 100, system_gradient), get_color(55, 100, system_gradient)])
+	chart_gradient.colors = PackedColorArray([get_sys_color(10, 100), get_sys_color(55, 100)])
 	# Изменение цвета подсветки
-	highlighter_color = Color.AQUAMARINE * get_color(50, 100, system_gradient)
+	highlighter_color = Color.AQUAMARINE * get_sys_color(50, 100)
 	
 # Составление цветовой палитры
 func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, theme: bool) -> void:
@@ -46,30 +49,28 @@ func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, t
 	system_gradient.offsets = g_offsets
 	
 # Замена цвета текста
-func set_font_color(object, column: String = "font_color") -> void:
-	object.add_theme_color_override(column, get_color(0, 6, system_gradient))
+func set_font_color(object, column: String = "font_color") -> void: object.add_theme_color_override(column, get_sys_color(0))
 	
 # Применение системного градиента к странице
 func repainting(obj) -> void:
 	match obj.name:
-		"Head": obj.color = get_color(1, 6, system_gradient)
-		"Menu", "Marker": obj.color = get_color(2, 6, system_gradient)
-		"Background", "DailyTransactions": obj.color = get_color(6, 6, system_gradient)
-		"Filter": obj.color = get_color(3, 6, system_gradient)
-		"Example": # Частный случай особого пакраса
-			obj.get_child(1).color = get_color(4, 6, system_gradient)
-			obj.get_child(2).color = get_color(5, 6, system_gradient)
+		"Head": obj.color = get_sys_color(1)
+		"Menu", "Marker": obj.color = get_sys_color(2)
+		"Background", "DailyTransactions": obj.color = get_sys_color(6)
+		"Filter": obj.color = get_sys_color(3)
 		"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
-		"X", "Border": obj.default_color = get_color(0, 6, system_gradient)
-		"Frame": obj.default_color = get_color(4, 6, system_gradient)
-		"SelectedCell": obj.default_color = get_color(1, 6, system_gradient)
+		"X", "Border": obj.default_color = get_sys_color(0)
+		"Frame": obj.default_color = get_sys_color(4)
+		"SelectedCell": obj.default_color = get_sys_color(1)
+		"Example": # Частный случай особого пакраса
+			obj.get_child(1).color = get_sys_color(4)
+			obj.get_child(2).color = get_sys_color(5)
 		_:
+			if obj.get_parent().get_class() == "VBoxContainer": obj.color = get_sys_color(4 + int(obj.get_parent().get_child_count() != 1))
+			elif obj.get_parent().get_class() == "GridContainer": obj.color = get_sys_color(5)
 			match obj.get_class():
+				"CheckButton": for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
 				"Label":
 					set_font_color(obj)
-					obj.add_theme_color_override("font_outline_color", get_color(6, 6, system_gradient))
-				"CheckButton": for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
-			if obj.get_parent().get_class() == "VBoxContainer":
-				obj.color = get_color(4 + int(obj.get_parent().get_child_count() != 1), 6, system_gradient)
-			elif obj.get_parent().get_class() == "GridContainer": obj.color = get_color(5, 6, system_gradient)
+					obj.add_theme_color_override("font_outline_color", get_sys_color(6))
 	for i in obj.get_children(): repainting(i)
