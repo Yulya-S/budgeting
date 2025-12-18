@@ -44,7 +44,11 @@ func _process(_delta: float) -> void:
 	#return []
 
 # Получение данных для списка
-func data_update(filter: ColorRect) -> void:
+func data_update(filter: ColorRect = null) -> void:
+	# Создание данных для фильтрации при их отсутствии
+	var filter_data: Dictionary = {}
+	if filter: filter_data = filter.get_filter()
+	else: filter_data = {"date": Global.date_to_str(), "where": "", "order": ""}
 	# Очистка списка
 	for i in Objects.get_children():
 		i.queue_free()
@@ -52,7 +56,7 @@ func data_update(filter: ColorRect) -> void:
 	# Добавление первого элемента списка
 	Objects.add_child(obj_path.instantiate())
 	lines = []
-	change_list = Request.match_select(obj, filter.get_filter())
+	change_list = Request.match_select(obj, filter_data)
 
 # Заполнение страницы - удалить это
 func update_page(_close_page: String = ""):

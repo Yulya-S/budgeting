@@ -1,7 +1,7 @@
 extends ColorRect
 # Параметр
 var values: Array = [] # Данные для отображения
-var date: String = Time.get_date_string_from_system() # Дата фильтрации
+var date: String = Global.date_to_str() # Дата фильтрации
 
 # Получение изначальных данных
 func _ready() -> void: values = Request.select_cash_flow_graphics("", date)
@@ -26,8 +26,11 @@ func _draw() -> void:
 	ColorScheme.repainting(self)
 	
 # Перезапуск отрисовки графика
-func update_schedule(Filter: ColorRect) -> void:
-	var filter_data: Dictionary = Filter.get_filter()
+func data_update(filter: ColorRect = null) -> void:
+	# Создание данных для фильтрации при их отсутствии
+	var filter_data: Dictionary = {}
+	if filter: filter_data = filter.get_filter()
+	else: filter_data = {"date": Global.date_to_str(), "where": "", "order": ""}
 	date = filter_data.date
-	values = Request.select_cash_flow_graphics(filter_data.where, filter_data.date)
+	values = Request.select_cash_flow_graphics(filter_data.where, date)
 	queue_redraw()

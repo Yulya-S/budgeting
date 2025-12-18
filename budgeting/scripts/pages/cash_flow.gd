@@ -22,7 +22,7 @@ func _update_page() -> void:
 # Обновление данных
 func update_data() -> void:
 	super.update_data()
-	Schedule.update_schedule(Filter)
+	Schedule.data_update(Filter)
 	
 # Изменение значений фильтрации извне
 func set_object(obj_id, _parent = null) -> void:
