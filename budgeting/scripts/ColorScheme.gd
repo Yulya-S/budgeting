@@ -66,10 +66,11 @@ func repainting(obj) -> void:
 			obj.get_child(1).color = get_sys_color(4)
 			obj.get_child(2).color = get_sys_color(5)
 		_:
-			if obj.get_parent().get_class() == "VBoxContainer": obj.color = get_sys_color(4 + int(obj.get_parent().get_child_count() != 1))
-			elif obj.get_parent().get_class() == "GridContainer": obj.color = get_sys_color(5)
 			match obj.get_class():
 				"CheckButton": for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
+				"ColorRect":
+					if obj.get_parent().get_class() == "VBoxContainer": obj.color = get_sys_color(4 + int(obj.get_parent().get_child_count() != 1))
+					elif obj.get_parent().get_class() == "GridContainer": obj.color = get_sys_color(5)
 				"Label":
 					set_font_color(obj)
 					obj.add_theme_color_override("font_outline_color", get_sys_color(6))
