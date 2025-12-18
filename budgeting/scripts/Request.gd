@@ -457,8 +457,9 @@ func _select_unique_events() -> Array:
 	return db.query_result
 
 # Получение списка дней с покрайней мере одним событием
-func _select_event_days() -> Array:
-	db.query("SELECT date FROM multiplied_events GROUP BY date;")
+func select_event_days(where: String = "") -> Array:
+	if where: where = " WHERE " + where
+	db.query("SELECT date FROM multiplied_events"+where+" GROUP BY date;")
 	return db.query_result
 
 # Распределение запросов для заполнения списков на страницах
