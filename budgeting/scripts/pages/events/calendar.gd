@@ -30,7 +30,7 @@ func data_update(new_filter: ColorRect) -> void:
 	super.data_update(new_filter)
 	# Получение новых данных для создания заполнения легенды
 	Request.create_multiplied_events_table(Global.date_to_str(date))
-	event_days = Request._select_event_days()
+	event_days = Request.select_event_days()
 	_update_legend(select_cell)
 
 # Основление списка событий в выбранном дне
