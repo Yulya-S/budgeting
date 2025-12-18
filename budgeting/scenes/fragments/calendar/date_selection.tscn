@@ -2,18 +2,25 @@
 
 [ext_resource type="Script" uid="uid://cuk5gew4im7a0" path="res://scripts/fragments/calendar/date_selection.gd" id="1_srupp"]
 
-[node name="DateSelection" type="ColorRect"]
+[node name="DateSelection" type="Control"]
+custom_minimum_size = Vector2(290, 310)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_srupp")
+
+[node name="DateSelection" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(290, 310)
 offset_right = 290.0
 offset_bottom = 310.0
 color = Color(0, 0, 0, 0.333333)
-script = ExtResource("1_srupp")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_top = -33.0
-offset_right = 47.0
-offset_bottom = -10.0
+offset_right = 59.0
+offset_bottom = -5.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Дата: "
@@ -22,7 +29,7 @@ text = "Дата: "
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 0
 offset_right = 290.0
-offset_bottom = 24.0
+offset_bottom = 31.0
 alignment = 1
 
 [node name="Month" type="Label" parent="."]
@@ -53,7 +60,7 @@ offset_bottom = 24.0
 theme_override_font_sizes/font_size = 11
 text = ">"
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="Cells" type="GridContainer" parent="."]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 0
 offset_left = 5.0
@@ -64,6 +71,6 @@ theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 7
 
-[connection signal="item_selected" from="Year" to="." method="_on_year_item_selected"]
-[connection signal="button_down" from="Month/Previous" to="." method="_on_previous_button_down"]
-[connection signal="button_down" from="Month/Next" to="." method="_on_next_button_down"]
+[connection signal="item_selected" from="Year" to="DateSelection" method="_on_year_item_selected"]
+[connection signal="button_down" from="Month/Previous" to="DateSelection" method="_on_previous_button_down"]
+[connection signal="button_down" from="Month/Next" to="DateSelection" method="_on_next_button_down"]
