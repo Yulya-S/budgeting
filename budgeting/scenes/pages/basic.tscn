@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxbo401tituxp"]
+[gd_scene load_steps=5 format=3 uid="uid://bxbo401tituxp"]
 
 [ext_resource type="Script" uid="uid://cfajdl5x507of" path="res://scripts/pages/basic.gd" id="1_eejbm"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_mrggl"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_ii1de"]
-[ext_resource type="Script" uid="uid://d0hmn6rr8ieuc" path="res://scripts/pages/events/basic.gd" id="5_1kehw"]
 [ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="6_yvt7d"]
 
 [node name="Basic" type="Control"]
@@ -151,4 +150,3 @@ offset_top = 55.0
 offset_right = 1156.0
 offset_bottom = 133.0
 theme_override_constants/separation = -2
-script = ExtResource("5_1kehw")
