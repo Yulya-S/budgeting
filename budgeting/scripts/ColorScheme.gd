@@ -80,7 +80,12 @@ func repainting(obj) -> void:
 					set_buttons_color(obj, 0.8, "hover")
 					set_buttons_color(obj, 0.5, "pressed")
 					for i in ["", "focus_", "hover_", "hover_pressed_", "pressed_"]: set_font_color(obj, "font_"+i+"color", 6)
-				"CheckButton": for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
+				"CheckButton":
+					var dark_theme: String = str(int(Request.select(Request.Tables.SETTINGS)[0].dark_theme))
+					obj.add_theme_icon_override("checked", load("res://img/godot_icon/checked_"+dark_theme+".tres"))
+					obj.add_theme_icon_override("unchecked", load("res://img/godot_icon/unchecked_"+dark_theme+".tres"))
+					for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
+					obj.add_theme_color_override("font_hover_color", get_sys_color(3))
 				"ColorRect":
 					if obj.get_parent().get_class() == "VBoxContainer": obj.color = get_sys_color(4 + int(obj.get_parent().get_child_count() != 1))
 					elif obj.get_parent().get_class() in ["GridContainer", "HBoxContainer"]:
