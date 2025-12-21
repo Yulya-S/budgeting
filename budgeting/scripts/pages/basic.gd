@@ -5,7 +5,7 @@ extends Control
 @onready var Objects = $ScrollContainer/VBoxContainer
 @onready var Cells = $ScrollContainer/VBoxContainer/Events/Calendar
 
-# Переменные
+# Переменные для календаря событий
 var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Путь к сцене ячеек календаря
 var event_days: Array = [] # Список дат для маркировки в каллендаре
 var date: Dictionary = {} # Сохранение выбранной даты
@@ -13,13 +13,8 @@ var day_count: int = 30 # Количество дней в выбранном м
 
 # Создание главной страницы
 func _ready() -> void:
-	
 	Global.connect("update_page", Callable(self, "_update_page"))
 	_update_page()
-	
-	#Budget.set_text(str(Request.select_budget()))
-	#CashFlow.set_text(str(Request.select_general_wallets_movement()))
-	#Global.emit_signal("update_page")
 
 # Постепенное создание элементов страницы
 func _process(delta: float) -> void:
@@ -33,10 +28,14 @@ func _process(delta: float) -> void:
 # Запуск обновления данных на странице
 func _update_page() -> void:
 	ColorScheme.repainting(self)
+	
+	Budget.set_text(str(Request.select_wallets_sum()))
+	CashFlow.set_text(str(Request.select_funds_movements()))
+	
+	
 	update_data()
 	
 	#File.set_lang(self)
-	#update_data()
 	
 # Обновление данных
 func update_data() -> void:

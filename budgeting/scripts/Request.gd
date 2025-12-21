@@ -119,7 +119,7 @@ func select_possibility_opening_payment() -> bool:
 func select_budget() -> float:
 	var wallets_sum: float = select(Tables.WALLETS, "COALESCE(SUM(value), 0) value")[0].value
 	return wallets_sum - (select(Tables.LOANS, "COALESCE(SUM(total), 0) value")[0].value)
-	
+
 # Получение движенения средств суммарно для всех кошельков
 func select_general_wallets_movement() -> float:
 	var sum: float = 0.0
@@ -333,6 +333,16 @@ func select_wallets_movement(id: int, date: String = Global.date_to_str()) -> Ar
 
 
 # Годится
+# Получение текущего суммарного бюджета
+func select_wallets_sum() -> float:
+	db.query("SELECT COALESCE((SELECT COALESCE(SUM(value),0.0) FROM wallets) - (SELECT COALESCE(SUM(total),0.0) FROM loans), 0.0) value;")
+	return db.query_result[0].value
+
+func select_funds_movements() -> float:
+	db.query("SELECT COALESCE(SUM(CASE WHEN cf.section_id IN (1, 4) THEN 0 WHEN cf.section_id = 3 OR (s.income = 0 AND s.month_limit<>-1) THEN cf.value * -1 ELSE cf.value END),0.0) value
+		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE "+where_date()+";")
+	return db.query_result[0].value
+
 # Запрос на получение списка кошельков
 func _select_wallets_list(where: String, order: String) -> Array:
 	if where: where = " WHERE "+where
