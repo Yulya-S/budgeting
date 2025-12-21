@@ -146,7 +146,7 @@ func _on_apply_button_down() -> void:
 			"OptionButton": values.append(i.selected)
 			"Control": for l in i.get_children(): values.append('"'+l.color.to_html()+'"')
 	values.pop_front()
-	values.append('"'+Time.get_date_string_from_system()+'"')
+	values.append('"'+Global.date_to_str()+'"')
 	# Сохранение записи в базе данных
 	Request.update_record(Request.Tables.SETTINGS, 1, values)
 	_on_close_button_down()

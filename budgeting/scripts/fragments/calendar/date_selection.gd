@@ -14,20 +14,20 @@ var cell_path: Resource = load("res://scenes/fragments/calendar/cell.tscn") # П
 
 # Получение текущей даты
 func _ready() -> void:
-	selected_day = Time.get_date_dict_from_system()
+	selected_day = Global.date
 	_update_calendar()
 
 # Изменение текущей даты из базы данных
 func set_date(new_date: String) -> void:
-	selected_day = Time.get_datetime_dict_from_datetime_string(new_date, true)
+	selected_day = Global.date_to_dict(new_date)
 	_update_calendar()
 
 # Получение выбранной в календаре даты
-func get_date() -> String: return Time.get_datetime_string_from_datetime_dict(selected_day, true).split(" ")[0]
+func get_date() -> String: return Global.date_to_str(selected_day).split(" ")[0]
 
 # Изменение настроек календаря
 func _update_calendar() -> void:
-	var current: Dictionary = Time.get_date_dict_from_system()
+	var current: Dictionary = Global.date
 	# Заполнение списка выбора года
 	for i in range(Year.item_count): Year.remove_item(0)
 	for i in range(selected_day.year-10, selected_day.year+10, 1):
@@ -44,8 +44,8 @@ func _create_days() -> void:
 		i.queue_free()
 		Cells.remove_child(i)
 	# Получение данных о месяце
-	var current_month: Dictionary = Time.get_datetime_dict_from_datetime_string("-".join([selected_day.year, selected_day.month, 1]), true)
-	var day_count: int = Request.select_day_count(Time.get_datetime_string_from_datetime_dict(current_month, true).split(" ")[0])
+	var current_month: Dictionary = Global.date_to_dict("-".join([selected_day.year, selected_day.month, 1]))
+	var day_count: int = Request.select_day_count(Global.date_to_str(current_month).split(" ")[0])
 	if current_month.weekday == 0: current_month.weekday = 7 # Смена индекса воскресения
 	current_month.weekday -= 1
 	# Создание ячеек

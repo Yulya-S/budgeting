@@ -11,12 +11,10 @@ enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменные
 var current_page: Pages = Pages.BASIC # Текущая страница
-var date: Dictionary = Time.get_datetime_dict_from_datetime_string("2025-11-10", true) # Текущая дата
+var date: Dictionary = Time.get_datetime_dict_from_datetime_string("2025-11-01", true) # Текущая дата
 
 # Изменение даты под формат запроса
-func date_to_sql_date(text: String) -> String:
-	var value: Dictionary = Time.get_datetime_dict_from_datetime_string(text, false)
-	return Time.get_datetime_string_from_datetime_dict(value, true)
+func date_to_sql_date(text: String) -> String: return date_to_str(date_to_dict(text))
 
 # Получить имя объекта из перечисления
 func enum_key(enums, object) -> String: return enums.keys()[object].to_lower()
@@ -64,9 +62,9 @@ func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool =
 	for i in objects: container.add_item(i.title, i.id)
 	
 # Получение первого числа следующего/предыдущего месяца
-func get_other_month(date, next: bool = true) -> Dictionary:
-	if date is String: date = Time.get_datetime_dict_from_datetime_string(date, true)
-	var date_copy: Dictionary = date.duplicate()
+func get_other_month(new_date, next: bool = true) -> Dictionary:
+	if new_date is String: new_date = date_to_dict(new_date)
+	var date_copy: Dictionary = new_date.duplicate()
 	if next:
 		date_copy.month += 1
 		if date_copy.month > 12:

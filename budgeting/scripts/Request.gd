@@ -96,7 +96,7 @@ func delete(table, id: int) -> void:
 	update(table, "id=id-1", "id>"+str(id))
 
 # Сборка даты
-func where_date(date: String = Time.get_datetime_string_from_system(), column: String = "date") -> String:
+func where_date(date: String = Global.date_to_str(), column: String = "date") -> String:
 	return "strftime('%Y-%m', "+column+") = strftime('%Y-%m', '"+date+"')"
 
 # Получение данных из таблиц
@@ -130,7 +130,7 @@ func select_general_wallets_movement() -> float:
 func _select_title(table: Tables, id: int) -> String: return select(table, "title", "id="+str(id))[0].title
 
 # Получение списка движений средств
-func select_cash_flows(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
+func select_cash_flows(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
 	if date != "":
 		if where != "": where += " AND " + where_date(date)
 		else: where = where_date(date)
@@ -148,7 +148,7 @@ func select_cash_flows(where: String = "", date: String = Time.get_datetime_stri
 	return values
 
 # Получение суммы движений средств распределенных по дням
-func select_daily_transactions(where: String, date: String = Time.get_datetime_string_from_system()) -> Array:
+func select_daily_transactions(where: String, date: String = Global.date_to_str()) -> Array:
 	if where != "": where = " WHERE " + where
 	db.query("""SELECT COALESCE(SUM(value), 0) value, strftime('%d', date) day FROM (SELECT cf.date, CASE WHEN cf.section_id IN (1, 4) THEN 0
 		WHEN cf.section_id = 3 THEN cf.value * -1 WHEN s.income = 0 AND s.month_limit<>-1 THEN cf.value * -1 ELSE cf.value END value FROM cash_flows cf
@@ -180,7 +180,7 @@ func select_monthly_events(date: String) -> Array:
 
 # Добавление событий во временную таблицу
 func insert_event(value: Dictionary, date, completed: bool) -> void:
-	if date is Dictionary: date = Time.get_datetime_string_from_datetime_dict(date, true).split(" ")[0]
+	if date is Dictionary: date = Global.date_to_str(date).split(" ")[0]
 	insert_record("temporary", ["'"+value.title+"'", "'"+date+"'", "'"+value.note+"'", completed, value.id])
 
 # Добавление событий во временную таблицу с выбранным шагом
@@ -192,15 +192,15 @@ func insert_events_with_step(value: Dictionary, new_date: Dictionary, current_da
 # Получение списка событий
 func select_events(date: String) -> Array:
 	# подготовка данных о месяце для формирования событий
-	var current_date: Dictionary = Time.get_datetime_dict_from_system()
-	var selected_date: Dictionary = Time.get_datetime_dict_from_datetime_string(date, false)
+	var current_date: Dictionary = Global.date
+	var selected_date: Dictionary = Global.date_to_dict(date)
 	var current_month_day_count: int = select_day_count(date)
-	var last_month_day_count: int = select_day_count(Time.get_datetime_string_from_datetime_dict(Global.get_other_month(selected_date, false), false))
+	var last_month_day_count: int = select_day_count(Global.date_to_str(Global.get_other_month(selected_date, false)))
 	var values: Array = select_monthly_events(date) # Получение первоначальных данных для временной таблицы
 	# Заполнение временной таблицы
 	_create_table("temporary", "title VARCHAR(255), date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
 	for i in values:
-		var new_date: Dictionary = Time.get_datetime_dict_from_datetime_string(i.new_date, false)
+		var new_date: Dictionary = Global.date_to_dict(i.new_date)
 		match i.repetition_rate:
 			0: if Global.date_comparison(selected_date, new_date, "==", false): insert_event(i, i.new_date, Global.date_comparison(current_date, new_date, ">"))
 			1: insert_events_with_step(i, new_date, current_date, current_month_day_count, 2)
@@ -295,7 +295,7 @@ func delete_user():
 
 # Обновление функций
 # Запрос на получение суммы и количества транзакций сгруппированных по разделам
-func select_sections_cash_movement(id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
+func select_sections_cash_movement(id: int, date: String = Global.date_to_str()) -> Array:
 	db.query("SELECT cf.wallet_id, cf.section_id, sum(cf.value) value, count(cf.id) count, s.title, s.income FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id "+\
 		"WHERE cf.wallet_id="+str(id)+" AND s.month_limit>=0 AND "+where_date(date, "cf.date")+" GROUP BY s.id;")
 	var result: Array = db.query_result
@@ -303,7 +303,7 @@ func select_sections_cash_movement(id: int, date: String = Time.get_datetime_str
 	return result
 
 # Запрос на получение суммы и количества транзакций сгруппированных по специальным разделам
-func select_special_sections_cash_movement(id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
+func select_special_sections_cash_movement(id: int, date: String = Global.date_to_str()) -> Array:
 	db.query("SELECT cf.*, s.title, SUM(cf.value) value, COUNT(cf.id) count FROM cash_flows cf LEFT JOIN sections s ON cf.section_id = s.id "+\
 		"WHERE (cf.wallet_id="+str(id)+" OR (cf.wallet_2_id="+str(id)+" AND s.id=1)) AND s.month_limit=-1 AND "+where_date(date, "cf.date")+" GROUP BY section_id, wallet_id, wallet_2_id;")
 	var sections: Array = []
@@ -319,12 +319,12 @@ func select_special_sections_cash_movement(id: int, date: String = Time.get_date
 	return values
 
 # Объединение результатов двух запросов на сумму и количество транзакций сгруппированных по разделам
-func select_general_sections_cash_movement(id, date: String = Time.get_datetime_string_from_system()) -> Array:
+func select_general_sections_cash_movement(id, date: String = Global.date_to_str()) -> Array:
 	if not id: return []
 	return select_special_sections_cash_movement(id, date) + select_sections_cash_movement(id, date)
 	
 # Получение суммы движений средств на счете
-func select_wallets_movement(id: int, date: String = Time.get_datetime_string_from_system()) -> Array:
+func select_wallets_movement(id: int, date: String = Global.date_to_str()) -> Array:
 	var result: Array = [0.0, 0]
 	for i in select_general_sections_cash_movement(id, date):
 		result[0] += i.value 
@@ -342,14 +342,14 @@ func _select_wallets_list(where: String, order: String) -> Array:
 	return db.query_result
 
 # Запрос на изменение списка кошельков
-func _update_wallets_list(line: Dictionary, date: String = Time.get_datetime_string_from_system()) -> Dictionary:
+func _update_wallets_list(line: Dictionary, date: String = Global.date_to_str()) -> Dictionary:
 	db.query("SELECT SUM(IIF((cf.section_id=1 and cf.wallet_id="+str(line.id)+""")OR cf.section_id=3 OR (s.income=0 and cf.section_id>4), cf.value*-1, cf.value)) value
 		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE (cf.wallet_id="""+str(line.id)+" or (cf.wallet_2_id="+str(line.id)+" and cf.section_id=1)) AND "+where_date(date, "cf.date")+";")
 	line["cash_flow"] = db.query_result[0].value if db.query_result[0].value else 0.
 	return line
 	
 # Запрос на получение списка разделов
-func select_sections_list(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
+func select_sections_list(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
 	if where: where = " WHERE "+where
 	if order: order = " ORDER BY "+order
 	db.query("""SELECT s.*, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM `sections` s LEFT JOIN
@@ -363,7 +363,7 @@ func _update_sections_list(line: Dictionary, parent) -> Dictionary:
 	return line
 
 # Запрос на получение списка движений средств
-func _select_cash_flows_list(where: String = "", date: String = Time.get_datetime_string_from_system(), order: String = "") -> Array:
+func _select_cash_flows_list(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
 	if where: where = " AND "+where
 	if order: order = " ORDER BY "+order
 	db.query("""SELECT cf.*, s.title, w.title wallet_title FROM `cash_flows` cf LEFT JOIN sections s ON cf.section_id=s.id
@@ -384,7 +384,7 @@ func _update_cash_flows_list(line: Dictionary) -> Dictionary:
 	return line
 	
 # Получение суммы движений средств распределенных по дням
-func select_cash_flow_graphics(where: String, date: String = Time.get_datetime_string_from_system()) -> Array:
+func select_cash_flow_graphics(where: String, date: String = Global.date_to_str()) -> Array:
 	if where: where = " AND " + where
 	db.query("""SELECT SUM(CASE WHEN cf.section_id IN (1, 4) THEN 0 WHEN cf.section_id = 3 OR (s.income = 0 AND s.month_limit<>-1)  THEN cf.value * -1 ELSE cf.value END) value,
 		strftime('%d', cf.date) day FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE """+where_date(date)+where+" GROUP BY cf.date")
@@ -399,7 +399,7 @@ func _select_loans_list(where: String = "", order: String = "") -> Array:
 
 # Добавление событий во временную таблицу
 func _insert_event(value: Dictionary, date: Dictionary) -> void:
-	var text_date: String = Time.get_datetime_string_from_datetime_dict(date, true).split(" ")[0]
+	var text_date: String = Global.date_to_str(date).split(" ")[0]
 	insert_record("multiplied_events", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", "'"+value.note+"'", Global.date_comparison(Global.date, date, ">"), value.id])
 
 # Добавление событий во временную таблицу с выбранным шагом
@@ -418,7 +418,7 @@ func _select_events_list(date: String) -> Array:
 # Заполнение таблицы размноженных событий
 func create_multiplied_events_table(date: String) -> void:
 	# Подготовка данных о месяце для формирования событий
-	var selected_date: Dictionary = Time.get_datetime_dict_from_datetime_string(date, false)
+	var selected_date: Dictionary = Global.date_to_dict(date)
 	var current_month_day_count: int = select_day_count(date)
 	var last_month_day_count: int = select_day_count(Global.get_last_month(date))
 	var values: Array = _select_events_list(date) # Получение первоначальных данных для таблицы
@@ -426,7 +426,7 @@ func create_multiplied_events_table(date: String) -> void:
 	update(Tables.SQLITE_SEQUENCE, "seq=0", 'name="multiplied_events"')
 	# Заполнение таблицы
 	for i in values:
-		var new_date: Dictionary = Time.get_datetime_dict_from_datetime_string(i.new_date, false)
+		var new_date: Dictionary = Global.date_to_dict(i.new_date)
 		match i.repetition_rate:
 			0: if Global.date_comparison(selected_date, new_date, "==", false): _insert_event(i, new_date)
 			1: _insert_events_with_step(i, new_date, current_month_day_count, 2)
