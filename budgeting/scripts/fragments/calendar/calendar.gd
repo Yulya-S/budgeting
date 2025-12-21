@@ -19,7 +19,7 @@ func _process(_delta: float) -> void:
 func _end_create() -> bool: return Cells.get_child_count() < day_count + date.weekday - 1 or Cells.get_child_count() % 7 != 0
 
 # Обновление данных
-func data_update(new_filter: ColorRect) -> void:
+func update_data(new_filter: ColorRect) -> void:
 	# Очистка календаря
 	for i in Cells.get_children():
 		i.queue_free()

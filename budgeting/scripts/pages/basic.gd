@@ -55,6 +55,6 @@ func update_data() -> void:
 
 # Поиск и запуск изменения списков и графиков
 func _find_objects(obj: Variant) -> void:
-	if obj.name in ["ObjArray", "DailyTransactions"]: obj.data_update()
+	Global.run_func(obj, "update_data")
 	for i in obj.get_children(): _find_objects(i)
 	

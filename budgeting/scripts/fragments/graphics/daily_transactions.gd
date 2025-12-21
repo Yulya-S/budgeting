@@ -26,7 +26,7 @@ func _draw() -> void:
 	ColorScheme.repainting(self)
 	
 # Перезапуск отрисовки графика
-func data_update(filter: ColorRect = null) -> void:
+func update_data(filter: ColorRect = null) -> void:
 	# Создание данных для фильтрации при их отсутствии
 	var filter_data: Dictionary = {}
 	if filter: filter_data = filter.get_filter()

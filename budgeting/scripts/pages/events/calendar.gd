@@ -26,8 +26,8 @@ func _process(delta: float) -> void:
 		Cells.get_child(int(value.date.split("-")[-1]) + date.weekday - 2).add_event()
 
 # Обновление данных
-func data_update(new_filter: ColorRect) -> void:
-	super.data_update(new_filter)
+func update_data(new_filter: ColorRect) -> void:
+	super.update_data(new_filter)
 	# Получение новых данных для создания заполнения легенды
 	Request.create_multiplied_events_table(Global.date_to_str(date))
 	event_days = Request.select_event_days()

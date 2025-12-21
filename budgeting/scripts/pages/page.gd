@@ -15,7 +15,7 @@ func _update_page() -> void:
 	update_data()
 	
 # Обновление данных
-func update_data() -> void: Objects.data_update($Filter)
+func update_data() -> void: Objects.update_data($Filter)
 
 # Изменение данных после смены дня
 func new_day() -> void:
