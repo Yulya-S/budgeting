@@ -2,6 +2,14 @@ extends Page
 # Подгружаемыу объекты
 var objArray = load("res://scenes/fragments/obj_array.tscn")
 var calendar = load("res://scenes/pages/events/calendar.tscn")
+# Переменная
+var start_update: bool = false # Был ли отправлен запрос на изменение страницы
+
+# Начало создания объектов на странице
+func _process(delta: float) -> void:
+	if Request.completion_creation_et and start_update:
+		Objects.update_data($Filter)
+		start_update = false
 
 # Запуск обновления данных на странице
 func _update_page() -> void:
@@ -22,6 +30,11 @@ func _update_page() -> void:
 		get_child(-1).position = Vector2(0, 170)
 	Objects = get_child(-1) # Получение пути к списку событий
 	update_data() # Обновлениие данных в списке событий
+
+# Отправка запроса на обновление таблицы с событиями
+func update_data() -> void:
+	start_update = true
+	Request.start_create_multiplied_events_table($Filter.get_filter().date)
 
 # Обработка нажатия кнопки создания события
 func _on_add_event_button_down() -> void: Global.emit_signal("open_window", Global.Pages.EVENT)

@@ -5,12 +5,12 @@ class_name Calendar
 
 # Переменные
 @export var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Путь к сцене ячеек календаря
-var date: Dictionary = {} # Сохранение выбранной даты
+var date: Dictionary = Global.date # Сохранение выбранной даты
 var day_count: int = 30 # Количество дней в выбранном месяце
 
 # Постепенное создание элементов страницы
 func _process(_delta: float) -> void:
-	if _end_create():
+	if date != {} and _end_create():
 		Cells.add_child(cell_path.instantiate())
 		Cells.get_child(-1).set_values(Cells.get_child_count() - date.weekday, Global.date_comparison(Global.date, date, "==", false),
 			Global.date_comparison(Global.date, date, "=<", false), day_count)

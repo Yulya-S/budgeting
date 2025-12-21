@@ -10,6 +10,7 @@ var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Путь
 var event_days: Array = [] # Список дат для маркировки в каллендаре
 var date: Dictionary = {} # Сохранение выбранной даты
 var day_count: int = 30 # Количество дней в выбранном месяце
+var start_update: bool = false # Был ли отправлен запрос на изменение страницы
 
 # Создание главной страницы
 func _ready() -> void:
@@ -21,6 +22,9 @@ func _process(delta: float) -> void:
 	if Cells.get_child_count() < 14:
 		Cells.add_child(cell_path.instantiate())
 		Cells.get_child(-1).set_values(date.day + Cells.get_child_count() - date.weekday - 1, true, true, day_count)
+	elif Request.completion_creation_et and start_update:
+		start_update = false
+		event_days = Request.select_event_days("CAST(strftime('%d', date) AS INTEGER)>"+str(date.day-date.weekday))
 	elif len(event_days) > 0:
 		var value: int = int(event_days.pop_front().date.split("-")[-1])
 		if value <= date.day - date.weekday + 14: Cells.get_child(value - (date.day - date.weekday + 1)).add_event()
@@ -49,10 +53,10 @@ func update_data() -> void:
 	date = Global.date_to_dict()
 	if date.weekday == 0: date.weekday = 7 # Смена индекса дня недели
 	day_count = Request.select_day_count(Global.date_to_str())
-	# Получение новых данных для создания заполнения легенды
-	Request.create_multiplied_events_table("-".join([date.year, date.month, "01"]))
-	event_days = Request.select_event_days("CAST(strftime('%d', date) AS INTEGER)>"+str(date.day-date.weekday))
-
+	# Отправка запроса на обновление таблицы с событиями
+	start_update = true
+	Request.start_create_multiplied_events_table("-".join([date.year, date.month, "01"]))
+	
 # Поиск и запуск изменения списков и графиков
 func _find_objects(obj: Variant) -> void:
 	Global.run_func(obj, "update_data")

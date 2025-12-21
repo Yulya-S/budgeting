@@ -5,6 +5,12 @@ enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, WALLET_TRANSACTION
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
+# Для заполнения таблицы событий
+var events: Array = [] # Список событий для постепенного увеличения их количества
+var completion_creation_et: bool = false # Маркер завершения заполнения таблицы событий
+var selected_date: Dictionary = {} # Выбранная дата
+var current_month_day_count: int = 30 # Количество дней в месяце
+var last_month_day_count: int = 30 # количество дней в предыдущем месяце
 
 # Создание и подключение базы данных
 func _ready() -> void: connection_user_db()
@@ -333,6 +339,39 @@ func select_wallets_movement(id: int, date: String = Global.date_to_str()) -> Ar
 
 
 # Годится
+# Постепенное создание событий в таблице событий
+func _process(_delta: float) -> void:
+	if not completion_creation_et:
+		if len(events) == 0:
+			completion_creation_et = true
+			return
+		var value: Dictionary = events.pop_front()
+		var new_date: Dictionary = Global.date_to_dict(value.new_date)
+		match value.repetition_rate:
+			0: if Global.date_comparison(selected_date, new_date, "==", false): _insert_event(value, new_date)
+			1: _insert_events_with_step(value, new_date, current_month_day_count, 2)
+			2: _insert_events_with_step(value, new_date, current_month_day_count, 7)
+			3, 4:
+				new_date.year = selected_date.year
+				if value.repetition_rate == 3:
+					new_date.month = selected_date.month
+					if last_month_day_count < new_date.day: _insert_event(value, new_date)
+					if current_month_day_count >= new_date.day: _insert_event(value, new_date)
+				elif new_date.month == selected_date.month and current_month_day_count >= new_date.day:
+					_insert_event(value, new_date)
+				elif new_date.month == Global.get_last_month(selected_date).month and last_month_day_count < new_date.day:
+					_insert_event(value, new_date)
+
+# Начало создания таблицы событий
+func start_create_multiplied_events_table(date: String) -> void:
+	selected_date = Global.date_to_dict(date)
+	current_month_day_count = select_day_count(date)
+	last_month_day_count = select_day_count(Global.get_last_month(date))
+	events = _select_events_list(date)
+	db.query("DELETE FROM multiplied_events")
+	update(Tables.SQLITE_SEQUENCE, "seq=0", 'name="multiplied_events"')
+	completion_creation_et = false
+
 # Получение текущего суммарного бюджета
 func select_wallets_sum() -> float:
 	db.query("SELECT COALESCE((SELECT COALESCE(SUM(value),0.0) FROM wallets) - (SELECT COALESCE(SUM(total),0.0) FROM loans), 0.0) value;")
@@ -424,33 +463,6 @@ func _select_events_list(date: String) -> Array:
 		WHEN repetition_rate=2 THEN 7-juli%7 ELSE juli*-1 END) new_date FROM (SELECT *, (julianday(Date('"""+date+\
 		"'))-julianday(date)) juli FROM events) AS event WHERE strftime('%Y-%m', date)<=strftime('%Y-%m', Date('"+date+"')) ORDER BY new_date;")
 	return db.query_result
-
-# Заполнение таблицы размноженных событий
-func create_multiplied_events_table(date: String) -> void:
-	# Подготовка данных о месяце для формирования событий
-	var selected_date: Dictionary = Global.date_to_dict(date)
-	var current_month_day_count: int = select_day_count(date)
-	var last_month_day_count: int = select_day_count(Global.get_last_month(date))
-	var values: Array = _select_events_list(date) # Получение первоначальных данных для таблицы
-	db.query("DELETE FROM multiplied_events")
-	update(Tables.SQLITE_SEQUENCE, "seq=0", 'name="multiplied_events"')
-	# Заполнение таблицы
-	for i in values:
-		var new_date: Dictionary = Global.date_to_dict(i.new_date)
-		match i.repetition_rate:
-			0: if Global.date_comparison(selected_date, new_date, "==", false): _insert_event(i, new_date)
-			1: _insert_events_with_step(i, new_date, current_month_day_count, 2)
-			2: _insert_events_with_step(i, new_date, current_month_day_count, 7)
-			3, 4:
-				new_date.year = selected_date.year
-				if i.repetition_rate == 3:
-					new_date.month = selected_date.month
-					if last_month_day_count < new_date.day: _insert_event(i, new_date)
-					if current_month_day_count >= new_date.day: _insert_event(i, new_date)
-				elif new_date.month == selected_date.month and current_month_day_count >= new_date.day:
-					_insert_event(i, new_date)
-				elif new_date.month == Global.get_last_month(selected_date).month and last_month_day_count < new_date.day:
-					_insert_event(i, new_date)
 	
 func select_multiplied_events_list(where: String = "") -> Array:
 	if where: where = "CAST(strftime('%d', date) AS INTEGER) = "+where

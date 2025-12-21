@@ -28,8 +28,7 @@ func _process(delta: float) -> void:
 # Обновление данных
 func update_data(new_filter: ColorRect) -> void:
 	super.update_data(new_filter)
-	# Получение новых данных для создания заполнения легенды
-	Request.create_multiplied_events_table(Global.date_to_str(date))
+	# Получение новых данных для создания заполнения легендыd
 	event_days = Request.select_event_days()
 	_update_legend(select_cell)
 
