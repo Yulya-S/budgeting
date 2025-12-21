@@ -134,14 +134,14 @@ func _lang_match(obj, key: String) -> void:
 		"CheckButton": set_CB(obj)
 		"ColorPickerButton": obj.get_child(0).set_text(lang[key]+" "+obj.name.split("_")[1])
 		"OptionButton":
-			if lang[key] is Array:
-				if obj.name == "Order": obj.get_parent().reset_order()
-				var idx: int = 0
-				for i in range(obj.get_item_count()):
-					if obj.get_item_text(i) == "": continue
-					if obj.get_item_text(i) in lang.keys() and "__" in obj.get_item_text(i):
-						obj.set_item_text(i, lang[obj.get_item_text(i)])
-						continue
+			if obj.name == "Order": obj.get_parent().reset_order()
+			var idx: int = 0
+			for i in range(obj.get_item_count()):
+				if obj.get_item_text(i) == "": continue
+				if obj.get_item_text(i) in lang.keys() and "__" in obj.get_item_text(i):
+					obj.set_item_text(i, lang[obj.get_item_text(i)])
+					continue
+				if lang[key] is Array:
 					if idx >= len(lang[key]): return
 					obj.set_item_text(i, lang[key][idx])
 					idx += 1
@@ -224,7 +224,7 @@ func _standard_language() -> Dictionary:
 		"__CI0": "Расход", "__CI1": "Доход",
 		# Страница движений средств
 		"FilterWalletLabel": "Имя счёта", "FilterSectionLabel": "Статья",
-		"CashFlowSectionFilterOrder": ["По статье", "По возрастанию суммы", "По убыванию суммы"],
+		"CashFlowFilterOrder": ["По статье", "По возрастанию суммы", "По убыванию суммы"],
 		"CashFlowTitle": "Название раздела", "CashFlowWallet_Title": "Название кошелька",
 		"CashFlowValue": "Сумма", "Date": "Дата",
 		# Страница займов
