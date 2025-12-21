@@ -20,8 +20,6 @@ func set_values(data: Dictionary) -> void:
 	File.set_lang(self)
 	
 # Обработка наведения мыши на контейнер
-func _on_mouse_entered() -> void:
-	if Title.id and ParentPage.get("highlighting_graph_sections"): ParentPage.highlighting_graph_sections(m_index)
+func _on_mouse_entered() -> void: if Title.id: Global.run_func(ParentPage, "highlighting_graph_sections", [m_index])
 
-func _on_mouse_exited() -> void:
-	if Title.id and ParentPage.get("highlighting_graph_sections"): ParentPage.highlighting_graph_sections(m_index, false)
+func _on_mouse_exited() -> void: if Title.id: Global.run_func(ParentPage, "highlighting_graph_sections", [m_index, false])

@@ -69,6 +69,7 @@ OB_items = {
 "text": "(cf.section_id=1 AND cf.wallet_2_id=__id__) OR cf.wallet_id=__id__"
 }
 }
+title_pref = null
 
 [node name="Wallet" type="OptionButton" parent="Filter"]
 layout_mode = 0

@@ -110,3 +110,6 @@ func date_to_str(date_to_update: Dictionary = date) -> String: return Time.get_d
 
 # Перевод текстовой даты в формат словаря
 func date_to_dict(date_to_update: String = date_to_str(date)) -> Dictionary: return Time.get_datetime_dict_from_datetime_string(date_to_update, true)
+
+# Функция вызова функции у родителя если она у него есть
+func run_func(obj: Variant, func_name: String, args: Array = []) -> void: if obj.get(func_name): obj.callv(func_name, args)

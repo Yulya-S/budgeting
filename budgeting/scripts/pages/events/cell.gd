@@ -21,6 +21,6 @@ func set_values(idx: int, current_month: bool, next_month: bool, day_count: int)
 func add_event(): $Marker.visible = true
 	
 # Обработка наведения курсоры мыши на ячейку
-func _on_mouse_entered() -> void: Parent.set_cell(Number.text)
+func _on_mouse_entered() -> void: Global.run_func(Parent, "set_cell", [Number.text])
 
-func _on_mouse_exited() -> void: Parent.reset_cell(Number.text)
+func _on_mouse_exited() -> void: Global.run_func(Parent, "reset_cell", [Number.text])

@@ -55,4 +55,4 @@ func update_page(close_page: String = "") -> void:
 	for i in lines: if i.event_id not in events_color.keys(): events_color[i.event_id] = "#ffffff"
 	for i in range(len(events_color.keys())): events_color[events_color.keys()[i]] = ColorScheme.get_color(events_color.keys()[i]-1, Request.select(Request.Tables.EVENTS, "COUNT(id)-1 count")[0].count)
 	# Обновление страницы родителя
-	if get_parent().get("update_page"):	get_parent().update_page(close_page)
+	Global.run_func(get_parent(), "update_page", [close_page])
