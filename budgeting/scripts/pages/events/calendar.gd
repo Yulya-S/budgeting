@@ -13,7 +13,6 @@ var event_days: Array = [] # Список дат для маркировки в 
 # Обновляемые
 var select_cell: int = 0 # Индекс выбранной ячейки календаря
 
-
 # Постепенное создание элементов страницы
 func _process(delta: float) -> void:
 	super._process(delta)
@@ -22,13 +21,15 @@ func _process(delta: float) -> void:
 		Legend.add_child(legend_element_path.instantiate())
 		Legend.get_child(-1).set_values(lines.pop_front())
 	if not _end_create() and len(event_days) > 0:
+		SelectedCell.visible = true
 		var value: Dictionary = event_days.pop_front()
 		Cells.get_child(int(value.date.split("-")[-1]) + date.weekday - 2).add_event()
 
 # Обновление данных
 func update_data(new_filter: ColorRect) -> void:
 	super.update_data(new_filter)
-	# Получение новых данных для создания заполнения легендыd
+	SelectedCell.visible = false
+	# Получение новых данных для создания заполнения легенды
 	event_days = Request.select_event_days()
 	_update_legend(select_cell)
 
