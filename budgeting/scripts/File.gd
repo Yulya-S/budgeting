@@ -1,6 +1,6 @@
 extends Node
 # Переменные
-const BasesPath: String = "res://bases/"
+const BasesPath: String = "user://bases/"
 # Файл конфигураций
 var config: Dictionary = {"enter": false, "lang": "ru", "login": "", "password": ""} # Конфигурации
 const ConfigFilePath: String = BasesPath + "config.json" # Путь к файлу конфигураций
@@ -79,8 +79,8 @@ func load_lang(container: OptionButton) -> void:
 # Создание файлов языков
 func _create_langs() -> void:
 	# Убрать этот фрагмент - он нужен что бы не удалять каждый раз файлы локализации в ручную
-	DirAccess.remove_absolute("res://bases/language/ru.json")
-	DirAccess.remove_absolute("res://bases/language/en.json")
+	DirAccess.remove_absolute(BasesPath + "language/ru.json")
+	DirAccess.remove_absolute(BasesPath + "language/en.json")
 	
 	_cr_ru()
 	_cr_en()

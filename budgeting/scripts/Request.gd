@@ -12,7 +12,7 @@ func _ready() -> void: connection_user_db()
 # Подключение базы данных пользователей
 func connection_user_db() -> void:
 	db = SQLite.new()
-	db.path = "res://bases/users.db"
+	db.path = File.BasesPath + "users.db"
 	db.open_db()
 	# Создание таблицы в базе данных пользователей
 	_create_table("users", "login VARCHAR(255), password VARCHAR(255), base VARCHAR(255)")
@@ -20,7 +20,7 @@ func connection_user_db() -> void:
 # Подключение базы данных
 func connection_db(db_name: String) -> void:
 	db = SQLite.new()
-	db.path = "res://bases/"+db_name+".db"
+	db.path =  File.BasesPath + db_name + ".db"
 	db.open_db()
 	create_tables()
 
