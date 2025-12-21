@@ -49,8 +49,16 @@ func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, t
 	system_gradient.offsets = g_offsets
 	
 # Замена цвета текста
-func set_font_color(object, column: String = "font_color") -> void: object.add_theme_color_override(column, get_sys_color(0))
-	
+func set_font_color(object, column: String = "font_color", color_idx: int = 0) -> void: object.add_theme_color_override(column, get_sys_color(color_idx))
+
+# Изменение цветов кнопок
+func set_buttons_color(obj: Variant, a: float = 0.5, column: String = "normal") -> void:
+	var style_box = StyleBoxFlat.new()
+	style_box.bg_color = get_sys_color(0)
+	style_box.bg_color.a = a
+	style_box.set_corner_radius_all(2)
+	obj.add_theme_stylebox_override(column, style_box)
+
 # Применение системного градиента к странице
 func repainting(obj) -> void:
 	match obj.name:
@@ -67,6 +75,11 @@ func repainting(obj) -> void:
 			obj.get_child(2).color = get_sys_color(5)
 		_:
 			match obj.get_class():
+				"Button", "OptionButton", "TextEdit":
+					set_buttons_color(obj)
+					set_buttons_color(obj, 0.8, "hover")
+					set_buttons_color(obj, 0.5, "pressed")
+					for i in ["", "focus_", "hover_", "hover_pressed_", "pressed_"]: set_font_color(obj, "font_"+i+"color", 6)
 				"CheckButton": for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
 				"ColorRect":
 					if obj.get_parent().get_class() == "VBoxContainer": obj.color = get_sys_color(4 + int(obj.get_parent().get_child_count() != 1))
