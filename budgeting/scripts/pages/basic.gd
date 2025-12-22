@@ -56,6 +56,8 @@ func update_data() -> void:
 	
 # Поиск и запуск изменения списков и графиков
 func _find_objects(obj: Variant) -> void:
-	Global.run_func(obj, "update_data")
+	var filter: Array = []
+	if obj.get_parent().name == "Section": filter = [{"where":"s.month_limit>=0", "order": "value DESC"}]
+	Global.run_func(obj, "update_data", filter)
 	for i in obj.get_children(): _find_objects(i)
 	
