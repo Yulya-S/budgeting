@@ -14,7 +14,7 @@ func _draw() -> void:
 	for i in values: if max_value < abs(i.value): max_value = abs(i.value)
 	var x_step: float = size.x / day_count
 	# Отрисовка
-	for i in range(day_count): draw_string(ThemeDB.fallback_font, Vector2(x_step*i, 120), str(i+1.), HORIZONTAL_ALIGNMENT_CENTER, x_step, 9, ColorScheme.get_sys_color(0, 1))
+	for i in range(day_count): draw_string(ThemeDB.fallback_font, Vector2(x_step*i, 120), str(int(i)+1), HORIZONTAL_ALIGNMENT_CENTER, x_step, 9, ColorScheme.get_sys_color(0, 1))
 	for i in values:
 		if i.value == 0: continue
 		var y_size: float = 50. * abs(i.value) / abs(max_value)
