@@ -39,7 +39,7 @@ func _entrance(auto: bool = false) -> void:
 	var data: Dictionary = Request.select_user()
 	Request.connection_db(File.show_data(data.base))
 	ColorScheme.color_reading()
-	Global.emit_signal("open_new_page", Global.Pages.WALLET)
+	Global.emit_signal("open_new_page", Global.Pages.BASIC)
 
 # Обработка изменения параметра отображения пароля
 func _on_show_password_toggled(toggled_on: bool) -> void:

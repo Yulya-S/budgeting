@@ -295,7 +295,7 @@ func _cr_en() -> void:
 		"FilterConsumptionIncome": ["All types", "Expenses", "Income", "Loans"],
 		"SectionFilterOrder": ["By last transaction date", "Ascending amount", "In descending order of amount", "By monthly limit"],
 		"SectionTitle": "Section title", "SectionValue": "Current value", "Month_Limit": "Limit",
-		"__CI0": "Consumption", "__CI1": "Income",
+		"__CI0": "Expenditure", "__CI1": "Income",
 		# Страница движений средств
 		"FilterWalletLabel": "Account name", "FilterSectionLabel": "Article",
 		"CashFlowFilterOrder": ["According to the article", "Ascending amount", "In descending order of amount"],

@@ -17,6 +17,16 @@ offset_right = 76.0
 offset_bottom = 25.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 
+[node name="Marker" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 2.0
+offset_top = 51.0
+offset_right = 76.0
+offset_bottom = 65.0
+mouse_filter = 1
+color = Color(0.74, 0, 0, 1)
+
 [node name="Completed" type="ColorRect" parent="."]
 visible = false
 custom_minimum_size = Vector2(74, 20)
@@ -27,16 +37,6 @@ offset_right = 76.0
 offset_bottom = 76.0
 mouse_filter = 2
 color = Color(1, 1, 1, 0.278431)
-
-[node name="Marker" type="ColorRect" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 2.0
-offset_top = 51.0
-offset_right = 76.0
-offset_bottom = 65.0
-mouse_filter = 1
-color = Color(0.74, 0, 0, 1)
 
 [node name="Frame" type="Line2D" parent="."]
 position = Vector2(2, 2)
