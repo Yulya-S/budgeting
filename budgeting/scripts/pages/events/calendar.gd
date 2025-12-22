@@ -28,6 +28,7 @@ func _process(delta: float) -> void:
 # Обновление данных
 func update_data(new_filter: ColorRect) -> void:
 	super.update_data(new_filter)
+	ColorScheme.repainting(self)
 	SelectedCell.visible = false
 	# Получение новых данных для создания заполнения легенды
 	event_days = Request.select_event_days()
