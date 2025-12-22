@@ -51,8 +51,8 @@ func valide_numeric_text(text_container: TextEdit) -> void:
 func text_changed_TextEdit(container: TextEdit, is_numeric: bool = false) -> void:
 	var text = container.get_text()
 	if is_numeric: Global.valide_numeric_text(container)
-	if len(text) > 0 and "\t" in text:
-		container.set_text(container.get_text().replace("\t", ""))
+	if len(text) > 0 and ("\t" in text or "\n" in text):
+		container.set_text(container.get_text().replace("\t", "").replace("\n", ""))
 		if container.find_next_valid_focus(): container.find_next_valid_focus().grab_focus()
 
 # Заполнение выпадающего списка объектами

@@ -79,3 +79,6 @@ func _on_year_item_selected(index: int) -> void:
 
 # Обработка нажатия на кнопку применения фильтра
 func _on_button_button_down() -> void: Global.run_func(get_parent(), "update_data")
+
+# Изменение значения текстового контейнера
+func _on_title_text_changed() -> void: Global.text_changed_TextEdit($Title)

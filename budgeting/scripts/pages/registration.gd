@@ -12,6 +12,11 @@ func _ready() -> void: File.load_lang(Language)
 # Автоматический вход
 func _process(_delta: float) -> void: if File.config.enter: _on_enter_button_down(false, true)
 
+# Изменение значений текстовых контейнеров
+func _on_login_text_changed() -> void: Global.text_changed_TextEdit($Login)
+
+func _on_password_text_changed() -> void: Global.text_changed_TextEdit($Password)
+
 # Проверка возможности использования пароля
 func _check_user(login: bool, check_field: bool = true) -> bool:
 	Error.clear()

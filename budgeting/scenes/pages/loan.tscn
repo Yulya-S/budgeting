@@ -166,4 +166,5 @@ obj = 3
 [connection signal="button_down" from="Menu/AddLoan" to="." method="_on_add_loan_button_down"]
 [connection signal="button_down" from="Menu/AddInterest" to="." method="_on_add_interest_button_down"]
 [connection signal="button_down" from="Menu/AddPayment" to="." method="_on_add_payment_button_down"]
+[connection signal="text_changed" from="Filter/Title" to="Filter" method="_on_title_text_changed"]
 [connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]
