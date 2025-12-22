@@ -13,7 +13,7 @@ func _process(_delta: float) -> void:
 	if date != {} and _end_create():
 		Cells.add_child(cell_path.instantiate())
 		Cells.get_child(-1).set_values(Cells.get_child_count() - date.weekday, Global.date_comparison(Global.date, date, "==", false),
-			Global.date_comparison(Global.date, date, "=<", false), day_count)
+			Global.date_comparison(Global.date, date, "<", false), day_count)
 
 # Проверка завершено ли создание ячеек календаря
 func _end_create() -> bool: return Cells.get_child_count() < day_count + date.weekday - 1 or Cells.get_child_count() % 7 != 0
