@@ -32,11 +32,10 @@ func _process(delta: float) -> void:
 # Запуск обновления данных на странице
 func _update_page() -> void:
 	ColorScheme.repainting(self)
+	File.set_lang(self)
 	Budget.set_text(str(Request.select_wallets_sum()))
 	CashFlow.set_text(str(Request.select_funds_movements()))
 	update_data()
-	
-	#File.set_lang(self)
 	
 # Обновление данных
 func update_data() -> void:
@@ -57,7 +56,7 @@ func update_data() -> void:
 # Поиск и запуск изменения списков и графиков
 func _find_objects(obj: Variant) -> void:
 	var filter: Array = []
-	if obj.get_parent().name == "Section": filter = [{"where":"s.month_limit>=0", "order": "value DESC"}]
+	if obj.get_parent().name == "Sections": filter = [{"where":"s.month_limit>=0", "order": "value DESC"}]
 	Global.run_func(obj, "update_data", filter)
 	for i in obj.get_children(): _find_objects(i)
 	

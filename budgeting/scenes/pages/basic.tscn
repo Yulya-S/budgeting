@@ -37,14 +37,15 @@ text = "0.0"
 
 [node name="Label" type="Label" parent="Menu/Budget"]
 layout_mode = 0
-offset_left = -135.0
-offset_right = -7.0
+offset_left = -194.0
+offset_right = -12.0
 offset_bottom = 39.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 20
 theme_override_font_sizes/font_size = 28
 text = "Бюджет:"
+horizontal_alignment = 2
 
 [node name="CashFlow" type="Label" parent="Menu"]
 layout_mode = 0
@@ -60,14 +61,15 @@ text = "0.0"
 
 [node name="Label" type="Label" parent="Menu/CashFlow"]
 layout_mode = 0
-offset_left = -273.0
-offset_right = -5.0
+offset_left = -434.0
+offset_right = -10.0
 offset_bottom = 39.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 20
 theme_override_font_sizes/font_size = 28
 text = "Денежный поток:"
+horizontal_alignment = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 0
@@ -106,11 +108,11 @@ points = PackedVector2Array(0, 0, 1152, 0)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
 
-[node name="Section" type="Control" parent="ScrollContainer/VBoxContainer"]
+[node name="Sections" type="Control" parent="ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(1152, 160)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Section"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Sections"]
 layout_mode = 2
 offset_left = 25.0
 offset_top = 12.0
@@ -120,13 +122,13 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Расходы по статьям"
 
-[node name="PieChart" parent="ScrollContainer/VBoxContainer/Section" instance=ExtResource("4_1kehw")]
+[node name="PieChart" parent="ScrollContainer/VBoxContainer/Sections" instance=ExtResource("4_1kehw")]
 offset_left = 25.0
 offset_top = 55.0
 offset_right = 126.0
 offset_bottom = 156.0
 
-[node name="ObjArray" parent="ScrollContainer/VBoxContainer/Section" instance=ExtResource("3_ii1de")]
+[node name="ObjArray" parent="ScrollContainer/VBoxContainer/Sections" instance=ExtResource("3_ii1de")]
 layout_mode = 0
 offset_left = 161.0
 offset_top = 55.0
@@ -134,7 +136,7 @@ offset_right = 1144.0
 offset_bottom = 156.0
 obj = 1
 
-[node name="Separator" type="Line2D" parent="ScrollContainer/VBoxContainer/Section"]
+[node name="Separator" type="Line2D" parent="ScrollContainer/VBoxContainer/Sections"]
 position = Vector2(0, 166)
 points = PackedVector2Array(0, 0, 1152, 0)
 width = 2.0
@@ -152,7 +154,7 @@ offset_right = 1147.0
 offset_bottom = 40.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Распределение движений средств за текущий месяц"
+text = "Распределение движений средств"
 
 [node name="DailyTransactions" parent="ScrollContainer/VBoxContainer/Cash_flows" instance=ExtResource("6_yvt7d")]
 layout_mode = 0

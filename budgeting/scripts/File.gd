@@ -236,6 +236,10 @@ func _standard_language() -> Dictionary:
 		# Страница событий
 		"AddEvent": "Создать событие", "EventTitle": "Название события", "EventTypeLabel": "Недостаточно средств",
 		"__ET1": "Списание", "__ET2": "Приход",
+		# Главная страница
+		"BudgetLabel": "Бюджет:", "CashFlowLabel": "Денежный поток:", "WalletsLabel": "Список счетов",
+		"SectionsLabel": "Расходы по статьям", "EventsLabel": "Ближайшие события",
+		"Cash_flowsLabel": "Распределение движений средств",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "По дате добавления", "__FO2": "По алфавиту",
 		# Объекты из базы данных
@@ -306,6 +310,10 @@ func _cr_en() -> void:
 		# Страница событий
 		"AddEvent": "Create an event", "EventTitle": "Event name", "EventTypeLabel": "Insufficient funds",
 		"__ET1": "Write-off", "__ET2": "Receipt",
+		# Главная страница
+		"BudgetLabel": "Budget:", "CashFlowLabel": "Cash flow:", "WalletsLabel": "List of wallets",
+		"SectionsLabel": "Expenses by section", "EventsLabel": "Upcoming events",
+		"Cash_flowsLabel": "Distribution of cash flows",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "By date added", "__FO2": "Alphabetically",
 		# Объекты из базы данных
