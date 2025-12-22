@@ -113,3 +113,11 @@ func date_to_dict(date_to_update: String = date_to_str(date)) -> Dictionary: ret
 
 # Функция вызова функции у родителя если она у него есть
 func run_func(obj: Variant, func_name: String, args: Array = []) -> void: if obj.get(func_name): obj.callv(func_name, args)
+
+# Получение результата работы функции get_filter на случай нулевого фильтра
+func get_filter(filter: Variant = {}) -> Dictionary:
+	if filter is not Dictionary: return filter.get_filter()
+	var new_filter: Dictionary = {"date": Global.date_to_str(), "where": "", "order": ""}
+	filter = filter.duplicate()
+	for i in new_filter.keys(): if i not in filter.keys(): filter[i] = new_filter[i]
+	return filter

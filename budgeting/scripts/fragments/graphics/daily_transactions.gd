@@ -26,11 +26,8 @@ func _draw() -> void:
 	ColorScheme.repainting(self)
 	
 # Перезапуск отрисовки графика
-func update_data(filter: ColorRect = null) -> void:
-	# Создание данных для фильтрации при их отсутствии
-	var filter_data: Dictionary = {}
-	if filter: filter_data = filter.get_filter()
-	else: filter_data = {"date": Global.date_to_str(), "where": "", "order": ""}
+func update_data(filter: Variant = {}) -> void:
+	var filter_data: Dictionary = Global.get_filter(filter)
 	date = filter_data.date
 	values = Request.select_cash_flow_graphics(filter_data.where, date)
 	queue_redraw()

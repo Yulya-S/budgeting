@@ -32,10 +32,8 @@ func _draw() -> void:
 		deg += arc_size
 
 # Заполнение списка значений
-func update_data(filter: ColorRect = null, key: String = "value") -> void:
-	var filter_data: Dictionary = {}
-	if filter: filter_data = filter.get_filter()
-	else: filter_data = {"date": Global.date_to_str(), "where": "", "order": ""}
+func update_data(filter: Variant = {}, key: String = "value") -> void:
+	var filter_data: Dictionary = Global.get_filter(filter)
 	values = []
 	for i in Request.select_sections_list(filter_data.where, filter_data.date, filter_data.order): values.append(i[key])
 	queue_redraw()
