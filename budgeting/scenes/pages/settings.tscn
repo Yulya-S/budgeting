@@ -293,6 +293,8 @@ offset_left = 13.0
 offset_right = 319.0
 offset_bottom = 44.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
 text = "Пример текста"
 vertical_alignment = 1
 
@@ -318,6 +320,8 @@ offset_left = 13.0
 offset_right = 319.0
 offset_bottom = 44.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
 text = "Пример текста"
 vertical_alignment = 1
 
