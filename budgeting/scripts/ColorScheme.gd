@@ -52,12 +52,19 @@ func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, t
 func set_font_color(object, column: String = "font_color", color_idx: int = 0) -> void: object.add_theme_color_override(column, get_sys_color(color_idx))
 
 # Изменение цветов кнопок
-func set_buttons_color(obj: Variant, a: float = 0.5, column: String = "normal") -> void:
+func _set_buttons_color(obj: Variant, a: float = 0.5, column: String = "normal") -> void:
 	var style_box = StyleBoxFlat.new()
 	style_box.bg_color = get_sys_color(0)
 	style_box.bg_color.a = a
 	style_box.set_corner_radius_all(2)
 	obj.add_theme_stylebox_override(column, style_box)
+
+# Изменение всех цветовых параметров кнопок
+func _set_all_button_color_parametrs(obj: Variant) -> void:
+	_set_buttons_color(obj)
+	_set_buttons_color(obj, 0.8, "hover")
+	_set_buttons_color(obj, 0.5, "pressed")
+	for i in ["", "focus_", "hover_", "hover_pressed_", "pressed_"]: set_font_color(obj, "font_"+i+"color", 6)		
 
 # Применение системного градиента к странице
 func repainting(obj) -> void:
@@ -75,11 +82,10 @@ func repainting(obj) -> void:
 			obj.get_child(2).color = get_sys_color(5)
 		_:
 			match obj.get_class():
-				"Button", "OptionButton", "TextEdit":
-					set_buttons_color(obj)
-					set_buttons_color(obj, 0.8, "hover")
-					set_buttons_color(obj, 0.5, "pressed")
-					for i in ["", "focus_", "hover_", "hover_pressed_", "pressed_"]: set_font_color(obj, "font_"+i+"color", 6)
+				"Button", "TextEdit": _set_all_button_color_parametrs(obj)
+				"OptionButton":
+					_set_all_button_color_parametrs(obj)
+					obj.add_theme_icon_override("arrow", load("res://img/godot_icon/arrow_"+str(int(Request.select(Request.Tables.SETTINGS)[0].dark_theme))+".png"))
 				"CheckButton":
 					var dark_theme: String = str(int(Request.select(Request.Tables.SETTINGS)[0].dark_theme))
 					obj.add_theme_icon_override("checked", load("res://img/godot_icon/checked_"+dark_theme+".tres"))
