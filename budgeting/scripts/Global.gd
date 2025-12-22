@@ -11,7 +11,7 @@ enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменные
 var current_page: Pages = Pages.BASIC # Текущая страница
-var date: Dictionary = Time.get_datetime_dict_from_system() # Текущая дата
+var date: Dictionary = Time.get_date_dict_from_system() # Текущая дата
 
 # Изменение даты под формат запроса
 func date_to_sql_date(text: String) -> String: return date_to_str(date_to_dict(text))
@@ -61,31 +61,22 @@ func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool =
 	if clear_OB: container.clear()
 	for i in objects: container.add_item(i.title, i.id)
 	
-# Получение первого числа следующего/предыдущего месяца
-func get_other_month(new_date, next: bool = true) -> Dictionary:
-	if new_date is String: new_date = date_to_dict(new_date)
-	var date_copy: Dictionary = new_date.duplicate()
-	if next:
-		date_copy.month += 1
-		if date_copy.month > 12:
-			date_copy.month = 1
-			date_copy.year +=1
-	else:
-		date_copy.month -= 1
-		if date_copy.month <= 0:
-			date_copy.month = 12
-			date_copy.year -= 1
-	date_copy.day = 1
-	return date_copy
-	
-func get_last_month(date: Variant) -> Variant:
+# Получение следующего/предыдущего месяца
+func get_other_month(date: Variant, next: bool = false) -> Variant:
 	var new_date = date.duplicate() if date is Dictionary else Global.date_to_dict(date)
-	new_date.month -= 1
-	if new_date.month <= 0:
-		new_date.year -= 1
-		new_date.month = 1
+	if next:
+		new_date.month += 1
+		if new_date.month > 12:
+			new_date.year +=1
+			new_date.month = 1
+	else:
+		new_date.day = 1
+		new_date.month -= 1
+		if new_date.month <= 0:
+			new_date.year -= 1
+			new_date.month = 1
 	if date is Dictionary: return new_date
-	return Global.date_to_str(new_date)
+	return date_to_str(new_date)
 
 # Сравнение дат	
 func date_comparison(date1: Dictionary, date2: Dictionary, operator: String = "==", account_day: bool = true) -> bool:
@@ -106,7 +97,9 @@ func date_comparison(date1: Dictionary, date2: Dictionary, operator: String = "=
 	return false
 
 # Перевод словоря даты в текстовый формат
-func date_to_str(date_to_update: Dictionary = date) -> String: return Time.get_datetime_string_from_datetime_dict(date_to_update, true)
+func date_to_str(date_to_update: Dictionary = date, split_text: bool = false) -> String:
+	var value: String = Time.get_datetime_string_from_datetime_dict(date_to_update, true)
+	return value.split(" ")[0] if split_text else value
 
 # Перевод текстовой даты в формат словаря
 func date_to_dict(date_to_update: String = date_to_str(date)) -> Dictionary: return Time.get_datetime_dict_from_datetime_string(date_to_update, true)

@@ -9,6 +9,7 @@ var db: SQLite = null # Подключенная база данных
 var events: Array = [] # Список событий для постепенного увеличения их количества
 var completion_creation_et: bool = false # Маркер завершения заполнения таблицы событий
 var selected_date: Dictionary = {} # Выбранная дата
+var next_month: Dictionary = {} # Следующий месяц
 var current_month_day_count: int = 30 # Количество дней в месяце
 var last_month_day_count: int = 30 # количество дней в предыдущем месяце
 
@@ -337,7 +338,6 @@ func select_wallets_movement(id: int, date: String = Global.date_to_str()) -> Ar
 		result[1] += i.count
 	return result
 
-
 # Годится
 # Постепенное создание событий в таблице событий
 func _process(_delta: float) -> void:
@@ -348,25 +348,21 @@ func _process(_delta: float) -> void:
 		var value: Dictionary = events.pop_front()
 		var new_date: Dictionary = Global.date_to_dict(value.new_date)
 		match value.repetition_rate:
-			0: if Global.date_comparison(selected_date, new_date, "==", false): _insert_event(value, new_date)
 			1: _insert_events_with_step(value, new_date, current_month_day_count, 2)
 			2: _insert_events_with_step(value, new_date, current_month_day_count, 7)
+			0:
+				if Global.date_comparison(selected_date, new_date, "==", false): _insert_event(value, new_date)					
+				if selected_date.day != 1 and Global.date_comparison(next_month, new_date, "==", false): _insert_event(value, new_date)
 			3, 4:
-				new_date.year = selected_date.year
-				if value.repetition_rate == 3:
-					new_date.month = selected_date.month
-					if last_month_day_count < new_date.day: _insert_event(value, new_date)
-					if current_month_day_count >= new_date.day: _insert_event(value, new_date)
-				elif new_date.month == selected_date.month and current_month_day_count >= new_date.day:
-					_insert_event(value, new_date)
-				elif new_date.month == Global.get_last_month(selected_date).month and last_month_day_count < new_date.day:
-					_insert_event(value, new_date)
+				_insert_events_to_repetition_rate_3_4(value, new_date, selected_date)
+				if selected_date.day != 1: _insert_events_to_repetition_rate_3_4(value, new_date, next_month)
 
 # Начало создания таблицы событий
 func start_create_multiplied_events_table(date: String) -> void:
 	selected_date = Global.date_to_dict(date)
+	next_month = Global.get_other_month(selected_date, true)
 	current_month_day_count = select_day_count(date)
-	last_month_day_count = select_day_count(Global.get_last_month(date))
+	last_month_day_count = select_day_count(Global.get_other_month(date))
 	events = _select_events_list(date)
 	db.query("DELETE FROM multiplied_events")
 	update(Tables.SQLITE_SEQUENCE, "seq=0", 'name="multiplied_events"')
@@ -453,9 +449,25 @@ func _insert_event(value: Dictionary, date: Dictionary) -> void:
 
 # Добавление событий во временную таблицу с выбранным шагом
 func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count: int, step: int) -> void:
-	while new_date.day <= day_count:
-		_insert_event(value, new_date)
+	var two_week: int = 0
+	if selected_date.day != 1 and new_date.month != next_month.month: two_week = 14
+	while new_date.day <= day_count + two_week:
+		var date_dup: Dictionary = new_date.duplicate()
+		if new_date.day > day_count:
+			date_dup = next_month.duplicate()
+			date_dup.day = new_date.day - day_count
+		_insert_event(value, date_dup)
 		new_date.day += step
+
+# Создание событий для частоты раз в месяц и раз в год
+func _insert_events_to_repetition_rate_3_4(value:Dictionary, new_date: Dictionary, date: Dictionary) -> void:
+	new_date.year = date.year
+	if value.repetition_rate == 3:
+		new_date.month = date.month
+		if last_month_day_count < new_date.day: _insert_event(value, new_date)
+		if current_month_day_count >= new_date.day: _insert_event(value, new_date)
+	elif new_date.month == date.month and current_month_day_count >= new_date.day: _insert_event(value, new_date)
+	elif new_date.month == Global.get_other_month(date).month and last_month_day_count < new_date.day: _insert_event(value, new_date)
 		
 # Получение событий в текущем месяце с датой первого появления
 func _select_events_list(date: String) -> Array:

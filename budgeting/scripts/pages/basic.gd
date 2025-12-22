@@ -21,13 +21,17 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if Cells.get_child_count() < 14:
 		Cells.add_child(cell_path.instantiate())
-		Cells.get_child(-1).set_values(date.day + Cells.get_child_count() - date.weekday - 1, true, true, day_count)
+		var day_number: int = date.day + Cells.get_child_count() - date.weekday - 1
+		if day_number >= day_count: day_number -= day_count
+		Cells.get_child(-1).set_values(day_number, true, true, day_count)
 	elif Request.completion_creation_et and start_update:
 		start_update = false
-		event_days = Request.select_event_days("CAST(strftime('%d', date) AS INTEGER)>"+str(date.day-date.weekday))
+		event_days = Request.select_event_days('date >= "'+Global.date_to_str(date, true)+'" AND date < DATE("'+Global.date_to_str(date, true)+'", "+14 days")')
 	elif len(event_days) > 0:
 		var value: int = int(event_days.pop_front().date.split("-")[-1])
-		if value <= date.day - date.weekday + 14: Cells.get_child(value - (date.day - date.weekday + 1)).add_event()
+		var idx: int = value - (date.day - date.weekday + 1)
+		if idx < 0: idx = day_count - date.day + value + date.weekday - 1
+		if idx < Cells.get_child_count(): Cells.get_child(idx).add_event()		
 	
 # Запуск обновления данных на странице
 func _update_page() -> void:
@@ -51,7 +55,7 @@ func update_data() -> void:
 	day_count = Request.select_day_count(Global.date_to_str())
 	# Отправка запроса на обновление таблицы с событиями
 	start_update = true
-	Request.start_create_multiplied_events_table("-".join([date.year, date.month, "01"]))
+	Request.start_create_multiplied_events_table(Global.date_to_str(date))
 	
 # Поиск и запуск изменения списков и графиков
 func _find_objects(obj: Variant) -> void:
