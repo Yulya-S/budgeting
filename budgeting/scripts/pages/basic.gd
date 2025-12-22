@@ -32,11 +32,8 @@ func _process(delta: float) -> void:
 # Запуск обновления данных на странице
 func _update_page() -> void:
 	ColorScheme.repainting(self)
-	
 	Budget.set_text(str(Request.select_wallets_sum()))
 	CashFlow.set_text(str(Request.select_funds_movements()))
-	
-	
 	update_data()
 	
 	#File.set_lang(self)

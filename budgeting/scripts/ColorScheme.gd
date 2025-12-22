@@ -74,7 +74,7 @@ func repainting(obj) -> void:
 		"Background", "DailyTransactions": obj.color = get_sys_color(6)
 		"Filter": obj.color = get_sys_color(3)
 		"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
-		"X", "Border": obj.default_color = get_sys_color(0)
+		"X", "Border", "Separator": obj.default_color = get_sys_color(0)
 		"Frame": obj.default_color = get_sys_color(4)
 		"SelectedCell": obj.default_color = get_sys_color(1)
 		"Example": # Частный случай особого пакраса

@@ -5,7 +5,7 @@ extends Page
 # Обновление данных
 func update_data() -> void:
 	super.update_data()
-	PieChart.set_values($Filter)
+	PieChart.update_data($Filter)
 
 # Применение выделений секций на круговой диаграмме
 func highlighting_graph_sections(idx: int, set_highlighting: bool = true) -> void:
