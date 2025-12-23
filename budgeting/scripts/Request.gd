@@ -16,41 +16,38 @@ var last_month_day_count: int = 30 # количество дней в преды
 # Создание и подключение базы данных
 func _ready() -> void: connection_user_db()
 
+# Открытие базы данных
+func _open_db(db_name: String = "users") -> void:
+	db = SQLite.new()
+	db.path = File.BasesPath + db_name + ".db"
+	db.open_db()
+
 # Подключение базы данных пользователей
 func connection_user_db() -> void:
-	db = SQLite.new()
-	db.path = File.BasesPath + "users.db"
-	db.open_db()
-	# Создание таблицы в базе данных пользователей
+	_open_db()
 	_create_table("users", "login VARCHAR(255), password VARCHAR(255), base VARCHAR(255)")
 
 # Подключение базы данных
 func connection_db(db_name: String) -> void:
-	db = SQLite.new()
-	db.path =  File.BasesPath + db_name + ".db"
-	db.open_db()
-	create_tables()
-
-# Запрос на создание таблицы
-func _create_table(title: String, columns: String, other: String = "") -> void:
-	if other: other = ", " + other
-	db.query("CREATE TABLE IF NOT EXISTS "+title+" (id INTEGER PRIMARY KEY AUTOINCREMENT, "+columns+other+");")
-
-# Создание таблиц в базе
-func create_tables() -> void:
-	# Создание основных таблиц
+	_open_db(db_name)
+	# Создание таблиц в базе
 	_create_table("wallets", "title VARCHAR(255), value FLOAT")
 	_create_table("sections", "title VARCHAR(255), month_limit FLOAT, income BOOLEAN")
-	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)", "FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`), FOREIGN KEY (`section_id`) REFERENCES `sections`(`id`)")
+	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)", ["(`wallet_id`) REFERENCES `wallets`(`id`)", "(`section_id`) REFERENCES `sections`(`id`)"])
 	_create_table("loans", "title VARCHAR(255), total FLOAT, date DATE")
 	_create_table("events", "title VARCHAR(255), event_type INT, value FLOAT, repetition_rate INT, date DATE, note VARCHAR(255)")
 	_create_table("multiplied_events", "title VARCHAR(255), event_type INT, value FLOAT, date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
 	# Создание таблиц для персонализации приложения
 	_create_table("settings", "color_preset BOOLEAN, color_scheme INT, color_1 VARCHAR(255), color_2 VARCHAR(255), color_3 VARCHAR(255), color_4 VARCHAR(255), dark_theme BOOLEAN, event_page_calendar BOOLEAN, last_entry DATE")
-	_create_table("notifications", "title INT, event_id INT, new BOOL", "FOREIGN KEY (`event_id`) REFERENCES `events`(`id`)")
+	_create_table("notifications", "title INT, event_id INT, new BOOL", ["(`event_id`) REFERENCES `events`(`id`)"])
 	if len(select(Tables.SECTIONS)) != 0: return
-	for i in ["Переводы", "Заём", "Платежи по займам", "Проценты по займу"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
-	
+	for i in ["__ST1", "__ST2", "__ST3", "__ST4"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
+
+# Запрос на создание таблицы
+func _create_table(title: String, columns: String, foreign: Array = []) -> void:
+	if len(foreign) != 0: foreign = [""] + foreign
+	db.query("CREATE TABLE IF NOT EXISTS "+title+" (id INTEGER PRIMARY KEY AUTOINCREMENT, "+columns+", FOREIGN KEY ".join(foreign)+");")
+
 # Получить название таблицы из enum Tables
 func _get_table_name(table) -> String:
 	if table is String: return table
@@ -103,8 +100,8 @@ func delete(table, id: int) -> void:
 	update(table, "id=id-1", "id>"+str(id))
 
 # Сборка даты
-func where_date(date: String = Global.date_to_str(), column: String = "date") -> String:
-	return "strftime('%Y-%m', "+column+") = strftime('%Y-%m', '"+date+"')"
+func where_date(date: String = Global.date_to_str(), column: String = "date", operator: String = "=") -> String:
+	return "strftime('%Y-%m', "+column+")"+operator+"strftime('%Y-%m', '"+date+"')"
 
 # Получение данных из таблиц
 func select(table, columns: String = "*", where: String = "", order: String = "", left: String = "") -> Array:
@@ -121,107 +118,9 @@ func select_possibility_opening_cashFlow() -> bool:
 # Проверка достаточно ли данных в базе для создания платежа и добавления процентов по займу
 func select_possibility_opening_payment() -> bool:
 	return len(select(Tables.WALLETS)) != 0 and len(select(Tables.LOANS, "*", "total>0")) != 0
-
-# Получение текущего суммарного бюджета
-func select_budget() -> float:
-	var wallets_sum: float = select(Tables.WALLETS, "COALESCE(SUM(value), 0) value")[0].value
-	return wallets_sum - (select(Tables.LOANS, "COALESCE(SUM(total), 0) value")[0].value)
-
-# Получение движенения средств суммарно для всех кошельков
-func select_general_wallets_movement() -> float:
-	var sum: float = 0.0
-	for i in select(Tables.WALLETS, "id"): sum += select_wallets_movement(i.id)[0]
-	return sum
 	
 # Получение названия объекта под определенным индексом
 func _select_title(table: Tables, id: int) -> String: return select(table, "title", "id="+str(id))[0].title
-
-# Получение списка движений средств
-func select_cash_flows(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
-	if date != "":
-		if where != "": where += " AND " + where_date(date)
-		else: where = where_date(date)
-	var values: Array = select("`cash_flows` cf", "cf.*, s.title, w.title wallet_title", where, order, "sections s ON cf.section_id=s.id LEFT JOIN wallets w ON cf.wallet_id=w.id")
-	for i in range(len(values)):
-		match values[i].section_id:
-			1: values[i]["wallet_2_title"] = _select_title(Tables.WALLETS, values[i].wallet_2_id)
-			2:
-				values[i]["wallet_2_title"] = values[i].wallet_title
-				values[i].wallet_title = _select_title(Tables.LOANS, values[i].wallet_2_id)
-				var save_id: int = values[i].wallet_id
-				values[i].wallet_id = values[i].wallet_2_id
-				values[i].wallet_2_id = save_id
-			3, 4: values[i]["wallet_2_title"] = _select_title(Tables.LOANS, values[i].wallet_2_id)
-	return values
-
-# Получение суммы движений средств распределенных по дням
-func select_daily_transactions(where: String, date: String = Global.date_to_str()) -> Array:
-	if where != "": where = " WHERE " + where
-	db.query("""SELECT COALESCE(SUM(value), 0) value, strftime('%d', date) day FROM (SELECT cf.date, CASE WHEN cf.section_id IN (1, 4) THEN 0
-		WHEN cf.section_id = 3 THEN cf.value * -1 WHEN s.income = 0 AND s.month_limit<>-1 THEN cf.value * -1 ELSE cf.value END value FROM cash_flows cf
-		LEFT JOIN sections s ON cf.section_id=s.id"""+where+") WHERE "+where_date(date)+" GROUP BY date")
-	return db.query_result
-	
-# Получение списка займов
-func select_loan_list(where: String = "", order: String = "") -> Array:
-	if where != "": where = " WHERE " + where
-	if order != "": order = " ORDER BY " + order
-	db.query("SELECT l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=2 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id"+where+order+";")
-	return db.query_result
-
-# Получение количества дней в текущем месяце
-func select_day_count(date: String) -> int:
-	if not db: return 30
-	db.query("SELECT STRFTIME('%d', DATE('"+date+"', 'start of month', '+1 month', '-1 day')) day_count")
-	return int(db.query_result[0].day_count)
-
-# Получение событий в текущем месяце с датой первого появления
-func select_monthly_events(date: String) -> Array:
-	var query_fragment: String = "(julianday(Date('"+date+"'))-julianday(date))"
-	db.query("SELECT *, Date(julianday(date)+CASE "+\
-		"WHEN "+query_fragment+"<0 THEN 0 "+\
-		"WHEN repetition_rate=1 THEN IIF("+query_fragment+"%2==0, "+query_fragment+", "+query_fragment+"+1) "+\
-		"WHEN repetition_rate=2 THEN IIF("+query_fragment+"%7==0, "+query_fragment+", "+query_fragment+"+(7-"+query_fragment+"%7)) "+\
-		"ELSE 0 END) new_date FROM events WHERE strftime('%Y-%m', date)<=strftime('%Y-%m', Date('"+date+"'));")
-	return db.query_result
-
-# Добавление событий во временную таблицу
-func insert_event(value: Dictionary, date, completed: bool) -> void:
-	if date is Dictionary: date = Global.date_to_str(date).split(" ")[0]
-	insert_record("temporary", ["'"+value.title+"'", "'"+date+"'", "'"+value.note+"'", completed, value.id])
-
-# Добавление событий во временную таблицу с выбранным шагом
-func insert_events_with_step(value: Dictionary, new_date: Dictionary, current_date: Dictionary, day_count: int, step: int) -> void:
-	while new_date.day <= day_count:
-		insert_event(value, new_date, Global.date_comparison(current_date, new_date, ">"))
-		new_date.day += step
-
-# Получение списка событий
-func select_events(date: String) -> Array:
-	# подготовка данных о месяце для формирования событий
-	var current_date: Dictionary = Global.date
-	var selected_date: Dictionary = Global.date_to_dict(date)
-	var current_month_day_count: int = select_day_count(date)
-	var last_month_day_count: int = select_day_count(Global.date_to_str(Global.get_other_month(selected_date, false)))
-	var values: Array = select_monthly_events(date) # Получение первоначальных данных для временной таблицы
-	# Заполнение временной таблицы
-	_create_table("temporary", "title VARCHAR(255), date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
-	for i in values:
-		var new_date: Dictionary = Global.date_to_dict(i.new_date)
-		match i.repetition_rate:
-			0: if Global.date_comparison(selected_date, new_date, "==", false): insert_event(i, i.new_date, Global.date_comparison(current_date, new_date, ">"))
-			1: insert_events_with_step(i, new_date, current_date, current_month_day_count, 2)
-			2: insert_events_with_step(i, new_date, current_date, current_month_day_count, 7)
-			3, 4:
-				new_date.year = selected_date.year
-				if i.repetition_rate == 3: new_date.month = selected_date.month
-				if last_month_day_count < new_date.day:
-					insert_event(i, selected_date, Global.date_comparison(current_date, selected_date, ">"))
-				if new_date.month == selected_date.month and new_date.day <= current_month_day_count:
-					insert_event(i, new_date, Global.date_comparison(current_date, new_date, ">"))
-	values = select("temporary", "*", "date>='"+date.split(" ")[0]+"'", "date") # Получение результата расчета
-	db.query("DROP TABLE IF EXISTS temporary;") # Удаление временной таблицы
-	return values
 
 # Получение информации об объекте с учетом возможности его отсутствия
 func select_inf_value(table: Tables, id: int) -> Dictionary:
@@ -235,15 +134,6 @@ func select_loan_inf(id: int) -> Dictionary:
 	if value == {}: return value
 	value["value"] = select(Tables.CASH_FLOWS, "*", "section_id=2 AND wallet_2_id="+str(id))[0].value
 	value["percents"] = str(select_loan_percent(id)) + "%"
-	return value
-	
-# Получение информации о счёте
-func select_wallet_inf(id: int) -> Dictionary:
-	var value: Dictionary = select_inf_value(Tables.WALLETS, id)
-	if value == {}: return value
-	var total: Array = select_wallets_movement(id)
-	value["total_value"] = total[0]
-	value["total_count"] = total[1]
 	return value
 
 # Получение кошелька по индексу
@@ -278,65 +168,6 @@ func select_loan_percent(id: int) -> int:
 	for i in percents:
 		result += i
 	return int(round(result / len(percents)))
-	
-func select_existence_user(login: bool) -> bool:
-	var req: String = 'login="'+File.config["login"]+'"'
-	if login: req += ' AND password="'+File.config["password"]+'"'
-	var res: Array = Request.select(Tables.USERS, "COUNT(id)=="+str(int(login))+" res", req)
-	if len(res) == 0: return false
-	return res[0].res
-
-func select_user() -> Dictionary:
-	var user_data: Array = []
-	for i in File.config.keys(): if i in _get_columns(Tables.USERS): user_data.append(i+'="'+File.config[i]+'"')
-	return Request.select(Tables.USERS, "*", " AND ".join(user_data))[0]
-
-# Удаление при знании условия
-func delete_user():
-	Request.connection_user_db()
-	var data: Dictionary = select(Tables.USERS, "*", 'login="'+File.config.login+'"')[0]
-	DirAccess.remove_absolute("res://bases/"+File.show_data(data.base)+".db")
-	delete(Tables.USERS, data.id)
-	File.clear_config()
-
-
-# Обновление функций
-# Запрос на получение суммы и количества транзакций сгруппированных по разделам
-func select_sections_cash_movement(id: int, date: String = Global.date_to_str()) -> Array:
-	db.query("SELECT cf.wallet_id, cf.section_id, sum(cf.value) value, count(cf.id) count, s.title, s.income FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id "+\
-		"WHERE cf.wallet_id="+str(id)+" AND s.month_limit>=0 AND "+where_date(date, "cf.date")+" GROUP BY s.id;")
-	var result: Array = db.query_result
-	for i in result: if not i.income: i.value *= -1
-	return result
-
-# Запрос на получение суммы и количества транзакций сгруппированных по специальным разделам
-func select_special_sections_cash_movement(id: int, date: String = Global.date_to_str()) -> Array:
-	db.query("SELECT cf.*, s.title, SUM(cf.value) value, COUNT(cf.id) count FROM cash_flows cf LEFT JOIN sections s ON cf.section_id = s.id "+\
-		"WHERE (cf.wallet_id="+str(id)+" OR (cf.wallet_2_id="+str(id)+" AND s.id=1)) AND s.month_limit=-1 AND "+where_date(date, "cf.date")+" GROUP BY section_id, wallet_id, wallet_2_id;")
-	var sections: Array = []
-	var values: Array = []
-	for i in db.query_result:
-		if i.section_id not in sections:
-			sections.append(i.section_id)
-			values.append({"wallet_id": id, "section_id": i.section_id, "title": i.title, "value": 0.0, "count": 0})
-		if (i.section_id == 1 and i.wallet_id == id) or i.section_id == 2:
-			i.value *= -1.
-		values[sections.find(i.section_id)].value += i.value
-		values[sections.find(i.section_id)].count += i.count
-	return values
-
-# Объединение результатов двух запросов на сумму и количество транзакций сгруппированных по разделам
-func select_general_sections_cash_movement(id, date: String = Global.date_to_str()) -> Array:
-	if not id: return []
-	return select_special_sections_cash_movement(id, date) + select_sections_cash_movement(id, date)
-	
-# Получение суммы движений средств на счете
-func select_wallets_movement(id: int, date: String = Global.date_to_str()) -> Array:
-	var result: Array = [0.0, 0]
-	for i in select_general_sections_cash_movement(id, date):
-		result[0] += i.value 
-		result[1] += i.count
-	return result
 
 # Годится
 # Постепенное создание событий в таблице событий
@@ -357,16 +188,33 @@ func _process(_delta: float) -> void:
 				_insert_events_to_repetition_rate_3_4(value, new_date, selected_date)
 				if selected_date.day != 1: _insert_events_to_repetition_rate_3_4(value, new_date, next_month)
 
-# Начало создания таблицы событий
-func start_create_multiplied_events_table(date: String) -> void:
-	selected_date = Global.date_to_dict(date)
-	next_month = Global.get_other_month(selected_date, true)
-	current_month_day_count = select_day_count(date)
-	last_month_day_count = select_day_count(Global.get_other_month(date))
-	events = _select_events_list(date)
-	db.query("DELETE FROM multiplied_events")
-	update(Tables.SQLITE_SEQUENCE, "seq=0", 'name="multiplied_events"')
-	completion_creation_et = false
+# Проверка существует выбранный пользователь
+func select_existence_user(login: bool) -> bool:
+	var req: String = 'login="'+File.config["login"]+'"'
+	if login: req += ' AND password="'+File.config["password"]+'"'
+	var res: Array = Request.select(Tables.USERS, "COUNT(id)=="+str(int(login))+" res", req)
+	if len(res) == 0: return false
+	return res[0].res
+
+# Получение пользователя
+func select_user() -> Dictionary:
+	var user_data: Array = []
+	for i in File.config.keys(): if i in _get_columns(Tables.USERS): user_data.append(i+'="'+File.config[i]+'"')
+	return Request.select(Tables.USERS, "*", " AND ".join(user_data))[0]
+
+# Удаление пользователя
+func delete_user() -> void:
+	Request.connection_user_db()
+	var data: Dictionary = select(Tables.USERS, "*", 'login="'+File.config.login+'"')[0]
+	DirAccess.remove_absolute("res://bases/"+File.show_data(data.base)+".db")
+	delete(Tables.USERS, data.id)
+	File.clear_config()
+	
+# Получение количества дней в текущем месяце
+func select_day_count(date: String) -> int:
+	if not db: return 30
+	db.query("SELECT STRFTIME('%d', DATE('"+date+"', 'start of month', '+1 month', '-1 day')) day_count")
+	return int(db.query_result[0].day_count)
 
 # Получение текущего суммарного бюджета
 func select_wallets_sum() -> float:
@@ -473,8 +321,19 @@ func _insert_events_to_repetition_rate_3_4(value:Dictionary, new_date: Dictionar
 func _select_events_list(date: String) -> Array:
 	db.query("""SELECT *, Date(julianday(date) + juli + CASE WHEN juli<0 THEN juli*-1 WHEN repetition_rate=1 THEN juli%2
 		WHEN repetition_rate=2 THEN 7-juli%7 ELSE juli*-1 END) new_date FROM (SELECT *, (julianday(Date('"""+date+\
-		"'))-julianday(date)) juli FROM events) AS event WHERE strftime('%Y-%m', date)<=strftime('%Y-%m', Date('"+date+"')) ORDER BY new_date;")
+		"'))-julianday(date)) juli FROM events) AS event WHERE "+where_date(date, "date", "<=")+" ORDER BY new_date;")
 	return db.query_result
+	
+# Начало создания таблицы событий
+func start_create_multiplied_events_table(date: String) -> void:
+	selected_date = Global.date_to_dict(date)
+	next_month = Global.get_other_month(selected_date, true)
+	current_month_day_count = select_day_count(date)
+	last_month_day_count = select_day_count(Global.get_other_month(date))
+	events = _select_events_list(date)
+	db.query("DELETE FROM multiplied_events")
+	update(Tables.SQLITE_SEQUENCE, "seq=0", 'name="multiplied_events"')
+	completion_creation_et = false
 	
 func select_multiplied_events_list(where: String = "") -> Array:
 	if where: where = "CAST(strftime('%d', date) AS INTEGER) = "+where
@@ -514,5 +373,3 @@ func match_update_list_element(list_element: ObjectVariants, line: Dictionary, p
 		ObjectVariants.CASH_FLOW: return _update_cash_flows_list(line)
 		ObjectVariants.EVENT: return _update_events_list(line)
 	return line
-	
-	
