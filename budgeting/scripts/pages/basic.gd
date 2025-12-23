@@ -55,7 +55,7 @@ func update_data() -> void:
 	day_count = Request.select_day_count(Global.date_to_str())
 	# Отправка запроса на обновление таблицы с событиями
 	start_update = true
-	Request.start_create_multiplied_events_table(Global.date_to_str(date))
+	Request.start_create_multiplied_events_table("-".join([date.year, date.month, "01"]))
 	
 # Поиск и запуск изменения списков и графиков
 func _find_objects(obj: Variant) -> void:
