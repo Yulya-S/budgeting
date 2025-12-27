@@ -102,11 +102,8 @@ func where_date(date: String = Global.date_to_str(), column: String = "date", op
 
 # Получение данных из таблиц
 func select(table, columns: String = "*", where: String = "", order: String = "", left: String = "") -> Array:
-	if where: where = " WHERE "+where
-	if order: order = " ORDER BY "+order
 	if left: left = " LEFT JOIN "+left
-	db.query("SELECT "+columns+" FROM "+_get_table_name(table)+left+where+order+";")
-	return db.query_result
+	return _select(columns+" FROM "+_get_table_name(table)+left, where, order)
 
 # Проверка достаточно ли данных в базе для создания движения средств
 func select_possibility_opening_cashFlow() -> bool:
@@ -150,10 +147,9 @@ func select_event(id: int) -> Array:
 
 # Получение среднего процента по займу при учете процесса погашения займа
 func select_loan_percent(id: int) -> int:
-	db.query("SELECT * FROM cash_flows WHERE section_id IN (2, 3, 4) AND wallet_2_id="+str(id)+" ORDER BY date")
 	var summ: float = 0.0
 	var percents: Array = []
-	for i in db.query_result:
+	for i in _select("* FROM cash_flows", "section_id IN (2, 3, 4) AND wallet_2_id="+str(id), "date"):
 		match i.section_id:
 			2: summ = i.value
 			3: summ -= i.value
@@ -185,6 +181,14 @@ func _process(_delta: float) -> void:
 				_insert_events_to_repetition_rate_3_4(value, new_date, selected_date)
 				if selected_date.day != 1: _insert_events_to_repetition_rate_3_4(value, new_date, next_month)
 
+# Получение данных из таблиц
+func _select(req_text: String, where: String = "", order: String = "", group: String = "") -> Array:
+	if where: where = " WHERE " + where
+	if order: order = " ORDER BY " + order
+	if group: group = " GROUP BY " + group
+	db.query("SELECT " + req_text + where + order + group + ";")
+	return db.query_result
+
 # Проверка существует выбранный пользователь
 func select_existence_user(login: bool) -> bool:
 	var req: String = 'login="'+File.config["login"]+'"'
@@ -210,41 +214,32 @@ func delete_user() -> void:
 # Получение количества дней в текущем месяце
 func select_day_count(date: String) -> int:
 	if not db: return 30
-	db.query("SELECT STRFTIME('%d', DATE('"+date+"', 'start of month', '+1 month', '-1 day')) day_count")
-	return int(db.query_result[0].day_count)
+	return int(_select("STRFTIME('%d', DATE('"+date+"', 'start of month', '+1 month', '-1 day')) day_count")[0].day_count)
 
 # Получение текущего суммарного бюджета
 func select_wallets_sum() -> float:
-	db.query("SELECT COALESCE((SELECT COALESCE(SUM(value),0.0) FROM wallets) - (SELECT COALESCE(SUM(total),0.0) FROM loans), 0.0) value;")
-	return db.query_result[0].value
+	return _select("COALESCE((SELECT COALESCE(SUM(value),0.0) FROM wallets) - (SELECT COALESCE(SUM(total),0.0) FROM loans), 0.0) value")[0].value
 
 func select_funds_movements() -> float:
-	db.query("SELECT COALESCE(SUM(CASE WHEN cf.section_id IN (1, 4) THEN 0 WHEN cf.section_id = 3 OR (s.income = 0 AND s.month_limit<>-1) THEN cf.value * -1 ELSE cf.value END),0.0) value
-		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE "+where_date()+";")
-	return db.query_result[0].value
+	return _select("COALESCE(SUM(CASE WHEN cf.section_id IN (1, 4) THEN 0 WHEN cf.section_id = 3 OR (s.income = 0 AND s.month_limit<>-1) THEN cf.value * -1 ELSE cf.value END),0.0) value
+		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id", where_date())[0].value
 
 # Запрос на получение списка кошельков
 func _select_wallets_list(where: String, order: String) -> Array:
-	if where: where = " WHERE "+where
-	if order: order = " ORDER BY "+order
-	db.query("""SELECT *, (SELECT cf.date FROM cash_flows cf WHERE (cf.section_id NOT IN (2, 3, 4)
-		AND cf.wallet_2_id=w.id) OR cf.wallet_id=w.id ORDER BY cf.date DESC) last_date FROM wallets w"""+where+order+";")
-	return db.query_result
+	return _select("*, (SELECT cf.date FROM cash_flows cf WHERE (cf.section_id NOT IN (2, 3, 4)
+		AND cf.wallet_2_id=w.id) OR cf.wallet_id=w.id ORDER BY cf.date DESC) last_date FROM wallets w",where,order)
 
 # Запрос на изменение списка кошельков
 func _update_wallets_list(line: Dictionary, date: String = Global.date_to_str()) -> Dictionary:
-	db.query("SELECT SUM(IIF((cf.section_id=1 and cf.wallet_id="+str(line.id)+""")OR cf.section_id=3 OR (s.income=0 and cf.section_id>4), cf.value*-1, cf.value)) value
-		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE (cf.wallet_id="""+str(line.id)+" or (cf.wallet_2_id="+str(line.id)+" and cf.section_id=1)) AND "+where_date(date, "cf.date")+";")
-	line["cash_flow"] = db.query_result[0].value if db.query_result[0].value else 0.
+	var value: Array = _select("SUM(IIF((cf.section_id=1 and cf.wallet_id="+str(line.id)+")OR cf.section_id=3 OR (s.income=0 and cf.section_id>4), cf.value*-1, cf.value)) value
+		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id", "(cf.wallet_id="+str(line.id)+" or (cf.wallet_2_id="+str(line.id)+" and cf.section_id=1)) AND "+where_date(date, "cf.date"))
+	line["cash_flow"] = value[0].value if value[0].value else 0.
 	return line
 	
 # Запрос на получение списка разделов
 func select_sections_list(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
-	if where: where = " WHERE "+where
-	if order: order = " ORDER BY "+order
-	db.query("""SELECT s.*, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM `sections` s LEFT JOIN
-		(SELECT cf.section_id, SUM(cf.value) v, cf.date last_date, cf.id last_id FROM `cash_flows` cf WHERE """+where_date(date)+" GROUP BY cf.section_id) j ON s.id=j.section_id"+where+order+";")
-	return db.query_result
+	return _select("s.*, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM `sections` s LEFT JOIN (SELECT cf.section_id, SUM(cf.value) v,
+		cf.date last_date, cf.id last_id FROM `cash_flows` cf WHERE "+where_date(date)+" GROUP BY cf.section_id) j ON s.id=j.section_id",where,order)
 	
 # Запрос на изменение списка разделов
 func _update_sections_list(line: Dictionary, parent) -> Dictionary:
@@ -255,10 +250,8 @@ func _update_sections_list(line: Dictionary, parent) -> Dictionary:
 # Запрос на получение списка движений средств
 func _select_cash_flows_list(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
 	if where: where = " AND "+where
-	if order: order = " ORDER BY "+order
-	db.query("""SELECT cf.*, s.title, w.title wallet_title FROM `cash_flows` cf LEFT JOIN sections s ON cf.section_id=s.id
-		LEFT JOIN wallets w ON cf.wallet_id=w.id WHERE """+where_date(date)+where+order+";")
-	return db.query_result
+	return _select("cf.*, s.title, w.title wallet_title FROM `cash_flows` cf LEFT JOIN sections s ON cf.section_id=s.id
+		LEFT JOIN wallets w ON cf.wallet_id=w.id", where_date(date)+where, order)
 
 # Запрос на изменение списка разделов
 func _update_cash_flows_list(line: Dictionary) -> Dictionary:
@@ -276,16 +269,12 @@ func _update_cash_flows_list(line: Dictionary) -> Dictionary:
 # Получение суммы движений средств распределенных по дням
 func select_cash_flow_graphics(where: String, date: String = Global.date_to_str()) -> Array:
 	if where: where = " AND " + where
-	db.query("""SELECT SUM(CASE WHEN cf.section_id IN (1, 4) THEN 0 WHEN cf.section_id = 3 OR (s.income = 0 AND s.month_limit<>-1)  THEN cf.value * -1 ELSE cf.value END) value,
-		strftime('%d', cf.date) day FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id WHERE """+where_date(date)+where+" GROUP BY cf.date")
-	return db.query_result
+	return _select("SUM(CASE WHEN cf.section_id IN (1, 4) THEN 0 WHEN cf.section_id = 3 OR (s.income = 0 AND s.month_limit<>-1)  THEN cf.value * -1 ELSE cf.value END) value,
+		strftime('%d', cf.date) day FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id ", where_date(date)+where, "", "cf.date")
 	
 # Получение списка займов
 func _select_loans_list(where: String = "", order: String = "") -> Array:
-	if where != "": where = " WHERE " + where
-	if order != "": order = " ORDER BY " + order
-	db.query("SELECT l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=2 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id"+where+order+";")
-	return db.query_result
+	return _select("l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=2 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id", where, order)
 
 # Добавление событий во временную таблицу
 func _insert_event(value: Dictionary, date: Dictionary) -> void:
@@ -316,10 +305,9 @@ func _insert_events_to_repetition_rate_3_4(value:Dictionary, new_date: Dictionar
 		
 # Получение событий в текущем месяце с датой первого появления
 func _select_events_list(date: String) -> Array:
-	db.query("""SELECT *, Date(julianday(date) + juli + CASE WHEN juli<0 THEN juli*-1 WHEN repetition_rate=1 THEN juli%2
-		WHEN repetition_rate=2 THEN 7-juli%7 ELSE juli*-1 END) new_date FROM (SELECT *, (julianday(Date('"""+date+\
-		"'))-julianday(date)) juli FROM events) AS event WHERE "+where_date(date, "date", "<=")+" ORDER BY new_date;")
-	return db.query_result
+	return _select("*, Date(julianday(date) + juli + CASE WHEN juli<0 THEN juli*-1 WHEN repetition_rate=1 THEN juli%2
+		WHEN repetition_rate=2 THEN 7-juli%7 ELSE juli*-1 END) new_date FROM (SELECT *, (julianday(Date('"+date+\
+		"'))-julianday(date)) juli FROM events) AS event", where_date(date, "date", "<="), "new_date")
 	
 # Начало создания таблицы событий
 func start_create_multiplied_events_table(date: String) -> void:
@@ -342,15 +330,10 @@ func _update_events_list(line: Dictionary) -> Dictionary:
 	return line
 	
 # Запрос на получение списка событий юуз дубликации записей
-func _select_unique_events() -> Array:
-	db.query("SELECT title, event_id FROM multiplied_events GROUP BY event_id;")
-	return db.query_result
+func _select_unique_events() -> Array: return _select("title, event_id FROM multiplied_events GROUP BY event_id")
 
 # Получение списка дней с покрайней мере одним событием
-func select_event_days(where: String = "") -> Array:
-	if where: where = " WHERE " + where
-	db.query("SELECT date FROM multiplied_events"+where+" GROUP BY date;")
-	return db.query_result
+func select_event_days(where: String = "") -> Array: return _select("date FROM multiplied_events", where, "", "date")
 
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Array:
