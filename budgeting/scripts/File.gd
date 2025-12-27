@@ -38,7 +38,6 @@ func show_data(data: String) -> String: return Marshalls.base64_to_utf8(data)
 # Проверка наличия созданного файла конфигураций
 func create_config() -> void:
 	if FileAccess.file_exists(ConfigFilePath):
-		print("hello")
 		read_config()
 		return
 	save_config()
@@ -51,7 +50,6 @@ func read_config() -> void:
 	var new: Dictionary = _read_file(ConfigFilePath)
 	if new.keys() == config.keys(): config = new
 	else: save_config()
-	print(config)
 
 # Очистка данных пользователя
 func clear_config() -> void:
