@@ -13,6 +13,13 @@ enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 var current_page: Pages = Pages.BASIC # Текущая страница
 var date: Dictionary = Time.get_datetime_dict_from_system() # Текущая дата
 
+# Создание необходимых для работы приложения директорий и файлов
+func _ready() -> void:
+	File.create_dirs()
+	File.create_config()
+	File.create_langs()
+	Request.connection_user_db()
+
 # Получить имя объекта из перечисления
 func enum_key(enums: Dictionary, object: int) -> String: return enums.keys()[object].to_lower()
 

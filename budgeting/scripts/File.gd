@@ -9,17 +9,8 @@ var lang: Dictionary = {} # Язык
 const LangDir: String = BasesPath + "language/" # Директория языков
 
 # Общая часть
-# Создание файлов
-func _ready() -> void: create_files()
-
-# Создание необходимых для работы программы файлов
-func create_files() -> void:
-	_create_dirs()
-	_create_config()
-	_create_langs()
-
 # Создание папок для хранения данных
-func _create_dirs() -> void:
+func create_dirs() -> void:
 	if not DirAccess.dir_exists_absolute(BasesPath): DirAccess.make_dir_absolute(BasesPath)
 	if not DirAccess.dir_exists_absolute(LangDir): DirAccess.make_dir_absolute(LangDir)
 
@@ -45,8 +36,9 @@ func show_data(data: String) -> String: return Marshalls.base64_to_utf8(data)
 
 # Файл конфигураций
 # Проверка наличия созданного файла конфигураций
-func _create_config() -> void:
+func create_config() -> void:
 	if FileAccess.file_exists(ConfigFilePath):
+		print("hello")
 		read_config()
 		return
 	save_config()
@@ -59,6 +51,7 @@ func read_config() -> void:
 	var new: Dictionary = _read_file(ConfigFilePath)
 	if new.keys() == config.keys(): config = new
 	else: save_config()
+	print(config)
 
 # Очистка данных пользователя
 func clear_config() -> void:
@@ -77,7 +70,7 @@ func load_lang(container: OptionButton) -> void:
 				read_lang(container)
 			
 # Создание файлов языков
-func _create_langs() -> void:
+func create_langs() -> void:
 	# Убрать этот фрагмент - он нужен что бы не удалять каждый раз файлы локализации в ручную
 	DirAccess.remove_absolute(BasesPath + "language/ru.json")
 	DirAccess.remove_absolute(BasesPath + "language/en.json")

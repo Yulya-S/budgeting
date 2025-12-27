@@ -13,9 +13,6 @@ var next_month: Dictionary = {} # Следующий месяц
 var current_month_day_count: int = 30 # Количество дней в месяце
 var last_month_day_count: int = 30 # количество дней в предыдущем месяце
 
-# Создание и подключение базы данных
-func _ready() -> void: connection_user_db()
-
 # Открытие базы данных
 func _open_db(db_name: String = "users") -> void:
 	db = SQLite.new()
