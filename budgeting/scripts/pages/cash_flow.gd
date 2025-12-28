@@ -25,7 +25,7 @@ func update_data() -> void:
 	Schedule.update_data(Filter)
 	
 # Изменение значений фильтрации извне
-func set_object(obj_id, _parent = null) -> void:
+func set_object(obj_id: Variant, _parent: Variant = null) -> void:
 	if obj_id is Array:
 		Filter.set_filter(FilterWallet, obj_id[0])
 		Filter.set_filter(FilterSection, obj_id[1])

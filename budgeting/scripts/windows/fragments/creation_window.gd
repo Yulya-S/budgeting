@@ -11,7 +11,7 @@ class_name CreationWindow
 var id = null # Индекс изменяемого объекта
 
 # Изменение информации о счете
-func set_object(obj_id: int, _parent = null) -> void:
+func set_object(obj_id: int, _parent: Variant = null) -> void:
 	id = obj_id
 	Delete.visible = true
 	if "@" in name: name = get_parent().get_child(-2).name.to_lower().replace("inf", "")

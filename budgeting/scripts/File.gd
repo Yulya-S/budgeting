@@ -91,7 +91,7 @@ func read_lang(container: OptionButton) -> void:
 	save_config()
 
 # Применение значение используя поиск корневой сцены
-func pathfinding(obj) -> Variant:
+func pathfinding(obj: Variant) -> Variant:
 	# Получение пути до main
 	var path: Array = []
 	while obj.name != "main":
@@ -106,7 +106,7 @@ func pathfinding(obj) -> Variant:
 	return lang_fragment
 
 # Поиск ключа в базе перевода
-func _find_lang_keys(obj, key: String = "") -> String:
+func _find_lang_keys(obj: Variant, key: String = "") -> String:
 	if obj.name == "main": return ""
 	key = obj.name + key
 	if "_" in key and len(key.split("_")) <= 2 and key.split("_")[1].is_valid_int(): key = key.split("_")[0]
@@ -114,7 +114,7 @@ func _find_lang_keys(obj, key: String = "") -> String:
 	else: return key
 
 # Изменение текста объекта в зависимости от типа объекта
-func _lang_match(obj, key: String) -> void:
+func _lang_match(obj: Variant, key: String) -> void:
 	match obj.get_class():
 		"Label", "CheckBox":
 			if obj.text != "" and "-" not in obj.text and not obj.text.is_valid_int() and not obj.text.is_valid_float():
@@ -155,7 +155,7 @@ func set_OB_elements(obj: OptionButton) -> void:
 	for i in range(obj.get_item_count()): if obj.get_item_text(i) in lang.keys(): obj.set_item_text(i, lang[obj.get_item_text(i)])
 
 # Применение перевода
-func set_lang(obj) -> void:
+func set_lang(obj: Variant) -> void:
 	var key: String = _find_lang_keys(obj)
 	if obj is OptionButton and obj.name == "Month": key = "_Months"
 	elif obj is Label and "__" in obj.text and obj.text in lang.keys(): key = obj.text

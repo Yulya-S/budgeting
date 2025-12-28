@@ -18,7 +18,7 @@ func _ready() -> void:
 	_on_extra_item_selected(0, false)
 	
 # Изменение объекта
-func set_object(obj_id, parent = null) -> void:
+func set_object(obj_id: Variant, parent: Variant = null) -> void:
 	if obj_id is Array:
 		_on_wallet_item_selected(obj_id[0], false)
 		_on_extra_item_selected(obj_id[1], false)

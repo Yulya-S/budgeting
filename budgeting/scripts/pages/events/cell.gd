@@ -18,7 +18,7 @@ func set_values(idx: int, current_month: bool, next_month: bool, day_count: int)
 		$Completed.modulate = ColorScheme.get_color(95, 100)
 	
 # Изменение видимости маркера наличия событий
-func add_event(): $Marker.visible = true
+func add_event() -> void: $Marker.visible = true
 	
 # Обработка наведения курсоры мыши на ячейку
 func _on_mouse_entered() -> void: Global.run_func(Parent, "set_cell", [Number.text])

@@ -21,7 +21,7 @@ func _ready() -> void:
 	Request.connection_user_db()
 
 # Получить имя объекта из перечисления
-func enum_key(enums: Dictionary, object: int) -> String: return enums.keys()[object].to_lower()
+func enum_key(enums: Dictionary, obj: int) -> String: return enums.keys()[obj].to_lower()
 
 # Функция вызова функции у родителя если она у него есть
 func run_func(obj: Variant, func_name: String, args: Array = []) -> void: if obj.get(func_name): obj.callv(func_name, args)

@@ -46,12 +46,12 @@ func _create_table(title: String, columns: String, foreign: Array = []) -> void:
 	db.query("CREATE TABLE IF NOT EXISTS "+title+" (id INTEGER PRIMARY KEY AUTOINCREMENT, "+columns+", FOREIGN KEY ".join(foreign)+");")
 
 # Получить название таблицы из enum Tables
-func _get_table_name(table) -> String:
+func _get_table_name(table: Variant) -> String:
 	if table is String: return table
 	return Global.enum_key(Tables, table)
 
 # Получить названия колонок
-func _get_columns(table) -> Array:
+func _get_columns(table: Variant) -> Array:
 	db.query("PRAGMA table_info(`"+_get_table_name(table)+"`)")
 	var result: Array = []
 	for i in db.query_result: result.append(i.name)
@@ -59,39 +59,39 @@ func _get_columns(table) -> Array:
 	return result
 	
 # Добавление фрагмента текста в запрос
-func add_part_request(text: String, column: String, value, operator: String = "=", sep: String = " AND ") -> String:
+func add_part_request(text: String, column: String, value: Variant, operator: String = "=", sep: String = " AND ") -> String:
 	if text: text += sep 
 	if operator == "LIKE": value = '"%' + str(value) + '%"'
 	text += column + " " + operator + " " + str(value)
 	return text
 	
 # Добавление фрагмента текста в запрос с проверкой что значение не null
-func add_part_request_with_check(text: String, column: String, value, operator: String = "=", sep: String = " AND ") -> String:
+func add_part_request_with_check(text: String, column: String, value: Variant, operator: String = "=", sep: String = " AND ") -> String:
 	if not value: return text
 	return add_part_request(text, column, value, operator, sep)
 
 # Отправка запроса на создание записи таблице
-func insert(table, columns: Array, values: Array) -> void:
+func insert(table: Variant, columns: Array, values: Array) -> void:
 	if table is Tables: table = _get_table_name(table)
 	db.query("INSERT INTO `"+_get_table_name(table)+"` ("+",".join(columns)+") VALUES ("+",".join(values)+");")
 
 # Добавление записи
-func insert_record(table, values: Array) -> void:
+func insert_record(table: Variant, values: Array) -> void:
 	insert(table, _get_columns(table), values)
 
 # Отправка запроса на изменение записей в таблице
-func update(table, values: String, where: String) -> void:
+func update(table: Variant, values: String, where: String) -> void:
 	db.query("UPDATE `"+_get_table_name(table)+"` SET "+values+" WHERE "+where + ";")
 
 # Изменение записи
-func update_record(table, id: int, values: Array) -> void:
+func update_record(table: Variant, id: int, values: Array) -> void:
 	var request_text: String = ""
 	var columns: Array = _get_columns(table)
 	for i in len(values): request_text = add_part_request(request_text, columns[i], values[i], "=", ", ")
 	update(table, request_text, "id=" + str(id))
 
 # Отправка запроса на удаление записи в таблице
-func delete(table, id: int) -> void:
+func delete(table: Variant, id: int) -> void:
 	db.query("DELETE FROM `"+_get_table_name(table)+"` WHERE id="+str(id)+";")
 	update(Tables.SQLITE_SEQUENCE, "seq=seq-1", 'name="'+_get_table_name(table)+'"')
 	update(table, "id=id-1", "id>"+str(id))
@@ -101,7 +101,7 @@ func where_date(date: String = Global.date_to_str(), column: String = "date", op
 	return "strftime('%Y-%m', "+column+")"+operator+"strftime('%Y-%m', '"+date+"')"
 
 # Получение данных из таблиц
-func select(table, columns: String = "*", where: String = "", order: String = "", left: String = "") -> Array:
+func select(table: Variant, columns: String = "*", where: String = "", order: String = "", left: String = "") -> Array:
 	if left: left = " LEFT JOIN "+left
 	return _select(columns+" FROM "+_get_table_name(table)+left, where, order)
 
@@ -242,7 +242,7 @@ func select_sections_list(where: String = "", date: String = Global.date_to_str(
 		cf.date last_date, cf.id last_id FROM `cash_flows` cf WHERE "+where_date(date)+" GROUP BY cf.section_id) j ON s.id=j.section_id",where,order)
 	
 # Запрос на изменение списка разделов
-func _update_sections_list(line: Dictionary, parent) -> Dictionary:
+func _update_sections_list(line: Dictionary, parent: Variant) -> Dictionary:
 	line["marker"] = ColorScheme.get_color(parent.obj_count(), len(parent.change_list) + parent.obj_count())
 	line["progress"] = (100. * line.value) / line.month_limit
 	return line
@@ -294,7 +294,7 @@ func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count
 		new_date.day += step
 
 # Создание событий для частоты раз в месяц и раз в год
-func _insert_events_to_repetition_rate_3_4(value:Dictionary, new_date: Dictionary, date: Dictionary) -> void:
+func _insert_events_to_repetition_rate_3_4(value: Dictionary, new_date: Dictionary, date: Dictionary) -> void:
 	new_date.year = date.year
 	if value.repetition_rate == 3:
 		new_date.month = date.month

@@ -6,11 +6,11 @@ class_name InteractiveLabel
 @export var next_page_dir: Global.Dirs = Global.Dirs.PAGES # Директория, на которую произойдет переход
 
 # Переменные
-var id = null # Индекс объекта
+var id: Variant = null # Индекс объекта
 var state: Global.MouseOver = Global.MouseOver.NORMAL  # Текущее состояние объекта
 
 # Применение текстового значения и индекса целевого объекта
-func set_object(new_text: String, new_id):
+func set_object(new_text: String, new_id: Variant) -> void:
 	set_text(new_text)
 	id = new_id
 

@@ -18,7 +18,7 @@ func _ready() -> void:
 	_update_page()
 
 # Постепенное создание элементов страницы
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Cells.get_child_count() < 14:
 		Cells.add_child(cell_path.instantiate())
 		var day_number: int = date.day + Cells.get_child_count() - date.weekday - 1

@@ -3,7 +3,7 @@ extends InfPage
 @onready var Objects = $ObjArray
 
 # Смена индекса объекта
-func set_object(obj_id: int, parent = null) -> void:
+func set_object(obj_id: int, parent: Variant = null) -> void:
 	Objects.set_data("id="+str(obj_id))
 	super.set_object(obj_id, parent)
 

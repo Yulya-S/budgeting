@@ -8,7 +8,7 @@ extends CreationWindow
 var ml_value: String = "0.0"
 
 # Изменение информации о счете
-func set_object(obj_id: int, parent = null) -> void:
+func set_object(obj_id: int, parent: Variant = null) -> void:
 	super.set_object(obj_id, parent)
 	if "-1" in MonthLimit.get_text(): $Window.on_close_button_down()
 

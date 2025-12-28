@@ -6,7 +6,7 @@ var calendar = load("res://scenes/pages/events/calendar.tscn")
 var start_update: bool = false # Был ли отправлен запрос на изменение страницы
 
 # Начало создания объектов на странице
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Request.completion_creation_et and start_update:
 		Objects.update_data($Filter)
 		start_update = false

@@ -12,7 +12,7 @@ var state: Global.MouseOver = Global.MouseOver.NORMAL # Текущее сост�
 func _process(_delta: float) -> void: update_color()
 
 # Изменение номера дня
-func set_object(obj_id: int, today: bool = false):
+func set_object(obj_id: int, today: bool = false) -> void:
 	id = obj_id
 	if id > 0: Number.set_text(str(id))
 	is_today = today

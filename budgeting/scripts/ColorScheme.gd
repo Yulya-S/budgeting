@@ -49,7 +49,7 @@ func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, t
 	system_gradient.offsets = g_offsets
 	
 # Замена цвета текста
-func set_font_color(object, column: String = "font_color", color_idx: int = 0) -> void: object.add_theme_color_override(column, get_sys_color(color_idx))
+func set_font_color(obj: Variant, column: String = "font_color", color_idx: int = 0) -> void: obj.add_theme_color_override(column, get_sys_color(color_idx))
 
 # Изменение цветов кнопок
 func _set_buttons_color(obj: Variant, a: float = 0.5, column: String = "normal") -> void:
@@ -67,7 +67,7 @@ func _set_all_button_color_parametrs(obj: Variant) -> void:
 	for i in ["", "focus_", "hover_", "hover_pressed_", "pressed_"]: set_font_color(obj, "font_"+i+"color", 6)		
 
 # Применение системного градиента к странице
-func repainting(obj) -> void:
+func repainting(obj: Variant) -> void:
 	match obj.name:
 		"Head": obj.color = get_sys_color(1)
 		"Menu", "Marker": obj.color = get_sys_color(2)

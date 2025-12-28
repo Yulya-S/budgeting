@@ -56,7 +56,7 @@ func update_data(filter: Variant = {}) -> void:
 	change_list = Request.match_select(obj, filter_data)
 
 # Заполнение страницы - удалить это
-func update_page(_close_page: String = ""):
+func update_page(_close_page: String = "") -> void:
 	pass
 	#for i in Objects.get_children():
 		#i.queue_free()

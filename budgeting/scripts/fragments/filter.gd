@@ -22,7 +22,7 @@ func reset_date_filters() -> void:
 func reset_order() -> void: if $Order: for i in range($Order.get_item_count()): $Order.set_item_text(i, order_item_texts[i])
 
 # Применение значений фильтра
-func set_filter(obj, value: int) -> void: obj.selected = value
+func set_filter(obj: Variant, value: int) -> void: obj.selected = value
 
 # Заполнение выпадающего списка в фильтре
 func set_OB_items(table: Request.Tables) -> void:
@@ -49,7 +49,7 @@ func get_filter() -> Dictionary:
 	return filter
 
 # Обработка дополнительных фильтров
-func _other_filters(obj) -> void:
+func _other_filters(obj: Variant) -> void:
 	if obj.name not in OB_items.keys(): return
 	# Фильтры с добавлением объектов
 	if "section" in OB_items[obj.name].keys():

@@ -10,7 +10,7 @@ class_name InfPage
 var id = null # Индекс счета
 
 # Смена индекса объекта
-func set_object(obj_id: int, _parent = null) -> void:
+func set_object(obj_id: int, _parent: Variant = null) -> void:
 	id = obj_id
 	Global.emit_signal("update_page")
 
@@ -25,7 +25,7 @@ func update_page(close_page: String = "") -> void:
 	else: _replace_values(Info, value)
 
 # Изменение текстовых значений в сцене
-func _replace_values(obj, value: Dictionary) -> void:
+func _replace_values(obj: Variant, value: Dictionary) -> void:
 	for i in obj.get_children():
 		if i is Label and i.name.to_lower() in value.keys(): i.set_text(str(value[i.name.to_lower()]))
 		else: _replace_values(i, value)

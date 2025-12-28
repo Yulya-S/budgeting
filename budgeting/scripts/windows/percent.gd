@@ -13,7 +13,7 @@ func _ready() -> void:
 	_on_loan_item_selected(0, false)
 	
 # Изменение объекта
-func set_object(obj_id, parent = null) -> void:
+func set_object(obj_id: Variant, parent: Variant = null) -> void:
 	if not parent:  set_all(obj_id)
 	else: _on_loan_item_selected(obj_id, false)
 

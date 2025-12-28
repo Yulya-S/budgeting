@@ -4,7 +4,7 @@ extends InfPage
 @onready var Schedule = $LoanRepayment
 
 # Смена индекса объекта
-func set_object(obj_id: int, parent = null) -> void:
+func set_object(obj_id: int, parent: Variant = null) -> void:
 	Objects.data.date = ""
 	Objects.set_data("cf.section_id IN (2,3,4) AND cf.wallet_2_id="+str(obj_id), "", "date DESC, id DESC")
 	super.set_object(obj_id, parent)
