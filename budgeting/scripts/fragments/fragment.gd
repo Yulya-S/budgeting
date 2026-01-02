@@ -34,3 +34,12 @@ func set_values(data: Dictionary) -> void:
 				i.visible = true
 			elif data[i.name.to_lower()] is bool: i.visible = data[i.name.to_lower()]
 		else: i.set_text(str(data[i.name.to_lower()]))
+		
+# Общая часть для объектов списков событий
+func _event_values(data: Dictionary, et_text: String) -> void:
+	$EventType.visible = data.event_type > 0
+	$EventType.text = et_text
+	$EventType/Value.text = str(data.value)
+	# Отображение информации о нехватке средств для "расходных" событий
+	if not data.completed and data.event_type == 1 and data.profit_accounting < 0: $EventType/Label.visible = true
+	if $Title.get_line_count() > 1: $Title.tooltip_text = $Title.text # Выход текста за границу контейнера
