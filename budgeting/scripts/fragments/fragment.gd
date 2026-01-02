@@ -17,7 +17,7 @@ func set_values(data: Dictionary) -> void:
 		# Применение значений
 		if "title" in i.name.to_lower():
 			# Изменение значения переадресации Label
-			var id = 0
+			var id: Variant = 0
 			if i.name.to_lower().split("title")[0]+"id" in data.keys():
 				id = data[i.name.to_lower().split("title")[0]+"id"]
 			if i.name.to_lower() in special_elements.keys():

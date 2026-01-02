@@ -22,7 +22,7 @@ func _ready() -> void:
 	# Настройка выбора цвета
 	for i in Colors.get_children():
 		if i is ColorPickerButton:
-			var picker = i.get_picker()
+			var picker: ColorPicker = i.get_picker()
 			picker.picker_shape = 2
 			picker.color_modes_visible = false
 			picker.sliders_visible = false

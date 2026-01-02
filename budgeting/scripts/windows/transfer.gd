@@ -23,7 +23,7 @@ func set_extra(extra_idx: int = 0) -> void:
 
 # Изменение значение счета после проведения транзакции
 func _update_wallet_value(delete: bool = false) -> void:
-	var income = -1
+	var income: int = -1
 	if delete: income = 1
 	Request.update(Request.Tables.WALLETS, "value=value+"+str(income*float(Value.get_text())), "id="+str(Global.get_OB_id(Wallet)))
 	Request.update(Request.Tables.WALLETS, "value=value+"+str(income*float(Value.get_text())*-1), "id="+str(Global.get_OB_id(Extra)))

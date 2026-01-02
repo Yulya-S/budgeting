@@ -48,7 +48,7 @@ func date_to_dict(date_to_update: String = date_to_str(date)) -> Dictionary: ret
 
 # Получение следующего/предыдущего месяца
 func get_other_month(date: Variant, next: bool = false) -> Variant:
-	var new_date = date.duplicate() if date is Dictionary else Global.date_to_dict(date)
+	var new_date: Dictionary = date.duplicate() if date is Dictionary else Global.date_to_dict(date)
 	if next:
 		new_date.month += 1
 		if new_date.month > 12:
@@ -94,7 +94,7 @@ func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool =
 
 # Проверка что текст — это число
 func _valide_numeric_text(text_container: TextEdit) -> void:
-	var text = text_container.get_text()
+	var text: String = text_container.get_text()
 	if len(text) > 0:
 		# Удаление лишних точек дроби
 		var text_copy: PackedStringArray = text.split(".")
@@ -103,20 +103,20 @@ func _valide_numeric_text(text_container: TextEdit) -> void:
 				text_copy[0] += text_copy[1]
 				text_copy.remove_at(1)
 		# Проверка что фрагменты текста, кроме одной точки является числами
-		var filtered_text = []
+		var filtered_text: Variant = []
 		for i in text_copy:
 			filtered_text.append("")
 			for l in i: if l.is_valid_int(): filtered_text[-1] += l
 		filtered_text = ".".join(filtered_text)
 		# Проверка отличается ли результат от начального значения
 		if filtered_text != text:
-			var caret = text_container.get_caret_column()
+			var caret: int = text_container.get_caret_column()
 			text_container.set_text(filtered_text)
 			text_container.set_caret_column(caret - (len(text) - len(filtered_text)))
 
 # Изменение текста в TextEdit
 func text_changed_TextEdit(container: TextEdit, is_numeric: bool = false) -> void:
-	var text = container.get_text()
+	var text: String = container.get_text()
 	if is_numeric: _valide_numeric_text(container)
 	if len(text) > 0 and ("\t" in text or "\n" in text):
 		container.set_text(container.get_text().replace("\t", "").replace("\n", ""))

@@ -2,7 +2,7 @@ extends Control
 # Переменные
 var radius: float = 50 # Радиус графика
 var values: Array = [] # Значения для построения графика
-var higliter_idx = null # Индекс выделенного фрагмента
+var higliter_idx: Variant = null # Индекс выделенного фрагмента
 
 # Сокрытие маркера и изменение радиуса диаграммы
 func _ready() -> void:

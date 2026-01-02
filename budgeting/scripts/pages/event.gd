@@ -1,7 +1,7 @@
 extends Page
 # Подгружаемыу объекты
-var objArray = load("res://scenes/fragments/obj_array.tscn")
-var calendar = load("res://scenes/pages/events/calendar.tscn")
+var objArray: Resource = load("res://scenes/fragments/obj_array.tscn")
+var calendar: Resource = load("res://scenes/pages/events/calendar.tscn")
 # Переменная
 var start_update: bool = false # Был ли отправлен запрос на изменение страницы
 

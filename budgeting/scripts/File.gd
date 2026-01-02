@@ -16,14 +16,14 @@ func create_dirs() -> void:
 
 # Сохранение данных в файл
 func _store_json(file_path: String, data: Dictionary) -> void:
-	var file = FileAccess.open(file_path, FileAccess.WRITE)
+	var file: FileAccess = FileAccess.open(file_path, FileAccess.WRITE)
 	file.store_line(JSON.stringify(data))
 	file.close()
 	
 # Чтение данных из файла
 func _read_file(file_path: String) -> Dictionary:
-	var file = FileAccess.open(file_path, FileAccess.READ)
-	var json = JSON.new()
+	var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
+	var json: JSON = JSON.new()
 	if not json.parse(file.get_line()) == OK: return {}
 	file.close()
 	return json.data
@@ -98,7 +98,7 @@ func pathfinding(obj: Variant) -> Variant:
 		path.append(obj.name)
 		obj = obj.get_parent()
 	# Получение текстового фрагмента из словаря перевода
-	var lang_fragment = lang.duplicate()
+	var lang_fragment: Dictionary = lang.duplicate()
 	while len(path) > 0:
 		if path[-1] not in lang_fragment.keys(): return ""
 		lang_fragment = lang_fragment[path[-1]]

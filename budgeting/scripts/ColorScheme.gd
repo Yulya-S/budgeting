@@ -53,7 +53,7 @@ func set_font_color(obj: Variant, column: String = "font_color", color_idx: int 
 
 # Изменение цветов кнопок
 func _set_buttons_color(obj: Variant, a: float = 0.5, column: String = "normal") -> void:
-	var style_box = StyleBoxFlat.new()
+	var style_box: StyleBoxFlat = StyleBoxFlat.new()
 	style_box.bg_color = get_sys_color(0)
 	style_box.bg_color.a = a
 	style_box.set_corner_radius_all(2)

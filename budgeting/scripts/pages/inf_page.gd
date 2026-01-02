@@ -7,7 +7,7 @@ class_name InfPage
 @export var table: Request.Tables = Request.Tables.WALLETS # Таблица 
 
 # Переменная
-var id = null # Индекс счета
+var id: Variant = null # Индекс счета
 
 # Смена индекса объекта
 func set_object(obj_id: int, _parent: Variant = null) -> void:

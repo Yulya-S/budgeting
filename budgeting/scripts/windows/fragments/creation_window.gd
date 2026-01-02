@@ -8,7 +8,7 @@ class_name CreationWindow
 @export var table: Request.Tables = Request.Tables.WALLETS # Связанная таблица
 
 # Переменная
-var id = null # Индекс изменяемого объекта
+var id: Variant = null # Индекс изменяемого объекта
 
 # Изменение информации о счете
 func set_object(obj_id: int, _parent: Variant = null) -> void:
