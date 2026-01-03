@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cja3mn6sv5l2p" path="res://scripts/windows/payment.gd" id="1_vp407"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_0ge85"]
 [ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_0ge85"]
-[ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/calendar/date_selection.tscn" id="3_f8n6d"]
+[ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="3_f8n6d"]
 
 [node name="Payments" type="Control"]
 layout_mode = 3

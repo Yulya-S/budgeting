@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="1_804o2"]
 [ext_resource type="Script" uid="uid://chq5jeut7oy4g" path="res://scripts/windows/loan.gd" id="1_kl61x"]
-[ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/calendar/date_selection.tscn" id="2_kl61x"]
+[ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="2_kl61x"]
 [ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_8pp1o"]
 
 [node name="Loan" type="Control"]

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://c4k1v47wp5gc" path="res://scripts/windows/event.gd" id="1_32w1m"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_t3na1"]
 [ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_t3na1"]
-[ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/calendar/date_selection.tscn" id="3_xmdrw"]
+[ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="3_xmdrw"]
 
 [node name="Event" type="Control"]
 layout_mode = 3
