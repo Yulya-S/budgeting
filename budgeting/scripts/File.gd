@@ -221,8 +221,8 @@ func _standard_language() -> Dictionary:
 		# Страница займов
 		"AddLoan": "Создать займ", "AddInterest": "Добавить проценты по займу", "AddPayment": "Добавить платёж по займу",
 		"FilterStatusLabel": "Статус", "FilterStatus": ["Выплачено", "В процессе"],
-		"LoanFilterOrder": ["По оставшейся сумме"],
-		"LoanTitle": "Название займа", "LoanWallet_Title": "Название целевого счета",
+		"LoanFilterOrder": ["По оставшейся сумме"], "LoanTitle": "Название займа",
+		"LoanWallet_Title": "Название целевого счета", "LoanPercent": "Процент по займу",
 		"LoanValue": "Начальная сумма займа", "LoanTotal": "Оставшаяся сумма займа",
 		# Страница событий
 		"AddEvent": "Создать событие", "EventTitle": "Название события", "EventTypeLabel": "Недостаточно средств",
@@ -295,8 +295,8 @@ func _cr_en() -> void:
 		# Страница займов
 		"AddLoan": "Create a loan", "AddInterest": "Add interest to the loan", "AddPayment": "Add a loan payment",
 		"FilterStatusLabel": "Status", "FilterStatus": ["Paid", "In progress"],
-		"LoanFilterOrder": ["By remaining amount"],
-		"LoanTitle": "Loan name", "LoanWallet_Title": "Name of the target wallet",
+		"LoanFilterOrder": ["By remaining amount"], "LoanTitle": "Loan name",
+		"LoanWallet_Title": "Name of the target wallet", "LoanPercent": "Interest on a loan",
 		"LoanValue": "Initial loan amount", "LoanTotal": "The remaining loan amount",
 		# Страница событий
 		"AddEvent": "Create an event", "EventTitle": "Event name", "EventTypeLabel": "Insufficient funds",
