@@ -13,40 +13,61 @@ script = ExtResource("1_rbn4l")
 
 [node name="Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
 offset_left = 10.0
+offset_top = -11.5
 offset_right = 228.4
-offset_bottom = 23.0
+offset_bottom = 11.5
+grow_vertical = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
 text = "Название раздела"
+vertical_alignment = 1
 script = ExtResource("2_nyojl")
 next_page = 3
 next_page_dir = 1
 
 [node name="Wallet_Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
 offset_left = 238.0
+offset_top = -11.5
 offset_right = 456.4
-offset_bottom = 23.0
+offset_bottom = 11.5
+grow_vertical = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
 text = "Название кошелька"
 horizontal_alignment = 2
+vertical_alignment = 1
 script = ExtResource("2_nyojl")
 
 [node name="Wallet_2_Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
 offset_left = 481.0
+offset_top = -11.5
 offset_right = 699.4
-offset_bottom = 23.0
+offset_bottom = 11.5
+grow_vertical = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+vertical_alignment = 1
 script = ExtResource("2_nyojl")
 
 [node name="Arrow" type="Label" parent="Wallet_2_Title"]
@@ -59,22 +80,37 @@ text = "->"
 horizontal_alignment = 1
 
 [node name="Value" type="Label" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
 offset_left = 694.0
+offset_top = -11.5
 offset_right = 912.4
-offset_bottom = 23.0
+offset_bottom = 11.5
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Сумма"
 horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="Date" type="Label" parent="."]
-layout_mode = 0
-offset_left = 922.0
-offset_right = 1140.4
-offset_bottom = 23.0
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -11.5
+offset_right = -11.6
+offset_bottom = 11.5
+grow_horizontal = 0
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Дата"
 horizontal_alignment = 2
+vertical_alignment = 1
 
 [connection signal="mouse_entered" from="Title" to="Title" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Title" to="Title" method="_on_mouse_exited"]

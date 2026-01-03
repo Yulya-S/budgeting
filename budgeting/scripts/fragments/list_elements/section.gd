@@ -17,6 +17,7 @@ func set_values(data: Dictionary) -> void:
 	if data.month_limit <= 0 or data.income: MonthLimit.set_text("")
 	m_index = get_parent().get_child_count() - 2
 	Progress.visible = not data.income and data.month_limit > 0
+	Marker.size[1] = custom_minimum_size[1]
 	File.set_lang(self)
 	
 # Обработка наведения мыши на контейнер

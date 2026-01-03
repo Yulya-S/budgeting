@@ -27,51 +27,84 @@ color = Color(0.729412, 0.729412, 0.729412, 1)
 
 [node name="Progress" type="ProgressBar" parent="."]
 visible = false
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
 offset_left = 197.0
-offset_top = 5.0
+offset_top = -6.5
 offset_right = 382.0
-offset_bottom = 18.0
+offset_bottom = 6.5
+grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_vuo4t")
 theme_override_styles/fill = SubResource("StyleBoxFlat_fue4g")
 value = 50.0
 show_percentage = false
 
 [node name="Value" type="Label" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
 offset_left = 37.0
+offset_top = -11.5
 offset_right = 192.0
-offset_bottom = 23.0
+offset_bottom = 11.5
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Текущее значение"
 horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="Month_Limit" type="Label" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
 offset_left = 387.0
+offset_top = -11.5
 offset_right = 542.0
-offset_bottom = 23.0
+offset_bottom = 11.5
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Ограничение"
+vertical_alignment = 1
 
 [node name="ConsumptionIncome" type="Label" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
 offset_left = 555.0
+offset_top = -11.5
 offset_right = 706.0
-offset_bottom = 23.0
+offset_bottom = 11.5
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="Title" type="Label" parent="."]
-layout_mode = 0
-offset_left = 707.0
-offset_right = 964.0
-offset_bottom = 23.0
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -262.0
+offset_top = -11.5
+offset_right = -5.0
+offset_bottom = 11.5
+grow_horizontal = 0
+grow_vertical = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
 text = "Название раздела"
 horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
 script = ExtResource("2_078te")
 next_page = 2
 next_page_dir = 1

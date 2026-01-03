@@ -7,7 +7,7 @@ class_name PageFragment
 func _ready() -> void:
 	if get_parent().get_child_count() == 1: File.set_lang(self)
 	custom_minimum_size[0] = get_parent().get_parent().size[0]
-	update_minimum_size()
+	set_line_size()
 	ColorScheme.repainting(self)
 	
 # Изменение значений в сцене
@@ -34,6 +34,16 @@ func set_values(data: Dictionary) -> void:
 				i.visible = true
 			elif data[i.name.to_lower()] is bool: i.visible = data[i.name.to_lower()]
 		else: i.set_text(str(data[i.name.to_lower()]))
+	set_line_size()
+	
+# Применение высоты строки списка
+func set_line_size() -> void:
+	var max_count: int = 1
+	var front_size: int = 16
+	for i in get_children(): if i is Label: if i.get_line_count() > max_count:
+		max_count = i.get_line_count() 
+		front_size = i.get_theme_font_size("front_size")
+	custom_minimum_size[1] = max_count * front_size + ((max_count - 1) * 2) + 10.
 		
 # Общая часть для объектов списков событий
 func _event_values(data: Dictionary, et_text: String) -> void:
@@ -42,4 +52,3 @@ func _event_values(data: Dictionary, et_text: String) -> void:
 	$EventType/Value.text = str(data.value)
 	# Отображение информации о нехватке средств для "расходных" событий
 	if not data.completed and data.event_type == 1 and data.profit_accounting < 0: $EventType/Label.visible = true
-	if $Title.get_line_count() > 1: $Title.tooltip_text = $Title.text # Выход текста за границу контейнера
