@@ -55,6 +55,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Текущее значение"
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="Month_Limit" type="Label" parent="."]
 layout_mode = 1
@@ -69,6 +70,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Ограничение"
 vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="ConsumptionIncome" type="Label" parent="."]
 layout_mode = 1
@@ -83,6 +85,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 1

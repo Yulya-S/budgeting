@@ -28,6 +28,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
 text = "Название раздела"
 vertical_alignment = 1
+autowrap_mode = 1
 script = ExtResource("2_nyojl")
 next_page = 3
 next_page_dir = 1
@@ -50,6 +51,7 @@ theme_override_constants/line_spacing = -5
 text = "Название кошелька"
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 script = ExtResource("2_nyojl")
 
 [node name="Wallet_2_Title" type="Label" parent="."]
@@ -68,6 +70,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
 vertical_alignment = 1
+autowrap_mode = 1
 script = ExtResource("2_nyojl")
 
 [node name="Arrow" type="Label" parent="Wallet_2_Title"]
@@ -78,6 +81,7 @@ offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "->"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Value" type="Label" parent="."]
 layout_mode = 1
@@ -93,6 +97,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Сумма"
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="Date" type="Label" parent="."]
 layout_mode = 1

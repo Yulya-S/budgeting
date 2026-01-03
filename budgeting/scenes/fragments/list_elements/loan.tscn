@@ -27,6 +27,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Название займа"
 vertical_alignment = 1
+autowrap_mode = 1
 script = ExtResource("2_13s73")
 
 [node name="Wallet_Title" type="Label" parent="."]
@@ -45,6 +46,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Название целевого счета"
 vertical_alignment = 1
+autowrap_mode = 1
 script = ExtResource("2_13s73")
 
 [node name="Arrow" type="Label" parent="Wallet_Title"]
@@ -69,6 +71,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Процент по займу"
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="Value" type="Label" parent="."]
 layout_mode = 1
@@ -84,6 +87,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Начальная сумма займа"
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="Total" type="Label" parent="."]
 layout_mode = 1
@@ -102,6 +106,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Оставшаяся сумма займа"
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 
 [connection signal="mouse_entered" from="Title" to="Title" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Title" to="Title" method="_on_mouse_exited"]

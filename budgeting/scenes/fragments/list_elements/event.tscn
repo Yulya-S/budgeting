@@ -34,6 +34,7 @@ next_page = 5
 next_page_dir = 1
 
 [node name="EventType" type="Label" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -53,6 +54,8 @@ offset_left = 212.0
 offset_right = 336.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="Label" type="Label" parent="EventType"]
 visible = false
@@ -63,8 +66,8 @@ offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Недостаточно средств"
 horizontal_alignment = 1
-autowrap_mode = 3
-clip_text = true
+vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="Date" type="Label" parent="."]
 layout_mode = 1
