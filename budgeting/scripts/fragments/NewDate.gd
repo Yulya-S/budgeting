@@ -13,10 +13,10 @@ func set_value(new_date: Variant):
 # Номер дня недели
 func weekday() -> int: return date.weekday - 1
 
-# Суммарне количество ячеек календаря
+# Суммарное количество ячеек календаря
 func calendar_cells() -> int:
-	var whole: int = day_count + date.weekday - 1
-	return whole + (7 - whole % 7)
+	var whole: int = day_count + weekday()
+	return whole if whole % 7 == 0 else whole + (7 - whole % 7)
 
 # Сравнение дат
 func date_comparison(other_date: Variant, operator: String = "==", account_day: bool = false) -> bool:

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://fnpl6nhxd4w3"]
 
-[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/fragment.gd" id="1_y7qb5"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/Fragment.gd" id="1_y7qb5"]
 [ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_13s73"]
 
 [node name="Loan" type="ColorRect"]

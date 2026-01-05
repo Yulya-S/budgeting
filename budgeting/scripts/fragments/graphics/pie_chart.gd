@@ -12,7 +12,7 @@ func _ready() -> void:
 # Отрисовка графика
 func _draw() -> void:
 	# База для графика
-	draw_circle(Vector2(radius, radius), radius + 4, Color.WHITE, true)
+	draw_circle(Vector2(radius, radius), radius + 4., Color.WHITE, true)
 	draw_circle(Vector2(radius, radius), radius, Color.BLACK, false, 3)
 	# Получение значений для расчета
 	if len(values) == 0: return
@@ -28,7 +28,7 @@ func _draw() -> void:
 		if arc_size < 2: continue
 		# Отрисовка секции
 		draw_arc(Vector2(radius, radius), (radius/2.)+2., deg_to_rad(deg-2.), deg_to_rad(deg+arc_size+2.), int(arc_size+4), Color.BLACK, radius)
-		draw_arc(Vector2(radius, radius), (radius-2)/2., deg_to_rad(deg), deg_to_rad(deg+arc_size), int(arc_size), new_color, radius)
+		draw_arc(Vector2(radius, radius), (radius/2.)-1., deg_to_rad(deg), deg_to_rad(deg+arc_size), int(arc_size), new_color, radius)
 		deg += arc_size
 
 # Заполнение списка значений
@@ -39,12 +39,11 @@ func update_data(filter: Variant = {}, key: String = "value") -> void:
 	queue_redraw()
 	
 # Выделение области
-func set_highlighter(index: int) -> void:
+func set_highlighter(index: Variant = null) -> void:
 	higliter_idx = index
 	queue_redraw()
 
 # Сброс выделения области
 func reset_highlighter(index: int) -> void:
 	if index != higliter_idx: return
-	higliter_idx = null
-	queue_redraw()
+	set_highlighter()

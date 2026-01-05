@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c66y7ml70d1pm"]
 
-[ext_resource type="Script" uid="uid://d10kwogv0r8iv" path="res://scripts/fragments/data_selection/cell.gd" id="1_72gv6"]
+[ext_resource type="Script" uid="uid://d10kwogv0r8iv" path="res://scripts/fragments/date_selection/cell.gd" id="1_72gv6"]
 
 [node name="Cell" type="ColorRect"]
 custom_minimum_size = Vector2(40, 40)

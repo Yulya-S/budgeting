@@ -1,33 +1,29 @@
 extends Label
 # Переменные
-enum States {NONE, _E01, _E02, _E03, _E04, _E05, _E06, _E07} # Список кодов возможных ошибок
+enum States {NONE, _E01, _E02, _E03, _E04, _E05, _E06, _E07} # Список возможных ошибок
 var state: States = States.NONE # Код текущей ошибки
 
-# Очистка ошибки
+# Очистка
 func clear() -> void:
 	visible = false
 	state = States.NONE
 
-# Применить новый код ошибки
+# Применить новый код
 func set_state(new_state: States) -> void:
 	if state != States.NONE: return
 	state = new_state
 	update_lang()
 
-# Изменение текста ошибки
+# Изменение текста
 func update_lang() -> void:
-	if state == States.NONE: return
-	_set_error_text(File.lang["_Errors"][States.keys()[state]])
-	
-# Изменение текста ошибки
-func _set_error_text(erro_text: String) -> void:
 	visible = true
-	erro_text[0] = erro_text[0].to_upper()
-	set_text(erro_text + "!")
+	var error_text: String = File.lang["_Errors"][States.keys()[state]]
+	error_text[0] = error_text[0].to_upper()
+	set_text(error_text + "!")
 	
 # Проверка обязательных к заполнению полей
-func check_mandatory_fields(field: TextEdit) -> bool:
-	if field.get_text() == "":
+func check_mandatory_fields(field: Array) -> bool:
+	for i in field: if i is TextEdit and i.get_text() == "":
 		set_state(States._E01)
 		return true
 	return false

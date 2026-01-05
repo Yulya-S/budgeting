@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bbm4ew21ko7e1"]
 
-[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/fragment.gd" id="1_rul2d"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/Fragment.gd" id="1_rul2d"]
 [ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_v86u3"]
 
 [node name="WalletTransaction" type="ColorRect"]
@@ -10,9 +10,6 @@ offset_bottom = 23.0
 mouse_filter = 1
 color = Color(0.955963, 0.955963, 0.955963, 1)
 script = ExtResource("1_rul2d")
-special_elements = {
-"title": ["wallet_id", "section_id"]
-}
 
 [node name="Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
@@ -32,7 +29,6 @@ text = "Название раздела"
 vertical_alignment = 1
 autowrap_mode = 1
 script = ExtResource("2_v86u3")
-signal_name = "open_new_page"
 next_page = 3
 
 [node name="Count" type="Label" parent="."]

@@ -9,21 +9,19 @@ const month_list: Array = ["Январь", "Февраль", "Март", "Апр
 							"Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
 
 # Переменные
-var selected_day: Dictionary = {} # Номер выбранного дня
-var cell_path: Resource = load("res://scenes/fragments/calendar/cell.tscn") # Путь к сцене ячеек календаря
+var selected_day: Dictionary = Global.date # Номер выбранного дня
+var cell_path: Resource = load("res://scenes/fragments/data_selection/cell.tscn") # Путь к сцене ячеек календаря
 
-# Получение текущей даты
-func _ready() -> void:
-	selected_day = Global.date
-	_update_calendar()
+# Применение стартового значения
+func _ready() -> void: set_date()
 
 # Изменение текущей даты из базы данных
-func set_date(new_date: String) -> void:
+func set_date(new_date: String = Global.date_to_str()) -> void:
 	selected_day = Global.date_to_dict(new_date)
 	_update_calendar()
 
 # Получение выбранной в календаре даты
-func get_date() -> String: return Global.date_to_str(selected_day).split(" ")[0]
+func get_date() -> String: return Global.date_to_str(selected_day, true)
 
 # Изменение настроек календаря
 func _update_calendar() -> void:
@@ -39,13 +37,10 @@ func _update_calendar() -> void:
 # Заполнение календаря ячейками дней
 func _create_days() -> void:
 	Month.set_text(month_list[selected_day.month-1].to_upper()) # Смена имени месяца
-	# Очистка ячеек
-	for i in Cells.get_children():
-		i.queue_free()
-		Cells.remove_child(i)
+	Global.clear_scene(Cells)
 	# Получение данных о месяце
 	var current_month: Dictionary = Global.date_to_dict("-".join([selected_day.year, selected_day.month, 1]))
-	var day_count: int = Request.select_day_count(Global.date_to_str(current_month).split(" ")[0])
+	var day_count: int = Request.select_day_count(Global.date_to_str(current_month, true))
 	if current_month.weekday == 0: current_month.weekday = 7 # Смена индекса воскресения
 	current_month.weekday -= 1
 	# Создание ячеек

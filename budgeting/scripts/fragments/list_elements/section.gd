@@ -1,4 +1,4 @@
-extends PageFragment
+extends Fragment
 # Подключение путей к объектам в сцене
 @onready var Title = $Title
 @onready var Marker = $Marker

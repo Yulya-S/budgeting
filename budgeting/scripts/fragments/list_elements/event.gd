@@ -1,4 +1,4 @@
-extends PageFragment
+extends Fragment
 
 # Изменение значений в сцене
 func set_values(data: Dictionary) -> void:

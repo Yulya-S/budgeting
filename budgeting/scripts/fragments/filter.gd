@@ -5,7 +5,7 @@ extends ColorRect
 
 # Переменные
 var filter: Dictionary = {"where": "", "date": "", "order": ""} # Параметры запроса фильтрации
-var order_item_texts: Array = []
+var order_item_texts: Array = [] # Список параметров сортировки
 
 # Стартовое заполнение фильтров времени
 func _ready() -> void: reset_date_filters()
@@ -34,7 +34,7 @@ func set_OB_items(table: Request.Tables) -> void:
 
 # Сборка фильтра
 func get_filter() -> Dictionary:
-	filter = {"where": "", "date": "", "order": ""} # Очистка прошлого запроса
+	filter = {"where": "", "date": "", "order": ""} # Очистка фильтра
 	for i in get_children():
 		if "OR" in filter.where.split("AND")[-1] and filter.where[-1] != ")": filter.where = "("+filter.where+")"
 		match i.name:
@@ -45,7 +45,6 @@ func get_filter() -> Dictionary:
 			_: _other_filters(i)
 	# Добавление фильтра времени
 	if filter.date is Array: filter.date = Global.date_to_sql_date("-".join(filter.date+[1]))
-	if get_parent().get("set_filter"): get_parent().set_filter()
 	return filter
 
 # Обработка дополнительных фильтров

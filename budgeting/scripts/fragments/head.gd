@@ -1,15 +1,19 @@
 extends ColorRect
-# Подключение пути к объектам в сцене
-@onready var Date = $Date
 
 # Изменение положения маркера страницы
 func _ready() -> void:
 	$Login.set_text(File.show_data(File.config.login))
-	$Marker.position.x = (5 * (Global.current_page + 3)) + (39.68 * (Global.current_page + 2)) - 1
+	$Marker.position.x = (5. * (Global.current_page + 3.)) + (39.68 * (Global.current_page + 2.)) - 1.
 	update_date()
 	
 # Обновление текста даты
-func update_date() -> void: Date.set_text(Global.date_to_str(Global.date).split(" ")[0])
+func update_date() -> void: $Date.set_text(Global.date_to_str(Global.date).split(" ")[0])
+
+# Обработка нажатия кнопки выхода из аккаунта
+func _on_exit_button_down() -> void:
+	File.clear_config()
+	Request.connection_user_db()
+	Global.emit_signal("open_new_page", Global.Pages.REGISTRATION)
 
 # Обработка нажатия кнопки настройки 
 func _on_setting_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SETTINGS, null, Global.Dirs.PAGES)
@@ -34,9 +38,3 @@ func _on_event_button_down() -> void: Global.emit_signal("open_new_page", Global
 
 # Обработка нажатия кнопки отчетов
 func _on_report_button_down() -> void: pass
-
-# Обработка нажатия кнопки выхода из аккаунта
-func _on_exit_button_down() -> void:
-	File.clear_config()
-	Request.connection_user_db()
-	Global.emit_signal("open_new_page", Global.Pages.REGISTRATION)
