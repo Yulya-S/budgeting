@@ -20,10 +20,17 @@ func update_lang() -> void:
 	var error_text: String = File.lang["_Errors"][States.keys()[state]]
 	error_text[0] = error_text[0].to_upper()
 	set_text(error_text + "!")
-	
-# Проверка обязательных к заполнению полей
-func check_mandatory_fields(field: Array) -> bool:
-	for i in field: if i is TextEdit and i.get_text() == "":
+
+# Проверка заполнено ли текстовое поле
+func _check(field: Variant) -> bool:
+	if field is TextEdit and field.get_text() == "":
 		set_state(States._E01)
 		return true
 	return false
+
+# Проверка обязательных к заполнению полей
+func check_mandatory_fields(fields: Variant) -> bool:
+	if fields is Array:
+		for i in fields: if _check(i): return true
+		return false
+	return _check(fields)

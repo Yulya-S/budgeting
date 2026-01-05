@@ -1,9 +1,7 @@
 extends Page
 # Подключение путей к объектам в сцене
-@onready var Filter = $Filter
 @onready var FilterWallet = $Filter/Wallet
 @onready var FilterSection = $Filter/Section
-@onready var Schedule = $DailyTransactions
 
 # Подключение сигнала
 func _ready() -> void:
@@ -18,12 +16,8 @@ func _update_page() -> void:
 	FilterSection.selected = save_selected_section
 	File.set_OB_elements(FilterSection) # Применение перевода для списка разделов
 	super._update_page() # Обновление данных на странице
-	
-# Обновление данных
-func update_data() -> void:
-	super.update_data()
-	Schedule.update_data(Filter)
-	
+
+# Изменить позже
 # Изменение значений фильтрации извне
 func set_object(obj_id: Variant, _parent: Variant = null) -> void:
 	if obj_id is Array:

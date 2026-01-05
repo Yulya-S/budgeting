@@ -1,11 +1,6 @@
 extends Page
-# Подключение путей к объектам в сцене
+# Подключение пути к объекту в сцене
 @onready var PieChart = $PieChart
-
-# Обновление данных
-func update_data() -> void:
-	super.update_data()
-	PieChart.update_data($Filter)
 
 # Применение выделений секций на круговой диаграмме
 func highlighting_graph_sections(idx: int, set_highlighting: bool = true) -> void:

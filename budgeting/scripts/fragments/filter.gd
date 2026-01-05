@@ -15,7 +15,7 @@ func reset_date_filters() -> void:
 	for i in get_children():
 		match i.name:
 			"Year": _on_year_item_selected(-1)
-			"Month": i.selected = Global.date.month - 1
+			"Month": i.selected = Global.get_date().month - 1
 			"Order": if len(order_item_texts) == 0: for l in range(i.get_item_count()): order_item_texts.append(i.get_item_text(l))
 	
 # Сброс перевода способа сортировки
@@ -66,8 +66,8 @@ func _other_filters(obj: Variant) -> void:
 
 # Обработка выбора года
 func _on_year_item_selected(index: int) -> void:
-	var last_month: bool = Global.date.month == 12
-	var current_year: int = Global.date.year
+	var last_month: bool = Global.get_date().month == 12
+	var current_year: int = Global.get_date().year
 	var year: int = current_year
 	if index != -1: year = int($Year.get_item_text(index))
 	for i in range($Year.item_count): $Year.remove_item(0)

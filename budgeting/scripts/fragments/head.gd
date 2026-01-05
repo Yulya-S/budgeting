@@ -7,7 +7,7 @@ func _ready() -> void:
 	update_date()
 	
 # Обновление текста даты
-func update_date() -> void: $Date.set_text(Global.date_to_str(Global.date).split(" ")[0])
+func update_date() -> void: $Date.set_text(Global.date_to_str())
 
 # Обработка нажатия кнопки выхода из аккаунта
 func _on_exit_button_down() -> void:

@@ -12,7 +12,7 @@ func _ready() -> void:
 	scales_gradient.colors = PackedColorArray([Color.from_rgba8(0, 109, 0), Color(1, 1, 0), Color(1, 0, 0)])
 	scales_gradient.offsets = PackedFloat32Array([0, 0.5, 1])
 
-# Получение значения цвета из градиента по индексу объекта
+# Получение значения цвета из градиента по индексу
 func get_color(index: float, count: float, gradient: Gradient = chart_gradient) -> Color:
 	if count == 0: count = 1
 	return gradient.sample(index / count)
@@ -36,8 +36,7 @@ func color_reading() -> void:
 	color_assembly(g_colors, g_offsets, data.dark_theme)
 	# Изменение градиента для графиков под выбранную цветовую тему
 	chart_gradient.colors = PackedColorArray([get_sys_color(10, 100), get_sys_color(55, 100)])
-	# Изменение цвета подсветки
-	highlighter_color = Color.AQUAMARINE * get_sys_color(50, 100)
+	highlighter_color = Color.AQUAMARINE * get_sys_color(50, 100) # Изменение цвета подсветки
 	
 # Составление цветовой палитры
 func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, theme: bool) -> void:
@@ -51,7 +50,7 @@ func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, t
 # Замена цвета текста
 func set_font_color(obj: Variant, column: String = "font_color", color_idx: int = 0) -> void: obj.add_theme_color_override(column, get_sys_color(color_idx))
 
-# Изменение цветов кнопок
+# Изменение цвета кнопки
 func _set_buttons_color(obj: Variant, a: float = 0.5, column: String = "normal") -> void:
 	var style_box: StyleBoxFlat = StyleBoxFlat.new()
 	style_box.bg_color = get_sys_color(0)
@@ -59,14 +58,14 @@ func _set_buttons_color(obj: Variant, a: float = 0.5, column: String = "normal")
 	style_box.set_corner_radius_all(2)
 	obj.add_theme_stylebox_override(column, style_box)
 
-# Изменение всех цветовых параметров кнопок
+# Изменение всех цветовых параметров кнопки
 func _set_all_button_color_parametrs(obj: Variant) -> void:
 	_set_buttons_color(obj)
 	_set_buttons_color(obj, 0.8, "hover")
 	_set_buttons_color(obj, 0.5, "pressed")
 	for i in ["", "focus_", "hover_", "hover_pressed_", "pressed_"]: set_font_color(obj, "font_"+i+"color", 6)		
 
-# Применение системного градиента к странице
+# Применение цветовой палитры к странице
 func repainting(obj: Variant) -> void:
 	match obj.name:
 		"Head": obj.color = get_sys_color(1)

@@ -1,15 +1,14 @@
 extends Control
 class_name FillingCalendar
-# Подключение пути к объектам в сцене
+# Подключение пути к объекту в сцене
 @onready var Calendar = $Calendar
-
 # Экспортируемая переменная
-@export var cell_count: int = 42
+@export var cell_count: int = 42  # Количество ячеек в календаре
 
 # Переменные
-var date: String = Global.date_to_str() # Выборанная дата
-var day_count: int = Request.select_day_count(date) # Количество дней в выбранном месяце
-var lines: Array = [] # Список объектов для создания на странице
+var date: String = Global.date_to_str() # Выбранная дата
+var day_count: int = Request.select_day_count(date) # Количество дней
+var lines: Array = [] # Список объектов для создания
 var events_color: Dictionary = {} # Цвета добавленных событий
 var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Путь к сцене ячеек календаря
 
@@ -27,13 +26,12 @@ func _process(_delta: float) -> void:
 		current_day.weekday -= 1
 		if cell_count < 28:
 			current_day.day += Calendar.get_child_count() - 1
-			if current_day.day >= day_count:
-				current_day.day = int(Calendar.get_child(-1).Number.get_text()) + 1
+			if current_day.day >= day_count: current_day.day = int(Calendar.get_child(-1).Number.get_text()) + 1
 		else: current_day.day = Calendar.get_child_count() - current_day.weekday
 		if (current_day.day > 0 and current_day.day <= day_count) or cell_count < 28:
 			# Применение значения номера ячейки
-			Calendar.get_child(-1).set_object(current_day.day, Global.date_comparison(current_day, Global.date, "=="),
-				Global.date_comparison(current_day, Global.date, "<"))
+			Calendar.get_child(-1).set_object(current_day.day, Global.date_comparison(current_day, Global.get_date(), "=="),
+				Global.date_comparison(current_day, Global.get_date(), "<"))
 
 # Изменение текущей даты
 func set_data() -> void:
@@ -42,10 +40,7 @@ func set_data() -> void:
 
 # Заполнение страницы
 func update_page(close_page: String = "") -> void:
-	# Очистка страницы
-	for i in Calendar.get_children():
-		i.queue_free()
-		Calendar.remove_child(i)
+	Global.clear_scene(Calendar)
 	# Получение данных
 	events_color = {}
 	set_data()

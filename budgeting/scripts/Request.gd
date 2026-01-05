@@ -8,9 +8,8 @@ var db: SQLite = null # Подключенная база данных
 # Для заполнения таблицы событий
 var events: Array = [] # Список событий для постепенного увеличения их количества
 var completion_creation_et: bool = false # Маркер завершения заполнения таблицы событий
-var selected_date: Dictionary = {} # Выбранная дата
+@onready var selected_date: NewDate = NewDate.new(Time.get_datetime_string_from_system()) # Выбранная дата
 var next_month: Dictionary = {} # Следующий месяц
-var current_month_day_count: int = 30 # Количество дней в месяце
 var last_month_day_count: int = 30 # количество дней в предыдущем месяце
 
 # Открытие базы данных
@@ -172,14 +171,14 @@ func _process(_delta: float) -> void:
 		var value: Dictionary = events.pop_front()
 		var new_date: Dictionary = Global.date_to_dict(value.new_date)
 		match value.repetition_rate:
-			1: _insert_events_with_step(value, new_date, current_month_day_count, 2)
-			2: _insert_events_with_step(value, new_date, current_month_day_count, 7)
+			1: _insert_events_with_step(value, new_date, selected_date.day_count, 2)
+			2: _insert_events_with_step(value, new_date, selected_date.day_count, 7)
 			0:
-				if Global.date_comparison(selected_date, new_date, "==", false): _insert_event(value, new_date)					
-				if selected_date.day != 1 and Global.date_comparison(next_month, new_date, "==", false): _insert_event(value, new_date)
+				if selected_date.date_comparison(new_date, "=="): _insert_event(value, new_date)					
+				if selected_date.date.day != 1 and Global.date_comparison(next_month, new_date, "==", false): _insert_event(value, new_date)
 			3, 4:
-				_insert_events_to_repetition_rate_3_4(value, new_date, selected_date)
-				if selected_date.day != 1: _insert_events_to_repetition_rate_3_4(value, new_date, next_month)
+				_insert_events_to_repetition_rate_3_4(value, new_date, selected_date.date)
+				if selected_date.date.day != 1: _insert_events_to_repetition_rate_3_4(value, new_date, next_month)
 
 # Получение данных из таблиц
 func _select(req_text: String, where: String = "", order: String = "", group: String = "") -> Array:
@@ -188,6 +187,11 @@ func _select(req_text: String, where: String = "", order: String = "", group: St
 	if group: group = " GROUP BY " + group
 	db.query("SELECT " + req_text + where + order + group + ";")
 	return db.query_result
+
+func select_value(table: Variant, column: String) -> Variant:
+	var value: Array = select(table)
+	if len(value) > 0: return value[0][column]
+	return null
 
 # Проверка существует выбранный пользователь
 func select_existence_user(login: bool) -> bool:
@@ -243,7 +247,7 @@ func select_sections_list(where: String = "", date: String = Global.date_to_str(
 	
 # Запрос на изменение списка разделов
 func _update_sections_list(line: Dictionary, parent: Variant) -> Dictionary:
-	line["marker"] = ColorScheme.get_color(parent.obj_count(), len(parent.change_list) + parent.obj_count())
+	line["marker"] = ColorScheme.get_color(parent.obj_count(), len(parent.lines.change_list) + parent.obj_count())
 	line["progress"] = (100. * line.value) / line.month_limit
 	return line
 
@@ -257,7 +261,8 @@ func _select_cash_flows_list(where: String = "", date: String = Global.date_to_s
 func _update_cash_flows_list(line: Dictionary) -> Dictionary:
 	match line.section_id:
 		1: line["wallet_2_title"] = _select_title(Tables.WALLETS, line.wallet_2_id)
-		3, 4: line["wallet_2_title"] = _select_title(Tables.LOANS, line.wallet_2_id)
+		3: line["wallet_2_title"] = _select_title(Tables.LOANS, line.wallet_2_id)
+		4: line["wallet_title"] = _select_title(Tables.LOANS, line.wallet_2_id)
 		2:
 			line["wallet_2_title"] = line.wallet_title
 			line.wallet_title = _select_title(Tables.LOANS, line.wallet_2_id)
@@ -279,12 +284,12 @@ func _select_loans_list(where: String = "", order: String = "") -> Array:
 # Добавление событий во временную таблицу
 func _insert_event(value: Dictionary, date: Dictionary) -> void:
 	var text_date: String = Global.date_to_str(date).split(" ")[0]
-	insert_record("multiplied_events", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", "'"+value.note+"'", Global.date_comparison(Global.date, date, ">"), value.id])
+	insert_record("multiplied_events", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", "'"+value.note+"'", Global.date_comparison(Global.get_date(), date, ">"), value.id])
 
 # Добавление событий во временную таблицу с выбранным шагом
 func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count: int, step: int) -> void:
 	var two_week: int = 0
-	if selected_date.day != 1 and new_date.month != next_month.month: two_week = 14
+	if selected_date.date.day != 1 and new_date.month != next_month.month: two_week = 14
 	while new_date.day <= day_count + two_week:
 		var date_dup: Dictionary = new_date.duplicate()
 		if new_date.day > day_count:
@@ -299,23 +304,22 @@ func _insert_events_to_repetition_rate_3_4(value: Dictionary, new_date: Dictiona
 	if value.repetition_rate == 3:
 		new_date.month = date.month
 		if last_month_day_count < new_date.day: _insert_event(value, new_date)
-		if current_month_day_count >= new_date.day: _insert_event(value, new_date)
-	elif new_date.month == date.month and current_month_day_count >= new_date.day: _insert_event(value, new_date)
+		if selected_date.day_count >= new_date.day: _insert_event(value, new_date)
+	elif new_date.month == date.month and selected_date.day_count >= new_date.day: _insert_event(value, new_date)
 	elif new_date.month == Global.get_other_month(date).month and last_month_day_count < new_date.day: _insert_event(value, new_date)
 		
 # Получение событий в текущем месяце с датой первого появления
-func _select_events_list(date: String) -> Array:
+func _select_events_list(date: String, date2: String) -> Array:
 	return _select("*, Date(julianday(date) + juli + CASE WHEN juli<0 THEN juli*-1 WHEN repetition_rate=1 THEN juli%2
 		WHEN repetition_rate=2 THEN 7-juli%7 ELSE juli*-1 END) new_date FROM (SELECT *, (julianday(Date('"+date+\
-		"'))-julianday(date)) juli FROM events) AS event", where_date(date, "date", "<="), "new_date")
+		"'))-julianday(date)) juli FROM events) AS event", where_date(date2, "date", "<="), "new_date")
 	
 # Начало создания таблицы событий
 func start_create_multiplied_events_table(date: String) -> void:
-	selected_date = Global.date_to_dict(date)
-	next_month = Global.get_other_month(selected_date, true)
-	current_month_day_count = select_day_count(date)
+	selected_date.set_value(date)
+	next_month = Global.get_other_month(selected_date.date, true)
 	last_month_day_count = select_day_count(Global.get_other_month(date))
-	events = _select_events_list(date)
+	events = _select_events_list(date, date if selected_date.date.day < selected_date.day_count - 14 else Global.date_to_str(next_month))
 	db.query("DELETE FROM multiplied_events")
 	update(Tables.SQLITE_SEQUENCE, "seq=0", 'name="multiplied_events"')
 	completion_creation_et = false

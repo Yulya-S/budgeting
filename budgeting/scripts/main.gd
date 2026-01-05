@@ -1,5 +1,5 @@
 extends Node2D
-# Подключение пути к объектам в сцене
+# Подключение пути к объекту в сцене
 @onready var DayTimer = $Timer
 
 # Создание сцены
@@ -8,12 +8,12 @@ func _ready() -> void:
 	Global.connect("open_window", Callable(self, "_open_window"))
 	Global.connect("open_new_page", Callable(self, "_open_new_page"))
 	# Изменение значения оставшегося в сутках времени
-	DayTimer.start((60. * 60. * 24.) - (Global.date.second + (60. * Global.date.minute) + (60. * 60. * Global.date.hour)))
+	DayTimer.start((60. * 60. * 24.) - (Global.get_date().second + (60. * Global.get_date().minute) + (60. * 60. * Global.get_date().hour)))
 
 # Обработка окончания работы таймера
 func _on_timer_timeout() -> void:
 	DayTimer.start(60. * 60. * 24.)
-	Global.date = Time.get_datetime_dict_from_system()
+	Global.sys_date.set_value(Time.get_datetime_string_from_system())
 	Global.emit_signal("update_page")
 	for i in get_children(): Global.run_func(i, "new_day")
 
@@ -30,8 +30,7 @@ func _open_window(page: Global.Pages, id: Variant = null,
 # Очистка экрана и открытие новой страницы
 func _open_new_page(page: Global.Pages, id: Variant = null, parent: Variant = null) -> void:
 	Global.current_page = page
-	for i in get_children():
-		if i.name == "Timer": continue
-		i.queue_free()
-		remove_child(i)
+	for child in get_children():
+		if child.name == "Timer": continue
+		Global.delete_child(self, child)
 	_open_window(page, id, Global.Dirs.PAGES, parent)

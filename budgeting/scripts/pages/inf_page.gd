@@ -33,6 +33,5 @@ func _replace_values(obj: Variant, value: Dictionary) -> void:
 # Обработка нажатия кнопки возврата к списку счетов
 func _on_back_button_down() -> void:
 	if not get_parent(): return
-	self.queue_free()
-	get_parent().remove_child(self)
+	Global.delete_child(get_parent(), self)
 	Global.emit_signal("update_page")

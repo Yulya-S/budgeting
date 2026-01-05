@@ -1,9 +1,7 @@
 extends ColorRect
 
 # Обработка нажатия кнопки отмены
-func on_close_button_down() -> void:
-	get_parent().queue_free()
-	get_parent().get_parent().remove_child(get_parent())
+func on_close_button_down() -> void: Global.delete_child(get_parent().get_parent(), get_parent())
 
 # Обработка нажатия кнопки сохранения / изменения
 func _on_apply_button_down() -> void:

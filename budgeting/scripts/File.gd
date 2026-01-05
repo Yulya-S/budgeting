@@ -1,6 +1,6 @@
 extends Node
 # Переменные
-const BasesPath: String = "user://bases/"
+const BasesPath: String = "user://bases/" # Расположение директории пользовательских данных
 # Файл конфигураций
 var config: Dictionary = {"enter": false, "lang": "ru", "login": "", "password": ""} # Конфигурации
 const ConfigFilePath: String = BasesPath + "config.json" # Путь к файлу конфигураций
@@ -59,17 +59,16 @@ func clear_config() -> void:
 # Файл локализации
 # Заполнение поля выбора языка
 func load_lang(container: OptionButton) -> void:
-	for i in DirAccess.get_files_at(LangDir):
-		if "json" in i and len(i.split(".")) == 2:
-			container.add_item(i.split(".")[0])
-			# Применение языка, если он соответствует выбранному в файле конфигураций
-			if i.split(".")[0] == config.lang:
-				container.select(container.item_count-1)
-				read_lang(container)
+	for i in DirAccess.get_files_at(LangDir): if "json" in i and len(i.split(".")) == 2:
+		container.add_item(i.split(".")[0])
+		# Применение языка, если он соответствует выбранному в файле конфигураций
+		if i.split(".")[0] == config.lang:
+			container.select(container.item_count-1)
+			read_lang(container)
 			
 # Создание файлов языков
 func create_langs() -> void:
-	# Убрать этот фрагмент - он нужен что бы не удалять каждый раз файлы локализации в ручную
+	# Убрать этот фрагмент - он нужен чтобы не удалять каждый раз файлы локализации вручную
 	DirAccess.remove_absolute(BasesPath + "language/ru.json")
 	DirAccess.remove_absolute(BasesPath + "language/en.json")
 	
@@ -84,26 +83,11 @@ func _cr_lang_file(f_name: String, value: Dictionary) -> void:
 # Считывание перевода
 func read_lang(container: OptionButton) -> void:
 	lang = _read_file(LangDir+Global.get_OB_text(container)+".json")
-	_supplement_translation() 
+	_supplement_cycle(lang, _standard_language())
 	set_lang(container.get_parent())
 	# Сохранение выбора в файле конфигураций
 	config.lang = Global.get_OB_text(container)
 	save_config()
-
-# Применение значение используя поиск корневой сцены
-func pathfinding(obj: Variant) -> Variant:
-	# Получение пути до main
-	var path: Array = []
-	while obj.name != "main":
-		path.append(obj.name)
-		obj = obj.get_parent()
-	# Получение текстового фрагмента из словаря перевода
-	var lang_fragment: Dictionary = lang.duplicate()
-	while len(path) > 0:
-		if path[-1] not in lang_fragment.keys(): return ""
-		lang_fragment = lang_fragment[path[-1]]
-		path.pop_back()
-	return lang_fragment
 
 # Поиск ключа в базе перевода
 func _find_lang_keys(obj: Variant, key: String = "") -> String:
@@ -116,23 +100,22 @@ func _find_lang_keys(obj: Variant, key: String = "") -> String:
 # Изменение текста объекта в зависимости от типа объекта
 func _lang_match(obj: Variant, key: String) -> void:
 	match obj.get_class():
+		"CheckButton": set_CB(obj)
+		"ColorPickerButton": obj.get_child(0).set_text(lang[key]+" "+obj.name.split("_")[1])
 		"Label", "CheckBox":
-			if obj.text != "" and "-" not in obj.text and not obj.text.is_valid_int() and not obj.text.is_valid_float():
+			if obj.text != "" and "-" not in obj.text and not Global.text_is_number(obj.text):
 				obj.set_text(lang[key])
 		"Button":
 			if obj.text in ["", "X"]: obj.tooltip_text = lang[key]
 			else: obj.set_text(lang[key])
-		"CheckButton": set_CB(obj)
-		"ColorPickerButton": obj.get_child(0).set_text(lang[key]+" "+obj.name.split("_")[1])
 		"OptionButton":
 			if obj.name == "Order": obj.get_parent().reset_order()
 			var idx: int = 0
 			for i in range(obj.get_item_count()):
 				if obj.get_item_text(i) == "": continue
-				if obj.get_item_text(i) in lang.keys() and "__" in obj.get_item_text(i):
+				elif obj.get_item_text(i) in lang.keys() and "__" in obj.get_item_text(i):
 					obj.set_item_text(i, lang[obj.get_item_text(i)])
-					continue
-				if lang[key] is Array:
+				elif lang[key] is Array:
 					if idx >= len(lang[key]): return
 					obj.set_item_text(i, lang[key][idx])
 					idx += 1
@@ -147,10 +130,10 @@ func _lang_match(obj: Variant, key: String) -> void:
 func set_CB(obj: CheckButton) -> void:
 	var key: String = _find_lang_keys(obj)
 	if key == "": return
-	if lang[key] is Array: if len(lang[key]) >= int(obj.button_pressed):
-		obj.set_text(lang[key][int(obj.button_pressed)])
+	if lang[key] is Array: if len(lang[key]) >= int(obj.button_pressed): obj.set_text(lang[key][int(obj.button_pressed)])
 	else: obj.set_text(lang[key])
 
+# Замена текста элементов выпадающего списка
 func set_OB_elements(obj: OptionButton) -> void:
 	for i in range(obj.get_item_count()): if obj.get_item_text(i) in lang.keys(): obj.set_item_text(i, lang[obj.get_item_text(i)])
 
@@ -162,20 +145,16 @@ func set_lang(obj: Variant) -> void:
 	if key != "": _lang_match(obj, key)
 	for i in obj.get_children(): set_lang(i)
 
-# Дополнение выбранного перевода отсутствующими фрагментами из стандартной локализации
-func _supplement_translation() -> void: _supplement_cycle(lang, _standard_language())
-
-# Цикл дополнения перевода недастающими фрагментами
+# Цикл дополнения перевода недостающими фрагментами
 func _supplement_cycle(lang_fragment: Dictionary, s_lang_fragment: Dictionary) -> void:
 	for i in s_lang_fragment.keys():
 		if i not in lang_fragment.keys() or typeof(lang_fragment[i]) != typeof(s_lang_fragment[i]):
 			lang_fragment[i] = s_lang_fragment[i]
 		elif lang_fragment[i] is Dictionary: _supplement_cycle(lang_fragment[i], s_lang_fragment[i])
-		elif lang_fragment[i] is Array:
-			for l in range(len(s_lang_fragment[i])):
-				if len(lang_fragment[i]) <= l: lang_fragment[i].append(s_lang_fragment[i][l])
-				elif typeof(lang_fragment[i][l]) != typeof(s_lang_fragment[i][l]):
-					lang_fragment[i][l] = s_lang_fragment[i][l]
+		elif lang_fragment[i] is Array: for l in range(len(s_lang_fragment[i])):
+			if len(lang_fragment[i]) <= l: lang_fragment[i].append(s_lang_fragment[i][l])
+			elif typeof(lang_fragment[i][l]) != typeof(s_lang_fragment[i][l]):
+				lang_fragment[i][l] = s_lang_fragment[i][l]
 
 # Создание стандартных вариантов локализации
 func _standard_language() -> Dictionary:
@@ -216,8 +195,8 @@ func _standard_language() -> Dictionary:
 		# Страница движений средств
 		"FilterWalletLabel": "Имя счёта", "FilterSectionLabel": "Статья",
 		"CashFlowFilterOrder": ["По статье", "По возрастанию суммы", "По убыванию суммы"],
-		"CashFlowTitle": "Название раздела", "CashFlowWallet_Title": "Название кошелька",
-		"CashFlowValue": "Сумма", "Date": "Дата",
+		"CashFlowTitle": "Название раздела", "CashFlowWallet_Title": "Источник",
+		"CashFlowWallet_2_Title": "Цель", "CashFlowValue": "Сумма", "Date": "Дата",
 		# Страница займов
 		"AddLoan": "Создать займ", "AddInterest": "Добавить проценты по займу", "AddPayment": "Добавить платёж по займу",
 		"FilterStatusLabel": "Статус", "FilterStatus": ["Выплачено", "В процессе"],
@@ -248,8 +227,7 @@ func _standard_language() -> Dictionary:
 		}}
 
 # Русский
-func _cr_ru() -> void:
-	_cr_lang_file("ru", _standard_language())
+func _cr_ru() -> void: _cr_lang_file("ru", _standard_language())
 
 # Английский
 func _cr_en() -> void:
@@ -290,8 +268,8 @@ func _cr_en() -> void:
 		# Страница движений средств
 		"FilterWalletLabel": "Account name", "FilterSectionLabel": "Article",
 		"CashFlowFilterOrder": ["According to the article", "Ascending amount", "In descending order of amount"],
-		"CashFlowTitle": "Section title", "CashFlowWallet_Title": "Wallet name",
-		"CashFlowValue": "Amount", "Date": "Date",
+		"CashFlowTitle": "Section title", "CashFlowWallet_Title": "Source",
+		"CashFlowWallet_2_Title": "Target", "CashFlowValue": "Amount", "Date": "Date",
 		# Страница займов
 		"AddLoan": "Create a loan", "AddInterest": "Add interest to the loan", "AddPayment": "Add a loan payment",
 		"FilterStatusLabel": "Status", "FilterStatus": ["Paid", "In progress"],

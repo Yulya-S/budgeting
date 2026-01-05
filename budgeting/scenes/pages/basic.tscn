@@ -1,12 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bxbo401tituxp"]
+[gd_scene load_steps=6 format=3 uid="uid://bxbo401tituxp"]
 
 [ext_resource type="Script" uid="uid://cfajdl5x507of" path="res://scripts/pages/basic.gd" id="1_eejbm"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_mrggl"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_ii1de"]
 [ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/graphics/pie_chart.tscn" id="4_1kehw"]
 [ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="6_yvt7d"]
-
-[sub_resource type="Theme" id="Theme_kcgbp"]
 
 [node name="Basic" type="Control"]
 layout_mode = 3
@@ -161,7 +159,6 @@ layout_mode = 0
 offset_top = 55.0
 offset_right = 1152.0
 offset_bottom = 180.0
-theme = SubResource("Theme_kcgbp")
 
 [node name="Events" type="Control" parent="ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(1152, 150)

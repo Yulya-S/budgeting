@@ -10,9 +10,6 @@ extends ColorRect
 # Цвета
 @onready var Colors = $Colors
 @onready var color1 = $Colors/Color_1
-@onready var color2 = $Colors/Color_2
-# Пример оформления
-@onready var Example = $Example
 
 # Стартовое изменение страницы настроек
 func _ready() -> void:
@@ -33,12 +30,12 @@ func _ready() -> void:
 	if data.color_preset: _on_color_scheme_cus_item_selected(data.color_scheme)
 	else: _on_color_scheme_pre_item_selected(data.color_scheme)
 
-# Изменение цветов в примере отображения
+# Изменение цветов в примере
 func changed_color() -> void:
 	_color_reading()
-	ColorScheme.repainting(Example)
+	ColorScheme.repainting($Example)
 		
-# Составление цветовой палитры
+# Сборка цветовой палитры
 func _color_reading() -> void:
 	var g_colors: PackedColorArray = PackedColorArray([])
 	var g_offsets: PackedFloat32Array = PackedFloat32Array([])
@@ -58,7 +55,7 @@ func show_colors() -> void:
 # Изменение цвета
 func _contrast(c1: String, c2: String) -> void:
 	color1.color = Color("#" + c1)
-	color2.color = Color("#" + c2)
+	$Colors/Color_2.color = Color("#" + c2)
 
 # Смена темы между светлой и тёмной
 func _change_theme(c1_l: String, c2_l: String, c1_d: String, c2_d: String) -> void:
@@ -122,8 +119,7 @@ func _on_color_scheme_pre_item_selected(index: int) -> void:
 
 # Обработка нажатия кнопки закрытия окна
 func _on_close_button_down() -> void:
-	queue_free()
-	get_parent().remove_child(self)
+	Global.delete_child(get_parent(), self)
 	ColorScheme.color_reading()
 	Global.emit_signal("update_page")
 

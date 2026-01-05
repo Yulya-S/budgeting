@@ -1,5 +1,5 @@
 extends Page
-# Подгружаемыу объекты
+# Подгружаемые объекты
 var objArray: Resource = load("res://scenes/fragments/obj_array.tscn")
 var calendar: Resource = load("res://scenes/pages/events/calendar.tscn")
 # Переменная
@@ -16,25 +16,23 @@ func _update_page() -> void:
 	# Применение цвета и перевода страницы
 	ColorScheme.repainting(self)
 	File.set_lang(self)
-	# Удаление предыдущего формата отображения событий
-	get_child(-1).queue_free()
-	remove_child(get_child(-1))
+	Global.delete_child(self, get_child(-1)) # Удаление предыдущего формата отображения событий
 	# Создание нового формата отображения событий
-	if not Request.select(Request.Tables.SETTINGS)[0].event_page_calendar:
-		add_child(calendar.instantiate())
-		get_child(-1).size = Vector2(456, 473)
-		get_child(-1).position = Vector2(0, 170)
-	else:
-		add_child(objArray.instantiate())
-		get_child(-1).size = Vector2(1152, 473)
-		get_child(-1).position = Vector2(0, 170)
-	Objects = get_child(-1) # Получение пути к списку событий
-	update_data() # Обновлениие данных в списке событий
+	if not Request.select_value(Request.Tables.SETTINGS, "event_page_calendar"): _create_calendar(calendar, Vector2(456, 473))
+	else: _create_calendar(objArray, Vector2(1152, 473))
+	update_data() # Обновление данных в списке событий
+
+# Создание календаря
+func _create_calendar(obj: Resource, new_size: Vector2) -> void:
+	add_child(obj.instantiate())
+	get_child(-1).size = new_size
+	get_child(-1).position = Vector2(0, 170)
+	Objects = get_child(-1) # Сохранение пути к списку событий
 
 # Отправка запроса на обновление таблицы с событиями
 func update_data() -> void:
+	Request.start_create_multiplied_events_table(Filter.get_filter().date)
 	start_update = true
-	Request.start_create_multiplied_events_table($Filter.get_filter().date)
 
 # Обработка нажатия кнопки создания события
 func _on_add_event_button_down() -> void: Global.emit_signal("open_window", Global.Pages.EVENT)

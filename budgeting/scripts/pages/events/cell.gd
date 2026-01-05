@@ -2,6 +2,7 @@ extends ColorRect
 # Подключение путей к объектам в сцене
 @onready var Parent = $"../../"
 @onready var Number = $Label
+@onready var Completed = $Completed
 
 # Запуск изменения цвета ячейки
 func _ready() -> void: ColorScheme.repainting(self)
@@ -11,11 +12,11 @@ func set_values(idx: int, current_month: bool, next_month: bool, day_count: int)
 	if idx >= 0 and idx < day_count:
 		Number.set_text(str(idx+1))
 		if get_parent().get_child_count() % 7 in [0, 6]: color = ColorScheme.get_sys_color(4.7)
-		if current_month and Global.date.day == idx + 1: color = ColorScheme.get_sys_color(3)
+		if current_month and Global.get_date().day == idx + 1: color = ColorScheme.get_sys_color(3)
 	else: color = ColorScheme.get_sys_color(6)
-	if (not next_month or not Number.text) and (Global.date.day > idx + 1 or day_count <= idx or not current_month):
-		$Completed.visible = true
-		$Completed.modulate = ColorScheme.get_color(95, 100)
+	if (not next_month or not Number.text) and (Global.get_date().day > idx + 1 or day_count <= idx or not current_month):
+		Completed.visible = true
+		Completed.modulate = ColorScheme.get_color(95, 100)
 	
 # Изменение видимости маркера наличия событий
 func add_event() -> void: $Marker.visible = true

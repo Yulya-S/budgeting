@@ -4,6 +4,8 @@ class_name NewDate
 var date: Dictionary = Time.get_date_dict_from_system() # Дата
 var day_count: int = 30 # Количество дней в месяце
 
+func _init(new_date: Variant) -> void: set_value(new_date)
+
 # Изменение значений переменных
 func set_value(new_date: Variant):
 	date = new_date.duplicate() if new_date is Dictionary else Global.date_to_dict(new_date)
@@ -20,4 +22,5 @@ func calendar_cells() -> int:
 
 # Сравнение дат
 func date_comparison(other_date: Variant, operator: String = "==", account_day: bool = false) -> bool:
+	if other_date is NewDate: other_date = other_date.date
 	return Global.date_comparison(date, other_date, operator, account_day)
