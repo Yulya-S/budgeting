@@ -20,7 +20,7 @@ func _ready() -> void:
 	for i in Colors.get_children():
 		if i is ColorPickerButton:
 			var picker: ColorPicker = i.get_picker()
-			picker.picker_shape = 2
+			picker.picker_shape = ColorPicker.SHAPE_VHS_CIRCLE
 			picker.color_modes_visible = false
 			picker.sliders_visible = false
 			picker.presets_visible = false
