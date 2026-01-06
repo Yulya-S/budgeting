@@ -3,7 +3,10 @@ extends ColorRect
 # Изменение положения маркера страницы
 func _ready() -> void:
 	$Login.set_text(File.show_data(File.config.login))
-	$Marker.position.x = (5. * (Global.current_page + 3.)) + (39.68 * (Global.current_page + 2.)) - 1.
+	
+	print(Global.current_page)
+	
+	$Marker.position.x = 45. * (Global.current_page + 2.) + 2.5
 	update_date()
 	
 # Обновление текста даты
@@ -37,4 +40,4 @@ func _on_loan_button_down() -> void: Global.emit_signal("open_new_page", Global.
 func _on_event_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.EVENT)
 
 # Обработка нажатия кнопки отчетов
-func _on_report_button_down() -> void: pass
+func _on_report_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.REPORT)
