@@ -1,7 +1,7 @@
 extends Node
 # Перечисление
 enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
-enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
+enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
