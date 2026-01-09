@@ -235,7 +235,7 @@ func _select_wallets_list(where: String, order: String) -> Array:
 
 # Запрос на изменение списка кошельков
 func _update_wallets_list(line: Dictionary, date: String = Global.date_to_str()) -> Dictionary:
-	var value: Array = _select("SUM(IIF((cf.section_id=1 and cf.wallet_id="+str(line.id)+")OR cf.section_id=3 OR (s.income=0 and cf.section_id>4), cf.value*-1, cf.value)) value
+	var value: Array = _select("SUM(IIF((cf.section_id=1 and cf.wallet_id="+str(line.id)+")OR cf.section_id=3 OR (s.income=0 and cf.section_id>4 and cf.wallet_id="+str(line.id)+"), cf.value*-1, cf.value)) value
 		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id", "(cf.wallet_id="+str(line.id)+" or (cf.wallet_2_id="+str(line.id)+" and cf.section_id=1)) AND "+where_date(date, "cf.date"))
 	line["cash_flow"] = value[0].value if value[0].value else 0.
 	return line
@@ -333,11 +333,37 @@ func _update_events_list(line: Dictionary) -> Dictionary:
 	if line.event_type == 1: line["profit_accounting"] = select("wallets", "COALESCE(SUM(value), 0.0) value")[0].value + select("multiplied_events", "COALESCE(SUM(value), 0.0) value", 'event_type=2 AND date<"'+line.date+'"')[0].value - line.value
 	return line
 	
-# Запрос на получение списка событий юуз дубликации записей
+# Запрос на получение списка событий без дубликации записей
 func _select_unique_events() -> Array: return _select("title, event_id FROM multiplied_events GROUP BY event_id")
 
 # Получение списка дней с покрайней мере одним событием
 func select_event_days(where: String = "") -> Array: return _select("date FROM multiplied_events", where, "", "date")
+
+# Запрос на получение списка отчета по счетам
+func _select_wallets_report(date: String = Global.date_to_str()) -> Array:
+	return _select("w.id, w.title,
+		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE ((cf.wallet_id=w.id AND (s.income=1 OR cf.section_id=2)) OR (cf.section_id=1 AND cf.wallet_2_id=w.id)) AND "+where_date(date, "cf.date")+"), 0.0) income,
+		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE ((cf.wallet_id=w.id AND s.income=0 AND cf.section_id>4) OR (cf.section_id=1 AND cf.wallet_id=w.id) OR cf.section_id=3) AND "+where_date(date, "cf.date")+"), 0.0) expenditure,
+		COALESCE((SELECT SUM(IIF((cf.section_id=1 and cf.wallet_id=w.id)OR cf.section_id=3 OR (s.income=0 and cf.section_id>4 and cf.wallet_id=w.id), cf.value*-1, cf.value)) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE (cf.wallet_id=w.id or (cf.wallet_2_id=w.id and cf.section_id=1)) AND "+where_date(date, "cf.date", "<")+"), 0.0) cash_flow
+		FROM wallets w")
+
+# Запрос на получение списка отчета по разделам
+func _select_sections_report(date: String = Global.date_to_str()) -> Array:
+	return _select("t.id, t.title,
+		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE (s.income=1 OR cf.section_id=2) AND cf.section_id=t.id AND "+where_date(date, "cf.date")+"), 0.0) income,
+		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE s.income=0 AND (cf.section_id>4 OR cf.section_id=3) AND cf.section_id=t.id AND "+where_date(date, "cf.date")+"), 0.0) expenditure,
+		COALESCE((SELECT SUM(IIF((s.income=0 AND (cf.section_id>4 OR cf.section_id=3)), cf.value*-1, cf.value)) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE cf.section_id=t.id AND "+where_date(date, "cf.date", "<")+"), 0.0) cash_flow
+		FROM sections t WHERE t.id NOT IN (1, 4)")
+
+# Запрос на получение списка отчета
+func _select_reports_list(table: String = "wallets", date: String = Global.date_to_str()):
+	if table == "wallets": return _select_wallets_report(date)
+	return _select_sections_report(date)
+	
+# Запрос на изменение списка отчета
+func _update_reports_list(line: Dictionary) -> Dictionary:
+	line["value"] = line.cash_flow + line.income - line.expenditure
+	return line
 
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Array:
@@ -347,6 +373,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 		ObjectVariants.CASH_FLOW: return _select_cash_flows_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.LOAN: return _select_loans_list(filter_data.where, filter_data.order)
 		ObjectVariants.EVENT: return select_multiplied_events_list()
+		ObjectVariants.REPORT: return _select_reports_list(filter_data.where, filter_data.date)
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах
@@ -356,4 +383,5 @@ func match_update_list_element(list_element: ObjectVariants, line: Dictionary, p
 		ObjectVariants.SECTION:	return _update_sections_list(line, parent)
 		ObjectVariants.CASH_FLOW: return _update_cash_flows_list(line)
 		ObjectVariants.EVENT: return _update_events_list(line)
+		ObjectVariants.REPORT: return _update_reports_list(line)
 	return line
