@@ -114,7 +114,7 @@ width = 2.0
 default_color = Color(0, 0, 0, 1)
 
 [node name="SectionsRep" type="Control" parent="ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(1152, 500)
+custom_minimum_size = Vector2(1152, 300)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/SectionsRep"]
@@ -132,11 +132,11 @@ text = "Информация по разделам
 layout_mode = 0
 offset_top = 55.0
 offset_right = 1144.0
-offset_bottom = 500.0
+offset_bottom = 300.0
 obj = 5
 
 [node name="Separator" type="Line2D" parent="ScrollContainer/VBoxContainer/SectionsRep"]
-position = Vector2(0, 506)
+position = Vector2(0, 306)
 points = PackedVector2Array(0, 0, 1152, 0)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
