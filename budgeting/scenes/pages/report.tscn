@@ -15,15 +15,15 @@ script = ExtResource("1_ixb6w")
 [node name="Head" parent="." instance=ExtResource("2_6gj5i")]
 layout_mode = 0
 
-[node name="Menu" type="ColorRect" parent="."]
+[node name="Filter" type="ColorRect" parent="."]
 layout_mode = 0
-offset_top = 50.0
+offset_top = 60.0
 offset_right = 1152.0
-offset_bottom = 100.0
-color = Color(0.376471, 0.72549, 0.698039, 1)
+offset_bottom = 110.0
+color = Color(0.627451, 0.913725, 0.894118, 1)
 script = ExtResource("3_dayp3")
 
-[node name="Year" type="OptionButton" parent="Menu"]
+[node name="Year" type="OptionButton" parent="Filter"]
 layout_mode = 0
 offset_left = 95.0
 offset_top = 11.0
@@ -33,7 +33,7 @@ alignment = 1
 item_count = 1
 popup/item_0/id = 0
 
-[node name="Month" type="OptionButton" parent="Menu"]
+[node name="Month" type="OptionButton" parent="Filter"]
 layout_mode = 0
 offset_left = 419.0
 offset_top = 11.0
@@ -67,7 +67,7 @@ popup/item_10/id = 10
 popup/item_11/text = "Декабрь"
 popup/item_11/id = 11
 
-[node name="Button" type="Button" parent="Menu"]
+[node name="Button" type="Button" parent="Filter"]
 layout_mode = 0
 offset_left = 743.0
 offset_top = 11.0
@@ -77,7 +77,7 @@ text = "Составить отчет"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 0
-offset_top = 100.0
+offset_top = 110.0
 offset_right = 1152.0
 offset_bottom = 693.0
 
@@ -194,3 +194,6 @@ layout_mode = 0
 offset_top = 55.0
 offset_right = 1152.0
 offset_bottom = 180.0
+
+[connection signal="item_selected" from="Filter/Year" to="Filter" method="_on_year_item_selected"]
+[connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]

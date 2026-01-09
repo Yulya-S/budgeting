@@ -37,6 +37,7 @@ func set_values(data: Dictionary) -> void:
 					if i.name.to_lower().split("title")[0]+"id" in data.keys(): i.set_object(data[i.name.to_lower()],  data[i.name.to_lower().split("title")[0]+"id"])
 					elif data[i.name.to_lower()] == null: continue
 	set_line_size()
+	File.set_lang(self)
 		
 # Общая часть применения значений для объектов списков событий
 func _event_values(data: Dictionary, et_text: String) -> void:

@@ -15,4 +15,3 @@ func set_values(data: Dictionary) -> void:
 			Wallet2Title.next_page = Global.Pages.LOAN_INF
 			Title.next_page = Global.Pages.PAYMENT
 		_: Wallet2Title.visible = false
-	File.set_lang(self)

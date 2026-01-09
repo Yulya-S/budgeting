@@ -177,6 +177,13 @@ offset_top = 50.0
 offset_right = 1152.0
 offset_bottom = 648.0
 
+[node name="Menu" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 50.0
+offset_right = 1152.0
+offset_bottom = 60.0
+color = Color(0.376471, 0.72549, 0.698039, 1)
+
 [connection signal="button_down" from="Setting" to="." method="_on_setting_button_down"]
 [connection signal="button_down" from="Main" to="." method="_on_main_button_down"]
 [connection signal="button_down" from="Wallet" to="." method="_on_wallet_button_down"]

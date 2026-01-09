@@ -1,8 +1,8 @@
 extends Control
 class_name Page
 # Подключение пути к объектам в сцене
-@onready var Objects = $ObjArray
-@onready var Filter = $Filter
+@onready var Objects = get_node_or_null("ObjArray")
+@onready var Filter = get_node_or_null("Filter")
 
 # Подключение сигнала
 func _ready() -> void: Global.connect_signal_update_page(self)
