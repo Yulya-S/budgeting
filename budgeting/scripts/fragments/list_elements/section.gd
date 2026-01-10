@@ -1,6 +1,5 @@
 extends Fragment
-# Подключение путей к объектам в сцене
-@onready var Title = $Title
+# Подключение пути к объекту в сцене
 @onready var ParentPage = $"../../../"
 # Переменная
 var m_index: int = 0 # Индекс объекта для изменения цветового маркера

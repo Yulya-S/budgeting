@@ -1,7 +1,7 @@
 extends Node
 class_name NewDate
 # Переменные
-var date: Dictionary = Time.get_date_dict_from_system() # Дата
+@onready var date: Dictionary = Time.get_date_dict_from_system() # Дата
 var day_count: int = 30 # Количество дней в месяце
 
 func _init(new_date: Variant) -> void: set_value(new_date)

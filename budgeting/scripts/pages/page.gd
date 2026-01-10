@@ -14,9 +14,15 @@ func _update_page() -> void:
 	update_data()
 	
 # Обновление данных
-func update_data() -> void:
-	Objects.update_data(Filter)
-	for i in get_children(): Global.run_func(i, "update_data", [Filter])
+func update_data() -> void: _run_update(Objects)
+	
+# Запуск функции изменения данных
+func _run_update(obj: Variant) -> void:
+	Global.run_func(obj, "update_data", _get_filter(obj))
+	for i in obj.get_children(): _run_update(i)
+	
+# Получение данных фильтра
+func _get_filter(_obj: Variant) -> Array: return [Filter]
 
 # Изменение данных после смены дня
 func new_day() -> void:

@@ -1,14 +1,11 @@
-extends Control
+extends Page
 # Подключение пути к объекту в сцене
-@onready var Cells = $ScrollContainer/VBoxContainer/Events/Calendar
+@onready var Cells = $ObjArray/VBoxContainer/Events/Calendar
 
 # Переменные для календаря событий
 var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Путь к сцене ячеек календаря
 var event_days: Array = [] # Список дат для маркировки
 var start_update: bool = false # Был ли отправлен запрос на изменение страницы
-
-# Создание главной страницы
-func _ready() -> void: Global.connect_signal_update_page(self)
 
 # Постепенное создание элементов страницы
 func _process(_delta: float) -> void:
@@ -27,21 +24,17 @@ func _process(_delta: float) -> void:
 	
 # Запуск обновления данных на странице
 func _update_page() -> void:
-	ColorScheme.repainting(self)
-	File.set_lang(self)
 	$Menu/Budget.set_text(str(Request.select_wallets_sum()))
 	$Menu/CashFlow.set_text(str(Request.select_funds_movements()))
-	update_data()
+	super._update_page()
 	
 # Обновление данных
 func update_data() -> void:
-	_find_objects($ScrollContainer/VBoxContainer)
+	super.update_data()
 	Global.clear_scene(Cells)
 	# Отправка запроса на обновление таблицы с событиями
 	Request.start_create_multiplied_events_table(Global.date_to_str())
 	start_update = true
 	
-# Поиск и запуск изменения списков и графиков
-func _find_objects(obj: Variant) -> void:
-	Global.run_func(obj, "update_data", [] if obj.get_parent().name != "Sections" else [{"where":"s.month_limit>=0", "order": "value DESC"}])
-	for i in obj.get_children(): _find_objects(i)
+# Получение данных фильтра
+func _get_filter(obj: Variant) -> Array: return [] if obj.get_parent().name != "Sections" else [{"where":"s.month_limit>=0", "order": "value DESC"}]

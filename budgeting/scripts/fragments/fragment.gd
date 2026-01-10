@@ -1,5 +1,7 @@
 extends ColorRect
 class_name Fragment
+# Подключение пути к объекту в сцене
+@onready var Title = get_node_or_null("Title")
 
 # Изменение размера контейнера по размеру родителя
 func _ready() -> void:

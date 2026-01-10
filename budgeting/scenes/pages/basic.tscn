@@ -69,21 +69,21 @@ theme_override_font_sizes/font_size = 28
 text = "Денежный поток:"
 horizontal_alignment = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="ObjArray" type="ScrollContainer" parent="."]
 layout_mode = 0
 offset_top = 105.0
 offset_right = 1152.0
 offset_bottom = 643.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ObjArray"]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="Wallets" type="Control" parent="ScrollContainer/VBoxContainer"]
+[node name="Wallets" type="Control" parent="ObjArray/VBoxContainer"]
 custom_minimum_size = Vector2(1152, 160)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Wallets"]
+[node name="Label" type="Label" parent="ObjArray/VBoxContainer/Wallets"]
 layout_mode = 2
 offset_left = 25.0
 offset_top = 12.0
@@ -93,24 +93,24 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Список счетов"
 
-[node name="ObjArray" parent="ScrollContainer/VBoxContainer/Wallets" instance=ExtResource("3_ii1de")]
+[node name="ObjArray" parent="ObjArray/VBoxContainer/Wallets" instance=ExtResource("3_ii1de")]
 layout_mode = 0
 offset_top = 55.0
 offset_right = 1144.0
 offset_bottom = 156.0
 obj = 0
 
-[node name="Separator" type="Line2D" parent="ScrollContainer/VBoxContainer/Wallets"]
+[node name="Separator" type="Line2D" parent="ObjArray/VBoxContainer/Wallets"]
 position = Vector2(0, 166)
 points = PackedVector2Array(0, 0, 1152, 0)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
 
-[node name="Sections" type="Control" parent="ScrollContainer/VBoxContainer"]
+[node name="Sections" type="Control" parent="ObjArray/VBoxContainer"]
 custom_minimum_size = Vector2(1152, 160)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Sections"]
+[node name="Label" type="Label" parent="ObjArray/VBoxContainer/Sections"]
 layout_mode = 2
 offset_left = 25.0
 offset_top = 12.0
@@ -120,13 +120,13 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Расходы по статьям"
 
-[node name="PieChart" parent="ScrollContainer/VBoxContainer/Sections" instance=ExtResource("4_1kehw")]
+[node name="PieChart" parent="ObjArray/VBoxContainer/Sections" instance=ExtResource("4_1kehw")]
 offset_left = 25.0
 offset_top = 55.0
 offset_right = 126.0
 offset_bottom = 156.0
 
-[node name="ObjArray" parent="ScrollContainer/VBoxContainer/Sections" instance=ExtResource("3_ii1de")]
+[node name="ObjArray" parent="ObjArray/VBoxContainer/Sections" instance=ExtResource("3_ii1de")]
 layout_mode = 0
 offset_left = 161.0
 offset_top = 55.0
@@ -134,17 +134,17 @@ offset_right = 1144.0
 offset_bottom = 156.0
 obj = 1
 
-[node name="Separator" type="Line2D" parent="ScrollContainer/VBoxContainer/Sections"]
+[node name="Separator" type="Line2D" parent="ObjArray/VBoxContainer/Sections"]
 position = Vector2(0, 166)
 points = PackedVector2Array(0, 0, 1152, 0)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
 
-[node name="Cash_flows" type="Control" parent="ScrollContainer/VBoxContainer"]
+[node name="Cash_flows" type="Control" parent="ObjArray/VBoxContainer"]
 custom_minimum_size = Vector2(1152, 180)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Cash_flows"]
+[node name="Label" type="Label" parent="ObjArray/VBoxContainer/Cash_flows"]
 layout_mode = 2
 offset_left = 25.0
 offset_top = 12.0
@@ -154,17 +154,17 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Распределение движений средств"
 
-[node name="DailyTransactions" parent="ScrollContainer/VBoxContainer/Cash_flows" instance=ExtResource("6_yvt7d")]
+[node name="DailyTransactions" parent="ObjArray/VBoxContainer/Cash_flows" instance=ExtResource("6_yvt7d")]
 layout_mode = 0
 offset_top = 55.0
 offset_right = 1152.0
 offset_bottom = 180.0
 
-[node name="Events" type="Control" parent="ScrollContainer/VBoxContainer"]
+[node name="Events" type="Control" parent="ObjArray/VBoxContainer"]
 custom_minimum_size = Vector2(1152, 150)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Events"]
+[node name="Label" type="Label" parent="ObjArray/VBoxContainer/Events"]
 layout_mode = 2
 offset_left = 25.0
 offset_top = 12.0
@@ -174,7 +174,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Ближайшие события"
 
-[node name="Calendar" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Events"]
+[node name="Calendar" type="HBoxContainer" parent="ObjArray/VBoxContainer/Events"]
 layout_mode = 0
 offset_left = 44.0
 offset_top = 55.0

@@ -1,7 +1,7 @@
 extends ColorRect
 # Параметры
 var values: Array = [] # Данные для отображения
-var date: NewDate = NewDate.new(Global.get_date()) # Выбранная дата
+@onready var date: NewDate = NewDate.new(Global.get_date()) # Выбранная дата
 
 # Отрисовка графика
 func _draw() -> void:

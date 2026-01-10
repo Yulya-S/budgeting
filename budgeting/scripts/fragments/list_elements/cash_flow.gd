@@ -1,6 +1,5 @@
 extends Fragment
-# Подключение путей к объектам в сцене
-@onready var Title = $Title
+# Подключение пути к объекту в сцене
 @onready var Wallet2Title = $Wallet_2_Title
 
 # Изменение значений
