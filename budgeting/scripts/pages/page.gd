@@ -14,11 +14,11 @@ func _update_page() -> void:
 	update_data()
 	
 # Обновление данных
-func update_data() -> void: _run_update(Objects)
+func update_data() -> void: _run_update()
 	
 # Запуск функции изменения данных
-func _run_update(obj: Variant) -> void:
-	Global.run_func(obj, "update_data", _get_filter(obj))
+func _run_update(obj: Variant = self) -> void:
+	if obj != self: Global.run_func(obj, "update_data", _get_filter(obj))
 	for i in obj.get_children(): _run_update(i)
 	
 # Получение данных фильтра

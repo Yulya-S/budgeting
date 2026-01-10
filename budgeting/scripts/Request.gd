@@ -224,9 +224,17 @@ func select_day_count(date: String) -> int:
 func select_wallets_sum() -> float:
 	return _select("COALESCE((SELECT COALESCE(SUM(value),0.0) FROM wallets) - (SELECT COALESCE(SUM(total),0.0) FROM loans), 0.0) value")[0].value
 
-func select_funds_movements() -> float:
-	return _select("COALESCE(SUM(CASE WHEN cf.section_id IN (1, 4) THEN 0 WHEN cf.section_id = 3 OR (s.income = 0 AND s.month_limit<>-1) THEN cf.value * -1 ELSE cf.value END),0.0) value
-		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id", where_date())[0].value
+# Текст для запроса движений средств
+func _funds_movements_text() -> String:
+	return "COALESCE(SUM(CASE WHEN cf.section_id IN (1, 4) THEN 0 WHEN cf.section_id = 3 OR (s.income = 0 AND s.month_limit<>-1) THEN cf.value * -1 ELSE cf.value END),0.0) value
+		FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id"
+
+# Получить сумму движений средств за время до выбранной даты
+func select_past_funds_movements(date: String = Global.date_to_str()) -> float:
+	return _select(_funds_movements_text(), where_date(date, "date", "<"))[0].value
+
+# Получение движения средств
+func select_funds_movements() -> float: return _select(_funds_movements_text(), where_date())[0].value
 
 # Запрос на получение списка кошельков
 func _select_wallets_list(where: String, order: String) -> Array:
@@ -276,7 +284,7 @@ func select_cash_flow_graphics(where: String, date: String = Global.date_to_str(
 	if where: where = " AND " + where
 	return _select("SUM(CASE WHEN cf.section_id IN (1, 4) THEN 0 WHEN cf.section_id = 3 OR (s.income = 0 AND s.month_limit<>-1)  THEN cf.value * -1 ELSE cf.value END) value,
 		strftime('%d', cf.date) day FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id ", where_date(date)+where, "", "cf.date")
-	
+
 # Получение списка займов
 func _select_loans_list(where: String = "", order: String = "") -> Array:
 	return _select("l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.section_id=2 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id", where, order)

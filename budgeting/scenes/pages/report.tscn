@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_6gj5i"]
 [ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_dayp3"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_uupuk"]
+[ext_resource type="PackedScene" uid="uid://cnbecqprpspom" path="res://scenes/fragments/graphics/line graph.tscn" id="4_6gj5i"]
 [ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/graphics/pie_chart.tscn" id="5_6gj5i"]
-[ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="6_uupuk"]
 
 [node name="Report" type="Control"]
 layout_mode = 3
@@ -189,11 +189,10 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Распределение движений средств"
 
-[node name="DailyTransactions" parent="ObjArray/VBoxContainer/Cash_flows" instance=ExtResource("6_uupuk")]
+[node name="LineGraph" parent="ObjArray/VBoxContainer/Cash_flows" instance=ExtResource("4_6gj5i")]
 layout_mode = 0
 offset_top = 55.0
-offset_right = 1152.0
-offset_bottom = 180.0
+offset_bottom = 175.0
 
 [connection signal="item_selected" from="Filter/Year" to="Filter" method="_on_year_item_selected"]
 [connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]
