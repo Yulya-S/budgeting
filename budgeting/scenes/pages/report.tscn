@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_6gj5i"]
 [ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_dayp3"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_uupuk"]
-[ext_resource type="PackedScene" uid="uid://cnbecqprpspom" path="res://scenes/fragments/graphics/line graph.tscn" id="4_6gj5i"]
+[ext_resource type="PackedScene" uid="uid://cnbecqprpspom" path="res://scenes/fragments/graphics/report_graph.tscn" id="4_6gj5i"]
 [ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/graphics/pie_chart.tscn" id="5_6gj5i"]
 
 [node name="Report" type="Control"]

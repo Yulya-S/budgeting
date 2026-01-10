@@ -27,7 +27,7 @@ func _line(max_value: float, x_step: float) -> void:
 		draw_circle(Vector2(x_step * i + 10., y1_size), 3, Color.FIREBRICK)
 		draw_circle(Vector2(x_step * (i + 1) + 10., y2_size), 3, Color.FIREBRICK)
 
-# Свечной	
+# Свечной
 func _candlestick(max_value: float, x_step: float) -> void:
 	for i in range(len(values)):
 		draw_string(ThemeDB.fallback_font, Vector2(x_step*i, 120), str(int(i)+1), HORIZONTAL_ALIGNMENT_CENTER, x_step, 9, ColorScheme.get_sys_color(0, 1))

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cnbecqprpspom"]
 
-[ext_resource type="Script" uid="uid://bp85a83q4n3at" path="res://scenes/fragments/graphics/report_graph.gd" id="1_pkjsa"]
+[ext_resource type="Script" uid="uid://bp85a83q4n3at" path="res://scripts/fragments/graphics/report_graph.gd" id="1_pkjsa"]
 [ext_resource type="Script" uid="uid://dxac56vjobsia" path="res://scripts/fragments/graphics/graph.gd" id="2_pkjsa"]
 
 [node name="ReportGraph" type="Control"]

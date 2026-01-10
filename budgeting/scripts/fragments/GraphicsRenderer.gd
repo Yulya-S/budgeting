@@ -5,7 +5,7 @@ class_name GraphicsRenderer
 
 # Перезапуск отрисовки графика
 func update_data(filter: Variant = {}) -> void:
-	ColorScheme.repainting(self) # Изменение цветовой темы
+	ColorScheme.repainting(self)
 	var filter_data = Global.get_filter(filter)
 	var values: Array = []
 	var data: Array = Request.select_cash_flow_graphics(filter_data.where, filter_data.date)
