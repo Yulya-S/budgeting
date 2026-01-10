@@ -210,6 +210,10 @@ func _standard_language() -> Dictionary:
 		"BudgetLabel": "Бюджет:", "CashFlowLabel": "Денежный поток:", "WalletsLabel": "Список счетов",
 		"SectionsLabel": "Расходы по статьям", "EventsLabel": "Ближайшие события",
 		"Cash_flowsLabel": "Распределение движений средств",
+		# Страница отчетов
+		"ReportTitle": "Название", "ReportCash_Flow": "Остаток", "ReportIncome": "Доход",
+		"ReportExpenditure": "Расход", "ReportValue": "Итог",
+		"WalletsRepLabel": "Общая информация о счетах", "SectionsRepLabel": "Информация по разделам",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "По дате добавления", "__FO2": "По алфавиту",
 		# Объекты из базы данных
@@ -283,6 +287,11 @@ func _cr_en() -> void:
 		"BudgetLabel": "Budget:", "CashFlowLabel": "Cash flow:", "WalletsLabel": "List of wallets",
 		"SectionsLabel": "Expenses by section", "EventsLabel": "Upcoming events",
 		"Cash_flowsLabel": "Distribution of cash flows",
+		# Страница отчетов
+		"ReportTitle": "Title", "ReportCash_Flow": "Balance", "ReportIncome": "Income",
+		"ReportExpenditure": "Expense", "ReportValue": "Total",
+		"WalletsRepLabel": "General information about wallets",
+		"SectionsRepLabel": "Information by section",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "By date added", "__FO2": "Alphabetically",
 		# Объекты из базы данных

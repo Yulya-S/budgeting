@@ -97,8 +97,7 @@ offset_right = 1147.0
 offset_bottom = 40.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Общая информация о счетах
-"
+text = "Общая информация о счетах"
 
 [node name="ObjArray" parent="ObjArray/VBoxContainer/WalletsRep" instance=ExtResource("3_uupuk")]
 layout_mode = 0
@@ -125,8 +124,7 @@ offset_right = 1147.0
 offset_bottom = 40.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Информация по разделам
-"
+text = "Информация по разделам"
 
 [node name="ObjArray" parent="ObjArray/VBoxContainer/SectionsRep" instance=ExtResource("3_uupuk")]
 layout_mode = 0
