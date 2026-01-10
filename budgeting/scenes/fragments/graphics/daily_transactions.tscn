@@ -1,12 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://c078s7whekfej"]
+[gd_scene load_steps=3 format=3 uid="uid://c078s7whekfej"]
 
-[ext_resource type="Script" uid="uid://6k8g2qso758x" path="res://scripts/fragments/graphics/daily_transactions.gd" id="1_mwc83"]
+[ext_resource type="Script" uid="uid://cysgxx6c0o4ev" path="res://scripts/fragments/GraphicsRenderer.gd" id="1_exc1u"]
+[ext_resource type="Script" uid="uid://dxac56vjobsia" path="res://scripts/fragments/graphics/graph.gd" id="2_8y67s"]
 
-[node name="DailyTransactions" type="ColorRect"]
+[node name="DailyTransactions" type="Control"]
 custom_minimum_size = Vector2(1152, 120)
+layout_mode = 3
+anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_mwc83")
+script = ExtResource("1_exc1u")
 
 [node name="X" type="Line2D" parent="."]
 points = PackedVector2Array(10, 59, 1142, 59)
@@ -17,3 +20,12 @@ default_color = Color(0, 0, 0, 1)
 points = PackedVector2Array(0, 125, 1151, 125)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1152, 0)
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 3.0
+color = Color(1, 1, 1, 0)
+script = ExtResource("2_8y67s")
+line_graph = false

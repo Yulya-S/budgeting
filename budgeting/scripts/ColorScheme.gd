@@ -70,7 +70,7 @@ func repainting(obj: Variant) -> void:
 	match obj.name:
 		"Head": obj.color = get_sys_color(1)
 		"Menu", "Marker": obj.color = get_sys_color(2)
-		"Background", "DailyTransactions", "LineGraph": obj.color = get_sys_color(6)
+		"Background": obj.color = get_sys_color(6)
 		"Filter": obj.color = get_sys_color(3)
 		"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
 		"X", "Border", "Separator": obj.default_color = get_sys_color(0)
