@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://1o8fdt54m50i"]
 
-[ext_resource type="Script" uid="uid://bshql1l72qqn2" path="res://scripts/fragments/list_elements/event.gd" id="1_f8bn8"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/Fragment.gd" id="1_f8bn8"]
 [ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_7rb7u"]
 
 [node name="Event" type="ColorRect"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dhfh50p4q6kb4"]
 
-[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/Fragment.gd" id="1_c6q8d"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/Fragment.gd" id="1_c6q8d"]
 [ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_ntck8"]
 
 [node name="Wallet" type="ColorRect"]
