@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://c078s7whekfej"]
+[gd_scene load_steps=2 format=3 uid="uid://c078s7whekfej"]
 
-[ext_resource type="Script" uid="uid://cysgxx6c0o4ev" path="res://scripts/fragments/GraphicsRenderer.gd" id="1_exc1u"]
-[ext_resource type="Script" uid="uid://dxac56vjobsia" path="res://scripts/fragments/graphics/graph.gd" id="2_8y67s"]
+[ext_resource type="Script" uid="uid://cysgxx6c0o4ev" path="res://scripts/fragments/graphics/line_graph.gd" id="1_exc1u"]
 
 [node name="DailyTransactions" type="Control"]
 custom_minimum_size = Vector2(1152, 120)
@@ -20,12 +19,3 @@ default_color = Color(0, 0, 0, 1)
 points = PackedVector2Array(0, 125, 1151, 125)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
-
-[node name="ColorRect" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(1152, 0)
-layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 3.0
-color = Color(1, 1, 1, 0)
-script = ExtResource("2_8y67s")
-line_graph = false

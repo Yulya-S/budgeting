@@ -1,20 +1,34 @@
-extends ColorRect
-# Экспортируемая переменная
-@export var line_graph: bool = true # Линейный ли график
+extends Control
 # Переменная
 var values: Array = [] # Данные для отображения
 
 # Отрисовка графика
 func _draw() -> void:
 	var max_value: float = [values.max(), values.min() * -1].max()
-	var x_step: float = size.x / len(values)
-	if line_graph: _line(max_value, x_step)
-	else: _candlestick(max_value, x_step)
+	var step: float = size.x / len(values)
+	if name == "DailyTransactions": _candlestick(max_value, step)
+	else: _line(max_value, step)
 
-# Запуск отрисовки графика	
-func set_values(new_values: Array) -> void:
-	values = new_values
+# Перезапуск отрисовки графика
+func update_data(filter: Variant = {}) -> void:
+	ColorScheme.repainting(self)
+	var filter_data = Global.get_filter(filter)
+	var data: Array = []
+	var req_res: Array = Request.select_cash_flow_graphics(filter_data.where, filter_data.date)
+	for i in range(Request.select_day_count(filter_data.date)): data.append(0.0)
+	for i in req_res: data[int(i.day) - 1] = i.value
+	values = _update_values(data, filter_data)
 	queue_redraw()
+
+# Получение значений для заполнения графика
+func _update_values(data: Array, filter: Dictionary) -> Array:
+	if name == "DailyTransactions": return data
+	else:
+		var total: float = Request.select_past_funds_movements(filter.date)
+		for i in range(len(data)):
+			data[i] += total
+			total = data[i]
+		return data
 
 # Виды графиков
 # Линейный

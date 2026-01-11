@@ -1,15 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://cnbecqprpspom"]
+[gd_scene load_steps=2 format=3 uid="uid://cnbecqprpspom"]
 
-[ext_resource type="Script" uid="uid://bp85a83q4n3at" path="res://scripts/fragments/graphics/report_graph.gd" id="1_pkjsa"]
-[ext_resource type="Script" uid="uid://dxac56vjobsia" path="res://scripts/fragments/graphics/graph.gd" id="2_pkjsa"]
+[ext_resource type="Script" uid="uid://cysgxx6c0o4ev" path="res://scripts/fragments/graphics/line_graph.gd" id="1_pqxy0"]
 
 [node name="ReportGraph" type="Control"]
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(1152, 120)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_pkjsa")
+script = ExtResource("1_pqxy0")
 
 [node name="X" type="Line2D" parent="."]
 points = PackedVector2Array(10, 59, 1142, 59)
@@ -20,10 +19,3 @@ default_color = Color(0, 0, 0, 1)
 points = PackedVector2Array(10, 115, 10, 5)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
-
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 2.0
-color = Color(1, 1, 1, 0)
-script = ExtResource("2_pkjsa")
