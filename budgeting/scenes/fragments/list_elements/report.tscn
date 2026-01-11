@@ -1,15 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bbm4ew21ko7e1"]
+[gd_scene load_steps=3 format=3 uid="uid://cuhlck3p0pdxh"]
 
-[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/Fragment.gd" id="1_rbn4l"]
-[ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_nyojl"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/Fragment.gd" id="1_258vl"]
+[ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_mkt8p"]
 
-[node name="CashFlow" type="ColorRect"]
+[node name="Report" type="ColorRect"]
 custom_minimum_size = Vector2(1152, 23)
 offset_right = 969.0
 offset_bottom = 23.0
 mouse_filter = 1
 color = Color(0.955963, 0.955963, 0.955963, 1)
-script = ExtResource("1_rbn4l")
+script = ExtResource("1_258vl")
 
 [node name="Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
@@ -19,107 +19,98 @@ anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 10.0
 offset_top = -11.5
-offset_right = 228.4
+offset_right = 265.0
 offset_bottom = 11.5
 grow_vertical = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
-text = "Название раздела"
+text = "Название"
 vertical_alignment = 1
 autowrap_mode = 1
-script = ExtResource("2_nyojl")
+script = ExtResource("2_mkt8p")
 next_page = 3
 next_page_dir = 1
 
-[node name="Wallet_Title" type="Label" parent="."]
+[node name="Cash_Flow" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 238.0
+offset_left = 277.0
 offset_top = -11.5
-offset_right = 456.4
+offset_right = 511.0
 offset_bottom = 11.5
 grow_vertical = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
-text = "Источник"
+text = "Остаток"
 horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 1
-script = ExtResource("2_nyojl")
 
-[node name="Wallet_2_Title" type="Label" parent="."]
+[node name="Income" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 481.0
+offset_left = 529.0
 offset_top = -11.5
-offset_right = 699.4
+offset_right = 701.0
 offset_bottom = 11.5
 grow_vertical = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
-text = "Цель"
+text = "Доход"
+horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 1
-script = ExtResource("2_nyojl")
 
-[node name="Arrow" type="Label" parent="Wallet_2_Title"]
-layout_mode = 0
-offset_left = -25.0
-offset_bottom = 23.0
+[node name="Expenditure" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 714.0
+offset_top = -11.5
+offset_right = 871.0
+offset_bottom = 11.5
+grow_vertical = 2
+mouse_filter = 1
+mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "->"
-horizontal_alignment = 1
+theme_override_constants/line_spacing = -5
+text = "Расход"
+horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="Value" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 694.0
-offset_top = -11.5
-offset_right = 912.4
-offset_bottom = 11.5
-grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Сумма"
-horizontal_alignment = 2
-vertical_alignment = 1
-autowrap_mode = 1
-
-[node name="Date" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -230.0
+offset_left = -259.0
 offset_top = -11.5
-offset_right = -11.6
+offset_right = -10.0
 offset_bottom = 11.5
 grow_horizontal = 0
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Дата"
+text = "Итог"
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 
 [connection signal="mouse_entered" from="Title" to="Title" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Title" to="Title" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="Wallet_Title" to="Wallet_Title" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Wallet_Title" to="Wallet_Title" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="Wallet_2_Title" to="Wallet_2_Title" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Wallet_2_Title" to="Wallet_2_Title" method="_on_mouse_exited"]

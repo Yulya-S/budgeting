@@ -8,19 +8,16 @@ var start_update: bool = false # Был ли отправлен запрос н�
 # Начало создания объектов на странице
 func _process(_delta: float) -> void:
 	if Request.completion_creation_et and start_update:
-		Objects.update_data($Filter)
+		Objects.update_data(Filter)
 		start_update = false
 
 # Запуск обновления данных на странице
 func _update_page() -> void:
-	# Применение цвета и перевода страницы
-	ColorScheme.repainting(self)
-	File.set_lang(self)
 	Global.delete_child(self, get_child(-1)) # Удаление предыдущего формата отображения событий
 	# Создание нового формата отображения событий
 	if not Request.select_value(Request.Tables.SETTINGS, "event_page_calendar"): _create_calendar(calendar, Vector2(456, 473))
 	else: _create_calendar(objArray, Vector2(1152, 473))
-	update_data() # Обновление данных в списке событий
+	super._update_page()
 
 # Создание календаря
 func _create_calendar(obj: Resource, new_size: Vector2) -> void:

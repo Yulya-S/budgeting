@@ -1,8 +1,6 @@
 extends ScrollContainer
 # Подключение пути к объекту в сцене
 @onready var Objects = $Objects
-# Перечисление
-enum ListObjects {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, WALLET_TRANSACTION} # Объекты списка
 # Экспортируемая переменная
 @export var obj: Request.ObjectVariants = Request.ObjectVariants.EVENT # Выбранный объект списка
 # Переменная

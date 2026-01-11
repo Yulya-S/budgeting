@@ -5,13 +5,13 @@ signal open_new_page(page: Pages, id, parent) # Открытие страниц�
 signal update_page(close_page: String) # Обновление данных на странице
 
 # Перечисления
-enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, TRANSFER, PAYMENT, PERCENT, REPORTS, REGISTRATION, SETTINGS, WALLET_INF, LOAN_INF} # Страницы приложения
+enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, TRANSFER, PAYMENT, PERCENT, REGISTRATION, SETTINGS, WALLET_INF, LOAN_INF} # Страницы приложения
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменные
 var current_page: Pages = Pages.BASIC # Текущая страница
-@onready var sys_date: NewDate = NewDate.new(Time.get_datetime_dict_from_datetime_string("2025-11-29", true)) # Текущая дата
+@onready var sys_date: NewDate = NewDate.new(Time.get_datetime_dict_from_system()) # Текущая дата Time.get_datetime_dict_from_datetime_string("2025-11-29", true)
 
 # Создание директорий и файлов приложения
 func _ready() -> void:
@@ -63,12 +63,15 @@ func get_other_month(date: Variant, next: bool = false) -> Variant:
 	var new_date: Dictionary = date.duplicate() if date is Dictionary else date_to_dict(date)
 	if next:
 		new_date.month += 1
-		if new_date.month > 12: new_date.year += 1
+		if new_date.month > 12:
+			new_date.year += 1
+			new_date.month = 1
 	else:
 		new_date.day = 1
 		new_date.month -= 1
-		if new_date.month <= 0: new_date.year -= 1
-	if new_date.month > 12 or new_date.month < 0: new_date.month = 1
+		if new_date.month <= 0:
+			new_date.year -= 1
+			new_date.month = 12
 	if date is Dictionary: return new_date
 	return date_to_str(new_date)
 

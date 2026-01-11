@@ -1,0 +1,196 @@
+[gd_scene load_steps=7 format=3 uid="uid://ye05pwlqduk"]
+
+[ext_resource type="Script" uid="uid://5f106dewhfod" path="res://scripts/pages/report.gd" id="1_ixb6w"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_6gj5i"]
+[ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_dayp3"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_uupuk"]
+[ext_resource type="PackedScene" uid="uid://cnbecqprpspom" path="res://scenes/fragments/graphics/report_graph.tscn" id="4_6gj5i"]
+[ext_resource type="PackedScene" uid="uid://b1d4w0kc52m1u" path="res://scenes/fragments/graphics/pie_chart.tscn" id="5_6gj5i"]
+
+[node name="Report" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ixb6w")
+
+[node name="Head" parent="." instance=ExtResource("2_6gj5i")]
+layout_mode = 0
+
+[node name="Filter" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 60.0
+offset_right = 1152.0
+offset_bottom = 110.0
+color = Color(0.627451, 0.913725, 0.894118, 1)
+script = ExtResource("3_dayp3")
+
+[node name="Year" type="OptionButton" parent="Filter"]
+layout_mode = 0
+offset_left = 95.0
+offset_top = 11.0
+offset_right = 399.0
+offset_bottom = 42.0
+alignment = 1
+item_count = 1
+popup/item_0/id = 0
+
+[node name="Month" type="OptionButton" parent="Filter"]
+layout_mode = 0
+offset_left = 419.0
+offset_top = 11.0
+offset_right = 723.0
+offset_bottom = 42.0
+alignment = 1
+selected = 0
+item_count = 12
+popup/item_0/text = "Январь"
+popup/item_0/id = 0
+popup/item_1/text = "Февраль"
+popup/item_1/id = 1
+popup/item_2/text = "Март"
+popup/item_2/id = 2
+popup/item_3/text = "Апрель"
+popup/item_3/id = 3
+popup/item_4/text = "Май"
+popup/item_4/id = 4
+popup/item_5/text = "Июнь"
+popup/item_5/id = 5
+popup/item_6/text = "Июль"
+popup/item_6/id = 6
+popup/item_7/text = "Август"
+popup/item_7/id = 7
+popup/item_8/text = "Сентябрь"
+popup/item_8/id = 8
+popup/item_9/text = "Октябрь"
+popup/item_9/id = 9
+popup/item_10/text = "Ноябрь"
+popup/item_10/id = 10
+popup/item_11/text = "Декабрь"
+popup/item_11/id = 11
+
+[node name="Button" type="Button" parent="Filter"]
+layout_mode = 0
+offset_left = 743.0
+offset_top = 11.0
+offset_right = 1047.0
+offset_bottom = 42.0
+text = "Составить отчет"
+
+[node name="ObjArray" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_top = 110.0
+offset_right = 1152.0
+offset_bottom = 693.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ObjArray"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="WalletsRep" type="Control" parent="ObjArray/VBoxContainer"]
+custom_minimum_size = Vector2(1152, 160)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ObjArray/VBoxContainer/WalletsRep"]
+layout_mode = 2
+offset_left = 25.0
+offset_top = 12.0
+offset_right = 1147.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Общая информация о счетах"
+
+[node name="ObjArray" parent="ObjArray/VBoxContainer/WalletsRep" instance=ExtResource("3_uupuk")]
+layout_mode = 0
+offset_top = 55.0
+offset_right = 1144.0
+offset_bottom = 156.0
+obj = 5
+
+[node name="Separator" type="Line2D" parent="ObjArray/VBoxContainer/WalletsRep"]
+position = Vector2(0, 166)
+points = PackedVector2Array(0, 0, 1152, 0)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="SectionsRep" type="Control" parent="ObjArray/VBoxContainer"]
+custom_minimum_size = Vector2(1152, 300)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ObjArray/VBoxContainer/SectionsRep"]
+layout_mode = 2
+offset_left = 25.0
+offset_top = 12.0
+offset_right = 1147.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Информация по разделам"
+
+[node name="ObjArray" parent="ObjArray/VBoxContainer/SectionsRep" instance=ExtResource("3_uupuk")]
+layout_mode = 0
+offset_top = 55.0
+offset_right = 1144.0
+offset_bottom = 300.0
+obj = 5
+
+[node name="Separator" type="Line2D" parent="ObjArray/VBoxContainer/SectionsRep"]
+position = Vector2(0, 306)
+points = PackedVector2Array(0, 0, 1152, 0)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Sections" type="Control" parent="ObjArray/VBoxContainer"]
+custom_minimum_size = Vector2(1152, 160)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ObjArray/VBoxContainer/Sections"]
+layout_mode = 2
+offset_left = 25.0
+offset_top = 12.0
+offset_right = 1147.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Расходы по статьям"
+
+[node name="PieChart" parent="ObjArray/VBoxContainer/Sections" instance=ExtResource("5_6gj5i")]
+offset_left = 25.0
+offset_top = 55.0
+offset_right = 126.0
+offset_bottom = 156.0
+
+[node name="ObjArray" parent="ObjArray/VBoxContainer/Sections" instance=ExtResource("3_uupuk")]
+layout_mode = 0
+offset_left = 161.0
+offset_top = 55.0
+offset_right = 1144.0
+offset_bottom = 156.0
+obj = 1
+
+[node name="Separator" type="Line2D" parent="ObjArray/VBoxContainer/Sections"]
+position = Vector2(0, 166)
+points = PackedVector2Array(0, 0, 1152, 0)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Cash_flows" type="Control" parent="ObjArray/VBoxContainer"]
+custom_minimum_size = Vector2(1152, 300)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ObjArray/VBoxContainer/Cash_flows"]
+layout_mode = 2
+offset_left = 25.0
+offset_top = 12.0
+offset_right = 1147.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Распределение движений средств"
+
+[node name="LineGraph" parent="ObjArray/VBoxContainer/Cash_flows" instance=ExtResource("4_6gj5i")]
+layout_mode = 0
+offset_top = 55.0
+offset_bottom = 175.0
+
+[connection signal="item_selected" from="Filter/Year" to="Filter" method="_on_year_item_selected"]
+[connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]

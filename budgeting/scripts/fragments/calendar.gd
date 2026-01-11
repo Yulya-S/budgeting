@@ -5,7 +5,7 @@ class_name Calendar
 # Экспортируемая переменная
 @export var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Сцена ячейки календаря
 # Переменная
-var date: NewDate = NewDate.new(Global.get_date()) # Выбранная дата
+@onready var date: NewDate = NewDate.new(Global.get_date()) # Выбранная дата
 
 # Постепенное создание элементов страницы
 func _process(_delta: float) -> void: if _end_create(): Global.add_new_child(Cells, cell_path, [Cells.get_child_count() - date.weekday(), _date_comparison(), _date_comparison( ">"), date.day_count])

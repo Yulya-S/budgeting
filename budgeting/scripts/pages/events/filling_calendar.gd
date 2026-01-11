@@ -6,8 +6,8 @@ class_name FillingCalendar
 @export var cell_count: int = 42  # Количество ячеек в календаре
 
 # Переменные
-var date: String = Global.date_to_str() # Выбранная дата
-var day_count: int = Request.select_day_count(date) # Количество дней
+@onready var date: String = Global.date_to_str() # Выбранная дата
+@onready var day_count: int = Request.select_day_count(date) # Количество дней
 var lines: Array = [] # Список объектов для создания
 var events_color: Dictionary = {} # Цвета добавленных событий
 var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Путь к сцене ячеек календаря
