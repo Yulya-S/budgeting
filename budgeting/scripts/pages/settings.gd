@@ -1,4 +1,4 @@
-extends ColorRect
+extends PageWindow
 # Подключение путей к объектам в сцене
 # Параметры
 @onready var Language = $Language
@@ -116,12 +116,6 @@ func _on_color_scheme_pre_item_selected(index: int) -> void:
 			ColorSchemeCus.selected = 0
 			color1.color = Color("#636363")
 	changed_color()
-
-# Обработка нажатия кнопки закрытия окна
-func _on_close_button_down() -> void:
-	Global.delete_child(get_parent(), self)
-	ColorScheme.color_reading()
-	Global.emit_signal("update_page")
 
 # Обработка нажатия кнопки удаления пользователя
 func _on_delete_button_down() -> void: $ConfirmationDialog.visible = true

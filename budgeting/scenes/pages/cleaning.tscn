@@ -1,0 +1,82 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4efnma5ol3vo"]
+
+[ext_resource type="Script" uid="uid://co10civxeq7i5" path="res://scripts/pages/cleaning.gd" id="1_tgrcd"]
+
+[node name="Cleaning" type="ColorRect"]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.670588, 0.733333, 0.72549, 1)
+script = ExtResource("1_tgrcd")
+
+[node name="Close" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1092.0
+offset_top = 10.0
+offset_right = 1142.0
+offset_bottom = 52.0
+tooltip_text = "Отменить изменения"
+theme_override_constants/outline_size = 14
+theme_override_font_sizes/font_size = 24
+text = "X"
+
+[node name="CashFlows" type="Button" parent="."]
+layout_mode = 0
+offset_left = 314.0
+offset_top = 200.0
+offset_right = 839.0
+offset_bottom = 231.0
+text = "Очистить движения средств"
+
+[node name="Label" type="Label" parent="CashFlows"]
+layout_mode = 0
+offset_left = -237.0
+offset_top = 36.0
+offset_right = 711.0
+offset_bottom = 85.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+text = "Удаление данных о движениях средств, дата которых больше 2-х лет"
+horizontal_alignment = 1
+autowrap_mode = 1
+
+[node name="Events" type="Button" parent="."]
+layout_mode = 0
+offset_left = 314.0
+offset_top = 305.0
+offset_right = 839.0
+offset_bottom = 336.0
+text = "Очистить события"
+
+[node name="Label" type="Label" parent="Events"]
+layout_mode = 0
+offset_left = -237.0
+offset_top = 36.0
+offset_right = 711.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+text = "Удаление данных о событиях для которых было назначено повторение \"один раз\", с момента завершения которых прошло больше 2-х месяцев"
+horizontal_alignment = 1
+autowrap_mode = 1
+
+[node name="Loans" type="Button" parent="."]
+layout_mode = 0
+offset_left = 314.0
+offset_top = 410.0
+offset_right = 839.0
+offset_bottom = 441.0
+text = "Очистить займы"
+
+[node name="Label" type="Label" parent="Loans"]
+layout_mode = 0
+offset_left = -237.0
+offset_top = 36.0
+offset_right = 711.0
+offset_bottom = 85.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+text = "Удаление данных о выплаченных займах, с момента погашения которых прошло больше 2-х месяцев"
+horizontal_alignment = 1
+autowrap_mode = 1
+
+[connection signal="button_down" from="Close" to="." method="_on_close_button_down"]
