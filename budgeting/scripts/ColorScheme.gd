@@ -37,7 +37,7 @@ func color_reading() -> void:
 	# Изменение градиента для графиков под выбранную цветовую тему
 	chart_gradient.colors = PackedColorArray([get_sys_color(10, 100), get_sys_color(55, 100)])
 	highlighter_color = Color.AQUAMARINE * get_sys_color(50, 100) / Color("c8c8c8") # Изменение цвета подсветки
-	
+	 
 # Составление цветовой палитры
 func color_assembly(g_colors: PackedColorArray, g_offsets: PackedFloat32Array, theme: bool) -> void:
 	g_colors = PackedColorArray([Color(int(theme), int(theme), int(theme))]) + g_colors
