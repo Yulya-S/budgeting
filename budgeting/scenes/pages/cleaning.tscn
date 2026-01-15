@@ -8,8 +8,7 @@ offset_bottom = 648.0
 color = Color(0.670588, 0.733333, 0.72549, 1)
 script = ExtResource("1_tgrcd")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
+[node name="Cleaning" type="Label" parent="."]
 offset_left = 576.0
 offset_top = 10.0
 offset_right = 1062.0
@@ -51,11 +50,11 @@ offset_right = 711.0
 offset_bottom = 85.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
-text = "Удаление данных о движениях средств, с даты создания которых прошло более 2-х лет"
+text = "Удаление данных о движениях средств, с даты создания которых прошло более 2х лет"
 horizontal_alignment = 1
 autowrap_mode = 1
 
-[node name="Events" type="Button" parent="."]
+[node name="ClearEvents" type="Button" parent="."]
 layout_mode = 0
 offset_left = 314.0
 offset_top = 305.0
@@ -63,7 +62,7 @@ offset_right = 839.0
 offset_bottom = 336.0
 text = "Очистить события"
 
-[node name="Label" type="Label" parent="Events"]
+[node name="Label" type="Label" parent="ClearEvents"]
 layout_mode = 0
 offset_left = -237.0
 offset_top = 36.0
@@ -71,7 +70,7 @@ offset_right = 711.0
 offset_bottom = 80.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
-text = "Удаление данных о событиях для которых было назначено повторение \"один раз\", с момента завершения которых прошло больше 2-х месяцев"
+text = "Удаление данных о событиях для которых было назначено повторение \"один раз\", с момента завершения которых прошло больше 2х месяцев"
 horizontal_alignment = 1
 autowrap_mode = 1
 
@@ -91,7 +90,7 @@ offset_right = 711.0
 offset_bottom = 85.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
-text = "Удаление данных о выплаченных займах, с момента погашения которых прошло больше 2-х месяцев"
+text = "Удаление данных о выплаченных займах, с момента погашения которых прошло больше 2х месяцев"
 horizontal_alignment = 1
 autowrap_mode = 1
 
