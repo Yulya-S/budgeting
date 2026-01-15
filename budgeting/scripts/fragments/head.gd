@@ -3,7 +3,7 @@ extends ColorRect
 # Изменение положения маркера страницы
 func _ready() -> void:
 	$Login.set_text(File.show_data(File.config.login))
-	$Marker.position.x = 90. * (Global.current_page + 2.) + 2.5
+	$Marker.position.x = 45. * (Global.current_page + 3.) + 2.5
 	update_date()
 	
 # Обновление текста даты

@@ -35,7 +35,7 @@ offset_right = 711.0
 offset_bottom = 85.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
-text = "Удаление данных о движениях средств, дата которых больше 2-х лет"
+text = "Удаление данных о движениях средств, с даты создания которых прошло более 2-х лет"
 horizontal_alignment = 1
 autowrap_mode = 1
 
