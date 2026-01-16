@@ -9,6 +9,7 @@ color = Color(0.670588, 0.733333, 0.72549, 1)
 script = ExtResource("1_dqp6w")
 
 [node name="Setting" type="Label" parent="."]
+layout_mode = 0
 offset_left = 576.0
 offset_top = 10.0
 offset_right = 1062.0
@@ -380,9 +381,10 @@ text = "X"
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
 title = "Удаление пользователя"
 initial_position = 1
-size = Vector2i(459, 100)
+size = Vector2i(460, 106)
 ok_button_text = "Да"
 dialog_text = "Вы уверены? Все данные пользователя будут удалены"
+dialog_autowrap = true
 cancel_button_text = "Нет"
 
 [connection signal="item_selected" from="Language" to="." method="_on_language_item_selected"]
