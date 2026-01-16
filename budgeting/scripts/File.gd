@@ -160,11 +160,14 @@ func _supplement_cycle(lang_fragment: Dictionary, s_lang_fragment: Dictionary) -
 func _standard_language() -> Dictionary:
 	return {
 		# Шапка
-		"Hints": "Инструкция", "Setting": "Настройки", "Main": "Главная", "Wallet": "Кошельки", "Section": "Разделы",
-		"Flow": "Движения средств", "Loan": "Кредиты", "Event": "События", "Report": "Отчеты", "Exit": "Выход",
+		"Hints": "Инструкция", "Setting": "Настройки", "Cleaning": "Очистка данных", "Main": "Главная",
+		"Wallet": "Кошельки", "Section": "Разделы", "Flow": "Движения средств", "Loan": "Кредиты",
+		"Event": "События", "Report": "Отчеты", "Exit": "Выход", 
 		# Регистрация
 		"Registration": "Регистрация", "Enter": "Вход", "LanguageLabel": "Язык:", "LoginLabel": "*Логин:",
 		"PasswordLabel": "*Пароль:", "Remember": "Запомни меня", "Show": "Показать пароль",
+		# Окна создания / изменения
+		"Apply": "Сохранить", "Close": "Отменить изменения",
 		# Настройки
 		"DeleteUser": "Удалить пользователя", "ColorSchemePreLabel": "Цветовое оформление",
 		"ColorSchemeCusLabel": "Количество цветов", "TestButton": "Пример кнопки", "ColorsColor": "Цвет",
@@ -174,8 +177,11 @@ func _standard_language() -> Dictionary:
 		"ColorSchemePre": ["Стандартный", "Серый", "Лимон со смородиной", "Ржавый металл", "Лиса на поляне", "Ягода на ветке", "Ежевика"],
 		"ColorSchemeCus": ["Моно", "Контраст", "Триада", "Тетрада"],
 		"SettingsConfirmationDialog": {"text": "Вы уверены? Все данные пользователя будут удалены", "title": "Удаление пользователя"},
-		# Окна создания / изменения
-		"Apply": "Сохранить", "Close": "Отменить изменения",
+		# Окно очистки данных
+		"CleaningCashFlows": "Очистить движения средств", "ClearEvents": "Очистить события", "CleaningLoans": "Очистить займы",
+		"CleaningCashFlowsLabel": "Удаление данных о движениях средств, с даты создания которых прошло более 2-х лет",
+		"ClearEventsLabel": 'Удаление данных о событиях для которых было назначено повторение "один раз", с момента завершения которых прошло больше 2-х месяцев',
+		"CleaningLoansLabel": "Удаление данных о выплаченных займах, с момента погашения которых прошло больше 2-х месяцев", 
 		# Фильтры
 		"FilterTitleLabel": "Фрагмент названия", "FilterOrderLabel": "Порядок сортировки",
 		"YearLabel": "Год фильтрации", "MonthLabel": "Месяц фильтрации", "FilterButton": "Применить",
@@ -237,11 +243,14 @@ func _cr_ru() -> void: _cr_lang_file("ru", _standard_language())
 func _cr_en() -> void:
 	_cr_lang_file("en", {
 		# Шапка
-		"Hints": "Instructions", "Setting": "Settings", "Main": "Home", "Wallet": "Wallets", "Section": "Sections",
-		"Flow": "Movements of funds", "Loan": "Loans", "Event": "Events", "Report": "Reports", "Exit": "Exit",
+		"Hints": "Instructions", "Setting": "Settings", "Cleaning": "Data cleaning", "Main": "Home",
+		"Wallet": "Wallets", "Section": "Sections", "Flow": "Movements of funds", "Loan": "Loans",
+		"Event": "Events", "Report": "Reports", "Exit": "Exit",
 		# Регистрация
 		"Registration": "Registration", "Enter": "Entry", "LanguageLabel": "Language:", "LoginLabel": "*Login:",
 		"PasswordLabel": "*Password:", "Remember": "Remember me", "Show": "Show password",
+		# Окна создания / изменения
+		"Apply": "Save", "Close": "Cancel changes",
 		# Настройки
 		"DeleteUser": "Delete user", "ColorSchemePreLabel": "Color design", "ColorsColor": "Color",
 		"ColorSchemeCusLabel": "Number of colors", "TestButton": "Button example",
@@ -251,8 +260,11 @@ func _cr_en() -> void:
 		"ColorSchemePre": ["Standard", "Grey", "Lemon with currants", "Rusty metal", "A fox in a clearing", "Berry on a branch", "Blackberry"],
 		"ColorSchemeCus": ["Mono", "Contrast", "Triad", "Tetrad"],
 		"SettingsConfirmationDialog": {"text": "Are you sure? All user data will be deleted", "title": "Deleting a user"},
-		# Окна создания / изменения
-		"Apply": "Save", "Close": "Cancel changes",
+		# Окно очистки данных
+		"CleaningCashFlows": "Clear funds movements", "ClearEvents": "Clear events", "CleaningLoans": "Clear loans",
+		"CleaningCashFlowsLabel": "Deleting data on fund movements that were created more than 2 years ago",
+		"ClearEventsLabel": 'Deleting data on events that were scheduled to repeat "once" and that were completed more than 2 months ago',
+		"CleaningLoansLabel": "Deleting data on repaid loans that were repaid more than 2 months ago", 
 		# Фильтры
 		"FilterTitleLabel": "Title fragment", "FilterOrderLabel": "Sorting order",
 		"YearLabel": "Year of filtration", "MonthLabel": "Month of filtering", "FilterButton": "Apply",

@@ -3,7 +3,7 @@ extends ColorRect
 # Изменение положения маркера страницы
 func _ready() -> void:
 	$Login.set_text(File.show_data(File.config.login))
-	$Marker.position.x = 45. * (Global.current_page + 2.) + 2.5
+	$Marker.position.x = 45. * (Global.current_page + 3.) + 2.5
 	update_date()
 	
 # Обновление текста даты
@@ -17,6 +17,9 @@ func _on_exit_button_down() -> void:
 
 # Обработка нажатия кнопки настройки 
 func _on_setting_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SETTINGS, null, Global.Dirs.PAGES)
+
+# Обработка нажатия кнопки очистки данных
+func _on_cleaning_button_down() -> void: Global.emit_signal("open_window", Global.Pages.CLEANING, null, Global.Dirs.PAGES)
 
 # Обработка нажатия кнопки главная 
 func _on_main_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.BASIC)
