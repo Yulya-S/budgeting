@@ -393,3 +393,46 @@ func match_update_list_element(list_element: ObjectVariants, line: Dictionary, p
 		ObjectVariants.EVENT: return _update_events_list(line)
 		ObjectVariants.REPORT: return _update_reports_list(line)
 	return line
+
+# Функции очистки данных
+# Изменение значений id в таблице движений средств
+func _table_ids_update(table: String = "cash_flows") -> void:
+	_create_table("temp_table", "old_id INTEGER")
+	db.query("INSERT INTO temp_table (old_id) SELECT ROWID FROM " + table + ";")
+	var sel: String = "(SELECT id FROM temp_table WHERE old_id = " + table + ".id)"
+	db.query("UPDATE " + table + " SET id = " + sel + " WHERE EXISTS " + sel + ";")
+	db.query('UPDATE sqlite_sequence SET seq = (SELECT COUNT(*) FROM ' + table + ') WHERE name = "' + table + '";')
+	db.query("DROP TABLE temp_table;")
+
+# Очистка движений средств
+func clear_cash_flows() -> void:
+	db.query('DELETE FROM cash_flows WHERE CAST(strftime("%Y", "'+Global.date_to_str()+'") AS INTAGER) - CAST(strftime("%Y", date) AS INTAGER) > 2;')
+	_table_ids_update()
+
+# Фрагмент запроса получение числового значения фрагмента даты
+func _cast_strftime(format: String, date: String) -> String:
+	return 'CAST(strftime("%'+format+'", '+date+') AS INTAGER)'
+
+# Фрагмент запроса получения количества месяцев от выбранной даты
+func _month_count(date: String = '"'+Global.date_to_str()+'"') -> String:
+	return "("+_cast_strftime("Y", date)+" * 12 + "+_cast_strftime("m", date)+")"
+
+# Фрагмент запроса проверки прошло ли два месяца от выбранной даты
+func _month_difference() -> String:
+	return _month_count()+" - "+_month_count("date")+" > 2"
+
+# Очистка событий
+func clear_events() -> void:
+	db.query("DELETE FROM events WHERE " + _month_difference() + " AND repetition_rate = 0;")
+	_table_ids_update("events")
+
+# Очистка займов
+func clear_loans() -> void:
+	var values: Array = _select("wallet_2_id AS id FROM cash_flows WHERE wallet_2_id IN (SELECT id FROM loans WHERE total = 0) AND section_id = 3 AND" + _month_difference())
+	for i in values:
+		db.query("DELETE FROM cash_flows WHERE section_id IN (2, 3, 4) AND wallet_2_id="+str(i.id)+";")
+		db.query("DELETE FROM loans WHERE id = " + str(i.id) + ";")
+		db.query("UPDATE loans SET id = id - 1 WHERE id > " + str(i.id) + ";")
+		db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "loans";')
+		db.query("UPDATE cash_flows SET wallet_2_id = wallet_2_id - 1 WHERE wallet_2_id > "+str(i.id)+" AND section_id IN (2, 3, 4);")
+	_table_ids_update()
