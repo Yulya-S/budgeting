@@ -18,6 +18,7 @@ func set_line_size() -> void:
 		max_count = i.get_line_count() 
 		front_size = i.get_theme_font_size("front_size")
 	custom_minimum_size[1] = max_count * front_size + ((max_count - 1) * 2) + 10.
+	for i in get_children(): i.size[1] = custom_minimum_size[1]
 	
 # Изменение значений в сцене
 func set_values(data: Dictionary) -> void:
