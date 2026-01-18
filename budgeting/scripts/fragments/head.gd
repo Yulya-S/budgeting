@@ -15,6 +15,9 @@ func _on_exit_button_down() -> void:
 	Request.connection_user_db()
 	Global.emit_signal("open_new_page", Global.Pages.REGISTRATION)
 
+# Обработка нажатия кнопки подсказок
+func _on_hints_button_down() -> void: Global.emit_signal("open_window", Global.Pages.HINTS, null, Global.Dirs.PAGES)
+
 # Обработка нажатия кнопки настройки 
 func _on_setting_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SETTINGS, null, Global.Dirs.PAGES)
 
