@@ -35,7 +35,7 @@ func connection_db(db_name: String) -> void:
 	_create_table("multiplied_events", "title VARCHAR(255), event_type INT, value FLOAT, date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
 	# Создание таблиц для персонализации приложения
 	_create_table("settings", "color_preset BOOLEAN, color_scheme INT, color_1 VARCHAR(255), color_2 VARCHAR(255), color_3 VARCHAR(255), color_4 VARCHAR(255), dark_theme BOOLEAN, event_page_calendar BOOLEAN, last_entry DATE")
-	_create_table("notifications", "title INT, event_id INT, new BOOL", ["(`event_id`) REFERENCES `events`(`id`)"])
+	_create_table("notifications", "event_id INT, new BOOL, date DATE", ["(`event_id`) REFERENCES `events`(`id`)"])
 	if len(select(Tables.SECTIONS)) != 0: return
 	for i in ["__ST1", "__ST2", "__ST3", "__ST4"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
 
@@ -436,3 +436,7 @@ func clear_loans() -> void:
 		db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "loans";')
 		db.query("UPDATE cash_flows SET wallet_2_id = wallet_2_id - 1 WHERE wallet_2_id > "+str(i.id)+" AND section_id IN (2, 3, 4);")
 	_table_ids_update()
+	
+# Работа с уведомлениями
+# Запрос на поиск непрочитанных уведомлений
+func presence_unread_notifications() -> bool: return _select("COUNT(id) count FROM notifications", "new")[0].count != 0

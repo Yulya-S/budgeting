@@ -69,6 +69,7 @@ layout_mode = 0
 color = Color(0.57, 0, 0, 0.486275)
 
 [node name="Label" type="Label" parent="."]
+layout_mode = 0
 offset_left = 10.0
 offset_top = 492.0
 offset_right = 1142.0

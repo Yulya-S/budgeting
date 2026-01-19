@@ -7,7 +7,9 @@ func _ready() -> void:
 	update_date()
 	
 # Обновление текста даты
-func update_date() -> void: $Date.set_text(Global.date_to_str())
+func update_date() -> void:
+	$Date.set_text(Global.date_to_str())
+	$Notification/New.visible = Request.presence_unread_notifications()
 
 # Обработка нажатия кнопки выхода из аккаунта
 func _on_exit_button_down() -> void:
