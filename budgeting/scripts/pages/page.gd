@@ -26,6 +26,6 @@ func _get_filter(_obj: Variant) -> Array: return [Filter]
 
 # Изменение данных после смены дня
 func new_day() -> void:
-	Filter.reset_date_filters()
+	if Filter: Filter.reset_date_filters()
 	$Head.update_date()
 	update_data()

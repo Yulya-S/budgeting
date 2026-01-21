@@ -14,6 +14,10 @@ func _ready() -> void:
 func _on_timer_timeout() -> void:
 	DayTimer.start(60. * 60. * 24.)
 	Global.sys_date.set_value(Time.get_datetime_string_from_system())
+	add_child(load("res://scenes/pages/load.tscn").instantiate())
+
+# Запуск изменения данных на стрницах
+func start_update() -> void:
 	Global.emit_signal("update_page")
 	for i in get_children(): Global.run_func(i, "new_day")
 

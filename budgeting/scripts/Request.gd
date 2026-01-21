@@ -1,6 +1,6 @@
 extends Node
 # Перечисление
-enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
+enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, NOTIFICATIONS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
 enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
 
 # Переменная
@@ -440,3 +440,12 @@ func clear_loans() -> void:
 # Работа с уведомлениями
 # Запрос на поиск непрочитанных уведомлений
 func presence_unread_notifications() -> bool: return _select("COUNT(id) count FROM notifications", "new")[0].count != 0
+
+# Проверка наличия уведомлений за текущую дату
+func checking_notifications() -> bool: return len(_select("* FROM notifications", ' date == "'+Global.date_to_str()+'"')) > 0
+
+# Получение списка событий для создания уведомлений
+func select_notif_events() -> Array: return _select("* FROM multiplied_events", ' date == "'+Global.date_to_str()+'"')
+
+# Создание уведомления из события
+func insert_notifications(line: Dictionary) -> void: insert_record(Tables.NOTIFICATIONS, [line.id, true, '"'+line.date+'"'])
