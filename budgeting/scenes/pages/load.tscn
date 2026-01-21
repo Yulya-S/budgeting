@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3 uid="uid://bc5aprnglwmrn"]
+
+[ext_resource type="Script" uid="uid://dtvtjg8yvolql" path="res://scripts/pages/load.gd" id="1_35kbr"]
+
+[node name="Load" type="ColorRect"]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.670588, 0.733333, 0.72549, 1)
+script = ExtResource("1_35kbr")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 202.0
+offset_top = 265.0
+offset_right = 951.0
+offset_bottom = 327.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 30
+text = "Загрузка"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+clip_text = true
+text_overrun_behavior = 3
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 201.5
+offset_top = 337.0
+offset_right = 950.5
+offset_bottom = 364.0
+show_percentage = false
+
+[node name="Message" type="Label" parent="."]
+layout_mode = 0
+offset_left = 202.0
+offset_top = 374.0
+offset_right = 951.0
+offset_bottom = 449.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "__L1"
+horizontal_alignment = 1
+autowrap_mode = 1
+clip_text = true
+text_overrun_behavior = 3
