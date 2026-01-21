@@ -81,6 +81,7 @@ func repainting(obj: Variant) -> void:
 			obj.get_child(2).color = get_sys_color(5)
 		_:
 			match obj.get_class():
+				"ProgressBar": obj.modulate = get_sys_color(1)
 				"Button", "TextEdit": _set_all_button_color_parametrs(obj)
 				"OptionButton":
 					_set_all_button_color_parametrs(obj)
