@@ -423,6 +423,10 @@ func _month_difference() -> String:
 
 # Очистка событий
 func clear_events() -> void:
+	var lines: Array = _select("id FROM events", _month_difference() + " AND repetition_rate = 0")
+	for i in lines:
+		db.query("DELETE FROM notifications WHERE event_id = " + str(i.id) + ";")
+		_table_ids_update("notifications")
 	db.query("DELETE FROM events WHERE " + _month_difference() + " AND repetition_rate = 0;")
 	_table_ids_update("events")
 
