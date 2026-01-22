@@ -1,7 +1,7 @@
 extends Node
 # Перечисление
 enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, NOTIFICATIONS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
-enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
+enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, NOTIFICATION, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -382,6 +382,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 		ObjectVariants.LOAN: return _select_loans_list(filter_data.where, filter_data.order)
 		ObjectVariants.EVENT: return select_multiplied_events_list()
 		ObjectVariants.REPORT: return _select_reports_list(filter_data.where, filter_data.date)
+		ObjectVariants.NOTIFICATION: return _select_notifications_list()
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах
@@ -453,3 +454,5 @@ func select_notif_events() -> Array: return _select("* FROM multiplied_events", 
 
 # Создание уведомления из события
 func insert_notifications(line: Dictionary) -> void: insert_record(Tables.NOTIFICATIONS, [line.id, true, '"'+line.date+'"'])
+
+func _select_notifications_list() -> Array: return _select("e.title, n.* FROM notifications n LEFT JOIN events e ON n.event_id=e.id", "", "n.date DESC")

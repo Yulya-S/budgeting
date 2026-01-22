@@ -14,6 +14,7 @@ offset_bottom = 720.0
 color = Color(0.227451, 0.596078, 0.568627, 1)
 
 [node name="Cleaning" type="Button" parent="NBorder"]
+layout_mode = 0
 offset_left = 453.32
 offset_top = 253.32
 offset_right = 581.32
@@ -33,3 +34,4 @@ offset_left = 5.0
 offset_top = 5.0
 offset_right = 495.0
 offset_bottom = 246.0
+obj = 6

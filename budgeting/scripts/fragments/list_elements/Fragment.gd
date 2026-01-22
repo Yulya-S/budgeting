@@ -35,7 +35,8 @@ func set_values(data: Dictionary) -> void:
 					i.color = data[i.name.to_lower()]
 					i.visible = true
 			"Label":
-				if "title" not in i.name.to_lower(): i.set_text(str(data[i.name.to_lower()]))
+				if "title" not in i.name.to_lower() or not i.get("set_object"):
+					i.set_text(str(data[i.name.to_lower()]))
 				else:
 					if i.name.to_lower().split("title")[0]+"id" in data.keys(): i.set_object(data[i.name.to_lower()],  data[i.name.to_lower().split("title")[0]+"id"])
 					elif data[i.name.to_lower()] == null: continue
