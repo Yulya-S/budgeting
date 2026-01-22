@@ -458,6 +458,9 @@ func insert_notifications(line: Dictionary) -> void: insert_record(Tables.NOTIFI
 # Запрос на получение списка уведомлений
 func _select_notifications_list() -> Array: return _select("e.title, n.* FROM notifications n LEFT JOIN events e ON n.event_id=e.id", "", "n.date DESC")
 
+# Удаление пометки о нивизне уведомления
+func update_notifications_new() -> void: db.query("UPDATE notifications SET new = 0;")
+
 # Очистка таблицы уведомлений
 func clear_notifications() -> void:
 	db.query("DELETE FROM notifications")

@@ -1,4 +1,6 @@
 extends ColorRect
+@onready var NotificationMarker = $Notification/New
+@onready var NotificationObjects = $Notifications/ObjArray
 
 # Изменение положения маркера страницы
 func _ready() -> void:
@@ -9,7 +11,7 @@ func _ready() -> void:
 # Обновление текста даты
 func update_date() -> void:
 	$Date.set_text(Global.date_to_str())
-	$Notification/New.visible = Request.presence_unread_notifications()
+	NotificationMarker.visible = Request.presence_unread_notifications()
 
 # Обработка нажатия кнопки выхода из аккаунта
 func _on_exit_button_down() -> void:
@@ -49,9 +51,12 @@ func _on_report_button_down() -> void: Global.emit_signal("open_new_page", Globa
 
 # Открытия окошка уведомлений
 func _on_notification_button_down() -> void:
+	NotificationObjects.update_data()
+	Request.update_notifications_new()
 	$Notifications.visible = true
+	NotificationMarker.visible = false
 
 # Обработка нажатия кнопки очистки уведомлений
 func _on_notification_cleaning_button_down() -> void:
 	Request.clear_notifications()
-	$Notifications/ObjArray.update_data()
+	NotificationObjects.update_data()
