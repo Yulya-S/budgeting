@@ -1,6 +1,7 @@
 extends ColorRect
 @onready var Progress = $ProgressBar
 # Переменные
+@onready var last_entry: String = Request.select_last_entry()
 var create: bool = true # Этап создания событий
 var events: Array = [] # Список событий для добавления в уведомления
 

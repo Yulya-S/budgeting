@@ -465,3 +465,10 @@ func update_notifications_new() -> void: db.query("UPDATE notifications SET new 
 func clear_notifications() -> void:
 	db.query("DELETE FROM notifications")
 	db.query('UPDATE sqlite_sequence SET seq = 0 WHERE name = "notifications";')
+	
+# Последний вход в программу
+# Запрос на получение даты последнего входа в программу
+func select_last_entry() -> String: return _select("last_entry FROM settings")[0].last_entry
+
+# Изменение даты последнего входа в программу
+func update_last_entry() -> void: db.query('UPDATE settings SET last_entry = "'+Global.date_to_str()+'";')

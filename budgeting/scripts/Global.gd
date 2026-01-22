@@ -10,7 +10,7 @@ enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменные
-var current_page: Pages = Pages.BASIC # Текущая страница
+var current_page: Pages = Pages.REGISTRATION # Текущая страница
 @onready var sys_date: NewDate = NewDate.new(Time.get_datetime_dict_from_system()) # Текущая дата Time.get_datetime_dict_from_datetime_string("2025-11-29", true)
 
 # Создание директорий и файлов приложения
