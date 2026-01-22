@@ -313,6 +313,9 @@ func _cr_en() -> void:
 		"__FO1": "By date added", "__FO2": "Alphabetically",
 		# Объекты из базы данных
 		"__ST1": "Transfers", "__ST2": "Loan", "__ST3": "Loan Payments", "__ST4": "Loan Interest",
+		# Загрузка
+		"LoadLabel": "Loading notifications", "__L1": "Creating a list of events",
+		"__L2": "Creating notifications",
 		# Особые объекты
 		"_Months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 		"_Errors": {
