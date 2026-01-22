@@ -68,7 +68,7 @@ func _set_all_button_color_parametrs(obj: Variant) -> void:
 # Применение цветовой палитры к странице
 func repainting(obj: Variant) -> void:
 	match obj.name:
-		"Head": obj.color = get_sys_color(1)
+		"Head", "NBorder": obj.color = get_sys_color(1)
 		"Menu", "Marker": obj.color = get_sys_color(2)
 		"Background": obj.color = get_sys_color(6)
 		"Filter", "Load": obj.color = get_sys_color(3)

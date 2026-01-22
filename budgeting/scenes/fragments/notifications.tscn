@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhv3i1a2fxx5k"]
+
+[ext_resource type="Texture2D" uid="uid://dkcol6iakx7q6" path="res://img/broom.png" id="1_k2div"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="2_uf065"]
+
+[node name="Notifications" type="Popup"]
+auto_translate_mode = 1
+size = Vector2i(500, 300)
+visible = true
+
+[node name="NBorder" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 720.0
+color = Color(0.227451, 0.596078, 0.568627, 1)
+
+[node name="Cleaning" type="Button" parent="NBorder"]
+offset_left = 453.32
+offset_top = 253.32
+offset_right = 581.32
+offset_bottom = 381.32
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Очистить уведомлени"
+icon = ExtResource("1_k2div")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 495.0
+offset_bottom = 246.0
+
+[node name="ObjArray" parent="." instance=ExtResource("2_uf065")]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 495.0
+offset_bottom = 246.0

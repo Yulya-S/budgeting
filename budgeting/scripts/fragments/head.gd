@@ -46,3 +46,7 @@ func _on_event_button_down() -> void: Global.emit_signal("open_new_page", Global
 
 # Обработка нажатия кнопки отчетов
 func _on_report_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.REPORT)
+
+# Открытия окошка уведомлений
+func _on_notification_button_down() -> void:
+	$Notifications.visible = true
