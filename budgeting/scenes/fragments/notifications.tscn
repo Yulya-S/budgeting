@@ -20,7 +20,7 @@ offset_top = 253.32
 offset_right = 581.32
 offset_bottom = 381.32
 scale = Vector2(0.31, 0.31)
-tooltip_text = "Очистить уведомлени"
+tooltip_text = "Очистить уведомлений"
 icon = ExtResource("1_k2div")
 
 [node name="Background" type="ColorRect" parent="."]

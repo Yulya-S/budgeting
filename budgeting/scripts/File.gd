@@ -160,9 +160,11 @@ func _supplement_cycle(lang_fragment: Dictionary, s_lang_fragment: Dictionary) -
 func _standard_language() -> Dictionary:
 	return {
 		# Шапка
-		"Hints": "Инструкция", "Setting": "Настройки", "Cleaning": "Очистка данных", "Main": "Главная",
+		"Hints": "Инструкция", "Setting": "Настройки", "HeadCleaning": "Очистка данных", "Main": "Главная",
 		"Wallet": "Кошельки", "Section": "Разделы", "Flow": "Движения средств", "Loan": "Кредиты",
 		"Event": "События", "Report": "Отчеты", "Exit": "Выход", 
+		# Уведомления
+		"NBorderCleaning": "Очистить уведомлений", "NotificationTitle": "Событие",
 		# Регистрация
 		"Registration": "Регистрация", "Enter": "Вход", "LanguageLabel": "Язык:", "LoginLabel": "*Логин:",
 		"PasswordLabel": "*Пароль:", "Remember": "Запомни меня", "Show": "Показать пароль",
@@ -248,9 +250,11 @@ func _cr_ru() -> void: _cr_lang_file("ru", _standard_language())
 func _cr_en() -> void:
 	_cr_lang_file("en", {
 		# Шапка
-		"Hints": "Instructions", "Setting": "Settings", "Cleaning": "Data cleaning", "Main": "Home",
+		"Hints": "Instructions", "Setting": "Settings", "HeadCleaning": "Data cleaning", "Main": "Home",
 		"Wallet": "Wallets", "Section": "Sections", "Flow": "Movements of funds", "Loan": "Loans",
 		"Event": "Events", "Report": "Reports", "Exit": "Exit",
+		# Уведомления
+		"NBorderCleaning": "Clear notifications", "NotificationTitle": "Event",
 		# Регистрация
 		"Registration": "Registration", "Enter": "Entry", "LanguageLabel": "Language:", "LoginLabel": "*Login:",
 		"PasswordLabel": "*Password:", "Remember": "Remember me", "Show": "Show password",
