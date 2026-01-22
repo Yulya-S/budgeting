@@ -455,4 +455,10 @@ func select_notif_events() -> Array: return _select("* FROM multiplied_events", 
 # Создание уведомления из события
 func insert_notifications(line: Dictionary) -> void: insert_record(Tables.NOTIFICATIONS, [line.id, true, '"'+line.date+'"'])
 
+# Запрос на получение списка уведомлений
 func _select_notifications_list() -> Array: return _select("e.title, n.* FROM notifications n LEFT JOIN events e ON n.event_id=e.id", "", "n.date DESC")
+
+# Очистка таблицы уведомлений
+func clear_notifications() -> void:
+	db.query("DELETE FROM notifications")
+	db.query('UPDATE sqlite_sequence SET seq = 0 WHERE name = "notifications";')

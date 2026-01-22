@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://c315cbgn23fr6" path="res://img/report.png" id="8_alv4j"]
 [ext_resource type="Texture2D" uid="uid://c0gf7lke64g63" path="res://img/door.png" id="10_xpsv6"]
 [ext_resource type="Texture2D" uid="uid://o4wbtftkl6b" path="res://img/notification.png" id="11_alv4j"]
-[ext_resource type="PackedScene" uid="uid://dhv3i1a2fxx5k" path="res://scenes/fragments/notifications.tscn" id="14_llh5h"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="14_llh5h"]
 
 [node name="Head" type="ColorRect"]
 offset_right = 1152.0
@@ -196,9 +196,37 @@ offset_right = 1152.0
 offset_bottom = 60.0
 color = Color(0.376471, 0.72549, 0.698039, 1)
 
-[node name="Notifications" parent="." instance=ExtResource("14_llh5h")]
+[node name="Notifications" type="Popup" parent="."]
 position = Vector2i(632, 55)
-visible = false
+size = Vector2i(500, 300)
+
+[node name="NBorder" type="ColorRect" parent="Notifications"]
+offset_right = 1152.0
+offset_bottom = 720.0
+color = Color(0.227451, 0.596078, 0.568627, 1)
+
+[node name="Cleaning" type="Button" parent="Notifications/NBorder"]
+layout_mode = 0
+offset_left = 453.32
+offset_top = 253.32
+offset_right = 581.32
+offset_bottom = 381.32
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Очистить уведомлений"
+icon = ExtResource("4_m46j1")
+
+[node name="Background" type="ColorRect" parent="Notifications"]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 495.0
+offset_bottom = 246.0
+
+[node name="ObjArray" parent="Notifications" instance=ExtResource("14_llh5h")]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 495.0
+offset_bottom = 246.0
+obj = 6
 
 [connection signal="button_down" from="Hints" to="." method="_on_hints_button_down"]
 [connection signal="button_down" from="Setting" to="." method="_on_setting_button_down"]

@@ -50,3 +50,8 @@ func _on_report_button_down() -> void: Global.emit_signal("open_new_page", Globa
 # Открытия окошка уведомлений
 func _on_notification_button_down() -> void:
 	$Notifications.visible = true
+
+# Обработка нажатия кнопки очистки уведомлений
+func _on_notification_cleaning_button_down() -> void:
+	Request.clear_notifications()
+	$Notifications/ObjArray.update_data()
