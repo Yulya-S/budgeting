@@ -59,7 +59,7 @@ func date_to_dict(date_to_update: String = date_to_str(get_date())) -> Dictionar
 func date_to_sql_date(text: String) -> String: return date_to_str(date_to_dict(text))
 
 # Получение следующего/предыдущего месяца
-func get_other_month(date: Variant, next: bool = false) -> Variant:
+func get_other_month(date: Variant, next: bool = false, first_date: bool = false) -> Variant:
 	var new_date: Dictionary = date.duplicate() if date is Dictionary else date_to_dict(date)
 	if next:
 		new_date.month += 1
@@ -72,6 +72,7 @@ func get_other_month(date: Variant, next: bool = false) -> Variant:
 		if new_date.month <= 0:
 			new_date.year -= 1
 			new_date.month = 12
+	if first_date: new_date.day = 1
 	if date is Dictionary: return new_date
 	return date_to_str(new_date)
 

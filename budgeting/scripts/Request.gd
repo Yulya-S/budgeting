@@ -292,7 +292,7 @@ func _select_loans_list(where: String = "", order: String = "") -> Array:
 # Добавление событий во временную таблицу
 func _insert_event(value: Dictionary, date: Dictionary) -> void:
 	var text_date: String = Global.date_to_str(date).split(" ")[0]
-	insert_record("multiplied_events", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", "'"+value.note+"'", Global.date_comparison(Global.get_date(), date, ">"), value.id])
+	insert_record("multiplied_events", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", "'"+str(value.note)+"'", Global.date_comparison(Global.get_date(), date, ">"), value.id])
 
 # Добавление событий во временную таблицу с выбранным шагом
 func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count: int, step: int) -> void:
@@ -450,10 +450,10 @@ func presence_unread_notifications() -> bool: return _select("COUNT(id) count FR
 func checking_notifications() -> bool: return len(_select("* FROM notifications", ' date == "'+Global.date_to_str()+'"')) > 0
 
 # Получение списка событий для создания уведомлений
-func select_notif_events() -> Array: return _select("* FROM multiplied_events", ' date == "'+Global.date_to_str()+'"')
+func select_notif_events(date: String) -> Array: return _select("* FROM multiplied_events", ' date <= "'+Global.date_to_str()+'" AND date > "'+date+'" AND strftime("%m", date) = strftime("%m", "'+date+'")')
 
 # Создание уведомления из события
-func insert_notifications(line: Dictionary) -> void: insert_record(Tables.NOTIFICATIONS, [line.id, true, '"'+line.date+'"'])
+func insert_notifications(line: Dictionary) -> void: insert_record(Tables.NOTIFICATIONS, [line.event_id, true, '"'+line.date+'"'])
 
 # Запрос на получение списка уведомлений
 func _select_notifications_list() -> Array: return _select("e.title, n.* FROM notifications n LEFT JOIN events e ON n.event_id=e.id", "", "n.date DESC")
