@@ -240,3 +240,4 @@ obj = 6
 [connection signal="button_down" from="Report" to="." method="_on_report_button_down"]
 [connection signal="button_down" from="Notification" to="." method="_on_notification_button_down"]
 [connection signal="button_down" from="Exit" to="." method="_on_exit_button_down"]
+[connection signal="button_down" from="Notifications/NBorder/Cleaning" to="." method="_on_notification_cleaning_button_down"]
