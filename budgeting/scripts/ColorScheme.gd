@@ -68,10 +68,10 @@ func _set_all_button_color_parametrs(obj: Variant) -> void:
 # Применение цветовой палитры к странице
 func repainting(obj: Variant) -> void:
 	match obj.name:
-		"Head": obj.color = get_sys_color(1)
+		"Head", "NBorder": obj.color = get_sys_color(1)
 		"Menu", "Marker": obj.color = get_sys_color(2)
 		"Background": obj.color = get_sys_color(6)
-		"Filter": obj.color = get_sys_color(3)
+		"Filter", "Load": obj.color = get_sys_color(3)
 		"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
 		"X", "Border", "Separator": obj.default_color = get_sys_color(0)
 		"Frame": obj.default_color = get_sys_color(4)
@@ -81,6 +81,7 @@ func repainting(obj: Variant) -> void:
 			obj.get_child(2).color = get_sys_color(5)
 		_:
 			match obj.get_class():
+				"ProgressBar": obj.modulate = get_sys_color(1)
 				"Button", "TextEdit": _set_all_button_color_parametrs(obj)
 				"OptionButton":
 					_set_all_button_color_parametrs(obj)

@@ -10,10 +10,20 @@ func _ready() -> void:
 	# Изменение значения оставшегося в сутках времени
 	DayTimer.start((60. * 60. * 24.) - (Global.get_date().second + (60. * Global.get_date().minute) + (60. * 60. * Global.get_date().hour)))
 
+func _update_last_entry() -> void:
+	if Global.current_page == Global.Pages.REGISTRATION: return
+	if Request.checking_notifications(): return
+	add_child(load("res://scenes/pages/load.tscn").instantiate())
+	Request.update_last_entry()
+
 # Обработка окончания работы таймера
 func _on_timer_timeout() -> void:
 	DayTimer.start(60. * 60. * 24.)
 	Global.sys_date.set_value(Time.get_datetime_string_from_system())
+	_update_last_entry()
+
+# Запуск изменения данных на стрницах
+func start_update() -> void:
 	Global.emit_signal("update_page")
 	for i in get_children(): Global.run_func(i, "new_day")
 
@@ -34,3 +44,4 @@ func _open_new_page(page: Global.Pages, id: Variant = null, parent: Variant = nu
 		if child.name == "Timer": continue
 		Global.delete_child(self, child)
 	_open_window(page, id, Global.Dirs.PAGES, parent)
+	_update_last_entry()

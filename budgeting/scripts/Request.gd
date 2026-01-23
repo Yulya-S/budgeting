@@ -1,7 +1,7 @@
 extends Node
 # Перечисление
-enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
-enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
+enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, NOTIFICATIONS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
+enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, NOTIFICATION, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -35,7 +35,7 @@ func connection_db(db_name: String) -> void:
 	_create_table("multiplied_events", "title VARCHAR(255), event_type INT, value FLOAT, date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
 	# Создание таблиц для персонализации приложения
 	_create_table("settings", "color_preset BOOLEAN, color_scheme INT, color_1 VARCHAR(255), color_2 VARCHAR(255), color_3 VARCHAR(255), color_4 VARCHAR(255), dark_theme BOOLEAN, event_page_calendar BOOLEAN, last_entry DATE")
-	_create_table("notifications", "title INT, event_id INT, new BOOL", ["(`event_id`) REFERENCES `events`(`id`)"])
+	_create_table("notifications", "event_id INT, new BOOL, date DATE", ["(`event_id`) REFERENCES `events`(`id`)"])
 	if len(select(Tables.SECTIONS)) != 0: return
 	for i in ["__ST1", "__ST2", "__ST3", "__ST4"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
 
@@ -292,7 +292,7 @@ func _select_loans_list(where: String = "", order: String = "") -> Array:
 # Добавление событий во временную таблицу
 func _insert_event(value: Dictionary, date: Dictionary) -> void:
 	var text_date: String = Global.date_to_str(date).split(" ")[0]
-	insert_record("multiplied_events", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", "'"+value.note+"'", Global.date_comparison(Global.get_date(), date, ">"), value.id])
+	insert_record("multiplied_events", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", "'"+str(value.note)+"'", Global.date_comparison(Global.get_date(), date, ">"), value.id])
 
 # Добавление событий во временную таблицу с выбранным шагом
 func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count: int, step: int) -> void:
@@ -382,6 +382,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 		ObjectVariants.LOAN: return _select_loans_list(filter_data.where, filter_data.order)
 		ObjectVariants.EVENT: return select_multiplied_events_list()
 		ObjectVariants.REPORT: return _select_reports_list(filter_data.where, filter_data.date)
+		ObjectVariants.NOTIFICATION: return _select_notifications_list()
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах
@@ -423,6 +424,10 @@ func _month_difference() -> String:
 
 # Очистка событий
 func clear_events() -> void:
+	var lines: Array = _select("id FROM events", _month_difference() + " AND repetition_rate = 0")
+	for i in lines:
+		db.query("DELETE FROM notifications WHERE event_id = " + str(i.id) + ";")
+		_table_ids_update("notifications")
 	db.query("DELETE FROM events WHERE " + _month_difference() + " AND repetition_rate = 0;")
 	_table_ids_update("events")
 
@@ -436,3 +441,34 @@ func clear_loans() -> void:
 		db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "loans";')
 		db.query("UPDATE cash_flows SET wallet_2_id = wallet_2_id - 1 WHERE wallet_2_id > "+str(i.id)+" AND section_id IN (2, 3, 4);")
 	_table_ids_update()
+	
+# Работа с уведомлениями
+# Запрос на поиск непрочитанных уведомлений
+func presence_unread_notifications() -> bool: return _select("COUNT(id) count FROM notifications", "new")[0].count != 0
+
+# Проверка наличия уведомлений за текущую дату
+func checking_notifications() -> bool: return len(_select("* FROM notifications", ' date == "'+Global.date_to_str()+'"')) > 0
+
+# Получение списка событий для создания уведомлений
+func select_notif_events(date: String) -> Array: return _select("* FROM multiplied_events", ' date <= "'+Global.date_to_str()+'" AND date > "'+date+'" AND strftime("%m", date) = strftime("%m", "'+date+'")')
+
+# Создание уведомления из события
+func insert_notifications(line: Dictionary) -> void: insert_record(Tables.NOTIFICATIONS, [line.event_id, true, '"'+line.date+'"'])
+
+# Запрос на получение списка уведомлений
+func _select_notifications_list() -> Array: return _select("e.title, n.* FROM notifications n LEFT JOIN events e ON n.event_id=e.id", "", "n.date DESC")
+
+# Удаление пометки о нивизне уведомления
+func update_notifications_new() -> void: db.query("UPDATE notifications SET new = 0;")
+
+# Очистка таблицы уведомлений
+func clear_notifications() -> void:
+	db.query("DELETE FROM notifications")
+	db.query('UPDATE sqlite_sequence SET seq = 0 WHERE name = "notifications";')
+	
+# Последний вход в программу
+# Запрос на получение даты последнего входа в программу
+func select_last_entry() -> String: return _select("last_entry FROM settings")[0].last_entry
+
+# Изменение даты последнего входа в программу
+func update_last_entry() -> void: db.query('UPDATE settings SET last_entry = "'+Global.date_to_str()+'";')
