@@ -93,7 +93,7 @@ func repainting(obj: Variant) -> void:
 					for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
 					obj.add_theme_color_override("font_hover_color", get_sys_color(3))
 				"ColorRect":
-					if obj.get_parent().name == "FastCreations": obj.color = get_sys_color(4)
+					if obj.get_parent().get_parent().get_parent().name == "FastCreations": obj.color = get_sys_color(4)
 					elif obj.get_parent().get_class() == "VBoxContainer": obj.color = get_sys_color(4 + int(obj.get_parent().get_child_count() != 1))
 					elif obj.get_parent().get_class() in ["GridContainer", "HBoxContainer"]:
 						obj.color = get_sys_color(5)
