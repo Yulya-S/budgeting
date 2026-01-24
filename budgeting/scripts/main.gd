@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func _update_last_entry() -> void:
 	if Global.current_page == Global.Pages.REGISTRATION: return
-	if Request.checking_notifications(): return
+	if Request.select_last_entry() == Global.date_to_str(): return
 	add_child(load("res://scenes/pages/load.tscn").instantiate())
 	Request.update_last_entry()
 
