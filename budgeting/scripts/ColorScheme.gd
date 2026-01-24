@@ -69,7 +69,7 @@ func _set_all_button_color_parametrs(obj: Variant) -> void:
 func repainting(obj: Variant) -> void:
 	match obj.name:
 		"Head", "NBorder": obj.color = get_sys_color(1)
-		"Menu", "Marker": obj.color = get_sys_color(2)
+		"Menu", "Marker", "FastCreations": obj.color = get_sys_color(2)
 		"Background": obj.color = get_sys_color(6)
 		"Filter", "Load": obj.color = get_sys_color(3)
 		"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
@@ -93,7 +93,8 @@ func repainting(obj: Variant) -> void:
 					for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
 					obj.add_theme_color_override("font_hover_color", get_sys_color(3))
 				"ColorRect":
-					if obj.get_parent().get_class() == "VBoxContainer": obj.color = get_sys_color(4 + int(obj.get_parent().get_child_count() != 1))
+					if obj.get_parent().name == "FastCreations": obj.color = get_sys_color(4)
+					elif obj.get_parent().get_class() == "VBoxContainer": obj.color = get_sys_color(4 + int(obj.get_parent().get_child_count() != 1))
 					elif obj.get_parent().get_class() in ["GridContainer", "HBoxContainer"]:
 						obj.color = get_sys_color(5)
 				"Label":
