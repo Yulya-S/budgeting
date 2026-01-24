@@ -82,3 +82,5 @@ grow_horizontal = 0
 scale = Vector2(0.28, 0.28)
 tooltip_text = "Удалить"
 icon = ExtResource("3_v6akh")
+
+[connection signal="button_down" from="Delete" to="." method="_on_delete_button_down"]

@@ -18,4 +18,8 @@ func set_values(data: Dictionary) -> void:
 	Section.select(data.section_id-5)
 	$ConsumptionIncome.set_text("__CI" + str(data.income))
 	File.set_lang(self)
-	
+
+# Обработка нажатия кнопки удаления объекта быстрого создания записи
+func _on_delete_button_down() -> void:
+	Request.delete_fast_creation(id)
+	get_parent().get_parent().get_parent().get_parent().fc_update()

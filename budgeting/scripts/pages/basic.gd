@@ -36,7 +36,15 @@ func update_data() -> void:
 	# Отправка запроса на обновление таблицы с событиями
 	Request.start_create_multiplied_events_table(Global.date_to_str())
 	start_update = true
-	# Изменение размеров объектов страницы
+	_fc_size_match()
+
+# Обновление списка объектов быстрого создания записей
+func fc_update() -> void:
+	FCObjects.update_data()
+	_fc_size_match()
+
+# Изменение размеров объектов страницы
+func _fc_size_match() -> void:
 	match len(Request._select_fast_creations_list()):
 		0: _set_size_pos(0)
 		1: _set_size_pos(41)

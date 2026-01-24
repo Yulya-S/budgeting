@@ -478,3 +478,9 @@ func update_last_entry() -> void: db.query('UPDATE settings SET last_entry = "'+
 # Быстрое создание записей
 # Запрос на получение списка для быстрого создания записей
 func _select_fast_creations_list() -> Array: return _select("fc.*, w.title, s.title, s.income FROM fast_creations fc LEFT JOIN sections s ON fc.section_id=s.id LEFT JOIN wallets w ON fc.wallet_id=w.id")
+
+# Запрос на удаление объекта быстрого создания записей
+func delete_fast_creation(idx: int) -> void:
+	db.query("DELETE FROM fast_creations WHERE id = " + str(idx) + ";")
+	db.query("UPDATE fast_creations SET id = id - 1 WHERE id > " + str(idx) + ";")
+	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "fast_creations";')
