@@ -29,10 +29,10 @@ func connection_db(db_name: String) -> void:
 	# Создание таблиц в базе
 	_create_table("wallets", "title VARCHAR(255), value FLOAT")
 	_create_table("sections", "title VARCHAR(255), month_limit FLOAT, income BOOLEAN")
-	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, value FLOAT, date DATE, note VARCHAR(255)", ["(`wallet_id`) REFERENCES `wallets`(`id`)", "(`section_id`) REFERENCES `sections`(`id`)"])
+	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, value FLOAT, date DATE", ["(`wallet_id`) REFERENCES `wallets`(`id`)", "(`section_id`) REFERENCES `sections`(`id`)"])
 	_create_table("loans", "title VARCHAR(255), total FLOAT, date DATE")
-	_create_table("events", "title VARCHAR(255), event_type INT, value FLOAT, repetition_rate INT, date DATE, note VARCHAR(255)")
-	_create_table("multiplied_events", "title VARCHAR(255), event_type INT, value FLOAT, date DATE, note VARCHAR(255), completed BOOLEAN, event_id INT")
+	_create_table("events", "title VARCHAR(255), event_type INT, value FLOAT, repetition_rate INT, date DATE")
+	_create_table("multiplied_events", "title VARCHAR(255), event_type INT, value FLOAT, date DATE, completed BOOLEAN, event_id INT")
 	# Создание таблиц для персонализации приложения
 	_create_table("settings", "color_preset BOOLEAN, color_scheme INT, color_1 VARCHAR(255), color_2 VARCHAR(255), color_3 VARCHAR(255), color_4 VARCHAR(255), dark_theme BOOLEAN, event_page_calendar BOOLEAN, last_entry DATE")
 	_create_table("notifications", "event_id INT, new BOOL, date DATE", ["(`event_id`) REFERENCES `events`(`id`)"])
@@ -292,7 +292,7 @@ func _select_loans_list(where: String = "", order: String = "") -> Array:
 # Добавление событий во временную таблицу
 func _insert_event(value: Dictionary, date: Dictionary) -> void:
 	var text_date: String = Global.date_to_str(date).split(" ")[0]
-	insert_record("multiplied_events", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", "'"+str(value.note)+"'", Global.date_comparison(Global.get_date(), date, ">"), value.id])
+	insert_record("multiplied_events", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", Global.date_comparison(Global.get_date(), date, ">"), value.id])
 
 # Добавление событий во временную таблицу с выбранным шагом
 func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count: int, step: int) -> void:
