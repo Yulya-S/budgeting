@@ -1,7 +1,7 @@
 extends Node
 # Перечисление
 enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, NOTIFICATIONS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
-enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, NOTIFICATION, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
+enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, NOTIFICATION, FAST_CREATION, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -384,6 +384,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 		ObjectVariants.EVENT: return select_multiplied_events_list()
 		ObjectVariants.REPORT: return _select_reports_list(filter_data.where, filter_data.date)
 		ObjectVariants.NOTIFICATION: return _select_notifications_list()
+		ObjectVariants.FAST_CREATION: return _select_fast_creations_list()
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах
@@ -473,3 +474,7 @@ func select_last_entry() -> String: return _select("last_entry FROM settings")[0
 
 # Изменение даты последнего входа в программу
 func update_last_entry() -> void: db.query('UPDATE settings SET last_entry = "'+Global.date_to_str()+'";')
+
+# Быстрое создание записей
+# Запрос на получение списка для быстрого создания записей
+func _select_fast_creations_list() -> Array: return _select("fc.*, w.title, s.title, s.income FROM fast_creations fc LEFT JOIN sections s ON fc.section_id=s.id LEFT JOIN wallets w ON fc.wallet_id=w.id")

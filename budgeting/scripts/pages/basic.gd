@@ -1,6 +1,7 @@
 extends Page
 # Подключение пути к объекту в сцене
 @onready var Cells = $ObjArray/VBoxContainer/Events/Calendar
+@onready var FCObjects = $FastCreations/ObjArray
 
 # Переменные для календаря событий
 var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Путь к сцене ячеек календаря
@@ -35,6 +36,17 @@ func update_data() -> void:
 	# Отправка запроса на обновление таблицы с событиями
 	Request.start_create_multiplied_events_table(Global.date_to_str())
 	start_update = true
-	
+	# Изменение размеров объектов страницы
+	match len(Request._select_fast_creations_list()):
+		0: _set_size_pos(0)
+		1: _set_size_pos(41)
+		_: _set_size_pos(86)
+
+# Изменение размера списка объектов быстрого создания движений средств
+func _set_size_pos(h_size: float) -> void:
+	FCObjects.size[1] = h_size
+	FCObjects.position[1] = h_size * -1
+	Objects.size[1] = 488.0 - h_size
+
 # Получение данных фильтра
 func _get_filter(obj: Variant) -> Array: return [] if obj.get_parent().name != "Sections" else [{"where":"s.month_limit>=0", "order": "value DESC"}]
