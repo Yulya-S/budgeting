@@ -1,8 +1,9 @@
 extends ScrollContainer
 # Подключение пути к объекту в сцене
 @onready var Objects = $Objects
-# Экспортируемая переменная
+# Экспортируемые переменные
 @export var obj: Request.ObjectVariants = Request.ObjectVariants.EVENT # Выбранный объект списка
+@export var first_line: bool = true # Будет ли создан заголовок списка
 # Переменная
 @onready var lines: ArrayLines = ArrayLines.new("res://scenes/fragments/list_elements/"+Global.enum_key(Request.ObjectVariants, obj)+".tscn") # Объект для создания строк списков
 
