@@ -52,7 +52,7 @@ func _fc_size_match() -> void:
 
 # Изменение размера списка объектов быстрого создания движений средств
 func _set_size_pos(h_size: float) -> void:
-	FCObjects.size[1] = h_size
+	FCObjects.set_container_size(Vector2(FCObjects.size[0], h_size))
 	FCObjects.position[1] = h_size * -1
 	Objects.size[1] = 488.0 - h_size
 

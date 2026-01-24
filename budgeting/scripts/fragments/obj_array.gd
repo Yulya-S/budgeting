@@ -7,6 +7,14 @@ extends ScrollContainer
 # Переменная
 @onready var lines: ArrayLines = ArrayLines.new("res://scenes/fragments/list_elements/"+Global.enum_key(Request.ObjectVariants, obj)+".tscn") # Объект для создания строк списков
 
+# Применение размера VBoxContainer
+func _ready() -> void: if not first_line: Objects.alignment = VBoxContainer.ALIGNMENT_END
+
+# Изменение размера контейнера
+func set_container_size(new_size: Vector2) -> void:
+	size = new_size
+	Objects.custom_minimum_size = new_size
+
 # Получение количества объектов
 func obj_count() -> int: return Objects.get_child_count() - 1
 
