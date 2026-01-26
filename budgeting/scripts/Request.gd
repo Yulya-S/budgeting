@@ -484,3 +484,11 @@ func delete_fast_creation(idx: int) -> void:
 	db.query("DELETE FROM fast_creations WHERE id = " + str(idx) + ";")
 	db.query("UPDATE fast_creations SET id = id - 1 WHERE id > " + str(idx) + ";")
 	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "fast_creations";')
+
+# Проверка наличия достаточного количества кошельков и разделов для создания движений средств
+func check_sections_and_wallets() -> bool:
+	return _select("COUNT(id) c FROM wallets")[0].c >= 1 and _select("COUNT(id) c FROM sections")[0].c > 4
+
+# Запрос на созданние объекта бытсрого создания записей
+func insert_fast_creation() -> void:
+	db.query("INSERT INTO `fast_creations` (wallet_id, section_id) VALUES (1, 5);")

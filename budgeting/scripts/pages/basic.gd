@@ -58,3 +58,10 @@ func _set_size_pos(h_size: float) -> void:
 
 # Получение данных фильтра
 func _get_filter(obj: Variant) -> Array: return [] if obj.get_parent().name != "Sections" else [{"where":"s.month_limit>=0", "order": "value DESC"}]
+
+
+# Обработка нажатия кнопки добавиления быстрого создания записи
+func _on_fc_add_button_down() -> void:
+	if not Request.check_sections_and_wallets(): return
+	Request.insert_fast_creation()
+	fc_update()
