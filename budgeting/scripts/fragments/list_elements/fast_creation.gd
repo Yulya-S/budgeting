@@ -23,3 +23,8 @@ func set_values(data: Dictionary) -> void:
 func _on_delete_button_down() -> void:
 	Request.delete_fast_creation(id)
 	get_parent().get_parent().get_parent().get_parent().fc_update()
+
+# Обработка нажатия кнопки создания движений средств
+func _on_add_button_down() -> void:
+	Request.insert_cash_flow(Global.get_OB_id(Wallet), Global.get_OB_id(Section), $Value.get_text())
+	Global.emit_signal("update_page")

@@ -489,6 +489,10 @@ func delete_fast_creation(idx: int) -> void:
 func check_sections_and_wallets() -> bool:
 	return _select("COUNT(id) c FROM wallets")[0].c >= 1 and _select("COUNT(id) c FROM sections")[0].c > 4
 
-# Запрос на созданние объекта бытсрого создания записей
+# Запрос на создание объекта быстрого создания записей
 func insert_fast_creation() -> void:
 	db.query("INSERT INTO `fast_creations` (wallet_id, section_id) VALUES (1, 5);")
+
+# Запрос на создание движения средств
+func insert_cash_flow(wallet_id: int, section_id: int, value: String, date: String = Global.date_to_str()) -> void:
+	db.query("INSERT INTO `cash_flows` (wallet_id, section_id, value, date) VALUES ("+str(wallet_id)+", "+str(section_id)+", "+value+', "'+date+'");')
