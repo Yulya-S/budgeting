@@ -83,5 +83,8 @@ scale = Vector2(0.28, 0.28)
 tooltip_text = "Удалить"
 icon = ExtResource("3_v6akh")
 
+[connection signal="item_selected" from="Wallet" to="." method="_on_wallet_item_selected"]
+[connection signal="item_selected" from="Section" to="." method="_on_section_item_selected"]
+[connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
 [connection signal="button_down" from="Add" to="." method="_on_add_button_down"]
 [connection signal="button_down" from="Delete" to="." method="_on_delete_button_down"]

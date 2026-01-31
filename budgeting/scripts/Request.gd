@@ -9,7 +9,7 @@ var db: SQLite = null # Подключенная база данных
 var events: Array = [] # Список событий для постепенного увеличения их количества
 var completion_creation_et: bool = false # Маркер завершения заполнения таблицы событий
 @onready var selected_date: NewDate = NewDate.new(Time.get_datetime_string_from_system()) # Выбранная дата
-var next_month: Dictionary = {} # Следующий месяц
+@onready var next_month: NewDate = NewDate.new(Time.get_datetime_string_from_system())  # Следующий месяц
 var last_month_day_count: int = 30 # количество дней в предыдущем месяце
 
 # Открытие базы данных
@@ -17,6 +17,7 @@ func _open_db(db_name: String = "users") -> void:
 	db = SQLite.new()
 	db.path = File.BasesPath + db_name + ".db"
 	db.open_db()
+	Global.update_sys_date()
 
 # Подключение базы данных пользователей
 func connection_user_db() -> void:
@@ -176,10 +177,10 @@ func _process(_delta: float) -> void:
 			2: _insert_events_with_step(value, new_date, selected_date.day_count, 7)
 			0:
 				if selected_date.date_comparison(new_date, "=="): _insert_event(value, new_date)					
-				if selected_date.date.day != 1 and Global.date_comparison(next_month, new_date, "==", false): _insert_event(value, new_date)
+				if selected_date.date.day != 1 and Global.date_comparison(next_month.date, new_date, "==", false): _insert_event(value, new_date)
 			3, 4:
 				_insert_events_to_repetition_rate_3_4(value, new_date, selected_date.date)
-				if selected_date.date.day != 1: _insert_events_to_repetition_rate_3_4(value, new_date, next_month)
+				if selected_date.date.day != 1: _insert_events_to_repetition_rate_3_4(value, new_date, next_month.date)
 
 # Получение данных из таблиц
 func _select(req_text: String, where: String = "", order: String = "", group: String = "") -> Array:
@@ -298,12 +299,13 @@ func _insert_event(value: Dictionary, date: Dictionary) -> void:
 # Добавление событий во временную таблицу с выбранным шагом
 func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count: int, step: int) -> void:
 	var two_week: int = 0
-	if selected_date.date.day != 1 and new_date.month != next_month.month: two_week = 14
+	if selected_date.date.day != 1 and new_date.month != next_month.date.month: two_week = 14
 	while new_date.day <= day_count + two_week:
 		var date_dup: Dictionary = new_date.duplicate()
 		if new_date.day > day_count:
-			date_dup = next_month.duplicate()
+			date_dup = next_month.date.duplicate()
 			date_dup.day = new_date.day - day_count
+		elif date_dup.day > next_month.day_count: break
 		_insert_event(value, date_dup)
 		new_date.day += step
 
@@ -326,9 +328,9 @@ func _select_events_list(date: String, date2: String) -> Array:
 # Начало создания таблицы событий
 func start_create_multiplied_events_table(date: String) -> void:
 	selected_date.set_value(date)
-	next_month = Global.get_other_month(selected_date.date, true)
+	next_month.set_value(Global.get_other_month(selected_date.date, true, true))
 	last_month_day_count = select_day_count(Global.get_other_month(date))
-	events = _select_events_list(date, date if selected_date.date.day < selected_date.day_count - 14 else Global.date_to_str(next_month))
+	events = _select_events_list(date, date if selected_date.date.day < selected_date.day_count - 14 else Global.date_to_str(next_month.date))
 	db.query("DELETE FROM multiplied_events")
 	update(Tables.SQLITE_SEQUENCE, "seq=0", 'name="multiplied_events"')
 	completion_creation_et = false
@@ -496,3 +498,12 @@ func insert_fast_creation() -> void:
 # Запрос на создание движения средств
 func insert_cash_flow(wallet_id: int, section_id: int, value: String, date: String = Global.date_to_str()) -> void:
 	db.query("INSERT INTO `cash_flows` (wallet_id, section_id, value, date) VALUES ("+str(wallet_id)+", "+str(section_id)+", "+value+', "'+date+'");')
+
+# Изменение значения кошелька для объекта быстрого создания записей
+func update_fc_wallet(idx: int, wallet_id: int) -> void:
+	db.query("UPDATE fast_creations SET wallet_id = "+str(wallet_id)+" WHERE id = "+str(idx)+";")
+
+# Изменение значения раздела для объекта быстрого создания записей
+func update_fc_section(idx: int, section_id: int) -> int:
+	db.query("UPDATE fast_creations SET section_id = "+str(section_id)+" WHERE id = "+str(idx)+";")
+	return int(_select("* FROM fast_creations fc LEFT JOIN sections s ON fc.section_id=s.id", "fc.id = "+str(idx))[0].income)

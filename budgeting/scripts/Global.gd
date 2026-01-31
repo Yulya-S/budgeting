@@ -11,7 +11,7 @@ enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменные
 var current_page: Pages = Pages.REGISTRATION # Текущая страница
-@onready var sys_date: NewDate = NewDate.new(Time.get_datetime_dict_from_system()) # Текущая дата Time.get_datetime_dict_from_datetime_string("2025-11-29", true)
+@onready var sys_date: NewDate = NewDate.new(Time.get_datetime_dict_from_system()) # Текущая дата
 
 # Создание директорий и файлов приложения
 func _ready() -> void:
@@ -19,6 +19,9 @@ func _ready() -> void:
 	File.create_config()
 	File.create_langs()
 	Request.connection_user_db()
+
+# Перезагрузка системной даты	
+func update_sys_date() -> void: sys_date = NewDate.new(Time.get_datetime_dict_from_system())
 
 # Получение имени объекта из перечисления
 func enum_key(enums: Dictionary, obj: int) -> String: return enums.keys()[obj].to_lower()
