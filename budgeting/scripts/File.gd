@@ -218,6 +218,8 @@ func _standard_language() -> Dictionary:
 		"BudgetLabel": "Бюджет:", "CashFlowLabel": "Денежный поток:", "WalletsLabel": "Список счетов",
 		"SectionsLabel": "Расходы по статьям", "EventsLabel": "Ближайшие события",
 		"Cash_flowsLabel": "Распределение движений средств",
+		"Delete": "Удалить", "FastCreationAdd": "Добавить запись",
+		"FastCreationsAdd": "Добавить окно быстрого создания записи",
 		# Страница отчетов
 		"ReportTitle": "Название", "ReportCash_Flow": "Остаток", "ReportIncome": "Доход",
 		"ReportExpenditure": "Расход", "ReportValue": "Итог",
@@ -308,6 +310,8 @@ func _cr_en() -> void:
 		"BudgetLabel": "Budget:", "CashFlowLabel": "Cash flow:", "WalletsLabel": "List of wallets",
 		"SectionsLabel": "Expenses by section", "EventsLabel": "Upcoming events",
 		"Cash_flowsLabel": "Distribution of cash flows",
+		"Delete": "Delete", "FastCreationAdd": "Add entry",
+		"FastCreationsAdd": "Add a quick entry creation window",
 		# Страница отчетов
 		"ReportTitle": "Title", "ReportCash_Flow": "Balance", "ReportIncome": "Income",
 		"ReportExpenditure": "Expense", "ReportValue": "Total",
