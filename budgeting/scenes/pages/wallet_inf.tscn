@@ -46,14 +46,14 @@ offset_right = 598.0
 offset_bottom = 40.5
 text = "Список транзакций"
 
-[node name="Label" type="ColorRect" parent="."]
+[node name="Filter" type="ColorRect" parent="."]
 layout_mode = 0
 offset_top = 100.0
 offset_right = 1152.0
 offset_bottom = 156.0
 color = Color(0.627451, 0.913725, 0.894118, 1)
 
-[node name="Label" type="Label" parent="Label"]
+[node name="Label" type="Label" parent="Filter"]
 layout_mode = 0
 offset_left = 232.0
 offset_top = 11.5
@@ -65,7 +65,7 @@ text = "Информация о счете, за месяц"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Back" type="Button" parent="Label"]
+[node name="Back" type="Button" parent="Filter"]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 9.0
@@ -75,14 +75,14 @@ scale = Vector2(0.31, 0.31)
 tooltip_text = "Назад"
 icon = ExtResource("4_3ta84")
 
-[node name="Info" type="ColorRect" parent="."]
+[node name="Labels" type="ColorRect" parent="."]
 layout_mode = 0
 offset_top = 156.0
 offset_right = 1152.0
 offset_bottom = 202.0
 color = Color(0.873298, 0.873299, 0.873298, 1)
 
-[node name="Title" type="Label" parent="Info"]
+[node name="Title" type="Label" parent="Labels"]
 layout_mode = 2
 offset_left = 51.0
 offset_right = 499.0
@@ -92,7 +92,7 @@ theme_override_font_sizes/font_size = 20
 text = "Название счета"
 vertical_alignment = 1
 
-[node name="Value" type="Label" parent="Info"]
+[node name="Value" type="Label" parent="Labels"]
 layout_mode = 2
 offset_left = 791.0
 offset_right = 1112.0
@@ -102,7 +102,7 @@ theme_override_font_sizes/font_size = 20
 text = "0.0"
 vertical_alignment = 1
 
-[node name="Lable" type="Label" parent="Info/Value"]
+[node name="Lable" type="Label" parent="Labels/Value"]
 layout_mode = 2
 offset_left = -265.0
 offset_right = -11.0
@@ -113,14 +113,14 @@ text = "Значение счета:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Total" type="ColorRect" parent="Info"]
+[node name="Total" type="ColorRect" parent="Labels"]
 layout_mode = 0
 offset_top = 446.0
 offset_right = 1152.0
 offset_bottom = 492.0
 color = Color(0.873298, 0.873299, 0.873298, 1)
 
-[node name="Lable" type="Label" parent="Info/Total"]
+[node name="Lable" type="Label" parent="Labels/Total"]
 layout_mode = 2
 offset_left = 51.0
 offset_right = 121.0
@@ -130,7 +130,7 @@ theme_override_font_sizes/font_size = 20
 text = "Итог:"
 vertical_alignment = 1
 
-[node name="Total_Count" type="Label" parent="Info/Total"]
+[node name="Total_Count" type="Label" parent="Labels/Total"]
 layout_mode = 2
 offset_left = 415.0
 offset_right = 709.0
@@ -140,7 +140,7 @@ theme_override_font_sizes/font_size = 20
 text = "0"
 vertical_alignment = 1
 
-[node name="Lable" type="Label" parent="Info/Total/Total_Count"]
+[node name="Lable" type="Label" parent="Labels/Total/Total_Count"]
 layout_mode = 2
 offset_left = -271.0
 offset_right = -7.0
@@ -151,7 +151,7 @@ text = "Количество транзакций:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Total_Value" type="Label" parent="Info/Total"]
+[node name="Total_Value" type="Label" parent="Labels/Total"]
 layout_mode = 2
 offset_left = 862.0
 offset_right = 1112.0
@@ -161,7 +161,7 @@ theme_override_font_sizes/font_size = 20
 text = "0.0"
 vertical_alignment = 1
 
-[node name="Lable" type="Label" parent="Info/Total/Total_Value"]
+[node name="Lable" type="Label" parent="Labels/Total/Total_Value"]
 layout_mode = 2
 offset_left = -153.0
 offset_right = -7.0
@@ -182,4 +182,4 @@ obj = 1
 [connection signal="button_down" from="Menu/Update" to="." method="_on_update_button_down"]
 [connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
 [connection signal="button_down" from="Menu/Transactions" to="." method="_on_transactions_button_down"]
-[connection signal="button_down" from="Label/Back" to="." method="_on_back_button_down"]
+[connection signal="button_down" from="Filter/Back" to="." method="_on_back_button_down"]

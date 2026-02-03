@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dq6gs4ey75gn1"]
 
 [ext_resource type="Script" uid="uid://djpcy17hm1vgr" path="res://scripts/fragments/list_elements/fast_creation.gd" id="1_mjvpi"]
-[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/add/plus.png" id="2_mjvpi"]
-[ext_resource type="Texture2D" uid="uid://doy7mn3h1rlbp" path="res://img/add/minus.png" id="3_v6akh"]
+[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="2_mjvpi"]
+[ext_resource type="Texture2D" uid="uid://doy7mn3h1rlbp" path="res://img/interface/minus.png" id="3_v6akh"]
 
 [node name="FastCreation" type="ColorRect"]
 custom_minimum_size = Vector2(1152, 41)

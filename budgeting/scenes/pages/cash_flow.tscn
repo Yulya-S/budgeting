@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_8gck2"]
 [ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="3_mkcc5"]
 [ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="3_njwxx"]
-[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/add/plus.png" id="4_06gde"]
+[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="4_06gde"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_tbl8u"]
 
 [node name="CashFlow" type="Control"]
