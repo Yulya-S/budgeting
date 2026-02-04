@@ -387,6 +387,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 		ObjectVariants.REPORT: return _select_reports_list(filter_data.where, filter_data.date)
 		ObjectVariants.NOTIFICATION: return _select_notifications_list()
 		ObjectVariants.FAST_CREATION: return _select_fast_creations_list()
+		ObjectVariants.WALLET_TRANSACTION: return _select_wts_list(filter_data.where)
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах
@@ -510,5 +511,5 @@ func update_fc_section(idx: int, section_id: int) -> int:
 
 # Страница информации
 # Запрос на получение списка транзакций для выбранного кошелька
-func select_wts_list(where: String) -> Array:
-	return _select("s.title, COUNT(cf.id) count, SUM(cf.value) value FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id WHERE cf.wallet_id = "+where+" GROUP BY cf.section_id")
+func _select_wts_list(where: String) -> Array:
+	return _select("s.id, s.title, COUNT(cf.id) count, SUM(cf.value) value FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id ", where, "", "cf.section_id")
