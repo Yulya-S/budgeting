@@ -507,3 +507,8 @@ func update_fc_wallet(idx: int, wallet_id: int) -> void:
 func update_fc_section(idx: int, section_id: int) -> int:
 	db.query("UPDATE fast_creations SET section_id = "+str(section_id)+" WHERE id = "+str(idx)+";")
 	return int(_select("* FROM fast_creations fc LEFT JOIN sections s ON fc.section_id=s.id", "fc.id = "+str(idx))[0].income)
+
+# Страница информации
+# Запрос на получение списка транзакций для выбранного кошелька
+func select_wts_list(where: String) -> Array:
+	return _select("s.title, COUNT(cf.id) count, SUM(cf.value) value FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id WHERE cf.wallet_id = "+where+" GROUP BY cf.section_id")

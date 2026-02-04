@@ -1,11 +1,11 @@
 extends Node
 # Сигналы
-signal open_window(page: Pages, id, dir: Dirs, parent) # Открытие окна
-signal open_new_page(page: Pages, id, parent) # Открытие страницы
+signal open_window(page: Pages, id, dir: Dirs, parent: Variant) # Открытие окна
+signal open_new_page(page: Pages, id, parent: Variant) # Открытие страницы
 signal update_page(close_page: String) # Обновление данных на странице
 
 # Перечисления
-enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, TRANSFER, PAYMENT, PERCENT, REGISTRATION, HINTS, SETTINGS, CLEANING, WALLET_INF, LOAN_INF} # Страницы приложения
+enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, TRANSFER, PAYMENT, PERCENT, REGISTRATION, HINTS, SETTINGS, CLEANING, INFORMATION, WALLET_INF, LOAN_INF} # Страницы приложения
 enum Dirs {PAGES, WINDOWS} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
@@ -36,7 +36,9 @@ func connect_signal_update_page(obj: Variant):
 
 # Получение результата работы функции get_filter, на случай пустого фильтра
 func get_filter(filter: Variant = {}) -> Dictionary:
-	if filter is not Dictionary: return filter.get_filter()
+	if filter is not Dictionary:
+		if not filter.get("get_filter"): return {"date": date_to_str(), "where": "", "order": ""}
+		return filter.get_filter()
 	var new_filter: Dictionary = {"date": date_to_str(), "where": "", "order": ""}
 	filter = filter.duplicate()
 	for i in new_filter.keys(): if i not in filter.keys(): filter[i] = new_filter[i]
