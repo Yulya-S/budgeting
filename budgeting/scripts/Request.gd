@@ -513,3 +513,8 @@ func update_fc_section(idx: int, section_id: int) -> int:
 # Запрос на получение списка транзакций для выбранного кошелька
 func _select_wts_list(where: String) -> Array:
 	return _select("s.id, s.title, COUNT(cf.id) count, SUM(cf.value) value FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id ", where, "", "cf.section_id")
+
+# Запрос на получение общей информаци об объекте
+func select_inf_data(where: String, type: Global.Pages) -> Dictionary:
+	if type == Global.Pages.WALLET: return _select("w.title, COUNT(cf.id) count, COALESCE(SUM(cf.value), 0.0) value, COALESCE(w.value, 0.0) total FROM cash_flows cf LEFT JOIN wallets w ON cf.wallet_id = w.id", where)[0]
+	return {}
