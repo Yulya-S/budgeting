@@ -1,6 +1,6 @@
 extends Label
 # Экспортируемые переменные
-@export var next_page: Global.Pages = Global.Pages.INFORMATION # Страниц перехода
+@export var next_page: Global.Pages = Global.Pages.WALLET_INF # Страниц перехода
 @export var page_type: Global.Pages = Global.Pages.WALLET
 @export var next_page_dir: Global.Dirs = Global.Dirs.PAGES # Директория перехода
 
@@ -16,7 +16,7 @@ func set_object(new_text: String, new_id: int) -> void:
 # Обработка нажатия
 func _input(event: InputEvent) -> void:
 	if state == Global.MouseOver.NORMAL or not id: return
-	if event.is_action("click") and event.is_pressed(): Global.emit_signal("open_window", Global.Pages.INFORMATION, id, next_page_dir, page_type)
+	if event.is_action("click") and event.is_pressed(): Global.emit_signal("open_window", next_page, id, next_page_dir, page_type)
 
 # Обработка наведения мыши
 func _on_mouse_entered() -> void: state = Global.MouseOver.HOVER

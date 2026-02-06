@@ -7,7 +7,7 @@ extends Page
 
 # Переменные
 var idx: int = 0 # Индекс выбранного объекта
-var page_type: Global.Pages = Global.Pages.WALLET # Выбранный тип страницы информации
+@export var page_type: Global.Pages = Global.Pages.WALLET # Выбранный тип страницы информации
 var filter_data: Dictionary = {"where": ""}
 
 # Применение параметров страницы информации
