@@ -272,11 +272,10 @@ func _update_cash_flows_list(line: Dictionary) -> Dictionary:
 	match line.section_id:
 		1: line["wallet_2_title"] = _select_title(Tables.WALLETS, line.wallet_2_id)
 		3: line["wallet_2_title"] = _select_title(Tables.LOANS, line.wallet_2_id)
-		4: line["wallet_title"] = _select_title(Tables.LOANS, line.wallet_2_id)
-		2:
+		2, 4:
 			line["wallet_2_title"] = line.wallet_title
 			line.wallet_title = _select_title(Tables.LOANS, line.wallet_2_id)
-			var save_id: int = line.wallet_id
+			var save_id: int = line.wallet_id if line.wallet_id else 0
 			line.wallet_id = line.wallet_2_id
 			line.wallet_2_id = save_id
 	return line
@@ -396,6 +395,7 @@ func match_update_list_element(list_element: ObjectVariants, line: Dictionary, p
 		ObjectVariants.WALLET: return _update_wallets_list(line)
 		ObjectVariants.SECTION:	return _update_sections_list(line, parent)
 		ObjectVariants.CASH_FLOW: return _update_cash_flows_list(line)
+		ObjectVariants.LOAN: return _update_loans_list(line)
 		ObjectVariants.EVENT: return _update_events_list(line)
 		ObjectVariants.REPORT: return _update_reports_list(line)
 	return line
@@ -518,3 +518,24 @@ func _select_wts_list(where: String) -> Array:
 func select_inf_data(where: String, type: Global.Pages) -> Dictionary:
 	if type == Global.Pages.WALLET_INF: return _select("w.title, COUNT(cf.id) count, COALESCE(SUM(cf.value), 0.0) value, COALESCE(w.value, 0.0) total FROM cash_flows cf LEFT JOIN wallets w ON cf.wallet_id = w.id", where)[0]
 	return {}
+
+# Получение среднего процента от займа
+func _select_loan_percent(idx: int) -> int:
+	var summ: float = 0.0
+	var result: float = 0.0
+	var count: int = 0
+	for i in _select("* FROM cash_flows", "section_id IN (2, 3, 4) AND wallet_2_id = " + str(idx)):
+		match i.section_id:
+			2: summ = i.value
+			3: summ -= i.value
+			4:
+				result += (i.value * 100) / summ
+				summ += i.value
+				count += 1
+	if count == 0: return 0
+	return round(result / count)
+	
+# Запрос на изменение списка займов
+func _update_loans_list(line: Dictionary) -> Dictionary:
+	line["percent"] = _select_loan_percent(line.id)
+	return line
