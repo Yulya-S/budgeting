@@ -7,14 +7,14 @@ extends Page
 
 # Переменные
 var idx: int = 0 # Индекс выбранного объекта
-@export var page_type: Global.Pages = Global.Pages.WALLET # Выбранный тип страницы информации
+@export var page_type: Global.Pages = Global.Pages.WALLET_INF # Выбранный тип страницы информации
 var filter_data: Dictionary = {"where": ""}
 
 # Применение параметров страницы информации
-func set_page(new_idx: int, new_page_type: Global.Pages = Global.Pages.WALLET) -> void:
+func set_page(new_idx: int, new_page_type: Global.Pages = Global.Pages.WALLET_INF) -> void:
 	idx = new_idx
 	page_type = new_page_type
-	if page_type == Global.Pages.WALLET:
+	if page_type == Global.Pages.WALLET_INF:
 		Objects.obj = Request.ObjectVariants.WALLET_TRANSACTION
 		filter_data = {"where": "cf.wallet_id = " + str(idx)}
 	else:

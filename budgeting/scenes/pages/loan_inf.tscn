@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://fwrl2jqi85wt"]
+[gd_scene load_steps=9 format=3 uid="uid://fwrl2jqi85wt"]
 
+[ext_resource type="Script" uid="uid://ct7pumat37ciy" path="res://scripts/pages/information.gd" id="1_1y1g5"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_lhoix"]
 [ext_resource type="Texture2D" uid="uid://b85cbftwbxvmv" path="res://img/interface/brush.png" id="3_730se"]
 [ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="3_objt5"]
@@ -13,6 +14,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("1_1y1g5")
 
 [node name="Head" parent="." instance=ExtResource("2_lhoix")]
 layout_mode = 0
@@ -75,14 +77,14 @@ autowrap_mode = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="Label" type="ColorRect" parent="."]
+[node name="Filter" type="ColorRect" parent="."]
 layout_mode = 0
 offset_top = 100.0
 offset_right = 1152.0
 offset_bottom = 156.0
 color = Color(0.627451, 0.913725, 0.894118, 1)
 
-[node name="Title" type="Label" parent="Label"]
+[node name="Title" type="Label" parent="Filter"]
 layout_mode = 2
 offset_left = 20.0
 offset_right = 410.0
@@ -96,7 +98,7 @@ autowrap_mode = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="Percents" type="Label" parent="Label"]
+[node name="Percents" type="Label" parent="Filter"]
 layout_mode = 0
 offset_left = 1004.0
 offset_right = 1145.0
@@ -109,7 +111,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 text_overrun_behavior = 3
 
-[node name="Ladel" type="Label" parent="Label/Percents"]
+[node name="Ladel" type="Label" parent="Filter/Percents"]
 layout_mode = 0
 offset_left = -485.0
 offset_right = -5.0

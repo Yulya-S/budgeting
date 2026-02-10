@@ -24,6 +24,7 @@ text = "Название займа"
 vertical_alignment = 1
 autowrap_mode = 1
 script = ExtResource("2_13s73")
+next_page = 15
 
 [node name="Wallet_Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
