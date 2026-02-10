@@ -38,7 +38,9 @@ func set_values(data: Dictionary) -> void:
 				if "title" not in i.name.to_lower() or not i.get("set_object"):
 					i.set_text(str(data[i.name.to_lower()]))
 				else:
-					if i.name.to_lower().split("title")[0]+"id" in data.keys(): i.set_object(data[i.name.to_lower()],  data[i.name.to_lower().split("title")[0]+"id"])
+					if i.name.to_lower().split("title")[0]+"id" in data.keys():
+						if data[i.name.to_lower().split("title")[0]+"id"]:
+							i.set_object(data[i.name.to_lower()],  data[i.name.to_lower().split("title")[0]+"id"])
 					elif data[i.name.to_lower()] == null: continue
 	_set_special_values(data)
 	File.set_lang(self)
@@ -65,6 +67,7 @@ func _set_special_values(data: Dictionary) -> void:
 				2, 4:
 					$Wallet_Title.next_page = Global.Pages.LOAN_INF
 					Title.next_page = Global.Pages.LOAN if data.section_id == 2 else Global.Pages.PERCENT
+					if data.section_id == 4: $Wallet_2_Title.visible = false
 				3:
 					$Wallet_2_Title.next_page = Global.Pages.LOAN_INF
 					Title.next_page = Global.Pages.PAYMENT
