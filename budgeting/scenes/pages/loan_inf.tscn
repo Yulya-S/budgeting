@@ -27,6 +27,7 @@ offset_bottom = 100.0
 color = Color(0.376471, 0.72549, 0.698039, 1)
 
 [node name="Back" type="Button" parent="Menu"]
+layout_mode = 0
 offset_left = 20.0
 offset_top = 6.0
 offset_right = 148.0
@@ -36,6 +37,7 @@ tooltip_text = "Назад"
 icon = ExtResource("3_objt5")
 
 [node name="Update" type="Button" parent="Menu"]
+layout_mode = 0
 offset_left = 65.0
 offset_top = 6.0
 offset_right = 193.0
@@ -45,6 +47,7 @@ tooltip_text = "Изменить"
 icon = ExtResource("3_730se")
 
 [node name="AddInterest" type="Button" parent="Menu"]
+layout_mode = 0
 offset_left = 110.0
 offset_top = 6.0
 offset_right = 238.0
@@ -54,6 +57,7 @@ tooltip_text = "Добавить проценты по займу"
 icon = ExtResource("4_1y1g5")
 
 [node name="AddPayment" type="Button" parent="Menu"]
+layout_mode = 0
 offset_left = 155.0
 offset_top = 6.0
 offset_right = 283.0
