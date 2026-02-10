@@ -1,20 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://fwrl2jqi85wt"]
+[gd_scene load_steps=8 format=3 uid="uid://fwrl2jqi85wt"]
 
-[ext_resource type="Script" uid="uid://cm8lyl8iebiv" path="res://scripts/pages/loan_inf.gd" id="1_730se"]
-[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_730se"]
-[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_36teq"]
-[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="4_lickx"]
-[ext_resource type="PackedScene" uid="uid://nhpwuw8k2gn1" path="res://scenes/fragments/graphics/loan_repayment.tscn" id="5_hd1et"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_lhoix"]
+[ext_resource type="Texture2D" uid="uid://b85cbftwbxvmv" path="res://img/interface/brush.png" id="3_730se"]
+[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="3_objt5"]
+[ext_resource type="Texture2D" uid="uid://cgrjoxjtjep5j" path="res://img/interface/percent.png" id="4_1y1g5"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="4_o77rm"]
+[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="5_36teq"]
+[ext_resource type="PackedScene" uid="uid://nhpwuw8k2gn1" path="res://scenes/fragments/graphics/loan_repayment.tscn" id="5_fx47f"]
 
 [node name="LoanInf" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_730se")
-table = 3
 
-[node name="Head" parent="." instance=ExtResource("2_730se")]
+[node name="Head" parent="." instance=ExtResource("2_lhoix")]
 layout_mode = 0
 
 [node name="Menu" type="ColorRect" parent="."]
@@ -24,29 +24,56 @@ offset_right = 1152.0
 offset_bottom = 100.0
 color = Color(0.376471, 0.72549, 0.698039, 1)
 
-[node name="Update" type="Button" parent="Menu"]
-layout_mode = 0
+[node name="Back" type="Button" parent="Menu"]
 offset_left = 20.0
-offset_top = 9.5
+offset_top = 6.0
 offset_right = 148.0
-offset_bottom = 40.5
-text = "Изменить займ"
+offset_bottom = 134.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Назад"
+icon = ExtResource("3_objt5")
+
+[node name="Update" type="Button" parent="Menu"]
+offset_left = 65.0
+offset_top = 6.0
+offset_right = 193.0
+offset_bottom = 134.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Изменить"
+icon = ExtResource("3_730se")
 
 [node name="AddInterest" type="Button" parent="Menu"]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 9.5
-offset_right = 426.0
-offset_bottom = 40.5
-text = "Добавить проценты по займу"
+offset_left = 110.0
+offset_top = 6.0
+offset_right = 238.0
+offset_bottom = 134.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Добавить проценты по займу"
+icon = ExtResource("4_1y1g5")
 
 [node name="AddPayment" type="Button" parent="Menu"]
+offset_left = 155.0
+offset_top = 6.0
+offset_right = 283.0
+offset_bottom = 134.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Добавить платёж"
+icon = ExtResource("5_36teq")
+
+[node name="Label" type="Label" parent="Menu"]
 layout_mode = 0
-offset_left = 446.0
-offset_top = 9.5
-offset_right = 597.0
-offset_bottom = 40.5
-text = "Добавить платёж"
+offset_left = 275.0
+offset_right = 1140.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 25
+text = "Информация о займе"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
+clip_text = true
+text_overrun_behavior = 3
 
 [node name="Label" type="ColorRect" parent="."]
 layout_mode = 0
@@ -55,120 +82,120 @@ offset_right = 1152.0
 offset_bottom = 156.0
 color = Color(0.627451, 0.913725, 0.894118, 1)
 
-[node name="Label" type="Label" parent="Label"]
-layout_mode = 0
-offset_left = 225.0
-offset_top = 9.0
-offset_right = 507.0
-offset_bottom = 49.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 25
-text = "Информация о займе"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Back" type="Button" parent="Label"]
-layout_mode = 0
-offset_left = 20.0
-offset_top = 9.0
-offset_right = 148.0
-offset_bottom = 137.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Назад"
-icon = ExtResource("4_lickx")
-
-[node name="Info" type="ColorRect" parent="."]
-layout_mode = 0
-offset_top = 156.0
-offset_right = 1152.0
-offset_bottom = 202.0
-color = Color(0.873298, 0.873299, 0.873298, 1)
-
-[node name="Title" type="Label" parent="Info"]
+[node name="Title" type="Label" parent="Label"]
 layout_mode = 2
 offset_left = 20.0
-offset_right = 288.0
-offset_bottom = 46.0
+offset_right = 410.0
+offset_bottom = 56.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
 theme_override_font_sizes/font_size = 20
 text = "Название займа"
 vertical_alignment = 1
+autowrap_mode = 1
+clip_text = true
+text_overrun_behavior = 3
 
-[node name="Total" type="Label" parent="Info"]
+[node name="Percents" type="Label" parent="Label"]
+layout_mode = 0
+offset_left = 1004.0
+offset_right = 1145.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 20
+text = "0.0%"
+vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
+
+[node name="Ladel" type="Label" parent="Label/Percents"]
+layout_mode = 0
+offset_left = -485.0
+offset_right = -5.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 20
+text = "Средний процент по займу"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="ObjArray" parent="." instance=ExtResource("4_o77rm")]
+layout_mode = 0
+offset_top = 285.0
+offset_right = 1152.0
+offset_bottom = 597.0
+obj = 3
+
+[node name="LoanRepayment" parent="." instance=ExtResource("5_fx47f")]
+layout_mode = 0
+offset_top = 156.0
+offset_right = 1152.0
+offset_bottom = 280.0
+
+[node name="Total" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 602.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.873298, 0.873299, 0.873298, 1)
+
+[node name="Total" type="Label" parent="Total"]
 layout_mode = 2
-offset_left = 574.0
-offset_right = 721.0
+offset_left = 310.0
+offset_right = 457.0
 offset_bottom = 46.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
 theme_override_font_sizes/font_size = 20
 text = "0.0"
 vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
 
-[node name="Lable" type="Label" parent="Info/Total"]
+[node name="Lable" type="Label" parent="Total/Total"]
 layout_mode = 2
-offset_left = -216.0
+offset_left = -305.0
 offset_right = -11.0
 offset_bottom = 46.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
 theme_override_font_sizes/font_size = 20
 text = "Оставшаяся сумма"
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
+clip_text = true
+text_overrun_behavior = 3
 
-[node name="Value" type="Label" parent="Info"]
+[node name="Value" type="Label" parent="Total"]
 layout_mode = 2
 offset_left = 978.0
 offset_right = 1125.0
 offset_bottom = 46.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
 theme_override_font_sizes/font_size = 20
 text = "0.0"
 vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
 
-[node name="Lable" type="Label" parent="Info/Value"]
+[node name="Lable" type="Label" parent="Total/Value"]
 layout_mode = 2
-offset_left = -216.0
+offset_left = -337.0
 offset_right = -11.0
 offset_bottom = 46.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
 theme_override_font_sizes/font_size = 20
 text = "Изначальная сумма"
 horizontal_alignment = 2
 vertical_alignment = 1
-
-[node name="Percents" type="Label" parent="Info"]
-layout_mode = 0
-offset_left = 1004.0
-offset_top = -47.0
-offset_right = 1145.0
-offset_bottom = -12.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 25
-text = "0.0%"
-
-[node name="Ladel" type="Label" parent="Info/Percents"]
-layout_mode = 0
-offset_left = -351.0
-offset_right = -5.0
-offset_bottom = 35.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 25
-text = "Средний процент по займу"
-
-[node name="ObjArray" parent="." instance=ExtResource("3_36teq")]
-layout_mode = 0
-offset_top = 207.0
-offset_right = 1152.0
-offset_bottom = 518.0
-obj = 3
-
-[node name="LoanRepayment" parent="." instance=ExtResource("5_hd1et")]
-layout_mode = 0
-offset_top = 524.0
-offset_right = 1152.0
-offset_bottom = 648.0
-
-[connection signal="button_down" from="Menu/Update" to="." method="_on_update_button_down"]
-[connection signal="button_down" from="Menu/AddInterest" to="." method="_on_add_interest_button_down"]
-[connection signal="button_down" from="Menu/AddPayment" to="." method="_on_add_payment_button_down"]
-[connection signal="button_down" from="Label/Back" to="." method="_on_back_button_down"]
+autowrap_mode = 1
+clip_text = true
+text_overrun_behavior = 3
