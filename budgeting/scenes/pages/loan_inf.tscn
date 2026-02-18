@@ -15,6 +15,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_1y1g5")
+page_type = 15
 
 [node name="Head" parent="." instance=ExtResource("2_lhoix")]
 layout_mode = 0
@@ -102,7 +103,7 @@ autowrap_mode = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="Percents" type="Label" parent="Filter"]
+[node name="Percent" type="Label" parent="Filter"]
 layout_mode = 0
 offset_left = 1004.0
 offset_right = 1145.0
@@ -115,7 +116,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 text_overrun_behavior = 3
 
-[node name="Ladel" type="Label" parent="Filter/Percents"]
+[node name="Ladel" type="Label" parent="Filter/Percent"]
 layout_mode = 0
 offset_left = -485.0
 offset_right = -5.0
@@ -135,7 +136,7 @@ layout_mode = 0
 offset_top = 285.0
 offset_right = 1152.0
 offset_bottom = 597.0
-obj = 3
+obj = 2
 
 [node name="LoanRepayment" parent="." instance=ExtResource("5_fx47f")]
 layout_mode = 0

@@ -516,8 +516,11 @@ func _select_wts_list(where: String) -> Array:
 
 # Запрос на получение общей информаци об объекте
 func select_inf_data(where: String, type: Global.Pages) -> Dictionary:
+	if where == "": return {}
 	if type == Global.Pages.WALLET_INF: return _select("w.title, COUNT(cf.id) count, COALESCE(SUM(cf.value), 0.0) value, COALESCE(w.value, 0.0) total FROM cash_flows cf LEFT JOIN wallets w ON cf.wallet_id = w.id", where)[0]
-	return {}
+	var value: Dictionary = _select("l.*, (SELECT value FROM cash_flows WHERE section_id = 2 and wallet_2_id = l.id) value FROM loans l", "l.id = " + str(where.split("=")[-1]))[0]
+	value["percent"] = _select_loan_percent(int(where.split("=")[-1]))
+	return value
 
 # Получение среднего процента от займа
 func _select_loan_percent(idx: int) -> int:
