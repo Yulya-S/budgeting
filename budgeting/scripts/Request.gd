@@ -515,11 +515,15 @@ func _select_wts_list(where: String) -> Array:
 	return _select("s.id, s.title, COUNT(cf.id) count, SUM(cf.value) value FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id ", where, "", "cf.section_id")
 
 # Запрос на получение общей информаци об объекте
-func select_inf_data(where: String, type: Global.Pages) -> Dictionary:
+func select_inf_data(where: String, idx: int, type: Global.Pages) -> Dictionary:
 	if where == "": return {}
-	if type == Global.Pages.WALLET_INF: return _select("w.title, COUNT(cf.id) count, COALESCE(SUM(cf.value), 0.0) value, COALESCE(w.value, 0.0) total FROM cash_flows cf LEFT JOIN wallets w ON cf.wallet_id = w.id", where)[0]
-	var value: Dictionary = _select("l.*, (SELECT value FROM cash_flows WHERE section_id = 2 and wallet_2_id = l.id) value FROM loans l", "l.id = " + str(where.split("=")[-1]))[0]
-	value["percent"] = _select_loan_percent(int(where.split("=")[-1]))
+	var value: Dictionary = {}
+	if type == Global.Pages.WALLET:
+		value = _select("*, value as total FROM wallets", "id = "+str(idx))[0]
+		value.merge(_select("coalesce(COUNT(cf.id), 0) count FROM cash_flows cf", where)[0])
+		return _update_wallets_list(value)
+	value = _select("l.*, (SELECT value FROM cash_flows WHERE section_id = 2 and wallet_2_id = l.id) value FROM loans l", "l.id = " + str(idx))[0]
+	value["percent"] = _select_loan_percent(idx)
 	return value
 
 # Получение среднего процента от займа
