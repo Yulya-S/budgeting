@@ -43,6 +43,7 @@ horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 1
 script = ExtResource("2_nyojl")
+next_page_dir = 2
 
 [node name="Wallet_2_Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
@@ -58,6 +59,7 @@ text = "Цель"
 vertical_alignment = 1
 autowrap_mode = 1
 script = ExtResource("2_nyojl")
+next_page_dir = 2
 
 [node name="Arrow" type="Label" parent="Wallet_2_Title"]
 layout_mode = 0
