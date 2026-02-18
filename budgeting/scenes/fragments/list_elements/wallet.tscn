@@ -25,6 +25,7 @@ text = "Название кошелька"
 vertical_alignment = 1
 autowrap_mode = 1
 script = ExtResource("2_ntck8")
+next_page_dir = 2
 
 [node name="Value" type="Label" parent="."]
 layout_mode = 1

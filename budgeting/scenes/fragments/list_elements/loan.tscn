@@ -24,7 +24,8 @@ text = "Название займа"
 vertical_alignment = 1
 autowrap_mode = 1
 script = ExtResource("2_13s73")
-next_page = 15
+next_page = 4
+next_page_dir = 2
 
 [node name="Wallet_Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
@@ -39,6 +40,7 @@ text = "Название целевого счета"
 vertical_alignment = 1
 autowrap_mode = 1
 script = ExtResource("2_13s73")
+next_page_dir = 2
 
 [node name="Arrow" type="Label" parent="Wallet_Title"]
 layout_mode = 0

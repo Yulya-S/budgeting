@@ -65,11 +65,11 @@ func _set_special_values(data: Dictionary) -> void:
 			match data.section_id:
 				1: Title.next_page = Global.Pages.TRANSFER
 				2, 4:
-					$Wallet_Title.next_page = Global.Pages.LOAN_INF
+					$Wallet_Title.next_page = Global.Pages.LOAN
 					Title.next_page = Global.Pages.LOAN if data.section_id == 2 else Global.Pages.PERCENT
 					if data.section_id == 4: $Wallet_2_Title.visible = false
 				3:
-					$Wallet_2_Title.next_page = Global.Pages.LOAN_INF
+					$Wallet_2_Title.next_page = Global.Pages.LOAN
 					Title.next_page = Global.Pages.PAYMENT
 				_: $Wallet_2_Title.visible = false
 		

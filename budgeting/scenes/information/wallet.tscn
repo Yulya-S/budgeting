@@ -1,12 +1,12 @@
 [gd_scene load_steps=8 format=3 uid="uid://cxhpstba1mqi5"]
 
-[ext_resource type="Script" uid="uid://ct7pumat37ciy" path="res://scripts/pages/information.gd" id="1_37dcs"]
-[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_37dcs"]
-[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_oy6n0"]
-[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="4_3ta84"]
-[ext_resource type="Texture2D" uid="uid://b85cbftwbxvmv" path="res://img/interface/brush.png" id="4_oy6n0"]
-[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="5_pha3d"]
-[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="6_u8c7m"]
+[ext_resource type="Script" uid="uid://ct7pumat37ciy" path="res://scripts/pages/information.gd" id="1_k7ufo"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_caijd"]
+[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="3_ru164"]
+[ext_resource type="Texture2D" uid="uid://b85cbftwbxvmv" path="res://img/interface/brush.png" id="4_kliq4"]
+[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="5_4wg3a"]
+[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="6_on1hd"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="7_jbvvl"]
 
 [node name="WalletInf" type="Control"]
 layout_mode = 3
@@ -15,9 +15,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_37dcs")
+script = ExtResource("1_k7ufo")
 
-[node name="Head" parent="." instance=ExtResource("2_37dcs")]
+[node name="Head" parent="." instance=ExtResource("2_caijd")]
 layout_mode = 0
 
 [node name="Menu" type="ColorRect" parent="."]
@@ -49,7 +49,7 @@ offset_right = 148.0
 offset_bottom = 134.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Назад"
-icon = ExtResource("4_3ta84")
+icon = ExtResource("3_ru164")
 
 [node name="Update" type="Button" parent="Menu"]
 layout_mode = 0
@@ -59,7 +59,7 @@ offset_right = 193.0
 offset_bottom = 134.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Изменить"
-icon = ExtResource("4_oy6n0")
+icon = ExtResource("4_kliq4")
 
 [node name="CashFlow" type="Button" parent="Menu"]
 layout_mode = 0
@@ -69,7 +69,7 @@ offset_right = 238.0
 offset_bottom = 134.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Добавить движение средств"
-icon = ExtResource("5_pha3d")
+icon = ExtResource("5_4wg3a")
 
 [node name="Transactions" type="Button" parent="Menu"]
 layout_mode = 0
@@ -79,7 +79,7 @@ offset_right = 283.0
 offset_bottom = 134.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Список транзакций"
-icon = ExtResource("6_u8c7m")
+icon = ExtResource("6_on1hd")
 
 [node name="Filter" type="ColorRect" parent="."]
 layout_mode = 0
@@ -128,7 +128,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 text_overrun_behavior = 3
 
-[node name="ObjArray" parent="." instance=ExtResource("3_oy6n0")]
+[node name="ObjArray" parent="." instance=ExtResource("7_jbvvl")]
 layout_mode = 0
 offset_top = 161.0
 offset_right = 1152.0
@@ -182,7 +182,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 text_overrun_behavior = 3
 
-[node name="Value" type="Label" parent="Total"]
+[node name="Cash_flow" type="Label" parent="Total"]
 layout_mode = 2
 offset_left = 890.0
 offset_right = 1142.0
@@ -195,7 +195,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 text_overrun_behavior = 3
 
-[node name="Lable" type="Label" parent="Total/Value"]
+[node name="Lable" type="Label" parent="Total/Cash_flow"]
 layout_mode = 2
 offset_left = -187.0
 offset_right = -7.0

@@ -1,6 +1,6 @@
 extends Label
 # Экспортируемые переменные
-@export var next_page: Global.Pages = Global.Pages.WALLET_INF # Страниц перехода
+@export var next_page: Global.Pages = Global.Pages.WALLET # Страниц перехода
 @export var next_page_dir: Global.Dirs = Global.Dirs.PAGES # Директория перехода
 
 # Переменные
