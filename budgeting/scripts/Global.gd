@@ -156,3 +156,7 @@ func clear_scene(obj: Variant) -> void: for child in obj.get_children(): delete_
 func add_new_child(parent: Variant, path: Resource, values: Array = [], func_name: String = "set_values") -> void:
 	parent.add_child(path.instantiate())
 	run_func(parent.get_child(-1), func_name, values)
+	
+# Проверка наличия ключа в данных и применение при наличии
+func set_label_from_data(obj: Label, data: Dictionary) -> void:
+	if obj.name.to_lower() in data.keys(): obj.set_text(str(data[obj.name.to_lower()]))

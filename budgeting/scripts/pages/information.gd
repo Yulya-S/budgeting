@@ -17,9 +17,7 @@ func set_page(new_idx: int, new_page_type: Global.Pages = Global.Pages.WALLET_IN
 func update_data() -> void:
 	super.update_data()
 	var data: Dictionary = Request.select_inf_data(filter_data.where, page_type)
-	for i in _get_labels():
-		if i.name.to_lower() in data.keys():
-				i.set_text(str(data[i.name.to_lower()]))
+	for i in _get_labels(): Global.set_label_from_data(i, data)
 
 # Проверка типа страницы информации
 func _get_type() -> bool:
