@@ -160,3 +160,8 @@ func add_new_child(parent: Variant, path: Resource, values: Array = [], func_nam
 # Проверка наличия ключа в данных и применение при наличии
 func set_label_from_data(obj: Label, data: Dictionary) -> void:
 	if obj.name.to_lower() in data.keys(): obj.set_text(str(data[obj.name.to_lower()]))
+	
+# Получение родителя определенного уровня
+func g_parent(obj: Variant, lavel: int, save_lavel: int = 1) -> Variant:
+	if lavel == save_lavel: return obj.get_parent()
+	return g_parent(obj.get_parent(), lavel, save_lavel + 1)

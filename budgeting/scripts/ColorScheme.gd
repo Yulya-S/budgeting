@@ -65,22 +65,26 @@ func _set_all_button_color_parametrs(obj: Variant) -> void:
 	_set_buttons_color(obj, 0.5, "pressed")
 	for i in ["", "focus_", "hover_", "hover_pressed_", "pressed_"]: set_font_color(obj, "font_"+i+"color", 6)		
 
+# Изменение цветовой палитры объектов ColorRect
+func _set_ColorRect(obj) -> void:
+	match obj.name:
+		"Head", "NBorder": obj.color = get_sys_color(1)
+		"Menu", "Marker", "FastCreations": obj.color = get_sys_color(2)
+		"Background": obj.color = get_sys_color(6)
+		"Filter", "Load", "Total": obj.color = get_sys_color(3)
+		"Example": # Частный случай особого пакраса
+			obj.get_child(1).color = get_sys_color(4)
+			obj.get_child(2).color = get_sys_color(5)
+		_:
+			if Global.g_parent(obj, 3).name == "FastCreations": obj.color = get_sys_color(4)
+			elif obj.get_parent().get_class() == "VBoxContainer": obj.color = get_sys_color(4 + int(obj.get_parent().get_child_count() != 1))
+			elif obj.get_parent().get_class() in ["GridContainer", "HBoxContainer"]:
+				obj.color = get_sys_color(5)
+
 # Применение цветовой палитры к странице
 func repainting(obj: Variant) -> void:
 	match obj.get_class():
-		"ColorRect": match obj.name:
-			"Head", "NBorder": obj.color = get_sys_color(1)
-			"Menu", "Marker", "FastCreations": obj.color = get_sys_color(2)
-			"Background": obj.color = get_sys_color(6)
-			"Filter", "Load", "Total": obj.color = get_sys_color(3)
-			"Example": # Частный случай особого пакраса
-				obj.get_child(1).color = get_sys_color(4)
-				obj.get_child(2).color = get_sys_color(5)
-			_:
-				if obj.get_parent().get_parent().get_parent().name == "FastCreations": obj.color = get_sys_color(4)
-				elif obj.get_parent().get_class() == "VBoxContainer": obj.color = get_sys_color(4 + int(obj.get_parent().get_child_count() != 1))
-				elif obj.get_parent().get_class() in ["GridContainer", "HBoxContainer"]:
-					obj.color = get_sys_color(5)
+		"ColorRect": _set_ColorRect(obj)
 		"ProgressBar": obj.modulate = get_sys_color(1)
 		"Button", "TextEdit": _set_all_button_color_parametrs(obj)
 		"OptionButton":
@@ -91,10 +95,10 @@ func repainting(obj: Variant) -> void:
 			obj.add_theme_icon_override("checked", load("res://img/godot_icon/checked_"+dark_theme+".tres"))
 			obj.add_theme_icon_override("unchecked", load("res://img/godot_icon/unchecked_"+dark_theme+".tres"))
 			for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
-			obj.add_theme_color_override("font_hover_color", get_sys_color(3))
+			set_font_color(obj, "font_hover_color", 3)
 		"Label":
 			set_font_color(obj)
-			obj.add_theme_color_override("font_outline_color", get_sys_color(6))
+			set_font_color(obj, "font_outline_color", 6)
 		_: match obj.name:
 			"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
 			"X", "Border", "Separator": obj.default_color = get_sys_color(0)
