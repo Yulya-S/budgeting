@@ -27,7 +27,7 @@ offset_right = 1152.0
 offset_bottom = 100.0
 color = Color(0.376471, 0.72549, 0.698039, 1)
 
-[node name="Label" type="Label" parent="Menu"]
+[node name="WalletLabel" type="Label" parent="Menu"]
 layout_mode = 0
 offset_left = 275.0
 offset_right = 1140.0
@@ -68,7 +68,7 @@ offset_top = 6.0
 offset_right = 238.0
 offset_bottom = 134.0
 scale = Vector2(0.31, 0.31)
-tooltip_text = "Добавить движение средств"
+tooltip_text = "Записать движение средств"
 icon = ExtResource("5_4wg3a")
 
 [node name="Transactions" type="Button" parent="Menu"]
@@ -114,7 +114,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 text_overrun_behavior = 3
 
-[node name="Lable" type="Label" parent="Filter/Total"]
+[node name="WLabel" type="Label" parent="Filter/Total"]
 layout_mode = 2
 offset_left = -259.0
 offset_right = -5.0
@@ -142,7 +142,7 @@ offset_right = 1152.0
 offset_bottom = 648.0
 color = Color(0.873298, 0.873299, 0.873298, 1)
 
-[node name="Lable" type="Label" parent="Total"]
+[node name="TLabel" type="Label" parent="Total"]
 layout_mode = 2
 offset_left = 5.0
 offset_right = 155.0
@@ -168,7 +168,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 text_overrun_behavior = 3
 
-[node name="Lable" type="Label" parent="Total/Count"]
+[node name="Label" type="Label" parent="Total/Count"]
 layout_mode = 2
 offset_left = -283.0
 offset_right = -5.0
@@ -195,7 +195,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 text_overrun_behavior = 3
 
-[node name="Lable" type="Label" parent="Total/Cash_flow"]
+[node name="Label" type="Label" parent="Total/Cash_flow"]
 layout_mode = 2
 offset_left = -187.0
 offset_right = -7.0

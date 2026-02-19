@@ -27,6 +27,21 @@ offset_right = 1152.0
 offset_bottom = 100.0
 color = Color(0.376471, 0.72549, 0.698039, 1)
 
+[node name="LoanLabel" type="Label" parent="Menu"]
+layout_mode = 0
+offset_left = 275.0
+offset_right = 1140.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 25
+text = "Информация о займе"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
+clip_text = true
+text_overrun_behavior = 3
+
 [node name="Back" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 20.0
@@ -67,21 +82,6 @@ scale = Vector2(0.31, 0.31)
 tooltip_text = "Добавить платёж"
 icon = ExtResource("6_pnbtf")
 
-[node name="Label" type="Label" parent="Menu"]
-layout_mode = 0
-offset_left = 275.0
-offset_right = 1140.0
-offset_bottom = 50.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_constants/line_spacing = -10
-theme_override_font_sizes/font_size = 25
-text = "Информация о займе"
-horizontal_alignment = 2
-vertical_alignment = 1
-autowrap_mode = 1
-clip_text = true
-text_overrun_behavior = 3
-
 [node name="Filter" type="ColorRect" parent="."]
 layout_mode = 0
 offset_top = 100.0
@@ -116,7 +116,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 text_overrun_behavior = 3
 
-[node name="Ladel" type="Label" parent="Filter/Percent"]
+[node name="Label" type="Label" parent="Filter/Percent"]
 layout_mode = 0
 offset_left = -485.0
 offset_right = -5.0
@@ -164,7 +164,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 text_overrun_behavior = 3
 
-[node name="Lable" type="Label" parent="Total/Total"]
+[node name="LLabel" type="Label" parent="Total/Total"]
 layout_mode = 2
 offset_left = -305.0
 offset_right = -11.0
@@ -192,7 +192,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 text_overrun_behavior = 3
 
-[node name="Lable" type="Label" parent="Total/Value"]
+[node name="Label" type="Label" parent="Total/Value"]
 layout_mode = 2
 offset_left = -337.0
 offset_right = -11.0

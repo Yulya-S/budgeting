@@ -213,6 +213,16 @@ func _standard_language() -> Dictionary:
 		"ReportTitle": "Название", "ReportCash_Flow": "Остаток", "ReportIncome": "Доход",
 		"ReportExpenditure": "Расход", "ReportValue": "Итог",
 		"WalletsRepLabel": "Общая информация о счетах", "SectionsRepLabel": "Информация по разделам",
+		# Страница информации о кошельках
+		"WalletTransactionTitle": "Название раздела", "WalletTransactionValue": "Сумма за месяц",
+		"WalletTransactionCount": "Количество транзакций за месяц",
+		"WalletLabel": "Информация о счете", "Back": "Назад", "Update": "Изменить",
+		"Transactions": "Список транзакций", "TotalWLabel": "Значение счета:",
+		"TLabel": "Итог:", "TotalCountLabel": "Количество транзакций:",
+		"TotalCash_flowLabel": "Сумма:",
+		# Страница информации о займах
+		"LoanLabel": "Информация о займе", "PercentLabel": "Средний процент по займу:",
+		"TotalLLabel": "Оставшаяся сумма:", "TotalValueLabel": "Изначальная сумма:",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "По дате добавления", "__FO2": "По алфавиту",
 		# Объекты из базы данных
@@ -306,6 +316,16 @@ func _cr_en() -> void:
 		"ReportExpenditure": "Expense", "ReportValue": "Total",
 		"WalletsRepLabel": "General information about wallets",
 		"SectionsRepLabel": "Information by section",
+		# Страница иноформации о кошельках
+		"WalletTransactionTitle": "Section title", "WalletTransactionValue": "Amount per month",
+		"WalletTransactionCount": "Number of transactions per month",
+		"WalletLabel": "Wallet information", "Back": "Back", "Update": "Change",
+		"Transactions": "List of transactions", "TotalWLabel": "Wallet value:",
+		"TLabel": "Total:", "TotalCountLabel": "Number of transactions:",
+		"TotalCash_flowLabel": "Sum:",
+		# Страница информации о займах
+		"LoanLabel": "Loan information", "PercentLabel": "Average loan interest rate:",
+		"TotalLLabel": "Remaining amount:", "TotalValueLabel": "Initial amount:",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "By date added", "__FO2": "Alphabetically",
 		# Объекты из базы данных
