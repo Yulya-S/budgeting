@@ -83,7 +83,7 @@ func _cr_lang_file(f_name: String, value: Dictionary) -> void:
 # Считывание перевода
 func read_lang(container: OptionButton) -> void:
 	lang = _read_file(LangDir+Global.get_OB_text(container)+".json")
-	_supplement_cycle(lang, _standard_language())
+	lang.merge(_standard_language())
 	set_lang(container.get_parent())
 	# Сохранение выбора в файле конфигураций
 	config.lang = Global.get_OB_text(container)
@@ -144,17 +144,6 @@ func set_lang(obj: Variant) -> void:
 	elif obj is Label and "__" in obj.text and obj.text in lang.keys(): key = obj.text
 	if key != "": _lang_match(obj, key)
 	for i in obj.get_children(): set_lang(i)
-
-# Цикл дополнения перевода недостающими фрагментами
-func _supplement_cycle(lang_fragment: Dictionary, s_lang_fragment: Dictionary) -> void:
-	for i in s_lang_fragment.keys():
-		if i not in lang_fragment.keys() or typeof(lang_fragment[i]) != typeof(s_lang_fragment[i]):
-			lang_fragment[i] = s_lang_fragment[i]
-		elif lang_fragment[i] is Dictionary: _supplement_cycle(lang_fragment[i], s_lang_fragment[i])
-		elif lang_fragment[i] is Array: for l in range(len(s_lang_fragment[i])):
-			if len(lang_fragment[i]) <= l: lang_fragment[i].append(s_lang_fragment[i][l])
-			elif typeof(lang_fragment[i][l]) != typeof(s_lang_fragment[i][l]):
-				lang_fragment[i][l] = s_lang_fragment[i][l]
 
 # Создание стандартных вариантов локализации
 func _standard_language() -> Dictionary:
