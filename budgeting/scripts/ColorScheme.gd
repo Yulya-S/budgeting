@@ -100,37 +100,4 @@ func repainting(obj: Variant) -> void:
 			"X", "Border", "Separator": obj.default_color = get_sys_color(0)
 			"Frame": obj.default_color = get_sys_color(4)
 			"SelectedCell": obj.default_color = get_sys_color(1)
-	#match obj.name:
-		#"Head", "NBorder": obj.color = get_sys_color(1)
-		#"Menu", "Marker", "FastCreations": obj.color = get_sys_color(2)
-		#"Background": obj.color = get_sys_color(6)
-		#"Filter", "Load", "Total": obj.color = get_sys_color(3)
-		#"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
-		#"X", "Border", "Separator": obj.default_color = get_sys_color(0)
-		#"Frame": obj.default_color = get_sys_color(4)
-		#"SelectedCell": obj.default_color = get_sys_color(1)
-		#"Example": # Частный случай особого пакраса
-			#obj.get_child(1).color = get_sys_color(4)
-			#obj.get_child(2).color = get_sys_color(5)
-		#_:
-			#match obj.get_class():
-				#"ProgressBar": obj.modulate = get_sys_color(1)
-				#"Button", "TextEdit": _set_all_button_color_parametrs(obj)
-				#"OptionButton":
-					#_set_all_button_color_parametrs(obj)
-					#obj.add_theme_icon_override("arrow", load("res://img/godot_icon/arrow_"+str(int(Request.select(Request.Tables.SETTINGS)[0].dark_theme))+".png"))
-				#"CheckButton":
-					#var dark_theme: String = str(int(Request.select(Request.Tables.SETTINGS)[0].dark_theme))
-					#obj.add_theme_icon_override("checked", load("res://img/godot_icon/checked_"+dark_theme+".tres"))
-					#obj.add_theme_icon_override("unchecked", load("res://img/godot_icon/unchecked_"+dark_theme+".tres"))
-					#for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
-					#obj.add_theme_color_override("font_hover_color", get_sys_color(3))
-				#"ColorRect":
-					#if obj.get_parent().get_parent().get_parent().name == "FastCreations": obj.color = get_sys_color(4)
-					#elif obj.get_parent().get_class() == "VBoxContainer": obj.color = get_sys_color(4 + int(obj.get_parent().get_child_count() != 1))
-					#elif obj.get_parent().get_class() in ["GridContainer", "HBoxContainer"]:
-						#obj.color = get_sys_color(5)
-				#"Label":
-					#set_font_color(obj)
-					#obj.add_theme_color_override("font_outline_color", get_sys_color(6))
 	for i in obj.get_children(): repainting(i)
