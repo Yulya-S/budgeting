@@ -34,10 +34,8 @@ func _notification(what: int) -> void: if Request.db: if what == Window.NOTIFICA
 func _open_window(page: Global.Pages, id: Variant = null,
 	dir: Global.Dirs = Global.Dirs.WINDOWS, _parent: Variant = null) -> void:
 	add_child(load("res://scenes/"+Global.enum_key(Global.Dirs, dir)+"/"+Global.enum_key(Global.Pages, page)+".tscn").instantiate())
-	
 	if not _ch_inf(): get_child(-1).set_page(id, page)
 	if get_child_count() > 1 and _check_inf_page(): Global.delete_child(self, get_child(-1))
-	#elif id: Global.run_func(get_child(-1), "set_object", [id, parent])
 
 # Проверка имени крайней страницы
 func _check_inf_page() -> bool:
@@ -57,6 +55,7 @@ func _ch_par(param_name: String = "idx", idx_1: int = -1, idx_2: int = -2) -> bo
 
 # Очистка экрана и открытие новой страницы
 func _open_new_page(page: Global.Pages, id: Variant = null, parent: Variant = null) -> void:
+	if Global.current_page == Global.Pages.REGISTRATION: Global.update_sys_date()
 	Global.current_page = page
 	for child in get_children():
 		if child.name == "Timer": continue

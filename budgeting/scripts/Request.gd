@@ -17,7 +17,6 @@ func _open_db(db_name: String = "users") -> void:
 	db = SQLite.new()
 	db.path = File.BasesPath + db_name + ".db"
 	db.open_db()
-	Global.update_sys_date()
 
 # Подключение базы данных пользователей
 func connection_user_db() -> void:
