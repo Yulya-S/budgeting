@@ -527,7 +527,7 @@ func select_inf_data(where: String, idx: int, type: Global.Pages) -> Dictionary:
 	return value
 
 # Получение среднего процента от займа
-func _select_loan_percent(idx: int) -> int:
+func _select_loan_percent(idx: int) -> String:
 	var summ: float = 0.0
 	var result: float = 0.0
 	var count: int = 0
@@ -539,8 +539,8 @@ func _select_loan_percent(idx: int) -> int:
 				result += (i.value * 100) / summ
 				summ += i.value
 				count += 1
-	if count == 0: return 0
-	return round(result / count)
+	if count == 0: return str(0) + " %"
+	return str(int(round(result / count))) + " %"
 	
 # Запрос на изменение списка займов
 func _update_loans_list(line: Dictionary) -> Dictionary:
