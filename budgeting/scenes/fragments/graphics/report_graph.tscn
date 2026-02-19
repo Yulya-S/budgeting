@@ -9,6 +9,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_pqxy0")
+graph_type = 1
 
 [node name="X" type="Line2D" parent="."]
 points = PackedVector2Array(10, 59, 1142, 59)

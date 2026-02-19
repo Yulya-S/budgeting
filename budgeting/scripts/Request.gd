@@ -546,3 +546,8 @@ func _select_loan_percent(idx: int) -> int:
 func _update_loans_list(line: Dictionary) -> Dictionary:
 	line["percent"] = _select_loan_percent(line.id)
 	return line
+
+# Получение значений для построения графика займов
+func select_loan_graphics(idx: int) -> Array:
+	if idx == 0: return []
+	return _select("IIF(section_id = 3, value*-1, value) value, date as day FROM cash_flows", "wallet_2_id = " + str(idx) + " AND section_id IN (2, 3, 4)")
