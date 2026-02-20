@@ -6,7 +6,7 @@ class_name Fragment
 # Изменение размера контейнера по размеру родителя
 func _ready() -> void:
 	if get_parent().get_child_count() == 1: File.set_lang(self)
-	custom_minimum_size[0] = get_parent().get_parent().size[0]
+	custom_minimum_size[0] = Global.g_parent(self, 2).size[0]
 	set_line_size()
 	ColorScheme.repainting(self)
 	

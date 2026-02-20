@@ -26,7 +26,7 @@ func _set_CI_text(income: int) -> void: $ConsumptionIncome.set_text(File.lang["_
 # Обработка нажатия кнопки удаления объекта быстрого создания записи
 func _on_delete_button_down() -> void:
 	Request.delete_fast_creation(id)
-	get_parent().get_parent().get_parent().get_parent().fc_update()
+	Global.g_parent(self, 4).fc_update()
 
 # Обработка нажатия кнопки создания движений средств
 func _on_add_button_down() -> void:
