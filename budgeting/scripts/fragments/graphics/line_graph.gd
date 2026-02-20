@@ -45,9 +45,9 @@ func _update_values(data: Array, filter: Dictionary) -> Array:
 
 # Виды графиков
 # Общая часть для линейных графиков
-func _line(idx: int, values: Array, max_value: float, x_step: float, height: float) -> void:
-	var y1_size: float = (height * values[idx] / max_value) * -1 + int(height + 5)
-	var y2_size: float = (height * values[idx + 1] / max_value) * -1 + int(height + 5)
+func _line(idx: int, values_array: Array, max_value: float, x_step: float, height: float) -> void:
+	var y1_size: float = (height * values_array[idx] / max_value) * -1 + int(height + 5)
+	var y2_size: float = (height * values_array[idx + 1] / max_value) * -1 + int(height + 5)
 	draw_line(Vector2(x_step * idx + 10., y1_size), Vector2(x_step * (idx + 1) + 10., y2_size), Color.FIREBRICK, 2)
 	draw_circle(Vector2(x_step * idx + 10., y1_size), 3, Color.FIREBRICK)
 	draw_circle(Vector2(x_step * (idx + 1) + 10., y2_size), 3, Color.FIREBRICK)

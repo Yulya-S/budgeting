@@ -16,7 +16,7 @@ func _set_hint() -> void:
 	_match_marker()
 
 # Изменение размера и расположения маркера подсказки
-func _set_marker(x: float, y: float, w: float, h: float) -> void:
+func _set_marker(x: float, y: float, _w: float, _h: float) -> void:
 	$Marker.position = Vector2(x, y)
 	$Marker.size = Vector2(x, y)
 
