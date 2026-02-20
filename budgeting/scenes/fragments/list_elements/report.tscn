@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cuhlck3p0pdxh"]
+[gd_scene load_steps=2 format=3 uid="uid://cuhlck3p0pdxh"]
 
 [ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/Fragment.gd" id="1_258vl"]
-[ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_mkt8p"]
 
 [node name="Report" type="ColorRect"]
 custom_minimum_size = Vector2(1152, 23)
@@ -17,16 +16,11 @@ layout_mode = 1
 offset_left = 10.0
 offset_right = 265.0
 offset_bottom = 23.0
-mouse_filter = 1
-mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
 text = "Название"
 vertical_alignment = 1
 autowrap_mode = 1
-script = ExtResource("2_mkt8p")
-next_page = 3
-next_page_dir = 1
 
 [node name="Cash_Flow" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
@@ -34,8 +28,6 @@ layout_mode = 1
 offset_left = 277.0
 offset_right = 511.0
 offset_bottom = 23.0
-mouse_filter = 1
-mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
 text = "Остаток"
@@ -49,8 +41,6 @@ layout_mode = 1
 offset_left = 529.0
 offset_right = 701.0
 offset_bottom = 23.0
-mouse_filter = 1
-mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
 text = "Доход"
@@ -64,8 +54,6 @@ layout_mode = 1
 offset_left = 714.0
 offset_right = 871.0
 offset_bottom = 23.0
-mouse_filter = 1
-mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -5
 text = "Расход"
@@ -87,6 +75,3 @@ text = "Итог"
 horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 1
-
-[connection signal="mouse_entered" from="Title" to="Title" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Title" to="Title" method="_on_mouse_exited"]
