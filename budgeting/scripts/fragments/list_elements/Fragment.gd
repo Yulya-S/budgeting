@@ -23,25 +23,25 @@ func set_line_size() -> void:
 # Изменение значений в сцене
 func set_values(data: Dictionary) -> void:
 	for i in get_children():
-		if i.name.to_lower() not in data.keys(): continue # Отмена применения значения
+		if Global.lower(i) not in data.keys(): continue # Отмена применения значения
 		# Применение значений
 		match i.get_class():
 			"ProgressBar":
-				i.value = data[i.name.to_lower()]
+				i.value = data[Global.lower(i)]
 				i.modulate = ColorScheme.get_color(i.value, i.max_value, ColorScheme.scales_gradient)
 			"ColorRect":
-				if data[i.name.to_lower()] is bool: i.visible = data[i.name.to_lower()]
-				elif data[i.name.to_lower()] is Color:
-					i.color = data[i.name.to_lower()]
+				if data[Global.lower(i)] is bool: i.visible = data[Global.lower(i)]
+				elif data[Global.lower(i)] is Color:
+					i.color = data[Global.lower(i)]
 					i.visible = true
 			"Label":
-				if "title" not in i.name.to_lower() or not i.get("set_object"):
-					i.set_text(str(data[i.name.to_lower()]))
+				if "title" not in Global.lower(i) or not i.get("set_object"):
+					i.set_text(str(data[Global.lower(i)]))
 				else:
-					if i.name.to_lower().split("title")[0]+"id" in data.keys():
-						if data[i.name.to_lower().split("title")[0]+"id"]:
-							i.set_object(data[i.name.to_lower()],  data[i.name.to_lower().split("title")[0]+"id"])
-					elif data[i.name.to_lower()] == null: continue
+					if Global.lower(i).split("title")[0]+"id" in data.keys():
+						if data[Global.lower(i).split("title")[0]+"id"]:
+							i.set_object(data[Global.lower(i)],  data[Global.lower(i).split("title")[0]+"id"])
+					elif data[Global.lower(i)] == null: continue
 	_set_special_values(data)
 	File.set_lang(self)
 	set_line_size()

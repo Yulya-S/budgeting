@@ -21,7 +21,7 @@ func _check_user(login: bool, check_field: bool = true) -> bool:
 	# Заполнение файла конфигурации
 	if check_field: for i in get_children(): if i is TextEdit:
 		if Error.check_mandatory_fields(i):	return false
-		File.config[i.name.to_lower()] = File.hide_data(i.get_text())
+		File.config[Global.lower(i)] = File.hide_data(i.get_text())
 	return Request.select_existence_user(login) # Получение результата проверки из базы данных
 
 # Генерация названия базы данных

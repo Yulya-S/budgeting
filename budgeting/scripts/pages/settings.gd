@@ -24,7 +24,7 @@ func _ready() -> void:
 			picker.color_modes_visible = false
 			picker.sliders_visible = false
 			picker.presets_visible = false
-			i.color = Color("#"+data[i.name.to_lower()])
+			i.color = Color("#"+data[Global.lower(i)])
 	_on_preinstalled_toggled(bool(data.color_preset))
 	DarkTheme.button_pressed = bool(data.dark_theme)
 	if data.color_preset: _on_color_scheme_cus_item_selected(data.color_scheme)

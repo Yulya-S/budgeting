@@ -14,7 +14,7 @@ var id: Variant = null # Индекс изменяемого объекта
 func set_object(obj_id: int, _parent: Variant = null) -> void:
 	id = obj_id
 	Delete.visible = true
-	if "@" in name: name = get_parent().get_child(-2).name.to_lower().replace("inf", "")
+	if "@" in name: name = Global.lower(get_parent().get_child(-2)).replace("inf", "")
 	var value: Array = Request.call("select_"+name.to_lower(), id)
 	if len(value) <= 0: return
 	id = value[0].id
@@ -23,12 +23,12 @@ func set_object(obj_id: int, _parent: Variant = null) -> void:
 # Изменение данных на странице
 func set_values(data: Dictionary) -> void:
 	for i in get_children():
-		if i.name.to_lower() not in data.keys(): continue
+		if Global.lower(i) not in data.keys(): continue
 		match i.get_class():
-			"CheckButton": i.button_pressed = data[i.name.to_lower()]
-			"TextEdit": i.set_text(str(data[i.name.to_lower()]))
-			"OptionButton": i.selected = data[i.name.to_lower()] - 1
-			"ColorRect": if i.name == "Date": i.set_date(data[i.name.to_lower()])
+			"CheckButton": i.button_pressed = data[Global.lower(i)]
+			"TextEdit": i.set_text(str(data[Global.lower(i)]))
+			"OptionButton": i.selected = data[Global.lower(i)] - 1
+			"ColorRect": if i.name == "Date": i.set_date(data[Global.lower(i)])
 
 # Получение значений из контейнеров окна создания объекта
 func get_values() -> Array:

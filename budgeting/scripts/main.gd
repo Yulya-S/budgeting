@@ -43,9 +43,10 @@ func _check_inf_page() -> bool:
 	if _ch_par("page_type") and _ch_par(): return true
 	return false
 
-func _ch_inf(idx: int = -1) -> bool: return not _ch_name("@", idx) and not _ch_name("Inf", idx)
-
-# Проверки для дочерних элементов
+# Проверка что страница является инфомрационной
+func _ch_inf(idx: int = -1) -> bool:
+	return not _ch_name("@", idx) and not _ch_name("Inf", idx)
+	
 # Проверка фрагмена названия дочернего элемента
 func _ch_name(text: String = "@", idx: int = -1) -> bool: return text in get_child(idx).name
 

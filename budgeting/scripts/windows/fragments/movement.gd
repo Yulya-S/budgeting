@@ -39,10 +39,10 @@ func set_all(obj_id: int) -> void:
 # Изменение данных на странице
 func set_values(data: Dictionary) -> void:
 	for i in get_children():
-		if i.name.to_lower() not in data.keys() + ["extra"]: continue
+		if Global.lower(i) not in data.keys() + ["extra"]: continue
 		match i.get_class():
-			"TextEdit": i.set_text(str(data[i.name.to_lower()]))
-			"ColorRect": if i.name == "Date": i.set_date(data[i.name.to_lower()])
+			"TextEdit": i.set_text(str(data[Global.lower(i)]))
+			"ColorRect": if i.name == "Date": i.set_date(data[Global.lower(i)])
 			"OptionButton":
 				if i.name == "Extra": _on_extra_item_selected(data[second_column] - 1, false)
 				else: _on_wallet_item_selected(data.wallet_id - 1, false)
