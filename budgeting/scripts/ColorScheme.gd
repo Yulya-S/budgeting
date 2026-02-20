@@ -81,6 +81,10 @@ func _set_ColorRect(obj) -> void:
 			elif obj.get_parent().get_class() in ["GridContainer", "HBoxContainer"]:
 				obj.color = get_sys_color(5)
 
+# Замена системных иконок
+func _set_icon(obj: Variant, theme_name: String, icon: String) -> void:
+	obj.add_theme_icon_override(theme_name, load("res://img/godot_icon/" + theme_name + "_" + icon))
+
 # Применение цветовой палитры к странице
 func repainting(obj: Variant) -> void:
 	match obj.get_class():
@@ -89,11 +93,11 @@ func repainting(obj: Variant) -> void:
 		"Button", "TextEdit": _set_all_button_color_parametrs(obj)
 		"OptionButton":
 			_set_all_button_color_parametrs(obj)
-			obj.add_theme_icon_override("arrow", load("res://img/godot_icon/arrow_"+str(int(Request.select(Request.Tables.SETTINGS)[0].dark_theme))+".png"))
+			_set_icon(obj, "arrow", str(int(Request.select(Request.Tables.SETTINGS)[0].dark_theme))+".png")
 		"CheckButton":
 			var dark_theme: String = str(int(Request.select(Request.Tables.SETTINGS)[0].dark_theme))
-			obj.add_theme_icon_override("checked", load("res://img/godot_icon/checked_"+dark_theme+".tres"))
-			obj.add_theme_icon_override("unchecked", load("res://img/godot_icon/unchecked_"+dark_theme+".tres"))
+			_set_icon(obj, "checked", dark_theme + ".tres")
+			_set_icon(obj, "unchecked", dark_theme + ".tres")
 			for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
 			set_font_color(obj, "font_hover_color", 3)
 		"Label":
