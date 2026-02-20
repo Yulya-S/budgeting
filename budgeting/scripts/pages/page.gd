@@ -6,7 +6,7 @@ class_name Page
 
 # Подключение сигнала
 func _ready() -> void: Global.connect_signal_update_page(self)
-	
+
 # Запуск обновления данных на странице
 func _update_page() -> void:
 	ColorScheme.repainting(self)
