@@ -63,6 +63,7 @@ func _set_all_button_color_parametrs(obj: Variant) -> void:
 	_set_buttons_color(obj)
 	_set_buttons_color(obj, 0.8, "hover")
 	_set_buttons_color(obj, 0.5, "pressed")
+	set_font_color(obj, "font_outline_color", 0)
 	for i in ["", "focus_", "hover_", "hover_pressed_", "pressed_"]: set_font_color(obj, "font_"+i+"color", 6)		
 
 # Применение цвета без прямого обращения
@@ -72,7 +73,7 @@ func _change_color(obj: Variant, idx: int, column: String = "color") -> void:
 # Изменение цветовой палитры объектов ColorRect
 func _set_ColorRect(obj) -> void:
 	match obj.name:
-		"Head", "NBorder": _change_color(obj, 1)
+		"Head", "NBorder", "Border": _change_color(obj, 1)
 		"Menu", "Marker", "FastCreations": _change_color(obj, 2)
 		"Background": _change_color(obj, 6)
 		"Filter", "Load", "Total": _change_color(obj, 3)
