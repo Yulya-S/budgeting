@@ -6,8 +6,9 @@ func on_close_button_down() -> void:
 
 # Обработка нажатия кнопки сохранения / изменения
 func _on_apply_button_down() -> void:
-	if get_parent().check_object(): return
-	Request.match_update(get_parent().idx, get_parent().page_type)
+	if not get_parent().check_object(): return
+	if get_parent().idx == 0: Request.match_created(get_parent().page_type, get_parent().get_values())
+	else: Request.match_updated(get_parent().idx, get_parent().page_type)
 	_apply_changes()
 
 # Обработка нажатия кнопки удаления

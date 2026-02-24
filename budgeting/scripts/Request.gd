@@ -582,3 +582,16 @@ func match_updated(idx: int, obj_type: ObjectVariants) -> void:
 
 # Запрос на изменение кошелька
 func _update_wallet(idx: int) -> void: pass
+
+# Распределение запросов на создание объектов таблицы
+func match_created(obj_type: ObjectVariants, values: Array) -> void:
+	match obj_type:
+		ObjectVariants.WALLET: return _create_wallet(values)
+
+# Запрос на изменение кошелька
+func _create_wallet(values: Array) -> void:
+	db.query('INSERT INTO wallets (title, value) VALUES ("'+values[0]+'",'+values[1]+");")
+	
+# Проверка наличия с определенным имененем в таблицах
+func check_obj_name(obj_name: String, idx: int, table: ObjectVariants) -> bool:
+	return len(_select("* FROM "+_get_table_name(table), 'title = "' + obj_name + '" AND id != ' + str(idx))) == 0
