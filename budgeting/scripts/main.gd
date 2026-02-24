@@ -64,3 +64,6 @@ func _open_new_page(page: Global.Pages, id: Variant = null, parent: Variant = nu
 		Global.delete_child(self, child)
 	_open_window(page, id, Global.Dirs.PAGES, parent)
 	_update_last_entry()
+
+# Проверка закрытия окна инфомрации при удалении объекта
+func close_inf_page() -> void: if not _ch_inf(-2): get_child(-2)._on_back_button_down()

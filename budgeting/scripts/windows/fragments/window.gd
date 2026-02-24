@@ -8,7 +8,7 @@ func on_close_button_down() -> void:
 func _on_apply_button_down() -> void:
 	if not get_parent().check_object(): return
 	if get_parent().idx == 0: Request.match_created(get_parent().page_type, get_parent().get_values())
-	else: Request.match_updated(get_parent().idx, get_parent().page_type)
+	else: Request.match_updated(str(get_parent().idx), get_parent().page_type, get_parent().get_values())
 	_apply_changes()
 
 # Обработка нажатия кнопки удаления
@@ -21,5 +21,7 @@ func _apply_changes() -> void:
 
 # Обработка подтверждения удаления объекта
 func _on_confirmation_dialog_confirmed() -> void:
-	Request.match_deleted(get_parent().idx, get_parent().page_type)
+	Request.match_deleted(str(get_parent().idx), get_parent().page_type)
+	Global.g_parent(self, 2).close_inf_page()
 	_apply_changes()
+	

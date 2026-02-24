@@ -568,20 +568,32 @@ func _select_section_obj(idx: String) -> Dictionary:
 	return _select("* FROM sections", "id = " + idx)[0]
 	
 # Распределение запросов на удаление объектов таблицы
-func match_deleted(idx: int, obj_type: ObjectVariants) -> void:
+func match_deleted(idx: String, obj_type: ObjectVariants) -> void:
 	match obj_type:
 		ObjectVariants.WALLET: return _delete_wallet_obj(idx)
 
 # Запрос на удаление кошельков
-func _delete_wallet_obj(idx: int) -> void: pass
+func _delete_wallet_obj(idx: String) -> void:
+	# Удаление кошелька
+	db.query("DELETE FROM wallets WHERE id = "+idx+";")
+	db.query("UPDATE wallets SET id = id - 1 WHERE id > " + idx + ";")
+	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "wallets";')
+	# Удаление данных о движениях средств
+	db.query("UPDATE cash_flows SET wallet_id = null WHERE wallet_id = "+idx+" AND section_id IN (2, 3);")
+	db.query("DELETE FROM cash_flows WHERE wallet_id = "+idx+" OR (wallet_2_id = "+idx+" AND section_id = 1);")
+	db.query("UPDATE cash_flows SET wallet_id = wallet_id - 1 WHERE wallet_id > " + idx + ";")
+	db.query("UPDATE cash_flows SET wallet_2_id = wallet_2_id - 1 WHERE section_id = 1 AND wallet_2_id > " + idx + ";")
+	_table_ids_update("cash_flows")
+	
 	
 # Распределение запросов на изменение объектов таблицы
-func match_updated(idx: int, obj_type: ObjectVariants) -> void:
+func match_updated(idx: String, obj_type: ObjectVariants, values: Array) -> void:
 	match obj_type:
-		ObjectVariants.WALLET: return _update_wallet(idx)
+		ObjectVariants.WALLET: return _update_wallet(idx, values)
 
 # Запрос на изменение кошелька
-func _update_wallet(idx: int) -> void: pass
+func _update_wallet(idx: String, values: Array) -> void:
+	db.query('UPDATE wallets SET title = "'+values[0]+'", value ='+values[1]+" WHERE id = "+idx+";")
 
 # Распределение запросов на создание объектов таблицы
 func match_created(obj_type: ObjectVariants, values: Array) -> void:

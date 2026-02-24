@@ -91,7 +91,7 @@ func read_lang(container: OptionButton) -> void:
 
 # Поиск ключа в базе перевода
 func _find_lang_keys(obj: Variant, key: String = "") -> String:
-	if obj.name == "main": return ""
+	if not obj or obj.name == "main": return ""
 	key = obj.name + key
 	if "_" in key and len(key.split("_")) <= 2 and key.split("_")[1].is_valid_int(): key = key.split("_")[0]
 	if key not in lang.keys(): return _find_lang_keys(obj.get_parent(), key)

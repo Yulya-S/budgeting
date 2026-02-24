@@ -15,6 +15,7 @@ func set_page(new_idx: int, new_page_type: Global.Pages = Global.Pages.WALLET) -
 
 # #Обновление данных
 func update_data() -> void:
+	if idx == 0: return
 	super.update_data()
 	var data: Dictionary = Request.select_inf_data(filter_data.where, idx, page_type)
 	for i in _get_labels(): Global.set_label_from_data(i, data)
@@ -32,7 +33,9 @@ func _get_labels() -> Array:
 func _get_filter(_obj: Variant) -> Array: return [filter_data]
 
 # Обработка нажатия кнопки "Назад"
-func _on_back_button_down() -> void: Global.delete_child(get_parent(), self)
+func _on_back_button_down() -> void:
+	Global.delete_child(get_parent(), self)
+	idx = 0
 
 # Обработка нажатия кнопки "Изменить"
 func _on_update_button_down() -> void: Global.emit_signal("open_window", page_type, idx)
