@@ -556,11 +556,16 @@ func select_loan_graphics(idx: int) -> Array:
 func match_elem(idx: String, obj_type: ObjectVariants) -> Dictionary:
 	match obj_type:
 		ObjectVariants.WALLET: return _select_wallet_obj(idx)
+		ObjectVariants.SECTION: if int(idx) > 4: return _select_section_obj(idx)
 	return {}
 	
 # Запрос на получение объекта таблицы счетов
 func _select_wallet_obj(idx: String) -> Dictionary:
 	return _select("* FROM wallets", "id = " + idx)[0]
+
+# Запрос на получение объекта таблицы разделов
+func _select_section_obj(idx: String) -> Dictionary:
+	return _select("* FROM sections", "id = " + idx)[0]
 	
 # Распределение запросов на удаление объектов таблицы
 func match_deleted(idx: int, obj_type: ObjectVariants) -> void:

@@ -11,8 +11,19 @@ func _ready() -> void:
 
 # Обновление данных на странице
 func set_page(new_idx: int) -> void:
+	var data: Dictionary = Request.match_elem(str(new_idx), page_type)
+	if data == {}:
+		$Window.on_close_button_down()
+		return
 	idx = new_idx
-	var data: Dictionary = Request.match_elem(str(idx), page_type)
 	$Window/Delete.visible = true
 	for i in get_children():
 		if i.get_class() == "TextEdit": i.set_text(str(data[Global.lower(i)]))
+		elif i.get_class() == "CheckButton":
+			i.button_pressed = data[Global.lower(i)]
+			_on_income_toggled(data[Global.lower(i)])
+
+# Обработка переключения переключателя
+func _on_income_toggled(toggled_on: bool) -> void:
+	File.set_CB($Income)
+	$Month_Limit.visible = not toggled_on

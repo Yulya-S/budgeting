@@ -58,7 +58,6 @@ auto_translate_mode = 1
 title = "Удаление объекта"
 initial_position = 1
 size = Vector2i(460, 106)
-visible = true
 ok_button_text = "Да"
 dialog_text = "Вы уверены? Все данные объекта будут удалены"
 dialog_autowrap = true

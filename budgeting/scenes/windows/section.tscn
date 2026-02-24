@@ -1,16 +1,16 @@
 [gd_scene load_steps=4 format=3 uid="uid://bm8d2roc1o62"]
 
-[ext_resource type="Script" uid="uid://bme8i7rc6pnvh" path="res://scripts/windows/section.gd" id="1_r1ear"]
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_lnpay"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_lnpay"]
 [ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_lnpay"]
 
-[node name="Section" type="Control"]
+[node name="SectionWindow" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-script = ExtResource("1_r1ear")
-table = 1
+script = ExtResource("1_lnpay")
+page_type = 1
 
 [node name="Window" parent="." instance=ExtResource("2_lnpay")]
 layout_mode = 0
@@ -94,4 +94,4 @@ alignment = 2
 
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
 [connection signal="text_changed" from="Month_Limit" to="." method="_on_month_limit_text_changed"]
-[connection signal="toggled" from="Income" to="." method="_on_consumption_income_toggled"]
+[connection signal="toggled" from="Income" to="." method="_on_income_toggled"]
