@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cehtdax4yymqd" path="res://img/transaction.png" id="4_c5ew4"]
 [ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="5_cer6g"]
 
-[node name="Wallet" type="Control"]
+[node name="WalletWindow" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0

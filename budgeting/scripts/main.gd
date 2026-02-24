@@ -34,7 +34,7 @@ func _notification(what: int) -> void: if Request.db: if what == Window.NOTIFICA
 func _open_window(page: Global.Pages, id: Variant = null,
 	dir: Global.Dirs = Global.Dirs.WINDOWS, _parent: Variant = null) -> void:
 	add_child(load("res://scenes/"+Global.enum_key(Global.Dirs, dir)+"/"+Global.enum_key(Global.Pages, page)+".tscn").instantiate())
-	if not _ch_inf(): get_child(-1).set_page(id, page)
+	if not _ch_inf(): Global.run_func(get_child(-1), "set_page", [id, page])
 	if get_child_count() > 1 and _check_inf_page(): Global.delete_child(self, get_child(-1))
 
 # Проверка имени крайней страницы
