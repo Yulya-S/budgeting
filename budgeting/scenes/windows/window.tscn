@@ -53,6 +53,18 @@ theme_override_constants/outline_size = 14
 theme_override_font_sizes/font_size = 24
 text = "X"
 
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+auto_translate_mode = 1
+title = "Удаление объекта"
+initial_position = 1
+size = Vector2i(460, 106)
+visible = true
+ok_button_text = "Да"
+dialog_text = "Вы уверены? Все данные объекта будут удалены"
+dialog_autowrap = true
+cancel_button_text = "Нет"
+
 [connection signal="button_down" from="Delete" to="." method="_on_delete_button_down"]
 [connection signal="button_down" from="Apply" to="." method="_on_apply_button_down"]
 [connection signal="button_down" from="Close" to="." method="on_close_button_down"]
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_confirmed"]

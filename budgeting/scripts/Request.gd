@@ -550,3 +550,30 @@ func _update_loans_list(line: Dictionary) -> Dictionary:
 func select_loan_graphics(idx: int) -> Array:
 	if idx == 0: return []
 	return _select("IIF(section_id = 3, value*-1, value) value, date as day FROM cash_flows", "wallet_2_id = " + str(idx) + " AND section_id IN (2, 3, 4)")
+
+# Запросы связанные с окнами создания / изменения объектов
+# Распределение запросов для получения объектов таблиц
+func match_elem(idx: String, obj_type: ObjectVariants) -> Dictionary:
+	match obj_type:
+		ObjectVariants.WALLET: return _select_wallet_obj(idx)
+	return {}
+	
+# Запрос на получение объекта таблицы счетов
+func _select_wallet_obj(idx: String) -> Dictionary:
+	return _select("* FROM wallets", "id = " + idx)[0]
+	
+# Распределение запросов на удаление объектов таблицы
+func match_deleted(idx: int, obj_type: ObjectVariants) -> void:
+	match obj_type:
+		ObjectVariants.WALLET: return _delete_wallet_obj(idx)
+
+# Запрос на удаление кошельков
+func _delete_wallet_obj(idx: int) -> void: pass
+	
+# Распределение запросов на изменение объектов таблицы
+func match_updated(idx: int, obj_type: ObjectVariants) -> void:
+	match obj_type:
+		ObjectVariants.WALLET: return _update_wallet(idx)
+
+# Запрос на изменение кошелька
+func _update_wallet(idx: int) -> void: pass

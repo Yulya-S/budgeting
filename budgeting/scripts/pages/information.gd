@@ -31,5 +31,8 @@ func _get_labels() -> Array:
 # Получение данных фильтра
 func _get_filter(_obj: Variant) -> Array: return [filter_data]
 
-# Обработка нажатия кнопки "назад"
+# Обработка нажатия кнопки "Назад"
 func _on_back_button_down() -> void: Global.delete_child(get_parent(), self)
+
+# Обработка нажатия кнопки "Изменить"
+func _on_update_button_down() -> void: Global.emit_signal("open_window", page_type, idx)
