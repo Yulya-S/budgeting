@@ -41,7 +41,7 @@ func set_values(data: Dictionary) -> void:
 					if Global.lower(i).split("title")[0]+"id" in data.keys():
 						if data[Global.lower(i).split("title")[0]+"id"]:
 							i.set_object(data[Global.lower(i)],  data[Global.lower(i).split("title")[0]+"id"])
-					elif data[Global.lower(i)] == null: continue
+						elif data[Global.lower(i)] == null: i.set_text("-")
 	_set_special_values(data)
 	File.set_lang(self)
 	set_line_size()
