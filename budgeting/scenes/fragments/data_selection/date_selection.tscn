@@ -1,21 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwknrqthvhq2m"]
+[gd_scene load_steps=3 format=3 uid="uid://cwknrqthvhq2m"]
 
 [ext_resource type="Script" uid="uid://cuk5gew4im7a0" path="res://scripts/fragments/date_selection/date_selection.gd" id="1_srupp"]
+[ext_resource type="PackedScene" uid="uid://c66y7ml70d1pm" path="res://scenes/fragments/data_selection/cell.tscn" id="2_xi3pa"]
 
-[node name="DateSelection" type="Control"]
+[node name="Date" type="ColorRect"]
 custom_minimum_size = Vector2(290, 310)
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("1_srupp")
-
-[node name="DateSelection" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(290, 310)
-layout_mode = 0
 offset_right = 290.0
 offset_bottom = 310.0
-color = Color(0, 0, 0, 0.333333)
+color = Color(1, 1, 1, 0.333333)
+script = ExtResource("1_srupp")
+cell_path = ExtResource("2_xi3pa")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
@@ -62,16 +56,16 @@ theme_override_font_sizes/font_size = 11
 text = ">"
 
 [node name="Cells" type="GridContainer" parent="."]
-custom_minimum_size = Vector2(280, 0)
+custom_minimum_size = Vector2(270, 0)
 layout_mode = 0
-offset_left = 5.0
+offset_left = 11.0
 offset_top = 65.0
-offset_right = 285.0
+offset_right = 281.0
 offset_bottom = 280.0
-theme_override_constants/h_separation = 0
-theme_override_constants/v_separation = 0
+theme_override_constants/h_separation = -2
+theme_override_constants/v_separation = -2
 columns = 7
 
-[connection signal="item_selected" from="Year" to="DateSelection" method="_on_year_item_selected"]
-[connection signal="button_down" from="Month/Previous" to="DateSelection" method="_on_previous_button_down"]
-[connection signal="button_down" from="Month/Next" to="DateSelection" method="_on_next_button_down"]
+[connection signal="item_selected" from="Year" to="." method="_on_year_item_selected"]
+[connection signal="button_down" from="Month/Previous" to="." method="_on_previous_button_down"]
+[connection signal="button_down" from="Month/Next" to="." method="_on_next_button_down"]

@@ -6,17 +6,15 @@
 custom_minimum_size = Vector2(40, 40)
 offset_right = 40.0
 offset_bottom = 40.0
-color = Color(0, 0, 0, 1)
+mouse_default_cursor_shape = 2
 script = ExtResource("1_72gv6")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(38, 38)
-layout_mode = 0
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 39.0
-offset_bottom = 39.0
-mouse_default_cursor_shape = 2
+[node name="Border" type="Line2D" parent="."]
+position = Vector2(1, 1)
+points = PackedVector2Array(0, 0, 38, 0, 38, 38, 0, 38)
+closed = true
+width = 2.0
+default_color = Color(0, 0, 0, 1)
 
 [node name="Number" type="Label" parent="."]
 layout_mode = 0
@@ -28,5 +26,5 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="mouse_entered" from="ColorRect" to="." method="_on_color_rect_mouse_entered"]
-[connection signal="mouse_exited" from="ColorRect" to="." method="_on_color_rect_mouse_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

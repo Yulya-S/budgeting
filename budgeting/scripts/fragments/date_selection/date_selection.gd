@@ -1,68 +1,39 @@
-extends ColorRect
+extends Calendar
 # Подключение путей к объектам в сцене
 @onready var Year = $Year
 @onready var Month = $Month
-@onready var Cells = $GridContainer
-
-# Список месяцев в календаре
-const month_list: Array = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
-							"Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
-
-# Переменные
-var selected_day: Dictionary = Global.get_date() # Номер выбранного дня
-var cell_path: Resource = load("res://scenes/fragments/data_selection/cell.tscn") # Путь к сцене ячеек календаря
+# Переменная
+@onready var selected_day: Dictionary = Global.get_date() # Номер выбранного дня
 
 # Применение стартового значения
-func _ready() -> void: set_date()
-
-# Изменение текущей даты из базы данных
-func set_date(new_date: String = Global.date_to_str()) -> void:
-	selected_day = Global.date_to_dict(new_date)
-	_update_calendar()
+func _ready() -> void:
+	_update_year_month()
 
 # Получение выбранной в календаре даты
 func get_date() -> String: return Global.date_to_str(selected_day)
 
+# Обновление данных
+func update_data(_filter: Variant = {}) -> void:
+	super.update_data({"date": Global.date_to_str(selected_day)})
+
 # Изменение настроек календаря
-func _update_calendar() -> void:
-	var current: Dictionary = Global.get_date()
-	# Заполнение списка выбора года
-	for i in range(Year.item_count): Year.remove_item(0)
-	for i in range(selected_day.year-10, selected_day.year+10, 1):
-		if i + 1 > current.year: break
-		Year.add_item(str(i+1))
-	Year.selected = 9
-	_create_days()
-	
-# Заполнение календаря ячейками дней
-func _create_days() -> void:
-	Month.set_text(month_list[selected_day.month-1].to_upper()) # Смена имени месяца
-	Global.clear_scene(Cells)
-	# Получение данных о месяце
-	var current_month: Dictionary = Global.date_to_dict("-".join([selected_day.year, selected_day.month, 1]))
-	var day_count: int = Request.select_day_count(Global.date_to_str(current_month))
-	if current_month.weekday == 0: current_month.weekday = 7 # Смена индекса воскресения
-	current_month.weekday -= 1
-	# Создание ячеек
-	var start_draw: bool = false
-	for i in range(1, 43):
-		if i - current_month.weekday > day_count: start_draw = false
-		elif i >= current_month.weekday: start_draw = true
-		Cells.add_child(cell_path.instantiate())
-		if start_draw: Cells.get_child(-1).set_object(i-current_month.weekday, i-current_month.weekday== selected_day.day)
+func _update_year_month() -> void:
+	_on_year_item_selected()
+	_update_month()
+	selected_day.day = Global.sys_date.date.day
+	update_data()
 
 # Изменение номера дня
-func update_day(day: int) -> void:
-	selected_day.day = day
-	for i in Cells.get_children(): i.is_today = i.id == day
+func update_day(day: int) -> void: selected_day.day = day
 
 # Изменение значения месяца
-func _update_month(value: int = 1) -> void:
+func _update_month(value: int = 0) -> void:
 	selected_day.month += value
-	if selected_day.month > len(month_list): selected_day.month = 1
-	elif selected_day.month <= 0: selected_day.month = len(month_list)
+	if selected_day.month > len(File.lang._Months): selected_day.month = 1
+	elif selected_day.month <= 0: selected_day.month = len(File.lang._Months)
+	Month.set_text(File.lang._Months[selected_day.month - 1])
 	selected_day.day = 1
-	_create_days()
+	update_data()
 
 # Обработка нажатия кнопки следующего месяца
 func _on_next_button_down() -> void: _update_month(1)
@@ -71,7 +42,8 @@ func _on_next_button_down() -> void: _update_month(1)
 func _on_previous_button_down() -> void: _update_month(-1)
 
 # Обработка выбора года
-func _on_year_item_selected(index: int) -> void:
-	selected_day.year = int(Year.get_item_text(index))
+func _on_year_item_selected(index: int = -1) -> void:
+	Global.fill_year_OB(Year, index)
+	selected_day.year = int(Global.get_OB_text(Year))
 	selected_day.day = 1
-	_update_calendar()
+	update_data()

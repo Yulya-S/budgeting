@@ -67,7 +67,7 @@ func _set_all_button_color_parametrs(obj: Variant) -> void:
 	for i in ["", "focus_", "hover_", "hover_pressed_", "pressed_"]: set_font_color(obj, "font_"+i+"color", 6)		
 
 # Применение цвета без прямого обращения
-func _change_color(obj: Variant, idx: int, column: String = "color") -> void:
+func _change_color(obj: Variant, idx: float, column: String = "color") -> void:
 	obj.set(column, get_sys_color(idx))
 
 # Изменение цветовой палитры объектов ColorRect
@@ -76,6 +76,9 @@ func _set_ColorRect(obj) -> void:
 		"Head", "NBorder", "Border": _change_color(obj, 1)
 		"Menu", "Marker", "FastCreations": _change_color(obj, 2)
 		"Background": _change_color(obj, 6)
+		"Date":
+			_change_color(obj, 0)
+			obj.color.a = 0.2
 		"Filter", "Load", "Total": _change_color(obj, 3)
 		"Example": # Частный случай особого пакраса
 			_change_color(obj.get_child(1), 4)
@@ -89,6 +92,13 @@ func _set_ColorRect(obj) -> void:
 # Замена системных иконок
 func _set_icon(obj: Variant, theme_name: String, icon: String) -> void:
 	obj.add_theme_icon_override(theme_name, load("res://img/godot_icon/" + theme_name + "_" + icon))
+
+# Замена цвета ячеек окна выбора даты
+func set_DS_cell_color(obj: ColorRect, text: String, selected: bool, hovered: bool) -> void:
+	if hovered: _change_color(obj, 4)
+	elif selected: _change_color(obj, 2)
+	elif text != "": _change_color(obj, 6)
+	else: _change_color(obj, 5)
 
 # Применение цветовой палитры к странице
 func repainting(obj: Variant) -> void:
@@ -111,6 +121,6 @@ func repainting(obj: Variant) -> void:
 		_: match obj.name:
 			"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
 			"X", "Border", "Separator": _change_color(obj, 0, "default_color")
-			"Frame": _change_color(obj, 4, "default_color")
+			"Frame": _change_color(obj, 3.5, "default_color")
 			"SelectedCell": _change_color(obj, 1, "default_color")
 	for i in obj.get_children(): repainting(i)

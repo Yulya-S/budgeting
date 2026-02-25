@@ -17,8 +17,8 @@ func _process(delta: float) -> void:
 		if len(event_days) == 0: SelectedCell.visible = true
 
 # Обновление данных
-func update_data(new_filter: ColorRect) -> void:
-	super.update_data(new_filter)
+func update_data(filter: Variant = {}) -> void:
+	super.update_data(filter)
 	ColorScheme.repainting(self)
 	SelectedCell.visible = false
 	event_days = Request.select_event_days()

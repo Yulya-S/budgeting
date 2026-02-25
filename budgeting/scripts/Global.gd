@@ -46,7 +46,7 @@ func get_filter(filter: Variant = {}) -> Dictionary:
 
 # Работа с датами
 # Получение даты
-func get_date() -> Dictionary: return sys_date.date 
+func get_date() -> Dictionary: return sys_date.date.duplicate()
 
 # Получение количества дней в текущем месяце
 func get_day_count() -> int: return sys_date.day_count 
@@ -168,3 +168,15 @@ func g_parent(obj: Variant, lavel: int, save_lavel: int = 1) -> Variant:
 	
 # Получение текста в нижнем регистре
 func lower(obj: Variant) -> String: return obj.name.to_lower()
+
+# Функция заполнения OptionButton для данных по году
+func fill_year_OB(container: OptionButton, idx: int) -> void:
+	var last_month: bool = Global.get_date().month == 12
+	var current_year: int = Global.get_date().year
+	var year: int = current_year
+	if idx != -1: year = int(container.get_item_text(idx))
+	for i in range(container.item_count): container.remove_item(0)
+	for i in range(year-10, year+10+int(last_month), 1):
+		if i + 1 > current_year+int(last_month): break
+		container.add_item(str(i+1))
+	container.selected = 9

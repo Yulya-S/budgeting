@@ -1,37 +1,29 @@
 extends ColorRect
 # Подключение пути к объекту в сцене
-@onready var RectColor = $ColorRect
-
-# Переменные
-var id: int = 0 # Индекс объекта
-var is_today: bool = false # Выбрана ли текущая ячейка
+@onready var Number = $Number
+# Переменная
 var state: Global.MouseOver = Global.MouseOver.NORMAL # Текущее состояние объекта
 
-# Изменение цвета ячейки
-func _process(_delta: float) -> void: update_color()
+# Запуск изменения цвета ячейки
+func _ready() -> void: ColorScheme.repainting(self)
+
+# Обработка смены ячейки в процессе работы программы
+func _process(delta: float) -> void:
+	ColorScheme.set_DS_cell_color(self, Number.get_text(), Global.g_parent(self, 2).selected_day.day == int(Number.get_text()), bool(state))
 
 # Изменение номера дня
-func set_object(obj_id: int, today: bool = false) -> void:
-	id = obj_id
-	if id > 0: $Number.set_text(str(id))
-	is_today = today
-
-# Изменение цвета ячейки
-func update_color() -> void:
-	if is_today: RectColor.color = Color.html("#f7cdcd")
-	elif id != 0: RectColor.color = Color.html("#ffffff")
-	else:
-		RectColor.color = Color.html("#5f5f5f")
-		return
-	if state == Global.MouseOver.HOVER: color = Color.html("#39508e")
-	else: color = Color.html("#000000")
+func set_values(idx: int, _current_month: bool, _next_month: bool, day_count: int) -> void:
+	if idx >= 0 and idx < day_count: Number.set_text(str(idx + 1))
 
 # Обработка нажатия клавиш мыши 
 func _input(event: InputEvent) -> void:
-	if id == 0 or state == Global.MouseOver.NORMAL: return
-	if event.is_action("click") and event.is_pressed(): Global.g_parent(self, 2).update_day(id)
+	if Number.get_text() == "" or state == Global.MouseOver.NORMAL: return
+	if event.is_action("click") and event.is_pressed():
+		Global.g_parent(self, 2).update_day(int(Number.get_text()))
 
 # Обработка наведения мыши на контейнер
-func _on_color_rect_mouse_entered() -> void: state = Global.MouseOver.HOVER
+func _on_mouse_entered() -> void:
+	if Number.get_text() == "": return
+	state = Global.MouseOver.HOVER
 
-func _on_color_rect_mouse_exited() -> void: state = Global.MouseOver.NORMAL
+func _on_mouse_exited() -> void: state = Global.MouseOver.NORMAL

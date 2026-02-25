@@ -14,9 +14,9 @@ func _process(_delta: float) -> void: if _end_create(): Global.add_new_child(Cel
 func _date_comparison(operator: String = "==") -> bool: return date.date_comparison(Global.get_date(), operator)
 
 # Проверка завершено ли создание ячеек календаря
-func _end_create() -> bool: return Cells.get_child_count() != date.calendar_cells()
+func _end_create() -> bool:	return Cells.get_child_count() != date.calendar_cells()
 
 # Обновление данных
-func update_data(new_filter: ColorRect) -> void:
+func update_data(filter: Variant = {}) -> void:
 	Global.clear_scene(Cells)
-	date.set_value(new_filter.get_filter().date)
+	date.set_value(Global.get_filter(filter).date)
