@@ -8,7 +8,7 @@ var state: Global.MouseOver = Global.MouseOver.NORMAL # Текущее сост�
 func _ready() -> void: ColorScheme.repainting(self)
 
 # Обработка смены ячейки в процессе работы программы
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	ColorScheme.set_DS_cell_color(self, Number.get_text(), Global.g_parent(self, 2).selected_day.day == int(Number.get_text()), bool(state))
 
 # Изменение номера дня

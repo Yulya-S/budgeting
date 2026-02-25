@@ -6,8 +6,7 @@ extends Calendar
 @onready var selected_day: Dictionary = Global.get_date() # Номер выбранного дня
 
 # Применение стартового значения
-func _ready() -> void:
-	_update_year_month()
+func _ready() -> void: _update_year_month()
 
 # Получение выбранной в календаре даты
 func get_date() -> String: return Global.date_to_str(selected_day)
@@ -21,7 +20,6 @@ func _update_year_month() -> void:
 	_on_year_item_selected()
 	_update_month()
 	selected_day.day = Global.sys_date.date.day
-	update_data()
 
 # Изменение номера дня
 func update_day(day: int) -> void: selected_day.day = day
