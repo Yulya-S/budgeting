@@ -86,8 +86,8 @@ func _set_ColorRect(obj) -> void:
 		_:
 			if Global.g_parent(obj, 3).name == "FastCreations": _change_color(obj, 4)
 			elif obj.get_parent().get_class() == "VBoxContainer": _change_color(obj, 4 + int(obj.get_parent().get_child_count() != 1))
-			elif obj.get_parent().get_class() in ["GridContainer", "HBoxContainer"]:
-				_change_color(obj, 5)
+			elif obj.get_parent().get_class() == "HBoxContainer": _change_color(obj, 5)
+			elif obj.get_parent().get_class() == "GridContainer": _change_color(obj, 6)
 
 # Замена системных иконок
 func _set_icon(obj: Variant, theme_name: String, icon: String) -> void:
