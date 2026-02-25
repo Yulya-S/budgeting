@@ -18,7 +18,7 @@ func update_data() -> void:
 	if idx == 0: return
 	super.update_data()
 	var data: Dictionary = Request.select_inf_data(filter_data.where, idx, page_type)
-	for i in _get_labels(): Global.set_label_from_data(i, data)
+	for i in [$Filter/Title] + _get_labels(): Global.set_label_from_data(i, data)
 
 # Проверка типа страницы информации
 func _get_type() -> bool:
@@ -26,8 +26,8 @@ func _get_type() -> bool:
 
 # Получение списка заголовков для применения значений
 func _get_labels() -> Array:
-	if _get_type(): return [$Filter/Title, $Filter/Total, $Total/Count, $Total/Cash_flow]
-	return [$Filter/Title, $Filter/Percent, $Total/Total, $Total/Value]
+	if _get_type(): return [$Filter/Total, $Total/Count, $Total/Cash_flow]
+	return [$Filter/Percent, $Total/Total, $Total/Value]
 
 # Получение данных фильтра
 func _get_filter(_obj: Variant) -> Array: return [filter_data]
