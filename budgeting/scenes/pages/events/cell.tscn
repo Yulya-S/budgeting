@@ -36,7 +36,7 @@ offset_top = 2.0
 offset_right = 76.0
 offset_bottom = 76.0
 mouse_filter = 2
-color = Color(1, 1, 1, 0.278431)
+color = Color(1, 1, 1, 0.396078)
 
 [node name="Frame" type="Line2D" parent="."]
 position = Vector2(2, 2)
