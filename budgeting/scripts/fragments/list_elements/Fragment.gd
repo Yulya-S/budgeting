@@ -71,7 +71,9 @@ func _set_special_values(data: Dictionary) -> void:
 				3:
 					$Wallet_2_Title.next_page = Global.Pages.LOAN
 					Title.next_page = Global.Pages.PAYMENT
-				_: $Wallet_2_Title.visible = false
+				_:
+					if data.income: $Wallet_Title.visible = false
+					else: $Wallet_2_Title.visible = false
 		
 # Общая часть применения значений для объектов списков событий
 func _event_values(data: Dictionary, et_text: String) -> void:

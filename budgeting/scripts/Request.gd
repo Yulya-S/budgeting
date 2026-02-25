@@ -263,7 +263,7 @@ func _update_sections_list(line: Dictionary, parent: Variant) -> Dictionary:
 # Запрос на получение списка движений средств
 func _select_cash_flows_list(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
 	if where: where = " AND "+where
-	return _select("cf.*, s.title, w.title wallet_title FROM `cash_flows` cf LEFT JOIN sections s ON cf.section_id=s.id
+	return _select("cf.*, s.title, s.income, w.title wallet_title FROM `cash_flows` cf LEFT JOIN sections s ON cf.section_id=s.id
 		LEFT JOIN wallets w ON cf.wallet_id=w.id", where_date(date)+where, order)
 
 # Запрос на изменение списка разделов
@@ -277,6 +277,9 @@ func _update_cash_flows_list(line: Dictionary) -> Dictionary:
 			var save_id: int = line.wallet_id if line.wallet_id else 0
 			line.wallet_id = line.wallet_2_id
 			line.wallet_2_id = save_id
+		_: if line.income:
+			line["wallet_2_title"] = line.wallet_title
+			line.wallet_2_id = line.wallet_id
 	return line
 	
 # Получение суммы движений средств распределенных по дням
