@@ -38,6 +38,7 @@ func _check_textEdit(obj: TextEdit) -> bool:
 # Проверка возможности создания кошелька
 func _check_wallet() -> bool: return $Value.get_text() != "" and _check_textEdit($Title)
 
+# Проверка возможности создания раздела
 func _check_section() -> bool:
 	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or $Income.button_pressed) and _check_textEdit($Title)
 
