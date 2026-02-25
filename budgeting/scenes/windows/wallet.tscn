@@ -33,7 +33,6 @@ offset_left = 485.0
 offset_top = 225.0
 offset_right = 906.0
 offset_bottom = 256.0
-placeholder_text = "Название"
 autowrap_mode = 1
 scroll_past_end_of_file = true
 

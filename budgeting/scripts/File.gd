@@ -123,7 +123,7 @@ func _lang_match(obj: Variant, key: String) -> void:
 			if "_ConfirmationDialog" in lang.keys():
 				if "cancel" in lang._ConfirmationDialog.keys(): obj.set_cancel_button_text(lang._ConfirmationDialog.cancel)
 				if "ok" in lang._ConfirmationDialog.keys(): obj.set_ok_button_text(lang._ConfirmationDialog.ok)
-			if "text" in lang[key].keys(): obj.set_text(lang[key].text)
+			if "text" in lang[key].keys(): obj.set_text(lang["__sure"]+" "+lang[key].text)
 			if "title" in lang[key].keys(): obj.set_title(lang[key].title)
 			
 # Изменение текста состояния кнопки переключателя
@@ -167,7 +167,7 @@ func _standard_language() -> Dictionary:
 		"Preinstalled": ["Предустановленная тема", "Пользовательская тема"],
 		"ColorSchemePre": ["Стандартный", "Серый", "Лимон со смородиной", "Ржавый металл", "Лиса на поляне", "Ягода на ветке", "Ежевика"],
 		"ColorSchemeCus": ["Моно", "Контраст", "Триада", "Тетрада"],
-		"SettingsConfirmationDialog": {"text": "Вы уверены? Все данные пользователя будут удалены", "title": "Удаление пользователя"},
+		"SettingsConfirmationDialog": {"text": "Все данные пользователя будут удалены", "title": "Удаление пользователя"},
 		# Окно очистки данных
 		"CleaningCashFlows": "Очистить движения средств", "ClearEvents": "Очистить события", "CleaningLoans": "Очистить займы",
 		"CleaningCashFlowsLabel": "Удаление данных о движениях средств, с даты создания которых прошло более 2-х лет",
@@ -177,7 +177,7 @@ func _standard_language() -> Dictionary:
 		"FilterTitleLabel": "Фрагмент названия", "FilterOrderLabel": "Порядок сортировки",
 		"YearLabel": "Год фильтрации", "MonthLabel": "Месяц фильтрации", "FilterButton": "Применить",
 		# Окно подтверждения
-		"_ConfirmationDialog": {"cancel": "Нет", "ok": "Да"},
+		"_ConfirmationDialog": {"cancel": "Нет", "ok": "Да"}, "__sure": "Вы уверены?",
 		# Страница кошельков
 		"AddWallet": "Создать счет", "Transaction": "Переносить средства между счетами",
 		"CashFlow": "Записать движение средств", "WalletTitle": "Название кошелька",
@@ -223,6 +223,16 @@ func _standard_language() -> Dictionary:
 		# Страница информации о займах
 		"LoanLabel": "Информация о займе", "PercentLabel": "Средний процент по займу:",
 		"TotalLLabel": "Оставшаяся сумма:", "TotalValueLabel": "Изначальная сумма:",
+		# Окно изменения кошелька
+		"WalletWindowTitleLabel": "*Название кошелька:",
+		"WalletWindowValueLabel": "*Значение счета:",
+		"WalletWindowWindowConfirmationDialog": { "title": "Удаление кошелька",
+			"text": "Все данные кошелька будут удалены"},
+		# Окно измененя раздела
+		"SectionWindowTitleLabel": "*Название раздела:", "Income": ["Расход", "Доход"],
+		"Month_LimitLabel": "*Ежемесячное ограничение:",
+		"SectionWindowWindowConfirmationDialog": { "title": "Удаление раздела",
+			"text": "Все данные раздела будут удалены"},
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "По дате добавления", "__FO2": "По алфавиту",
 		# Объекты из базы данных
@@ -269,7 +279,7 @@ func _cr_en() -> void:
 		"Preinstalled": ["Pre-installed theme", "Custom Theme"],
 		"ColorSchemePre": ["Standard", "Grey", "Lemon with currants", "Rusty metal", "A fox in a clearing", "Berry on a branch", "Blackberry"],
 		"ColorSchemeCus": ["Mono", "Contrast", "Triad", "Tetrad"],
-		"SettingsConfirmationDialog": {"text": "Are you sure? All user data will be deleted", "title": "Deleting a user"},
+		"SettingsConfirmationDialog": {"text": "All user data will be deleted", "title": "Deleting a user"},
 		# Окно очистки данных
 		"CleaningCashFlows": "Clear funds movements", "ClearEvents": "Clear events", "CleaningLoans": "Clear loans",
 		"CleaningCashFlowsLabel": "Deleting data on fund movements that were created more than 2 years ago",
@@ -279,7 +289,7 @@ func _cr_en() -> void:
 		"FilterTitleLabel": "Title fragment", "FilterOrderLabel": "Sorting order",
 		"YearLabel": "Year of filtration", "MonthLabel": "Month of filtering", "FilterButton": "Apply",
 		# Окно подтверждения
-		"_ConfirmationDialog": {"cancel": "No", "ok": "Yes"},
+		"_ConfirmationDialog": {"cancel": "No", "ok": "Yes"}, "__sure": "Are you sure?",
 		# Страница кошельков
 		"AddWallet": "Create an account", "Transaction": "Transfer funds between accounts",
 		"CashFlow": "Record the movement of funds", "WalletTitle": "Wallet name",
@@ -326,6 +336,16 @@ func _cr_en() -> void:
 		# Страница информации о займах
 		"LoanLabel": "Loan information", "PercentLabel": "Average loan interest rate:",
 		"TotalLLabel": "Remaining amount:", "TotalValueLabel": "Initial amount:",
+		# Окно изменения кошелька
+		"WalletWindowTitleLabel": "*Wallet name:",
+		"WalletWindowValueLabel": "*Wallet value:",
+		"WalletWindowWindowConfirmationDialog": { "title": "Removing a wallet",
+			"text": "All wallet data will be deleted."},
+		# Окно измененя раздела
+		"SectionWindowTitleLabel": "*Section title:", "Income": ["Expenses", "Income"],
+		"Month_LimitLabel": "*Monthly limitation:",
+		"SectionWindowWindowConfirmationDialog": { "title": "Deleting a partition",
+			"text": "All data in this section will be deleted."},
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "By date added", "__FO2": "Alphabetically",
 		# Объекты из базы данных

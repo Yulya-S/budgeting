@@ -36,7 +36,6 @@ offset_right = 906.0
 offset_bottom = 256.0
 focus_next = NodePath("../Income")
 focus_previous = NodePath("../Month_Limit")
-placeholder_text = "Название"
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
