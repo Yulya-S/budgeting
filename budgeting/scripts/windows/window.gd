@@ -27,6 +27,7 @@ func set_page(new_idx: int) -> void:
 func check_object() -> bool:
 	match page_type:
 		Request.ObjectVariants.WALLET: return _check_wallet()
+		Request.ObjectVariants.SECTION: return _check_section()
 	return false
 
 # Проверка что имя 
@@ -37,11 +38,15 @@ func _check_textEdit(obj: TextEdit) -> bool:
 # Проверка возможности создания кошелька
 func _check_wallet() -> bool: return $Value.get_text() != "" and _check_textEdit($Title)
 
+func _check_section() -> bool:
+	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or $Income.button_pressed) and _check_textEdit($Title)
+
 # Получение значений со страницы
 func get_values() -> Array:
 	var values: Array = []
 	for i in get_children():
 		if i.get_class() == "TextEdit": values.append(i.get_text())
+		elif i.get_class() == "CheckButton": values.append(str(i.button_pressed))
 	return values
 
 # Обработка переключения переключателя

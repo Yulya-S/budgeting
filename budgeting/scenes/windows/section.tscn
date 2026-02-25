@@ -51,6 +51,23 @@ text = "*Название раздела:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
+[node name="Income" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 648.0
+offset_top = 263.0
+offset_right = 793.0
+offset_bottom = 294.0
+focus_next = NodePath("../Month_Limit")
+focus_previous = NodePath("../Title")
+theme_override_colors/font_disabled_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_hover_color = Color(0.364706, 0.364706, 0.364706, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+text = "Расход"
+alignment = 2
+
 [node name="Month_Limit" type="TextEdit" parent="."]
 clip_contents = false
 layout_mode = 0
@@ -75,23 +92,6 @@ text = "*Ежемесячное ограничение:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Income" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 263.0
-offset_right = 793.0
-offset_bottom = 294.0
-focus_next = NodePath("../Month_Limit")
-focus_previous = NodePath("../Title")
-theme_override_colors/font_disabled_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_hover_color = Color(0.364706, 0.364706, 0.364706, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-text = "Расход"
-alignment = 2
-
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
-[connection signal="text_changed" from="Month_Limit" to="." method="_on_month_limit_text_changed"]
 [connection signal="toggled" from="Income" to="." method="_on_income_toggled"]
+[connection signal="text_changed" from="Month_Limit" to="." method="_on_month_limit_text_changed"]

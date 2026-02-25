@@ -599,10 +599,15 @@ func _update_wallet(idx: String, values: Array) -> void:
 func match_created(obj_type: ObjectVariants, values: Array) -> void:
 	match obj_type:
 		ObjectVariants.WALLET: return _create_wallet(values)
+		ObjectVariants.SECTION: return _create_section(values)
 
 # Запрос на изменение кошелька
 func _create_wallet(values: Array) -> void:
 	db.query('INSERT INTO wallets (title, value) VALUES ("'+values[0]+'",'+values[1]+");")
+	
+# Запрос на изменение раздела
+func _create_section(values: Array) -> void:
+	db.query('INSERT INTO sections (title, income, month_limit) VALUES ("'+values[0]+'", '+values[1]+", "+values[2]+");")
 	
 # Проверка наличия с определенным имененем в таблицах
 func check_obj_name(obj_name: String, idx: int, table: ObjectVariants) -> bool:
