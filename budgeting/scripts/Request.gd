@@ -571,6 +571,7 @@ func _select_section_obj(idx: String) -> Dictionary:
 func match_deleted(idx: String, obj_type: ObjectVariants) -> void:
 	match obj_type:
 		ObjectVariants.WALLET: return _delete_wallet_obj(idx)
+		ObjectVariants.SECTION: return _delete_section_obj(idx)
 
 # Запрос на удаление кошельков
 func _delete_wallet_obj(idx: String) -> void:
@@ -584,8 +585,18 @@ func _delete_wallet_obj(idx: String) -> void:
 	db.query("UPDATE cash_flows SET wallet_id = wallet_id - 1 WHERE wallet_id > " + idx + ";")
 	db.query("UPDATE cash_flows SET wallet_2_id = wallet_2_id - 1 WHERE section_id = 1 AND wallet_2_id > " + idx + ";")
 	_table_ids_update("cash_flows")
-	
-	
+
+# Запрос на удаление разделов
+func _delete_section_obj(idx: String) -> void:
+	# Удаление раздела
+	db.query("DELETE FROM sections WHERE id = "+idx+";")
+	db.query("UPDATE sections SET id = id - 1 WHERE id > " + idx + ";")
+	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "sections";')
+	# Удаление данных о движениях средств
+	db.query("DELETE FROM cash_flows WHERE section_id = "+idx+";")
+	db.query("UPDATE cash_flows SET section_id = section_id - 1 WHERE section_id > " + idx + ";")
+	_table_ids_update("cash_flows")
+
 # Распределение запросов на изменение объектов таблицы
 func match_updated(idx: String, obj_type: ObjectVariants, values: Array) -> void:
 	match obj_type:
