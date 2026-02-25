@@ -568,7 +568,9 @@ func _select_wallet_obj(idx: String) -> Dictionary:
 
 # Запрос на получение объекта таблицы разделов
 func _select_section_obj(idx: String) -> Dictionary:
-	return _select("* FROM sections", "id = " + idx)[0]
+	var value: Dictionary = _select("* FROM sections", "id = " + idx)[0]
+	if value.month_limit == -1.0: value.month_limit = 0.0
+	return value
 	
 # Распределение запросов на удаление объектов таблицы
 func match_deleted(idx: String, obj_type: ObjectVariants) -> void:
