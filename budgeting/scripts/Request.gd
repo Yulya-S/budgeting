@@ -627,6 +627,7 @@ func _create_wallet(values: Array) -> void:
 	
 # Запрос на изменение раздела
 func _create_section(values: Array) -> void:
+	if values[1] == "true": values[2] = "-1.0"
 	db.query('INSERT INTO sections (title, income, month_limit) VALUES ("'+values[0]+'", '+values[1]+", "+values[2]+");")
 	
 # Проверка наличия с определенным имененем в таблицах
