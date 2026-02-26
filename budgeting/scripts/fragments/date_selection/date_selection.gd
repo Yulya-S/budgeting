@@ -8,6 +8,11 @@ extends Calendar
 # Применение стартового значения
 func _ready() -> void: _update_year_month()
 
+# Изменение выбранной даты
+func set_date(date: String) -> void:
+	selected_day = Global.date_to_dict(date)
+	_update_year_month(selected_day.duplicate())
+
 # Получение выбранной в календаре даты
 func get_date() -> String: return Global.date_to_str(selected_day)
 
@@ -16,10 +21,10 @@ func update_data(_filter: Variant = {}) -> void:
 	super.update_data({"date": Global.date_to_str(selected_day)})
 
 # Изменение настроек календаря
-func _update_year_month() -> void:
+func _update_year_month(date: Dictionary = Global.sys_date.date) -> void:
 	_on_year_item_selected()
 	_update_month()
-	selected_day.day = Global.sys_date.date.day
+	selected_day.day = date.day
 
 # Изменение номера дня
 func update_day(day: int) -> void: selected_day.day = day
@@ -41,7 +46,6 @@ func _on_previous_button_down() -> void: _update_month(-1)
 
 # Обработка выбора года
 func _on_year_item_selected(index: int = -1) -> void:
-	Global.fill_year_OB(Year, index)
-	selected_day.year = int(Global.get_OB_text(Year))
+	Global.fill_year_OB(Year, index, selected_day.year)
 	selected_day.day = 1
 	update_data()
