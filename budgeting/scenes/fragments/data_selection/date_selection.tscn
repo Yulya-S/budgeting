@@ -7,7 +7,7 @@
 custom_minimum_size = Vector2(290, 310)
 offset_right = 290.0
 offset_bottom = 310.0
-color = Color(1, 1, 1, 0.333333)
+color = Color(0, 0, 0, 0.333333)
 script = ExtResource("1_srupp")
 cell_path = ExtResource("2_xi3pa")
 
