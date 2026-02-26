@@ -583,8 +583,10 @@ func match_deleted(idx: String, obj_type: ObjectVariants) -> void:
 	match obj_type:
 		ObjectVariants.WALLET: return _delete_wallet_obj(idx)
 		ObjectVariants.SECTION: return _delete_section_obj(idx)
+		ObjectVariants.EVENT: return _delete_event_obj(idx)
+		
 
-# Запрос на удаление кошельков
+# Запрос на удаление кошелька
 func _delete_wallet_obj(idx: String) -> void:
 	# Удаление кошелька
 	db.query("DELETE FROM wallets WHERE id = "+idx+";")
@@ -597,7 +599,7 @@ func _delete_wallet_obj(idx: String) -> void:
 	db.query("UPDATE cash_flows SET wallet_2_id = wallet_2_id - 1 WHERE section_id = 1 AND wallet_2_id > " + idx + ";")
 	_table_ids_update("cash_flows")
 
-# Запрос на удаление разделов
+# Запрос на удаление раздела
 func _delete_section_obj(idx: String) -> void:
 	# Удаление раздела
 	db.query("DELETE FROM sections WHERE id = "+idx+";")
@@ -607,6 +609,14 @@ func _delete_section_obj(idx: String) -> void:
 	db.query("DELETE FROM cash_flows WHERE section_id = "+idx+";")
 	db.query("UPDATE cash_flows SET section_id = section_id - 1 WHERE section_id > " + idx + ";")
 	_table_ids_update("cash_flows")
+	
+# Запрос на удаление события
+func _delete_event_obj(idx: String) -> void:
+	# Удаление события
+	idx = str(_select("* FROM multiplied_events", "id = " + idx)[0].event_id)
+	db.query("DELETE FROM events WHERE id = "+idx+";")
+	db.query("UPDATE events SET id = id - 1 WHERE id > " + idx + ";")
+	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "events";')
 
 # Распределение запросов на изменение объектов таблицы
 func match_updated(idx: String, obj_type: ObjectVariants, values: Array) -> void:
@@ -627,6 +637,7 @@ func _update_section(idx: String, values: Array) -> void:
 # Запрос на изменение раздела
 func _update_event(idx: String, values: Array) -> void:
 	if int(values[2]) == 0: values[3] = "0.0"
+	idx = str(_select("* FROM multiplied_events", "id = " + idx)[0].event_id)
 	db.query('UPDATE events SET title = "'+values[0]+'", repetition_rate ='+str(values[1])+", event_type = "+str(values[2])+", value = "+values[3]+', date ="'+values[4]+'" WHERE id = '+idx+";")
 
 # Распределение запросов на создание объектов таблицы
