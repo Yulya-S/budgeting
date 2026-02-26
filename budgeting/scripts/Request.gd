@@ -560,6 +560,7 @@ func match_elem(idx: String, obj_type: ObjectVariants) -> Dictionary:
 	match obj_type:
 		ObjectVariants.WALLET: return _select_wallet_obj(idx)
 		ObjectVariants.SECTION: if int(idx) > 4: return _select_section_obj(idx)
+		ObjectVariants.EVENT: return _select_event_obj(idx)
 	return {}
 	
 # Запрос на получение объекта таблицы счетов
@@ -571,6 +572,11 @@ func _select_section_obj(idx: String) -> Dictionary:
 	var value: Dictionary = _select("* FROM sections", "id = " + idx)[0]
 	if value.month_limit == -1.0: value.month_limit = 0.0
 	return value
+
+# Запрос на получение обекта таблицы событий
+func _select_event_obj(idx: String) -> Dictionary:
+	idx = str(_select("* FROM multiplied_events", "id = " + idx)[0].event_id)
+	return _select("* FROM events", "id = " + idx)[0]
 	
 # Распределение запросов на удаление объектов таблицы
 func match_deleted(idx: String, obj_type: ObjectVariants) -> void:
@@ -622,16 +628,21 @@ func match_created(obj_type: ObjectVariants, values: Array) -> void:
 	match obj_type:
 		ObjectVariants.WALLET: return _create_wallet(values)
 		ObjectVariants.SECTION: return _create_section(values)
+		ObjectVariants.EVENT: return _create_event(values)
 
-# Запрос на изменение кошелька
+# Запрос на создание кошелька
 func _create_wallet(values: Array) -> void:
 	db.query('INSERT INTO wallets (title, value) VALUES ("'+values[0]+'",'+values[1]+");")
 	
-# Запрос на изменение раздела
+# Запрос на создание раздела
 func _create_section(values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
 	db.query('INSERT INTO sections (title, income, month_limit) VALUES ("'+values[0]+'", '+values[1]+", "+values[2]+");")
-	
+
+# Запрос на создание события
+func _create_event(values: Array) -> void:
+	db.query('INSERT INTO events (title, repetition_rate, date) VALUES ("'+values[0]+'",'+str(values[1])+', "'+values[2]+'");')
+
 # Проверка наличия с определенным имененем в таблицах
 func check_obj_name(obj_name: String, idx: int, table: ObjectVariants) -> bool:
 	return len(_select("* FROM "+_get_table_name(table), 'title = "' + obj_name + '" AND id != ' + str(idx))) == 0

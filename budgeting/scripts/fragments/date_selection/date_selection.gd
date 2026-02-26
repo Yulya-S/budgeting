@@ -9,8 +9,8 @@ extends Calendar
 func _ready() -> void: _update_year_month()
 
 # Изменение выбранной даты
-func set_date(date: String) -> void:
-	selected_day = Global.date_to_dict(date)
+func set_date(new_date: String) -> void:
+	selected_day = Global.date_to_dict(new_date)
 	_update_year_month(selected_day.duplicate())
 
 # Получение выбранной в календаре даты
@@ -21,10 +21,10 @@ func update_data(_filter: Variant = {}) -> void:
 	super.update_data({"date": Global.date_to_str(selected_day)})
 
 # Изменение настроек календаря
-func _update_year_month(date: Dictionary = Global.sys_date.date) -> void:
+func _update_year_month(new_date: Dictionary = Global.sys_date.date) -> void:
 	_on_year_item_selected()
 	_update_month()
-	selected_day.day = date.day
+	selected_day.day = new_date.day
 
 # Изменение номера дня
 func update_day(day: int) -> void: selected_day.day = day

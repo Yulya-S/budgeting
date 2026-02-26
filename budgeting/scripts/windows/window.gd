@@ -22,12 +22,15 @@ func set_page(new_idx: int) -> void:
 		elif i.get_class() == "CheckButton":
 			i.button_pressed = data[Global.lower(i)]
 			_on_income_toggled(data[Global.lower(i)])
+		elif i.get_class() == "OptionButton": i.selected = data[Global.lower(i)]
+		elif i.name == "Date": i.set_date(data[Global.lower(i)])
 
 # Проверка верности заполнения полей
 func check_object() -> bool:
 	match page_type:
 		Request.ObjectVariants.WALLET: return _check_wallet()
 		Request.ObjectVariants.SECTION: return _check_section()
+		Request.ObjectVariants.EVENT: return _check_event()
 	return false
 
 # Проверка что имя 
@@ -37,6 +40,9 @@ func _check_textEdit(obj: TextEdit) -> bool:
 
 # Проверка возможности создания кошелька
 func _check_wallet() -> bool: return $Value.get_text() != "" and _check_textEdit($Title)
+
+# Проверка возможности создания события
+func _check_event() -> bool: return $Title.get_text() != ""
 
 # Проверка возможности создания раздела
 func _check_section() -> bool:
@@ -48,6 +54,8 @@ func get_values() -> Array:
 	for i in get_children():
 		if i.get_class() == "TextEdit": values.append(i.get_text())
 		elif i.get_class() == "CheckButton": values.append(str(i.button_pressed))
+		elif i.get_class() == "OptionButton": values.append(i.selected)
+		elif i.name == "Date": values.append(i.get_date())
 	return values
 
 # Обработка переключения переключателя
