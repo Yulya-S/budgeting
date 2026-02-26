@@ -613,6 +613,7 @@ func match_updated(idx: String, obj_type: ObjectVariants, values: Array) -> void
 	match obj_type:
 		ObjectVariants.WALLET: return _update_wallet(idx, values)
 		ObjectVariants.SECTION: return _update_section(idx, values)
+		ObjectVariants.EVENT: return _update_event(idx, values)
 
 # Запрос на изменение кошелька
 func _update_wallet(idx: String, values: Array) -> void:
@@ -622,6 +623,11 @@ func _update_wallet(idx: String, values: Array) -> void:
 func _update_section(idx: String, values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
 	db.query('UPDATE sections SET title = "'+values[0]+'", income ='+values[1]+", month_limit = "+values[2]+" WHERE id = "+idx+";")
+
+# Запрос на изменение раздела
+func _update_event(idx: String, values: Array) -> void:
+	if int(values[2]) == 0: values[3] = "0.0"
+	db.query('UPDATE events SET title = "'+values[0]+'", repetition_rate ='+str(values[1])+", event_type = "+str(values[2])+", value = "+values[3]+', date ="'+values[4]+'" WHERE id = '+idx+";")
 
 # Распределение запросов на создание объектов таблицы
 func match_created(obj_type: ObjectVariants, values: Array) -> void:
