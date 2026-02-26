@@ -22,8 +22,14 @@ func set_page(new_idx: int) -> void:
 		elif i.get_class() == "CheckButton":
 			i.button_pressed = data[Global.lower(i)]
 			_on_income_toggled(data[Global.lower(i)])
-		elif i.get_class() == "OptionButton": i.selected = data[Global.lower(i)]
+		elif i.get_class() == "OptionButton":
+			if get(_create_func_name(i)): callv(_create_func_name(i), [data[Global.lower(i)]])
+			i.selected = data[Global.lower(i)]
 		elif i.name == "Date": i.set_date(data[Global.lower(i)])
+
+# Сборка имени функции
+func _create_func_name(obj: Variant) -> String:
+	return "_on_" + Global.lower(obj) + "_item_selected"
 
 # Проверка верности заполнения полей
 func check_object() -> bool:
@@ -41,12 +47,13 @@ func _check_textEdit(obj: TextEdit) -> bool:
 # Проверка возможности создания кошелька
 func _check_wallet() -> bool: return $Value.get_text() != "" and _check_textEdit($Title)
 
-# Проверка возможности создания события
-func _check_event() -> bool: return $Title.get_text() != ""
-
 # Проверка возможности создания раздела
 func _check_section() -> bool:
 	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or $Income.button_pressed) and _check_textEdit($Title)
+
+# Проверка возможности создания события
+func _check_event() -> bool:
+	return (($Value.get_text() != "" and float($Value.get_text()) > 0) or $Event_type.selected == 0) and $Title.get_text() != ""
 
 # Получение значений со страницы
 func get_values() -> Array:
@@ -69,3 +76,6 @@ func _on_title_text_changed() -> void: Global.text_changed_TextEdit($Title)
 
 # Изменение значения объекта
 func _on_value_text_changed() -> void: Global.text_changed_TextEdit($Value, true)
+
+# Изменение типа события
+func _on_event_type_item_selected(index: int) -> void: $Value.visible = index > 0

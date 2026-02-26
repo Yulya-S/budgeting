@@ -641,7 +641,8 @@ func _create_section(values: Array) -> void:
 
 # Запрос на создание события
 func _create_event(values: Array) -> void:
-	db.query('INSERT INTO events (title, repetition_rate, date) VALUES ("'+values[0]+'",'+str(values[1])+', "'+values[2]+'");')
+	if int(values[2]) == 0: values[3] = "0.0"
+	db.query('INSERT INTO events (title, repetition_rate, event_type, value, date) VALUES ("'+values[0]+'",'+str(values[1])+", "+str(values[2])+", "+values[3]+', "'+values[4]+'");')
 
 # Проверка наличия с определенным имененем в таблицах
 func check_obj_name(obj_name: String, idx: int, table: ObjectVariants) -> bool:

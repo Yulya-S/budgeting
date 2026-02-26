@@ -114,6 +114,7 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Value" type="TextEdit" parent="."]
+visible = false
 clip_contents = false
 layout_mode = 0
 offset_left = 400.0
@@ -141,3 +142,6 @@ offset_left = 709.0
 offset_top = 163.0
 offset_right = 999.0
 offset_bottom = 473.0
+
+[connection signal="item_selected" from="Event_type" to="." method="_on_event_type_item_selected"]
+[connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
