@@ -223,16 +223,24 @@ func _standard_language() -> Dictionary:
 		# Страница информации о займах
 		"LoanLabel": "Информация о займе", "PercentLabel": "Средний процент по займу:",
 		"TotalLLabel": "Оставшаяся сумма:", "TotalValueLabel": "Изначальная сумма:",
-		# Окно изменения кошелька
+		# Окно создания / изменения кошелька
 		"WalletWindowTitleLabel": "*Название кошелька:",
 		"WalletWindowValueLabel": "*Значение счета:",
 		"WalletWindowWindowConfirmationDialog": { "title": "Удаление кошелька",
 			"text": "Все данные кошелька будут удалены"},
-		# Окно изменения раздела
+		# Окно создания / изменения раздела
 		"SectionWindowTitleLabel": "*Название раздела:", "SectionWindowIncome": ["Расход", "Доход"],
 		"Month_LimitLabel": "*Ежемесячное ограничение:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Удаление раздела",
 			"text": "Все данные раздела будут удалены"},
+		# Окно создания / изменения события
+		"EventWindowTitleLabel": "Название события:", "Event_typeLabel": "Тип события",
+		"Repetition_rateLabel": "Частота повторения", "ValueLabel": "Значение:",
+		"EventWindowWindowConfirmationDialog": { "title": "Удаление события",
+			"text": "Все данные события будут удалены"},
+		"Repetition_rate": ["Один раз", "Каждые два дня", "Раз в неделю",
+			"Раз в месяц", "Раз в год"],
+		"Event_type": ["Без типа"], "DateLabel": "Выбор даты:",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "По дате добавления", "__FO2": "По алфавиту",
 		# Объекты из базы данных
@@ -336,16 +344,23 @@ func _cr_en() -> void:
 		# Страница информации о займах
 		"LoanLabel": "Loan information", "PercentLabel": "Average loan interest rate:",
 		"TotalLLabel": "Remaining amount:", "TotalValueLabel": "Initial amount:",
-		# Окно изменения кошелька
+		# Окно создания / изменения кошелька
 		"WalletWindowTitleLabel": "*Wallet name:",
 		"WalletWindowValueLabel": "*Wallet value:",
 		"WalletWindowWindowConfirmationDialog": { "title": "Removing a wallet",
 			"text": "All wallet data will be deleted."},
-		# Окно измененя раздела
+		# Окно создания / изменения раздела
 		"SectionWindowTitleLabel": "*Section title:", "Income": ["Expenses", "Income"],
 		"Month_LimitLabel": "*Monthly limitation:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Deleting a partition",
 			"text": "All data in this section will be deleted."},
+		# Окно создания / изменения события
+		"EventWindowTitleLabel": "Event name:", "Event_typeLabel": "Event type",
+		"Repetition_rateLabel": "Repetition rate", "ValueLabel": "Value:",
+		"EventWindowWindowConfirmationDialog": { "title": "Deleting an event",
+			"text": "All event data will be deleted."},
+		"Repetition_rate": ["Once", "Every two days", "Once a week", "Once a month", "Once a year"],
+		"Event_type": ["No type"], "DateLabel": "Select date:",
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "By date added", "__FO2": "Alphabetically",
 		# Объекты из базы данных
