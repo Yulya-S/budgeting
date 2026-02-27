@@ -61,7 +61,7 @@ func get_values() -> Array:
 	for i in get_children():
 		if i.get_class() == "TextEdit": values.append(i.get_text())
 		elif i.get_class() == "CheckButton": values.append(str(i.button_pressed))
-		elif i.get_class() == "OptionButton": values.append(i.selected)
+		elif i.get_class() == "OptionButton": values.append(Global.get_OB_id(i))
 		elif i.name == "Date": values.append(i.get_date())
 	return values
 
