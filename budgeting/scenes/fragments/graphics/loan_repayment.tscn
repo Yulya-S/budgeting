@@ -11,12 +11,7 @@ offset_bottom = 40.0
 script = ExtResource("1_ybdpp")
 graph_type = 2
 
-[node name="X" type="Line2D" parent="."]
-points = PackedVector2Array(10, 119, 1142, 119)
-width = 2.0
-default_color = Color(0, 0, 0, 1)
-
-[node name="Y" type="Line2D" parent="."]
-points = PackedVector2Array(10, 119, 10, 5)
+[node name="Border" type="Line2D" parent="."]
+points = PackedVector2Array(10, 5, 10, 119, 1142, 119)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
