@@ -228,8 +228,8 @@ func _standard_language() -> Dictionary:
 		"WalletWindowValueLabel": "*Значение счета:",
 		"WalletWindowWindowConfirmationDialog": { "title": "Удаление кошелька",
 			"text": "Все данные кошелька будут удалены"},
-		# Окно измененя раздела
-		"SectionWindowTitleLabel": "*Название раздела:", "Income": ["Расход", "Доход"],
+		# Окно изменения раздела
+		"SectionWindowTitleLabel": "*Название раздела:", "SectionWindowIncome": ["Расход", "Доход"],
 		"Month_LimitLabel": "*Ежемесячное ограничение:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Удаление раздела",
 			"text": "Все данные раздела будут удалены"},
