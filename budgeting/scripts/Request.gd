@@ -598,6 +598,10 @@ func _delete_wallet_obj(idx: String) -> void:
 	db.query("UPDATE cash_flows SET wallet_id = wallet_id - 1 WHERE wallet_id > " + idx + ";")
 	db.query("UPDATE cash_flows SET wallet_2_id = wallet_2_id - 1 WHERE section_id = 1 AND wallet_2_id > " + idx + ";")
 	_table_ids_update("cash_flows")
+	# Удаление быстрых созданий записей
+	db.query("DELETE FROM fast_creations WHERE wallet_id = "+idx+";")
+	db.query("UPDATE fast_creations SET wallet_id = wallet_id - 1 WHERE wallet_id > " + idx + ";")
+	_table_ids_update("fast_creations")
 
 # Запрос на удаление раздела
 func _delete_section_obj(idx: String) -> void:
@@ -609,6 +613,10 @@ func _delete_section_obj(idx: String) -> void:
 	db.query("DELETE FROM cash_flows WHERE section_id = "+idx+";")
 	db.query("UPDATE cash_flows SET section_id = section_id - 1 WHERE section_id > " + idx + ";")
 	_table_ids_update("cash_flows")
+	# Удаление быстрых созданий записей
+	db.query("DELETE FROM fast_creations WHERE section_id = "+idx+";")
+	db.query("UPDATE fast_creations SET section_id = section_id - 1 WHERE section_id > " + idx + ";")
+	_table_ids_update("fast_creations")
 	
 # Запрос на удаление события
 func _delete_event_obj(idx: String) -> void:
