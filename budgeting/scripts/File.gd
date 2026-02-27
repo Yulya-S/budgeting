@@ -224,13 +224,13 @@ func _standard_language() -> Dictionary:
 		"LoanLabel": "Информация о займе", "PercentLabel": "Средний процент по займу:",
 		"TotalLLabel": "Оставшаяся сумма:", "TotalValueLabel": "Изначальная сумма:",
 		# Окно создания / изменения кошелька
-		"WalletWindowTitleLabel": "*Название кошелька:",
-		"WalletWindowValueLabel": "*Значение счета:",
+		"WalletWindowTitleLabel": "Название кошелька:",
+		"WalletWindowValueLabel": "Значение счета:",
 		"WalletWindowWindowConfirmationDialog": { "title": "Удаление кошелька",
 			"text": "Все данные кошелька будут удалены"},
 		# Окно создания / изменения раздела
-		"SectionWindowTitleLabel": "*Название раздела:", "SectionWindowIncome": ["Расход", "Доход"],
-		"Month_LimitLabel": "*Ежемесячное ограничение:",
+		"SectionWindowTitleLabel": "Название раздела:", "SectionWindowIncome": ["Расход", "Доход"],
+		"Month_LimitLabel": "Ежемесячное ограничение:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Удаление раздела",
 			"text": "Все данные раздела будут удалены"},
 		# Окно создания / изменения события
@@ -345,13 +345,12 @@ func _cr_en() -> void:
 		"LoanLabel": "Loan information", "PercentLabel": "Average loan interest rate:",
 		"TotalLLabel": "Remaining amount:", "TotalValueLabel": "Initial amount:",
 		# Окно создания / изменения кошелька
-		"WalletWindowTitleLabel": "*Wallet name:",
-		"WalletWindowValueLabel": "*Wallet value:",
+		"WalletWindowTitleLabel": "Wallet name:", "WalletWindowValueLabel": "Wallet value:",
 		"WalletWindowWindowConfirmationDialog": { "title": "Removing a wallet",
 			"text": "All wallet data will be deleted."},
 		# Окно создания / изменения раздела
-		"SectionWindowTitleLabel": "*Section title:", "Income": ["Expenses", "Income"],
-		"Month_LimitLabel": "*Monthly limitation:",
+		"SectionWindowTitleLabel": "Section title:", "Income": ["Expenses", "Income"],
+		"Month_LimitLabel": "Monthly limitation:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Deleting a partition",
 			"text": "All data in this section will be deleted."},
 		# Окно создания / изменения события
