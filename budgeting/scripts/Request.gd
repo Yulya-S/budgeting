@@ -625,6 +625,10 @@ func _delete_event_obj(idx: String) -> void:
 	db.query("DELETE FROM events WHERE id = "+idx+";")
 	db.query("UPDATE events SET id = id - 1 WHERE id > " + idx + ";")
 	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "events";')
+	# Удаление уведомлений
+	db.query("DELETE FROM notifications WHERE event_id = "+idx+";")
+	db.query("UPDATE notifications SET event_id = event_id - 1 WHERE event_id > " + idx + ";")
+	_table_ids_update("notifications")
 
 # Распределение запросов на изменение объектов таблицы
 func match_updated(idx: String, obj_type: ObjectVariants, values: Array) -> void:
