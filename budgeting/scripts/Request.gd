@@ -596,6 +596,7 @@ func match_deleted(idx: String, obj_type: ObjectVariants) -> void:
 	match obj_type:
 		ObjectVariants.WALLET: return _delete_wallet_obj(idx)
 		ObjectVariants.SECTION: return _delete_section_obj(idx)
+		ObjectVariants.CASH_FLOW: return _delete_cash_flow_obj(idx)
 		ObjectVariants.LOAN: return _delete_loan_obj(idx)
 		ObjectVariants.EVENT: return _delete_event_obj(idx)
 
@@ -630,6 +631,17 @@ func _delete_section_obj(idx: String) -> void:
 	db.query("DELETE FROM fast_creations WHERE section_id = "+idx+";")
 	db.query("UPDATE fast_creations SET section_id = section_id - 1 WHERE section_id > " + idx + ";")
 	_table_ids_update("fast_creations")
+
+# Запрос на удаление раздела
+func _delete_cash_flow_obj(idx: String) -> void:
+	# Отмена транзакции
+	var data: Dictionary = _select("cf.*, s.income FROM cash_flows cf LEFT JOIN sections s ON cf.section_id = s.id", "cf.id = "+idx)[0]
+	if not data.income: data.value *= -1
+	db.query("UPDATE wallets SET value = value - "+str(data.value)+" WHERE id ="+str(data.wallet_id)+";")
+	# Удаление движения средств
+	db.query("DELETE FROM cash_flows WHERE id = "+idx+";")
+	db.query("UPDATE cash_flows SET id = id - 1 WHERE id > " + idx + ";")
+	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "cash_flows";')
 
 # Запрос на удаление займа
 func _delete_loan_obj(idx: String) -> void:
