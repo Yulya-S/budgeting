@@ -662,6 +662,7 @@ func match_updated(idx: String, obj_type: ObjectVariants, values: Array) -> void
 	match obj_type:
 		ObjectVariants.WALLET: return _update_wallet(idx, values)
 		ObjectVariants.SECTION: return _update_section(idx, values)
+		ObjectVariants.CASH_FLOW: return _update_cash_flow(idx, values)
 		ObjectVariants.LOAN: return _update_loan(idx, values)
 		ObjectVariants.EVENT: return _update_event(idx, values)
 
@@ -675,12 +676,21 @@ func _update_section(idx: String, values: Array) -> void:
 	db.query('UPDATE sections SET title = "'+values[0]+'", income ='+values[1]+", month_limit = "+values[2]+" WHERE id = "+idx+";")
 
 # Запрос на изменение раздела
+func _update_cash_flow(idx: String, values: Array) -> void:
+	var data: Dictionary = _select("cf.*, s.income FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id", "cf.id = "+idx)[0]
+	if not data.income: data.value *= -1
+	db.query("UPDATE wallets SET value = value - "+str(data.value)+" WHERE id = "+str(data.wallet_id)+";")
+	db.query("UPDATE cash_flows SET wallet_id = "+values[0]+", section_id = "+values[1]+", value = "+values[2]+', date = "'+values[3]+'" WHERE id = '+idx+";")
+	if not _select("* FROM sections", "id = "+values[1])[0].income: values[2] = str(float(values[2]) * -1)
+	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[0]+";")
+	
+# Запрос на изменение раздела
 func _update_loan(idx: String, values: Array) -> void:
 	db.query('UPDATE loans SET title = "'+values[0]+'", total = '+values[2]+" WHERE id = "+idx+";")
 	var last_value: Dictionary = _select("* FROM cash_flows", "section_id = 2 AND wallet_2_id = "+idx)[0]
 	db.query("UPDATE wallets SET value = value - "+str(last_value.value)+" WHERE id = "+str(last_value.wallet_id)+";")
 	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[1]+";")
-	db.query("UPDATE cash_flows SET wallet_id = "+values[1]+", value = "+values[2]+" WHERE section_id = 2 AND wallet_2_id = "+idx+";")
+	db.query("UPDATE cash_flows SET wallet_id = "+values[1]+", value = "+values[2]+', date = "'+values[3]+'" WHERE section_id = 2 AND wallet_2_id = '+idx+";")
 
 # Запрос на изменение раздела
 func _update_event(idx: String, values: Array) -> void:
