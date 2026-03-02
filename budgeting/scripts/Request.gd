@@ -576,7 +576,7 @@ func _select_section_obj(idx: String) -> Dictionary:
 
 # Запрос на получение объекта таблицы займов
 func _select_loan_obj(idx: String) -> Dictionary:
-	if _select("cf.value != l.total FROM cash_flows cf LEFT JOIN loans l ON cf.wallet_2_id=l.id", "section_id = 2 AND wallet_2_id = " + idx)[0]: return {}
+	if _select("COUNT(id) count FROM cash_flows", "section_id IN (3, 4) AND wallet_2_id = " + idx)[0].count > 0: return {}
 	return _select("cf.*, l.title FROM cash_flows cf LEFT JOIN loans l ON cf.wallet_2_id=l.id", "section_id = 2 AND wallet_2_id = " + idx)[0]
 
 # Запрос на получение обекта таблицы событий
