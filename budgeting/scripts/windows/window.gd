@@ -46,6 +46,7 @@ func check_object() -> bool:
 	match page_type:
 		Request.ObjectVariants.WALLET: return _check_wallet()
 		Request.ObjectVariants.SECTION: return _check_section()
+		Request.ObjectVariants.CASH_FLOW: return _check_cash_flow()
 		Request.ObjectVariants.LOAN: return _check_loan()
 		Request.ObjectVariants.EVENT: return _check_event()
 	return false
@@ -61,6 +62,9 @@ func _check_wallet() -> bool: return $Value.get_text() != "" and _check_textEdit
 # Проверка возможности создания раздела
 func _check_section() -> bool:
 	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or $Income.button_pressed) and _check_textEdit($Title)
+
+# Проверка возможности создания раздела
+func _check_cash_flow() -> bool: return $Value.get_text() != "" and float($Value.get_text()) > 0
 
 # Проверка возможности создания займа
 func _check_loan() -> bool:

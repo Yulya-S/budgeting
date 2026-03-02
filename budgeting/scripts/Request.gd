@@ -693,6 +693,7 @@ func match_created(obj_type: ObjectVariants, values: Array) -> void:
 	match obj_type:
 		ObjectVariants.WALLET: return _create_wallet(values)
 		ObjectVariants.SECTION: return _create_section(values)
+		ObjectVariants.CASH_FLOW: return _create_cash_flow(values)
 		ObjectVariants.LOAN: return _create_loan(values)
 		ObjectVariants.EVENT: return _create_event(values)
 
@@ -704,6 +705,12 @@ func _create_wallet(values: Array) -> void:
 func _create_section(values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
 	db.query('INSERT INTO sections (title, income, month_limit) VALUES ("'+values[0]+'", '+values[1]+", "+values[2]+");")
+
+# Запрос на создание движения средств
+func _create_cash_flow(values: Array) -> void:
+	db.query("INSERT INTO cash_flows (wallet_id, section_id, value, date) VALUES ("+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
+	if not _select("* FROM sections", "id = "+values[1])[0].income: values[2] = str(float(values[2]) * -1)
+	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[0])
 
 # Запрос на создание займа
 func _create_loan(values: Array) -> void:
