@@ -28,26 +28,6 @@ theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 script = ExtResource("3_8pp1o")
 
-[node name="Wallet_Id" type="OptionButton" parent="."]
-layout_mode = 0
-offset_left = 400.0
-offset_top = 289.0
-offset_right = 693.0
-offset_bottom = 320.0
-focus_next = NodePath("../Value")
-focus_previous = NodePath("../Title")
-
-[node name="Label" type="Label" parent="Wallet_Id"]
-layout_mode = 0
-offset_left = -285.0
-offset_right = -5.0
-offset_bottom = 31.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Целевой счёт"
-horizontal_alignment = 2
-vertical_alignment = 1
-
 [node name="Title" type="TextEdit" parent="."]
 clip_contents = false
 layout_mode = 0
@@ -67,6 +47,26 @@ offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Имя займа:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Wallet_Id" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 289.0
+offset_right = 693.0
+offset_bottom = 320.0
+focus_next = NodePath("../Value")
+focus_previous = NodePath("../Title")
+
+[node name="Label" type="Label" parent="Wallet_Id"]
+layout_mode = 0
+offset_left = -285.0
+offset_right = -5.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Целевой счёт"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -100,6 +100,6 @@ offset_top = 163.0
 offset_right = 999.0
 offset_bottom = 473.0
 
-[connection signal="item_selected" from="Wallet_Id" to="." method="_on_wallet_item_selected"]
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
+[connection signal="item_selected" from="Wallet_Id" to="." method="_on_wallet_item_selected"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]

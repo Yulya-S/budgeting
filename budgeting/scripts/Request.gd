@@ -186,7 +186,6 @@ func _select(req_text: String, where: String = "", order: String = "", group: St
 	if where: where = " WHERE " + where
 	if order: order = " ORDER BY " + order
 	if group: group = " GROUP BY " + group
-	print("SELECT " + req_text + where + order + group + ";")
 	db.query("SELECT " + req_text + where + order + group + ";")
 	return db.query_result
 
@@ -593,7 +592,6 @@ func match_deleted(idx: String, obj_type: ObjectVariants) -> void:
 		ObjectVariants.WALLET: return _delete_wallet_obj(idx)
 		ObjectVariants.SECTION: return _delete_section_obj(idx)
 		ObjectVariants.EVENT: return _delete_event_obj(idx)
-		
 
 # Запрос на удаление кошелька
 func _delete_wallet_obj(idx: String) -> void:
@@ -666,6 +664,7 @@ func match_created(obj_type: ObjectVariants, values: Array) -> void:
 	match obj_type:
 		ObjectVariants.WALLET: return _create_wallet(values)
 		ObjectVariants.SECTION: return _create_section(values)
+		ObjectVariants.LOAN: return _create_loan(values)
 		ObjectVariants.EVENT: return _create_event(values)
 
 # Запрос на создание кошелька
@@ -676,6 +675,13 @@ func _create_wallet(values: Array) -> void:
 func _create_section(values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
 	db.query('INSERT INTO sections (title, income, month_limit) VALUES ("'+values[0]+'", '+values[1]+", "+values[2]+");")
+
+# Запрос на создание займа
+func _create_loan(values: Array) -> void:
+	db.query('INSERT INTO loans (title, total) VALUES ("'+values[0]+'", '+values[2]+");")
+	var loan_id: int = _select("* FROM loans")[-1].id
+	db.query("INSERT INTO cash_flows (wallet_id, wallet_2_id, section_id, value, date) VALUES ("+values[1]+", "+str(loan_id)+", 2, "+values[2]+', "'+values[3]+'");')
+	db.query("UPDATE wallets SET value = value + " + values[2] + " WHERE id = " + values[1] + ";")
 
 # Запрос на создание события
 func _create_event(values: Array) -> void:

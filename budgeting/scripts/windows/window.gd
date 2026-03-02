@@ -43,7 +43,7 @@ func check_object() -> bool:
 	match page_type:
 		Request.ObjectVariants.WALLET: return _check_wallet()
 		Request.ObjectVariants.SECTION: return _check_section()
-		#Request.ObjectVariants.LOAN: return _check_loan()
+		Request.ObjectVariants.LOAN: return _check_loan()
 		Request.ObjectVariants.EVENT: return _check_event()
 	return false
 
@@ -59,6 +59,10 @@ func _check_wallet() -> bool: return $Value.get_text() != "" and _check_textEdit
 func _check_section() -> bool:
 	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or $Income.button_pressed) and _check_textEdit($Title)
 
+# Проверка возможности создания займа
+func _check_loan() -> bool:
+	return $Value.get_text() != "" and float($Value.get_text()) > 0 and $Title.get_text() != ""
+
 # Проверка возможности создания события
 func _check_event() -> bool:
 	return (($Value.get_text() != "" and float($Value.get_text()) > 0) or $Event_type.selected == 0) and $Title.get_text() != ""
@@ -69,7 +73,7 @@ func get_values() -> Array:
 	for i in get_children():
 		if i.get_class() == "TextEdit": values.append(i.get_text())
 		elif i.get_class() == "CheckButton": values.append(str(i.button_pressed))
-		elif i.get_class() == "OptionButton": values.append(Global.get_OB_id(i))
+		elif i.get_class() == "OptionButton": values.append(str(Global.get_OB_id(i)))
 		elif i.name == "Date": values.append(i.get_date())
 	return values
 
