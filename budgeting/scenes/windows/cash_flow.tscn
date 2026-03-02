@@ -1,39 +1,20 @@
 [gd_scene load_steps=5 format=3 uid="uid://cma0tkdwn1ppo"]
 
-[ext_resource type="Script" uid="uid://c8tfwlokk7kaq" path="res://scripts/windows/cash_flow.gd" id="1_h45nr"]
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_dh78s"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_nmpp4"]
 [ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_dh78s"]
 [ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="3_nmpp4"]
 
-[node name="CashFlow" type="Control"]
+[node name="CashFlowWindow" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-script = ExtResource("1_h45nr")
-table = 2
+script = ExtResource("1_dh78s")
+page_type = 2
 
 [node name="Window" parent="." instance=ExtResource("2_nmpp4")]
 layout_mode = 0
-
-[node name="Count" type="Label" parent="."]
-layout_mode = 0
-offset_left = 454.0
-offset_top = 80.0
-offset_right = 863.0
-offset_bottom = 108.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "0.0"
-
-[node name="CountLabel" type="Label" parent="Count"]
-layout_mode = 0
-offset_left = -326.0
-offset_right = -5.0
-offset_bottom = 28.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Значение на выбранном счете:"
 
 [node name="Error" type="Label" parent="."]
 visible = false
@@ -47,16 +28,16 @@ theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 script = ExtResource("3_dh78s")
 
-[node name="Wallet_Id" type="OptionButton" parent="."]
+[node name="Wallet_id" type="OptionButton" parent="."]
 layout_mode = 0
-offset_left = 320.0
-offset_top = 153.0
+offset_left = 400.0
+offset_top = 228.0
 offset_right = 693.0
-offset_bottom = 184.0
+offset_bottom = 259.0
 
-[node name="Label" type="Label" parent="Wallet_Id"]
+[node name="Label" type="Label" parent="Wallet_id"]
 layout_mode = 0
-offset_left = -210.0
+offset_left = -285.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -65,16 +46,18 @@ text = "Имя счета"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Extra" type="OptionButton" parent="."]
+[node name="Section_id" type="OptionButton" parent="."]
 layout_mode = 0
-offset_left = 320.0
-offset_top = 203.0
+offset_left = 400.0
+offset_top = 278.0
 offset_right = 693.0
-offset_bottom = 234.0
+offset_bottom = 309.0
+text_overrun_behavior = 3
+clip_text = true
 
-[node name="Label" type="Label" parent="Extra"]
+[node name="Label" type="Label" parent="Section_id"]
 layout_mode = 0
-offset_left = -210.0
+offset_left = -285.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -83,12 +66,12 @@ text = "Статья"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="ConsumptionIncome" type="Label" parent="Extra"]
+[node name="ConsumptionIncome" type="Label" parent="Section_id"]
 layout_mode = 0
-offset_left = -210.0
-offset_top = 37.0
-offset_right = 373.0
-offset_bottom = 63.0
+offset_left = -290.0
+offset_top = 31.0
+offset_right = 293.0
+offset_bottom = 57.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Расход"
@@ -97,22 +80,22 @@ horizontal_alignment = 2
 [node name="Value" type="TextEdit" parent="."]
 clip_contents = false
 layout_mode = 0
-offset_left = 320.0
-offset_top = 282.0
+offset_left = 400.0
+offset_top = 357.0
 offset_right = 693.0
-offset_bottom = 313.0
+offset_bottom = 388.0
 text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
 [node name="Label" type="Label" parent="Value"]
 layout_mode = 0
-offset_left = -223.0
+offset_left = -285.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 19
-text = "*Сумма транзакции:"
+text = "Сумма транзакции:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -123,24 +106,5 @@ offset_top = 163.0
 offset_right = 999.0
 offset_bottom = 473.0
 
-[node name="NoteLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 333.0
-offset_right = 308.0
-offset_bottom = 361.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Комментарий:"
-
-[node name="Note" type="TextEdit" parent="."]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 365.0
-offset_right = 693.0
-offset_bottom = 504.0
-wrap_mode = 1
-
-[connection signal="item_selected" from="Wallet_Id" to="." method="_on_wallet_item_selected"]
-[connection signal="item_selected" from="Extra" to="." method="_on_extra_item_selected"]
+[connection signal="item_selected" from="Section_id" to="." method="_on_section_id_item_selected"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]

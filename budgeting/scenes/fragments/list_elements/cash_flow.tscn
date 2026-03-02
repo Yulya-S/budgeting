@@ -25,7 +25,7 @@ text = "Название раздела"
 vertical_alignment = 1
 autowrap_mode = 1
 script = ExtResource("2_nyojl")
-next_page = 2
+next_page = 3
 next_page_dir = 1
 
 [node name="Wallet_Title" type="Label" parent="."]

@@ -8,8 +8,11 @@ var idx: int = 0 # Индекс изменяемого объекта
 func _ready() -> void:
 	ColorScheme.repainting(self)
 	File.set_lang(self)
-	if page_type == Request.ObjectVariants.LOAN:
-		Global.fill_optionButton($Wallet_Id, Request._select("* FROM wallets"))
+	if page_type == Request.ObjectVariants.LOAN or page_type == Request.ObjectVariants.CASH_FLOW:
+		Global.fill_optionButton($Wallet_id, Request._select("* FROM wallets"))
+	if page_type == Request.ObjectVariants.CASH_FLOW:
+		Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 4"))
+		_on_section_id_item_selected()
 
 # Обновление данных на странице
 func set_page(new_idx: int) -> void:
@@ -25,12 +28,12 @@ func set_page(new_idx: int) -> void:
 			i.button_pressed = data[Global.lower(i)]
 			_on_income_toggled(data[Global.lower(i)])
 		elif i.get_class() == "OptionButton":
-			if get(_create_func_name(i)): callv(_create_func_name(i), [data[Global.lower(i)]])
 			if "id" in Global.lower(i):
 				if data[Global.lower(i)] == null:
 					$Window.on_close_button_down()
 					return
-				data[Global.lower(i)] -= 1
+				data[Global.lower(i)] = i.get_item_index(data[Global.lower(i)])
+			if get(_create_func_name(i)): callv(_create_func_name(i), [data[Global.lower(i)]])
 			i.selected = data[Global.lower(i)]
 		elif i.name == "Date": i.set_date(data[Global.lower(i)])
 
@@ -91,3 +94,8 @@ func _on_value_text_changed() -> void: Global.text_changed_TextEdit($Value, true
 
 # Изменение типа события
 func _on_event_type_item_selected(index: int) -> void: $Value.visible = index > 0
+
+# Изменение раздела
+func _on_section_id_item_selected(index: int = 0) -> void:
+	var income: bool = Request._select("* FROM sections")[index + 4].income
+	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
