@@ -10,10 +10,10 @@ func set_page(new_idx: int, new_page_type: Global.Pages = Global.Pages.WALLET) -
 	idx = new_idx
 	page_type = new_page_type
 	if _get_type(): filter_data = {"where": "cf.wallet_id = " + str(idx) + " AND " + Request.where_date(Global.date_to_str(), "cf.date")}
-	else: filter_data = {"where": "cf.section_id IN (2, 3, 4) AND cf.wallet_2_id = " + str(idx)}
+	else: filter_data = {"where": "cf.section_id IN (2, 3, 4) AND cf.wallet_2_id = " + str(idx), "date": ""}
 	update_data()
 
-# #Обновление данных
+# Обновление данных
 func update_data() -> void:
 	if idx == 0: return
 	super.update_data()

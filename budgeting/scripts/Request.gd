@@ -186,6 +186,7 @@ func _select(req_text: String, where: String = "", order: String = "", group: St
 	if where: where = " WHERE " + where
 	if order: order = " ORDER BY " + order
 	if group: group = " GROUP BY " + group
+	print("SELECT " + req_text + where + order + group + ";")
 	db.query("SELECT " + req_text + where + order + group + ";")
 	return db.query_result
 
@@ -262,9 +263,11 @@ func _update_sections_list(line: Dictionary, parent: Variant) -> Dictionary:
 
 # Запрос на получение списка движений средств
 func _select_cash_flows_list(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
-	if where: where = " AND "+where
+	if date != "":
+		if where != "": where = " AND " + where
+		where = where_date(date) + where
 	return _select("cf.*, s.title, s.income, w.title wallet_title FROM `cash_flows` cf LEFT JOIN sections s ON cf.section_id=s.id
-		LEFT JOIN wallets w ON cf.wallet_id=w.id", where_date(date)+where, order)
+		LEFT JOIN wallets w ON cf.wallet_id=w.id", where, order)
 
 # Запрос на изменение списка разделов
 func _update_cash_flows_list(line: Dictionary) -> Dictionary:
