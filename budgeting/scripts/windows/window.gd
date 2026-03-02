@@ -26,7 +26,11 @@ func set_page(new_idx: int) -> void:
 			_on_income_toggled(data[Global.lower(i)])
 		elif i.get_class() == "OptionButton":
 			if get(_create_func_name(i)): callv(_create_func_name(i), [data[Global.lower(i)]])
-			if "id" in Global.lower(i): data[Global.lower(i)] -= 1
+			if "id" in Global.lower(i):
+				if data[Global.lower(i)] == null:
+					$Window.on_close_button_down()
+					return
+				data[Global.lower(i)] -= 1
 			i.selected = data[Global.lower(i)]
 		elif i.name == "Date": i.set_date(data[Global.lower(i)])
 
