@@ -1,17 +1,17 @@
 [gd_scene load_steps=5 format=3 uid="uid://42d46ou8bkds"]
 
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_8pp1o"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="1_804o2"]
-[ext_resource type="Script" uid="uid://chq5jeut7oy4g" path="res://scripts/windows/loan.gd" id="1_kl61x"]
 [ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="2_kl61x"]
 [ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_8pp1o"]
 
-[node name="Loan" type="Control"]
+[node name="LoanWindow" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-script = ExtResource("1_kl61x")
-table = 3
+script = ExtResource("1_8pp1o")
+page_type = 3
 
 [node name="Window" parent="." instance=ExtResource("1_804o2")]
 layout_mode = 0
@@ -30,16 +30,16 @@ script = ExtResource("3_8pp1o")
 
 [node name="Wallet_Id" type="OptionButton" parent="."]
 layout_mode = 0
-offset_left = 320.0
-offset_top = 203.0
+offset_left = 400.0
+offset_top = 289.0
 offset_right = 693.0
-offset_bottom = 234.0
+offset_bottom = 320.0
 focus_next = NodePath("../Value")
 focus_previous = NodePath("../Title")
 
 [node name="Label" type="Label" parent="Wallet_Id"]
 layout_mode = 0
-offset_left = -210.0
+offset_left = -285.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -51,34 +51,32 @@ vertical_alignment = 1
 [node name="Title" type="TextEdit" parent="."]
 clip_contents = false
 layout_mode = 0
-offset_left = 320.0
-offset_top = 153.0
+offset_left = 400.0
+offset_top = 239.0
 offset_right = 693.0
-offset_bottom = 184.0
+offset_bottom = 270.0
 focus_next = NodePath("../Wallet_Id")
-focus_previous = NodePath("../Note")
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
 [node name="Label" type="Label" parent="Title"]
 layout_mode = 0
-offset_left = -210.0
+offset_left = -285.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "*Имя займа:"
+text = "Имя займа:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Value" type="TextEdit" parent="."]
 clip_contents = false
 layout_mode = 0
-offset_left = 320.0
-offset_top = 282.0
+offset_left = 400.0
+offset_top = 339.0
 offset_right = 693.0
-offset_bottom = 313.0
-focus_next = NodePath("../Note")
+offset_bottom = 370.0
 focus_previous = NodePath("../Wallet_Id")
 text = "0.0"
 autowrap_mode = 1
@@ -86,12 +84,12 @@ scroll_past_end_of_file = true
 
 [node name="Label" type="Label" parent="Value"]
 layout_mode = 0
-offset_left = -210.0
+offset_left = -285.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "*Сумма займа:"
+text = "Сумма займа:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -101,24 +99,6 @@ offset_left = 709.0
 offset_top = 163.0
 offset_right = 999.0
 offset_bottom = 473.0
-
-[node name="NoteLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 333.0
-offset_right = 308.0
-offset_bottom = 361.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Комментарий:"
-
-[node name="Note" type="TextEdit" parent="."]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 365.0
-offset_right = 693.0
-offset_bottom = 504.0
-wrap_mode = 1
 
 [connection signal="item_selected" from="Wallet_Id" to="." method="_on_wallet_item_selected"]
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]

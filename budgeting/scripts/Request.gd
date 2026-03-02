@@ -560,6 +560,7 @@ func match_elem(idx: String, obj_type: ObjectVariants) -> Dictionary:
 	match obj_type:
 		ObjectVariants.WALLET: return _select_wallet_obj(idx)
 		ObjectVariants.SECTION: if int(idx) > 4: return _select_section_obj(idx)
+		ObjectVariants.LOAN: return _select_loan_obj(idx)
 		ObjectVariants.EVENT: return _select_event_obj(idx)
 	return {}
 	
@@ -572,6 +573,10 @@ func _select_section_obj(idx: String) -> Dictionary:
 	var value: Dictionary = _select("* FROM sections", "id = " + idx)[0]
 	if value.month_limit == -1.0: value.month_limit = 0.0
 	return value
+
+# Запрос на получение объекта таблицы займов
+func _select_loan_obj(idx: String) -> Dictionary:
+	return _select("cf.*, l.title FROM cash_flows cf LEFT JOIN loans l ON cf.wallet_2_id=l.id", "section_id = 2 AND wallet_2_id = " + idx)[0]
 
 # Запрос на получение обекта таблицы событий
 func _select_event_obj(idx: String) -> Dictionary:

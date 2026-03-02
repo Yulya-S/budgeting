@@ -8,6 +8,8 @@ var idx: int = 0 # Индекс изменяемого объекта
 func _ready() -> void:
 	ColorScheme.repainting(self)
 	File.set_lang(self)
+	if page_type == Request.ObjectVariants.LOAN:
+		Global.fill_optionButton($Wallet_Id, Request._select("* FROM wallets"))
 
 # Обновление данных на странице
 func set_page(new_idx: int) -> void:
@@ -24,6 +26,7 @@ func set_page(new_idx: int) -> void:
 			_on_income_toggled(data[Global.lower(i)])
 		elif i.get_class() == "OptionButton":
 			if get(_create_func_name(i)): callv(_create_func_name(i), [data[Global.lower(i)]])
+			if "id" in Global.lower(i): data[Global.lower(i)] -= 1
 			i.selected = data[Global.lower(i)]
 		elif i.name == "Date": i.set_date(data[Global.lower(i)])
 
@@ -36,6 +39,7 @@ func check_object() -> bool:
 	match page_type:
 		Request.ObjectVariants.WALLET: return _check_wallet()
 		Request.ObjectVariants.SECTION: return _check_section()
+		#Request.ObjectVariants.LOAN: return _check_loan()
 		Request.ObjectVariants.EVENT: return _check_event()
 	return false
 

@@ -209,3 +209,4 @@ clip_text = true
 text_overrun_behavior = 3
 
 [connection signal="button_down" from="Menu/Back" to="." method="_on_back_button_down"]
+[connection signal="button_down" from="Menu/Update" to="." method="_on_update_button_down"]
