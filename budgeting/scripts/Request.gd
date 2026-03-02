@@ -591,6 +591,7 @@ func match_deleted(idx: String, obj_type: ObjectVariants) -> void:
 	match obj_type:
 		ObjectVariants.WALLET: return _delete_wallet_obj(idx)
 		ObjectVariants.SECTION: return _delete_section_obj(idx)
+		ObjectVariants.LOAN: return _delete_loan_obj(idx)
 		ObjectVariants.EVENT: return _delete_event_obj(idx)
 
 # Запрос на удаление кошелька
@@ -624,7 +625,21 @@ func _delete_section_obj(idx: String) -> void:
 	db.query("DELETE FROM fast_creations WHERE section_id = "+idx+";")
 	db.query("UPDATE fast_creations SET section_id = section_id - 1 WHERE section_id > " + idx + ";")
 	_table_ids_update("fast_creations")
-	
+
+# Запрос на удаление займа
+func _delete_loan_obj(idx: String) -> void:
+	# Удаление займа
+	db.query("DELETE FROM loans WHERE id = "+idx+";")
+	db.query("UPDATE loans SET id = id - 1 WHERE id > " + idx + ";")
+	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "loans";')
+	# Отмена транзакции
+	var values: Dictionary = _select("* FROM cash_flows", "section_id = 2 AND wallet_2_id = "+idx)[0]
+	if values.wallet_id != null: db.query("UPDATE wallets SET value = value - "+str(values.value)+" WHERE id = "+str(values.wallet_id)+";")
+	# Удаление движений средств
+	db.query("DELETE FROM cash_flows WHERE section_id = 2 AND wallet_2_id = "+idx+";")
+	db.query("UPDATE cash_flows SET wallet_2_id = wallet_2_id - 1 WHERE section_id IN (2, 3, 4) AND wallet_2_id > " + idx + ";")
+	_table_ids_update("cash_flows")
+
 # Запрос на удаление события
 func _delete_event_obj(idx: String) -> void:
 	# Удаление события
@@ -661,7 +676,6 @@ func _update_loan(idx: String, values: Array) -> void:
 	db.query("UPDATE wallets SET value = value - "+str(last_value.value)+" WHERE id = "+str(last_value.wallet_id)+";")
 	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[1]+";")
 	db.query("UPDATE cash_flows SET wallet_id = "+values[1]+", value = "+values[2]+" WHERE section_id = 2 AND wallet_2_id = "+idx+";")
-
 
 # Запрос на изменение раздела
 func _update_event(idx: String, values: Array) -> void:
