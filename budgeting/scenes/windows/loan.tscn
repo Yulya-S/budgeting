@@ -35,7 +35,7 @@ offset_left = 400.0
 offset_top = 239.0
 offset_right = 693.0
 offset_bottom = 270.0
-focus_next = NodePath("../Wallet_Id")
+focus_next = NodePath("../Wallet_id")
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
@@ -50,7 +50,7 @@ text = "Имя займа:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Wallet_Id" type="OptionButton" parent="."]
+[node name="Wallet_id" type="OptionButton" parent="."]
 layout_mode = 0
 offset_left = 400.0
 offset_top = 289.0
@@ -59,7 +59,7 @@ offset_bottom = 320.0
 focus_next = NodePath("../Value")
 focus_previous = NodePath("../Title")
 
-[node name="Label" type="Label" parent="Wallet_Id"]
+[node name="Label" type="Label" parent="Wallet_id"]
 layout_mode = 0
 offset_left = -285.0
 offset_right = -5.0
@@ -77,7 +77,7 @@ offset_left = 400.0
 offset_top = 339.0
 offset_right = 693.0
 offset_bottom = 370.0
-focus_previous = NodePath("../Wallet_Id")
+focus_previous = NodePath("../Wallet_id")
 text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true
@@ -101,5 +101,5 @@ offset_right = 999.0
 offset_bottom = 473.0
 
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
-[connection signal="item_selected" from="Wallet_Id" to="." method="_on_wallet_item_selected"]
+[connection signal="item_selected" from="Wallet_id" to="." method="_on_wallet_item_selected"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
