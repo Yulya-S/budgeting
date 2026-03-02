@@ -235,7 +235,7 @@ func _standard_language() -> Dictionary:
 			"text": "Все данные раздела будут удалены"},
 		# Окно создания / изменения события
 		"EventWindowTitleLabel": "Название события:", "Event_typeLabel": "Тип события",
-		"Repetition_rateLabel": "Частота повторения", "ValueLabel": "Значение:",
+		"Repetition_rateLabel": "Частота повторения", "EventWindowValueLabel": "Значение:",
 		"EventWindowWindowConfirmationDialog": { "title": "Удаление события",
 			"text": "Все данные события будут удалены"},
 		"Repetition_rate": ["Один раз", "Каждые два дня", "Раз в неделю",
@@ -355,7 +355,7 @@ func _cr_en() -> void:
 			"text": "All data in this section will be deleted."},
 		# Окно создания / изменения события
 		"EventWindowTitleLabel": "Event name:", "Event_typeLabel": "Event type",
-		"Repetition_rateLabel": "Repetition rate", "ValueLabel": "Value:",
+		"Repetition_rateLabel": "Repetition rate", "EventWindowValueLabel": "Value:",
 		"EventWindowWindowConfirmationDialog": { "title": "Deleting an event",
 			"text": "All event data will be deleted."},
 		"Repetition_rate": ["Once", "Every two days", "Once a week", "Once a month", "Once a year"],
