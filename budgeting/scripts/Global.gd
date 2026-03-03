@@ -170,12 +170,11 @@ func g_parent(obj: Variant, lavel: int, save_lavel: int = 1) -> Variant:
 func lower(obj: Variant) -> String: return obj.name.to_lower()
 
 # Функция заполнения OptionButton для данных по году
-func fill_year_OB(container: OptionButton, idx: int, current_year: int = Global.get_date().year) -> void:
+func fill_year_OB(container: OptionButton, idx: int, year: int = Global.get_date().year) -> void:
 	var last_month: bool = Global.get_date().month == 12
-	var year: int = current_year
 	if idx != -1: year = int(container.get_item_text(idx))
 	for i in range(container.item_count): container.remove_item(0)
 	for i in range(year-10, year+10+int(last_month), 1):
-		if i + 1 > current_year+int(last_month): break
+		if i + 1 > Global.get_date().year+int(last_month): break
 		container.add_item(str(i+1))
 	container.selected = 9
