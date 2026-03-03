@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_0ge85"]
 [ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="3_f8n6d"]
 
-[node name="Payments" type="Control"]
+[node name="Payment" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
@@ -35,7 +35,7 @@ offset_top = 219.0
 offset_right = 693.0
 offset_bottom = 250.0
 
-[node name="Label" type="Label" parent="Wallet_id"]
+[node name="WLabel" type="Label" parent="Wallet_id"]
 layout_mode = 0
 offset_left = -285.0
 offset_right = -5.0
@@ -53,7 +53,7 @@ offset_top = 269.0
 offset_right = 693.0
 offset_bottom = 300.0
 
-[node name="Label" type="Label" parent="Wallet_2_id"]
+[node name="LLabel" type="Label" parent="Wallet_2_id"]
 layout_mode = 0
 offset_left = -285.0
 offset_right = -5.0
