@@ -719,7 +719,7 @@ func check_obj_name(obj_name: String, idx: int, table: ObjectVariants) -> bool:
 
 # Запросы связанные с транзакциями
 # Распределение запросов для получения объектов таблиц
-func match_cf_elem(idx: String, obj_type: ObjectVariants) -> Dictionary:
+func match_cf_elem(idx: String, _obj_type: ObjectVariants) -> Dictionary:
 	return _select_cash_flow_obj(idx)
 	
 # Запрос на получение объекта таблицы движений средств
@@ -730,13 +730,19 @@ func _select_cash_flow_obj(idx: String) -> Dictionary:
 func match_cf_created(obj_type: ObjectVariants, values: Array) -> void:
 	match obj_type:
 		ObjectVariants.CASH_FLOW: return _create_cash_flow(values)
+		ObjectVariants.WALLET: return _create_payment(values)
 		
 # Запрос на создание движения средств
 func _create_cash_flow(values: Array) -> void:
 	db.query("INSERT INTO cash_flows (wallet_id, section_id, value, date) VALUES ("+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
 	if not _select("* FROM sections", "id = "+values[1])[0].income: values[2] = str(float(values[2]) * -1)
 	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[0])
-		
+
+# Запрос на создание платежей по займу
+func _create_payment(values: Array) -> void:
+	db.query("INSERT INTO cash_flows (section_id, wallet_id, wallet_2_id, value, date) VALUES (3, "+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
+	db.query("UPDATE loans SET total = total - "+values[2]+" WHERE id = "+values[1])
+
 # Распределение запросов на изменение объектов таблицы
 func match_cf_updated(idx: String, obj_type: ObjectVariants, values: Array) -> void:
 	match obj_type:
@@ -766,3 +772,14 @@ func _delete_cash_flow_obj(idx: String) -> void:
 	db.query("DELETE FROM cash_flows WHERE id = "+idx+";")
 	db.query("UPDATE cash_flows SET id = id - 1 WHERE id > " + idx + ";")
 	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "cash_flows";')
+
+# Получение суммы займа до выбранной даты
+func get_loan_total(idx: int, date: String) -> String:
+	if not db: return "0.0"
+	var value: Variant = _select('SUM(IIF(section_id == 3, value * -1, value)) total FROM cash_flows WHERE section_id IN (2, 3, 4) AND date <= "'+date+'" AND wallet_2_id = '+str(idx))[0].total
+	return "0.0" if value == null else str(value)
+	
+# Проверка минимальной даты от которой можно провести транзакции по займам
+func loan_check_first_date(idx: int, date: String) -> bool:
+	db.query('SELECT "'+date+'" < (SELECT date FROM cash_flows WHERE section_id = 2 AND wallet_2_id = '+str(idx)+") res;")
+	return bool(db.query_result[0].res)

@@ -106,5 +106,5 @@ offset_top = 163.0
 offset_right = 999.0
 offset_bottom = 473.0
 
-[connection signal="item_selected" from="Section_id" to="." method="_on_extra_id_item_selected"]
+[connection signal="item_selected" from="Section_id" to="." method="_on_section_id_item_selected"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
