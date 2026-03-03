@@ -562,10 +562,9 @@ func match_elem(idx: String, obj_type: Global.Pages) -> Dictionary:
 	match obj_type:
 		Global.Pages.WALLET: return _select_wallet_obj(idx)
 		Global.Pages.SECTION: if int(idx) > 4: return _select_section_obj(idx)
-		Global.Pages.CASH_FLOW, Global.Pages.PAYMENT, Global.Pages.PERCENT:
-			return _select_cash_flow_obj(idx)
 		Global.Pages.LOAN: return _select_loan_obj(idx)
 		Global.Pages.EVENT: return _select_event_obj(idx)
+		_: return _select_cash_flow_obj(idx)
 	return {}
 	
 # Запрос на получение объекта таблицы счетов
@@ -776,10 +775,11 @@ func check_obj_name(obj_name: String, idx: int, table: Global.Pages) -> bool:
 	return len(_select("* FROM "+_get_table_name(table), 'title = "' + obj_name + '" AND id != ' + str(idx))) == 0
 
 # Получение суммы займа до выбранной даты
-func get_loan_total(idx: int, date: String) -> String:
-	if not db: return "0.0"
-	var value: Variant = _select('SUM(IIF(section_id == 3, value * -1, value)) total FROM cash_flows WHERE section_id IN (2, 3, 4) AND date <= "'+date+'" AND wallet_2_id = '+str(idx))[0].total
-	return "0.0" if value == null else str(value)
+func get_loan_total(idx: int, w2idx: int, date: String) -> float:
+	if not db: return 0.0
+	var value: Variant = _select("SUM(IIF(section_id == 3, value * -1, value)) total FROM cash_flows",
+		'section_id IN (2, 3, 4) AND date <= "'+date+'" AND (date != "'+date+'" OR id != '+str(idx)+") AND wallet_2_id = "+str(w2idx))[0].total
+	return 0.0 if value == null else value
 	
 # Проверка минимальной даты от которой можно провести транзакции по займам
 func loan_check_first_date(idx: int, date: String) -> bool:

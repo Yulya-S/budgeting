@@ -12,12 +12,9 @@ func _ready() -> void:
 	if page_type == Global.Pages.LOAN:
 		Global.fill_optionButton($Wallet_id, Request._select("* FROM wallets"))
 
-# Получение значений объекта
-func _get_elem(new_idx: int) -> Dictionary: return Request.match_elem(str(new_idx), page_type)
-
 # Обновление данных на странице
 func set_page(new_idx: int) -> void:
-	var data: Dictionary = _get_elem(new_idx)
+	var data: Dictionary = Request.match_elem(str(new_idx), page_type)
 	if data == {}:
 		$Window.on_close_button_down()
 		return

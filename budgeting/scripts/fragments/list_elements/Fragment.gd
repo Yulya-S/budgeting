@@ -66,9 +66,9 @@ func _set_special_values(data: Dictionary) -> void:
 				1: Title.next_page = Global.Pages.TRANSFER
 				2, 4:
 					$Wallet_Title.next_page = Global.Pages.LOAN
-					Title.id = data.wallet_id
+					if data.section_id == 2: Title.id = data.wallet_id
+					else: $Wallet_2_Title.visible = false
 					Title.next_page = Global.Pages.LOAN if data.section_id == 2 else Global.Pages.PERCENT
-					if data.section_id == 4: $Wallet_2_Title.visible = false
 				3:
 					$Wallet_2_Title.next_page = Global.Pages.LOAN
 					Title.next_page = Global.Pages.PAYMENT

@@ -13,9 +13,12 @@ func _ready() -> void:
 	
 # Смена значения займа
 func _process(_delta: float) -> void:
-	if page_type == Global.Pages.PAYMENT:
-		$Wallet_2_id/Total.set_text(Request.get_loan_total(Global.get_OB_id($Wallet_2_id), $Date.get_date()))
-
+	var total: float = Request.get_loan_total(idx, Global.get_OB_id($Wallet_2_id), $Date.get_date())
+	if page_type == Global.Pages.PAYMENT: $Wallet_2_id/Total.set_text(str(total))
+	elif page_type == Global.Pages.PERCENT:
+		var value: float = 0.0 if $Value.get_text() == "" else float($Value.get_text())
+		$Value/Count.set_text(str(total)+" + "+str(value)+" = "+str(total + value))
+		
 # Обработка действий с элементами страницы
 # Изменение раздела
 func _on_section_id_item_selected(index: int = 0) -> void:
