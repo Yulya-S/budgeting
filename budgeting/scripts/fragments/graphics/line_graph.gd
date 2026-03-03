@@ -70,6 +70,6 @@ func _candlestick(max_value: float, x_step: float) -> void:
 		var y_size: float = 50. * abs(values[i]) / abs(max_value)
 		var data: Array = [ColorScheme.get_color(0, 1, ColorScheme.scales_gradient), y_size + 2, 90.]
 		if values[i] < 0: data = [ColorScheme.get_color(1, 1, ColorScheme.scales_gradient), 0., 30.]
-		draw_rect(Rect2(Vector2(x_step * i - 2, 60 - data[1] - 2), Vector2(x_step + 4, y_size + 4)), ColorScheme.get_sys_color(0, 1))
-		draw_rect(Rect2(Vector2(x_step * i, 60 - data[1]), Vector2(x_step, y_size)), data[0])
+		draw_rect(Rect2(Vector2(x_step * i - 2, 60 - data[1] - 2), Vector2(x_step + 2, y_size + 4)), ColorScheme.get_sys_color(0, 1))
+		draw_rect(Rect2(Vector2(x_step * i, 60 - data[1]), Vector2(x_step - 2, y_size)), data[0])
 		draw_string(ThemeDB.fallback_font, Vector2(x_step * i, data[2]), str(values[i]), HORIZONTAL_ALIGNMENT_CENTER, x_step, 9, ColorScheme.get_sys_color(0, 1))
