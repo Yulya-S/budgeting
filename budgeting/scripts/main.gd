@@ -28,7 +28,10 @@ func start_update() -> void:
 	for i in get_children(): Global.run_func(i, "new_day")
 
 # Закрытие БД во время закрытия приложения
-func _notification(what: int) -> void: if Request.db: if what == Window.NOTIFICATION_WM_CLOSE_REQUEST: Request.db.close_db()
+func _notification(what: int) -> void:
+	if Request.db and what == Window.NOTIFICATION_WM_CLOSE_REQUEST:
+		Request.db.close_db()
+		Request.db = null
 
 # Открытие страницы
 func _open_window(page: Global.Pages, id: Variant = null,
