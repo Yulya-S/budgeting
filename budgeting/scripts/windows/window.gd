@@ -1,4 +1,5 @@
 extends Control
+class_name Windows
 # Экспортируемая переменная
 @export var page_type: Request.ObjectVariants = Request.ObjectVariants.WALLET # Тип создаваемого / Изменяемого объкта
 # Переменная
@@ -8,15 +9,15 @@ var idx: int = 0 # Индекс изменяемого объекта
 func _ready() -> void:
 	ColorScheme.repainting(self)
 	File.set_lang(self)
-	if page_type == Request.ObjectVariants.LOAN or page_type == Request.ObjectVariants.CASH_FLOW:
+	if page_type == Request.ObjectVariants.LOAN:
 		Global.fill_optionButton($Wallet_id, Request._select("* FROM wallets"))
-	if page_type == Request.ObjectVariants.CASH_FLOW:
-		Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 4"))
-		_on_section_id_item_selected()
+
+# Получение значений объекта
+func _get_elem(new_idx: int) -> Dictionary: return Request.match_elem(str(new_idx), page_type)
 
 # Обновление данных на странице
 func set_page(new_idx: int) -> void:
-	var data: Dictionary = Request.match_elem(str(new_idx), page_type)
+	var data: Dictionary = _get_elem(new_idx)
 	if data == {}:
 		$Window.on_close_button_down()
 		return
@@ -46,7 +47,6 @@ func check_object() -> bool:
 	match page_type:
 		Request.ObjectVariants.WALLET: return _check_wallet()
 		Request.ObjectVariants.SECTION: return _check_section()
-		Request.ObjectVariants.CASH_FLOW: return _check_cash_flow()
 		Request.ObjectVariants.LOAN: return _check_loan()
 		Request.ObjectVariants.EVENT: return _check_event()
 	return false
@@ -62,9 +62,6 @@ func _check_wallet() -> bool: return $Value.get_text() != "" and _check_textEdit
 # Проверка возможности создания раздела
 func _check_section() -> bool:
 	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or $Income.button_pressed) and _check_textEdit($Title)
-
-# Проверка возможности создания раздела
-func _check_cash_flow() -> bool: return $Value.get_text() != "" and float($Value.get_text()) > 0
 
 # Проверка возможности создания займа
 func _check_loan() -> bool:
@@ -88,6 +85,16 @@ func get_values() -> Array:
 func _on_income_toggled(toggled_on: bool) -> void:
 	File.set_CB($Income)
 	$Month_Limit.visible = not toggled_on
+	
+# Функции применения изменений объекта
+# Обработка создания
+func match_created() -> void: Request.match_created(page_type, get_values())
+
+# Обработка изменения
+func match_updated() -> void: Request.match_updated(str(idx), page_type, get_values())
+
+# Обработка удаления
+func match_deleted() -> void: Request.match_deleted(str(idx), page_type)
 
 # Обработка действий с элементами страницы
 # Изменение названия объекта
@@ -98,8 +105,3 @@ func _on_value_text_changed() -> void: Global.text_changed_TextEdit($Value, true
 
 # Изменение типа события
 func _on_event_type_item_selected(index: int) -> void: $Value.visible = index > 0
-
-# Изменение раздела
-func _on_section_id_item_selected(index: int = 0) -> void:
-	var income: bool = Request._select("* FROM sections")[index + 4].income
-	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
