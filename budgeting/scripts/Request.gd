@@ -558,13 +558,14 @@ func select_loan_graphics(idx: int) -> Array:
 
 # Запросы связанные с окнами создания / изменения объектов
 # Распределение запросов для получения объектов таблиц
-func match_elem(idx: String, obj_type: ObjectVariants) -> Dictionary:
+func match_elem(idx: String, obj_type: Global.Pages) -> Dictionary:
 	match obj_type:
-		ObjectVariants.WALLET: return _select_wallet_obj(idx)
-		ObjectVariants.SECTION: if int(idx) > 4: return _select_section_obj(idx)
-		ObjectVariants.CASH_FLOW: return _select_cash_flow_obj(idx)
-		ObjectVariants.LOAN: return _select_loan_obj(idx)
-		ObjectVariants.EVENT: return _select_event_obj(idx)
+		Global.Pages.WALLET: return _select_wallet_obj(idx)
+		Global.Pages.SECTION: if int(idx) > 4: return _select_section_obj(idx)
+		Global.Pages.CASH_FLOW, Global.Pages.PAYMENT, Global.Pages.PERCENT:
+			return _select_cash_flow_obj(idx)
+		Global.Pages.LOAN: return _select_loan_obj(idx)
+		Global.Pages.EVENT: return _select_event_obj(idx)
 	return {}
 	
 # Запрос на получение объекта таблицы счетов
@@ -577,6 +578,10 @@ func _select_section_obj(idx: String) -> Dictionary:
 	if value.month_limit == -1.0: value.month_limit = 0.0
 	return value
 
+# Запрос на получение объекта таблицы движений средств
+func _select_cash_flow_obj(idx: String) -> Dictionary:
+	return _select("* FROM cash_flows", "id = " + idx)[0]
+
 # Запрос на получение объекта таблицы займов
 func _select_loan_obj(idx: String) -> Dictionary:
 	if _select("COUNT(id) count FROM cash_flows", "section_id IN (3, 4) AND wallet_2_id = " + idx)[0].count > 0: return {}
@@ -588,12 +593,13 @@ func _select_event_obj(idx: String) -> Dictionary:
 	return _select("* FROM events", "id = " + idx)[0]
 	
 # Распределение запросов на удаление объектов таблицы
-func match_deleted(idx: String, obj_type: ObjectVariants) -> void:
+func match_deleted(idx: String, obj_type: Global.Pages) -> void:
 	match obj_type:
-		ObjectVariants.WALLET: return _delete_wallet_obj(idx)
-		ObjectVariants.SECTION: return _delete_section_obj(idx)
-		ObjectVariants.LOAN: return _delete_loan_obj(idx)
-		ObjectVariants.EVENT: return _delete_event_obj(idx)
+		Global.Pages.WALLET: return _delete_wallet_obj(idx)
+		Global.Pages.SECTION: return _delete_section_obj(idx)
+		Global.Pages.CASH_FLOW: return _delete_cash_flow_obj(idx)
+		Global.Pages.LOAN: return _delete_loan_obj(idx)
+		Global.Pages.EVENT: return _delete_event_obj(idx)
 
 # Запрос на удаление кошелька
 func _delete_wallet_obj(idx: String) -> void:
@@ -627,6 +633,17 @@ func _delete_section_obj(idx: String) -> void:
 	db.query("UPDATE fast_creations SET section_id = section_id - 1 WHERE section_id > " + idx + ";")
 	_table_ids_update("fast_creations")
 
+# Запрос на удаление раздела
+func _delete_cash_flow_obj(idx: String) -> void:
+	# Отмена транзакции
+	var data: Dictionary = _select("cf.*, s.income FROM cash_flows cf LEFT JOIN sections s ON cf.section_id = s.id", "cf.id = "+idx)[0]
+	if not data.income: data.value *= -1
+	db.query("UPDATE wallets SET value = value - "+str(data.value)+" WHERE id ="+str(data.wallet_id)+";")
+	# Удаление движения средств
+	db.query("DELETE FROM cash_flows WHERE id = "+idx+";")
+	db.query("UPDATE cash_flows SET id = id - 1 WHERE id > " + idx + ";")
+	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "cash_flows";')
+
 # Запрос на удаление займа
 func _delete_loan_obj(idx: String) -> void:
 	# Удаление займа
@@ -654,12 +671,14 @@ func _delete_event_obj(idx: String) -> void:
 	_table_ids_update("notifications")
 
 # Распределение запросов на изменение объектов таблицы
-func match_updated(idx: String, obj_type: ObjectVariants, values: Array) -> void:
+func match_updated(idx: String, obj_type: Global.Pages, values: Array) -> void:
 	match obj_type:
-		ObjectVariants.WALLET: return _update_wallet(idx, values)
-		ObjectVariants.SECTION: return _update_section(idx, values)
-		ObjectVariants.LOAN: return _update_loan(idx, values)
-		ObjectVariants.EVENT: return _update_event(idx, values)
+		Global.Pages.WALLET: return _update_wallet(idx, values)
+		Global.Pages.SECTION: return _update_section(idx, values)
+		Global.Pages.CASH_FLOW: return _update_cash_flow(idx, values)
+		Global.Pages.PAYMENT: return _update_payment(idx, values)
+		Global.Pages.LOAN: return _update_loan(idx, values)
+		Global.Pages.EVENT: return _update_event(idx, values)
 
 # Запрос на изменение кошелька
 func _update_wallet(idx: String, values: Array) -> void:
@@ -670,6 +689,24 @@ func _update_section(idx: String, values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
 	db.query('UPDATE sections SET title = "'+values[0]+'", income ='+values[1]+", month_limit = "+values[2]+" WHERE id = "+idx+";")
 
+# Запрос на изменение раздела
+func _update_cash_flow(idx: String, values: Array) -> void:
+	var data: Dictionary = _select("cf.*, s.income FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id", "cf.id = "+idx)[0]
+	if not data.income: data.value *= -1
+	db.query("UPDATE wallets SET value = value - "+str(data.value)+" WHERE id = "+str(data.wallet_id)+";")
+	db.query("UPDATE cash_flows SET wallet_id = "+values[0]+", section_id = "+values[1]+", value = "+values[2]+', date = "'+values[3]+'" WHERE id = '+idx+";")
+	if not _select("* FROM sections", "id = "+values[1])[0].income: values[2] = str(float(values[2]) * -1)
+	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[0]+";")
+
+# Запрос на изменение погашения займа
+func _update_payment(idx: String, values: Array) -> void:
+	var data: Dictionary = _select("* FROM cash_flows", "id = "+idx)[0]
+	db.query("UPDATE wallets SET value = value + "+str(data.value)+" WHERE id = "+str(data.wallet_id)+";")
+	db.query("UPDATE loans SET total = total + "+str(data.value)+" WHERE id = "+str(data.wallet_2_id)+";")
+	db.query("UPDATE cash_flows SET wallet_id = "+values[0]+", wallet_2_id = "+values[1]+", value = "+values[2]+', date = "'+values[3]+'" WHERE id = '+idx+";")
+	db.query("UPDATE wallets SET value = value - "+values[2]+" WHERE id = "+values[0]+";")
+	db.query("UPDATE loans SET total = total - "+values[2]+" WHERE id = "+values[1]+";")
+	
 # Запрос на изменение раздела
 func _update_loan(idx: String, values: Array) -> void:
 	db.query('UPDATE loans SET title = "'+values[0]+'", total = '+values[2]+" WHERE id = "+idx+";")
@@ -685,12 +722,14 @@ func _update_event(idx: String, values: Array) -> void:
 	db.query('UPDATE events SET title = "'+values[0]+'", repetition_rate ='+str(values[1])+", event_type = "+str(values[2])+", value = "+values[3]+', date ="'+values[4]+'" WHERE id = '+idx+";")
 
 # Распределение запросов на создание объектов таблицы
-func match_created(obj_type: ObjectVariants, values: Array) -> void:
+func match_created(obj_type: Global.Pages, values: Array) -> void:
 	match obj_type:
-		ObjectVariants.WALLET: return _create_wallet(values)
-		ObjectVariants.SECTION: return _create_section(values)
-		ObjectVariants.LOAN: return _create_loan(values)
-		ObjectVariants.EVENT: return _create_event(values)
+		Global.Pages.WALLET: return _create_wallet(values)
+		Global.Pages.SECTION: return _create_section(values)
+		Global.Pages.CASH_FLOW: return _create_cash_flow(values)
+		Global.Pages.PAYMENT: return _create_payment(values)
+		Global.Pages.LOAN: return _create_loan(values)
+		Global.Pages.EVENT: return _create_event(values)
 
 # Запрос на создание кошелька
 func _create_wallet(values: Array) -> void:
@@ -700,6 +739,17 @@ func _create_wallet(values: Array) -> void:
 func _create_section(values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
 	db.query('INSERT INTO sections (title, income, month_limit) VALUES ("'+values[0]+'", '+values[1]+", "+values[2]+");")
+
+# Запрос на создание движения средств
+func _create_cash_flow(values: Array) -> void:
+	db.query("INSERT INTO cash_flows (wallet_id, section_id, value, date) VALUES ("+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
+	if not _select("* FROM sections", "id = "+values[1])[0].income: values[2] = str(float(values[2]) * -1)
+	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[0])
+
+# Запрос на создание платежей по займу
+func _create_payment(values: Array) -> void:
+	db.query("INSERT INTO cash_flows (section_id, wallet_id, wallet_2_id, value, date) VALUES (3, "+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
+	db.query("UPDATE loans SET total = total - "+values[2]+" WHERE id = "+values[1])
 
 # Запрос на создание займа
 func _create_loan(values: Array) -> void:
@@ -714,64 +764,8 @@ func _create_event(values: Array) -> void:
 	db.query('INSERT INTO events (title, repetition_rate, event_type, value, date) VALUES ("'+values[0]+'",'+str(values[1])+", "+str(values[2])+", "+values[3]+', "'+values[4]+'");')
 
 # Проверка наличия с определенным имененем в таблицах
-func check_obj_name(obj_name: String, idx: int, table: ObjectVariants) -> bool:
+func check_obj_name(obj_name: String, idx: int, table: Global.Pages) -> bool:
 	return len(_select("* FROM "+_get_table_name(table), 'title = "' + obj_name + '" AND id != ' + str(idx))) == 0
-
-# Запросы связанные с транзакциями
-# Распределение запросов для получения объектов таблиц
-func match_cf_elem(idx: String, _obj_type: ObjectVariants) -> Dictionary:
-	return _select_cash_flow_obj(idx)
-	
-# Запрос на получение объекта таблицы движений средств
-func _select_cash_flow_obj(idx: String) -> Dictionary:
-	return _select("* FROM cash_flows", "id = " + idx)[0]
-
-# Распределение запросов на создание объектов таблицы
-func match_cf_created(obj_type: ObjectVariants, values: Array) -> void:
-	match obj_type:
-		ObjectVariants.CASH_FLOW: return _create_cash_flow(values)
-		ObjectVariants.WALLET: return _create_payment(values)
-		
-# Запрос на создание движения средств
-func _create_cash_flow(values: Array) -> void:
-	db.query("INSERT INTO cash_flows (wallet_id, section_id, value, date) VALUES ("+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
-	if not _select("* FROM sections", "id = "+values[1])[0].income: values[2] = str(float(values[2]) * -1)
-	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[0])
-
-# Запрос на создание платежей по займу
-func _create_payment(values: Array) -> void:
-	db.query("INSERT INTO cash_flows (section_id, wallet_id, wallet_2_id, value, date) VALUES (3, "+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
-	db.query("UPDATE loans SET total = total - "+values[2]+" WHERE id = "+values[1])
-
-# Распределение запросов на изменение объектов таблицы
-func match_cf_updated(idx: String, obj_type: ObjectVariants, values: Array) -> void:
-	match obj_type:
-		ObjectVariants.CASH_FLOW: return _update_cash_flow(idx, values)
-		
-# Запрос на изменение раздела
-func _update_cash_flow(idx: String, values: Array) -> void:
-	var data: Dictionary = _select("cf.*, s.income FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id", "cf.id = "+idx)[0]
-	if not data.income: data.value *= -1
-	db.query("UPDATE wallets SET value = value - "+str(data.value)+" WHERE id = "+str(data.wallet_id)+";")
-	db.query("UPDATE cash_flows SET wallet_id = "+values[0]+", section_id = "+values[1]+", value = "+values[2]+', date = "'+values[3]+'" WHERE id = '+idx+";")
-	if not _select("* FROM sections", "id = "+values[1])[0].income: values[2] = str(float(values[2]) * -1)
-	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[0]+";")
-		
-# Распределение запросов на удаление объектов таблицы
-func match_cf_deleted(idx: String, obj_type: ObjectVariants) -> void:
-	match obj_type:
-		ObjectVariants.CASH_FLOW: return _delete_cash_flow_obj(idx)
-		
-# Запрос на удаление раздела
-func _delete_cash_flow_obj(idx: String) -> void:
-	# Отмена транзакции
-	var data: Dictionary = _select("cf.*, s.income FROM cash_flows cf LEFT JOIN sections s ON cf.section_id = s.id", "cf.id = "+idx)[0]
-	if not data.income: data.value *= -1
-	db.query("UPDATE wallets SET value = value - "+str(data.value)+" WHERE id ="+str(data.wallet_id)+";")
-	# Удаление движения средств
-	db.query("DELETE FROM cash_flows WHERE id = "+idx+";")
-	db.query("UPDATE cash_flows SET id = id - 1 WHERE id > " + idx + ";")
-	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "cash_flows";')
 
 # Получение суммы займа до выбранной даты
 func get_loan_total(idx: int, date: String) -> String:

@@ -11,7 +11,7 @@ anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
 script = ExtResource("1_dh78s")
-page_type = 2
+page_type = 3
 
 [node name="Window" parent="." instance=ExtResource("2_nmpp4")]
 layout_mode = 0

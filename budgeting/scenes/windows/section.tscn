@@ -10,7 +10,7 @@ anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
 script = ExtResource("1_lnpay")
-page_type = 1
+page_type = 2
 
 [node name="Window" parent="." instance=ExtResource("2_lnpay")]
 layout_mode = 0

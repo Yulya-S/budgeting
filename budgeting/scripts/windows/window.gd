@@ -1,7 +1,7 @@
 extends Control
 class_name Windows
 # Экспортируемая переменная
-@export var page_type: Request.ObjectVariants = Request.ObjectVariants.WALLET # Тип создаваемого / Изменяемого объкта
+@export var page_type: Global.Pages = Global.Pages.WALLET # Тип создаваемого / Изменяемого объкта
 # Переменная
 var idx: int = 0 # Индекс изменяемого объекта
 
@@ -9,7 +9,7 @@ var idx: int = 0 # Индекс изменяемого объекта
 func _ready() -> void:
 	ColorScheme.repainting(self)
 	File.set_lang(self)
-	if page_type == Request.ObjectVariants.LOAN:
+	if page_type == Global.Pages.LOAN:
 		Global.fill_optionButton($Wallet_id, Request._select("* FROM wallets"))
 
 # Получение значений объекта
@@ -45,10 +45,12 @@ func _create_func_name(obj: Variant) -> String:
 # Проверка верности заполнения полей
 func check_object() -> bool:
 	match page_type:
-		Request.ObjectVariants.WALLET: return _check_wallet()
-		Request.ObjectVariants.SECTION: return _check_section()
-		Request.ObjectVariants.LOAN: return _check_loan()
-		Request.ObjectVariants.EVENT: return _check_event()
+		Global.Pages.WALLET: return _check_wallet()
+		Global.Pages.SECTION: return _check_section()
+		Global.Pages.CASH_FLOW: return _check_cash_flow()
+		Global.Pages.PAYMENT: return _check_payment()
+		Global.Pages.LOAN: return _check_loan()
+		Global.Pages.EVENT: return _check_event()
 	return false
 
 # Проверка что имя 
@@ -62,6 +64,16 @@ func _check_wallet() -> bool: return $Value.get_text() != "" and _check_textEdit
 # Проверка возможности создания раздела
 func _check_section() -> bool:
 	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or $Income.button_pressed) and _check_textEdit($Title)
+
+# Проверка возможности создания раздела
+func _check_cash_flow() -> bool: return $Value.get_text() != "" and float($Value.get_text()) > 0
+
+# Проверка возможности создания платежа по займу
+func _check_payment() -> bool:
+	if $Value.get_text() == "" or float($Value.get_text()) <= 0: return false
+	if Request.loan_check_first_date(Global.get_OB_id($Wallet_2_id), $Date.get_date()): return false
+	if Request._select("* FROM loans", "id = "+str(Global.get_OB_id($Wallet_2_id)))[0].total - float($Value.get_text()) < 0: return false
+	return true
 
 # Проверка возможности создания займа
 func _check_loan() -> bool:
@@ -85,16 +97,6 @@ func get_values() -> Array:
 func _on_income_toggled(toggled_on: bool) -> void:
 	File.set_CB($Income)
 	$Month_Limit.visible = not toggled_on
-	
-# Функции применения изменений объекта
-# Обработка создания
-func match_created() -> void: Request.match_created(page_type, get_values())
-
-# Обработка изменения
-func match_updated() -> void: Request.match_updated(str(idx), page_type, get_values())
-
-# Обработка удаления
-func match_deleted() -> void: Request.match_deleted(str(idx), page_type)
 
 # Обработка действий с элементами страницы
 # Изменение названия объекта
