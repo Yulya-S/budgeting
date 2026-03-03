@@ -233,6 +233,12 @@ func _standard_language() -> Dictionary:
 		"Month_LimitLabel": "Ежемесячное ограничение:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Удаление раздела",
 			"text": "Все данные раздела будут удалены"},
+		# Окно создания / изменения движений средств
+		"CashFlowWindowWallet_idLabel": "Имя счета", "CashFlowWindowSection_idLabel": "Статья",
+		"CashFlowWindowValueLabel": "Сумма транзакции:",
+		# Окно создания / изменения займов
+		"LoanWindowTitleLabel": "Имя займа:", "LoanWindowWallet_idLabel": "Целевой счет",
+		"LoanWindowValueLabel": "Сумма займа:",
 		# Окно создания / изменения события
 		"EventWindowTitleLabel": "Название события:", "Event_typeLabel": "Тип события",
 		"Repetition_rateLabel": "Частота повторения", "EventWindowValueLabel": "Значение:",
@@ -353,6 +359,12 @@ func _cr_en() -> void:
 		"Month_LimitLabel": "Monthly limitation:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Deleting a partition",
 			"text": "All data in this section will be deleted."},
+		# Окно создания / изменения движений средств
+		"CashFlowWindowWallet_idLabel": "Wallet name", "CashFlowWindowSection_idLabel": "Section",
+		"CashFlowWindowValueLabel": "Transaction amount:",
+		# Окно создания / изменения займов
+		"LoanWindowTitleLabel": "Loan name:", "LoanWindowWallet_idLabel": "Target wallet",
+		"LoanWindowValueLabel": "Loan amount:",
 		# Окно создания / изменения события
 		"EventWindowTitleLabel": "Event name:", "Event_typeLabel": "Event type",
 		"Repetition_rateLabel": "Repetition rate", "EventWindowValueLabel": "Value:",
