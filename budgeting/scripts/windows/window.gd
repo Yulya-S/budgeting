@@ -45,6 +45,7 @@ func check_object() -> bool:
 		Global.Pages.WALLET: return _check_wallet()
 		Global.Pages.SECTION: return _check_section()
 		Global.Pages.CASH_FLOW: return _check_cash_flow()
+		Global.Pages.TRANSFER: return _check_transfer()
 		Global.Pages.PAYMENT: return _check_payment()
 		Global.Pages.PERCENT: return _check_percent()
 		Global.Pages.LOAN: return _check_loan()
@@ -65,6 +66,10 @@ func _check_section() -> bool:
 
 # Проверка возможности создания раздела
 func _check_cash_flow() -> bool: return $Value.get_text() != "" and float($Value.get_text()) > 0
+
+# Проверка возможности создания перевода средств
+func _check_transfer() -> bool:
+	return $Value.get_text() != "" and float($Value.get_text()) > 0 and Global.get_OB_id($Wallet_id) != Global.get_OB_id($Wallet_2_id)
 
 # Проверка возможности создания платежа по займу
 func _check_payment() -> bool:

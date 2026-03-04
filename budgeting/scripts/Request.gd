@@ -749,6 +749,7 @@ func match_created(obj_type: Global.Pages, values: Array) -> void:
 		Global.Pages.WALLET: return _create_wallet(values)
 		Global.Pages.SECTION: return _create_section(values)
 		Global.Pages.CASH_FLOW: return _create_cash_flow(values)
+		Global.Pages.TRANSFER: return _create_transfer(values)
 		Global.Pages.PAYMENT: return _create_payment(values)
 		Global.Pages.PERCENT: return _create_percent(values)
 		Global.Pages.LOAN: return _create_loan(values)
@@ -769,9 +770,16 @@ func _create_cash_flow(values: Array) -> void:
 	if not _select("* FROM sections", "id = "+values[1])[0].income: values[2] = str(float(values[2]) * -1)
 	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[0])
 
+# Запрос на создание перевода средств
+func _create_transfer(values: Array) -> void:
+	db.query("INSERT INTO cash_flows (section_id, wallet_id, wallet_2_id, value, date) VALUES (1, "+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
+	db.query("UPDATE wallets SET value = value - "+values[2]+" WHERE id = "+values[0])
+	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[1])
+
 # Запрос на создание платежей по займу
 func _create_payment(values: Array) -> void:
 	db.query("INSERT INTO cash_flows (section_id, wallet_id, wallet_2_id, value, date) VALUES (3, "+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
+	db.query("UPDATE wallets SET value = value - "+values[2]+" WHERE id = "+values[0])
 	db.query("UPDATE loans SET total = total - "+values[2]+" WHERE id = "+values[1])
 
 # Запрос на создание процентов по займу
