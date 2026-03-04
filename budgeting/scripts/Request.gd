@@ -690,6 +690,7 @@ func match_updated(idx: String, obj_type: Global.Pages, values: Array) -> void:
 		Global.Pages.WALLET: return _update_wallet(idx, values)
 		Global.Pages.SECTION: return _update_section(idx, values)
 		Global.Pages.CASH_FLOW: return _update_cash_flow(idx, values)
+		Global.Pages.TRANSFER: return _update_transfer(idx, values)
 		Global.Pages.PAYMENT: return _update_payment(idx, values)
 		Global.Pages.PERCENT: return _update_percent(idx, values)
 		Global.Pages.LOAN: return _update_loan(idx, values)
@@ -712,6 +713,15 @@ func _update_cash_flow(idx: String, values: Array) -> void:
 	db.query("UPDATE cash_flows SET wallet_id = "+values[0]+", section_id = "+values[1]+", value = "+values[2]+', date = "'+values[3]+'" WHERE id = '+idx+";")
 	if not _select("* FROM sections", "id = "+values[1])[0].income: values[2] = str(float(values[2]) * -1)
 	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[0]+";")
+
+# Запрос на изменение перевода средств
+func _update_transfer(idx: String, values: Array) -> void:
+	var data: Dictionary = _select("* FROM cash_flows", "id = "+idx)[0]
+	db.query("UPDATE wallets SET value = value + "+str(data.value)+" WHERE id = "+str(data.wallet_id)+";")
+	db.query("UPDATE wallets SET value = value - "+str(data.value)+" WHERE id = "+str(data.wallet_2_id)+";")
+	db.query("UPDATE cash_flows SET wallet_id = "+values[0]+", wallet_2_id = "+values[1]+", value = "+values[2]+', date = "'+values[3]+'" WHERE id = '+idx+";")
+	db.query("UPDATE wallets SET value = value - "+values[2]+" WHERE id = "+values[0]+";")
+	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[1]+";")
 
 # Запрос на изменение погашения займа
 func _update_payment(idx: String, values: Array) -> void:
