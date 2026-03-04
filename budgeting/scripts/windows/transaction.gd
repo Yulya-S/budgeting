@@ -8,6 +8,8 @@ func _ready() -> void:
 	if page_type == Global.Pages.CASH_FLOW:
 		Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 4"))
 		_on_section_id_item_selected()
+	elif page_type == Global.Pages.TRANSFER:
+		Global.fill_optionButton($Wallet_2_id, Request._select("* FROM wallets"))
 	else:
 		Global.fill_optionButton($Wallet_2_id, Request._select("* FROM loans", "total > 0"))
 	

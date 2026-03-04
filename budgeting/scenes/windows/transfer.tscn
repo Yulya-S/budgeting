@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://csspk6wa3uaw6"]
 
-[ext_resource type="Script" uid="uid://ctp2fmv76uvc4" path="res://scripts/windows/transfer.gd" id="1_0qmjj"]
+[ext_resource type="Script" uid="uid://dib4waj5axjpl" path="res://scripts/windows/transaction.gd" id="1_bh4ot"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_bh4ot"]
 [ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_bh4ot"]
 [ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="3_qgj1t"]
@@ -10,32 +10,11 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-script = ExtResource("1_0qmjj")
-second_table = 0
-second_column = "wallet_2_id"
-table = 2
+script = ExtResource("1_bh4ot")
+page_type = 7
 
 [node name="Window" parent="." instance=ExtResource("2_bh4ot")]
 layout_mode = 0
-
-[node name="Count" type="Label" parent="."]
-layout_mode = 0
-offset_left = 396.0
-offset_top = 80.0
-offset_right = 805.0
-offset_bottom = 108.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "0.0"
-
-[node name="CountLabel" type="Label" parent="Count"]
-layout_mode = 0
-offset_left = -272.0
-offset_right = -5.0
-offset_bottom = 28.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Значение на счете съёма:"
 
 [node name="Error" type="Label" parent="."]
 visible = false
@@ -49,16 +28,16 @@ theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 script = ExtResource("3_bh4ot")
 
-[node name="Wallet_Id" type="OptionButton" parent="."]
+[node name="Wallet_id" type="OptionButton" parent="."]
 layout_mode = 0
-offset_left = 320.0
-offset_top = 153.0
+offset_left = 400.0
+offset_top = 239.0
 offset_right = 693.0
-offset_bottom = 184.0
+offset_bottom = 270.0
 
-[node name="Label" type="Label" parent="Wallet_Id"]
+[node name="Label" type="Label" parent="Wallet_id"]
 layout_mode = 0
-offset_left = -210.0
+offset_left = -285.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -67,16 +46,16 @@ text = "Счет съема средств"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Extra" type="OptionButton" parent="."]
+[node name="Wallet_2_id" type="OptionButton" parent="."]
 layout_mode = 0
-offset_left = 320.0
-offset_top = 203.0
+offset_left = 400.0
+offset_top = 289.0
 offset_right = 693.0
-offset_bottom = 234.0
+offset_bottom = 320.0
 
-[node name="Label" type="Label" parent="Extra"]
+[node name="Label" type="Label" parent="Wallet_2_id"]
 layout_mode = 0
-offset_left = -210.0
+offset_left = -285.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -88,22 +67,22 @@ vertical_alignment = 1
 [node name="Value" type="TextEdit" parent="."]
 clip_contents = false
 layout_mode = 0
-offset_left = 320.0
-offset_top = 282.0
+offset_left = 400.0
+offset_top = 339.0
 offset_right = 693.0
-offset_bottom = 313.0
+offset_bottom = 370.0
 text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
 [node name="Label" type="Label" parent="Value"]
 layout_mode = 0
-offset_left = -210.0
+offset_left = -285.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 19
-text = "*Сумма транзакции:"
+theme_override_font_sizes/font_size = 20
+text = "Сумма транзакции:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -114,24 +93,6 @@ offset_top = 163.0
 offset_right = 999.0
 offset_bottom = 473.0
 
-[node name="NoteLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 333.0
-offset_right = 308.0
-offset_bottom = 361.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Комментарий:"
-
-[node name="Note" type="TextEdit" parent="."]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 365.0
-offset_right = 693.0
-offset_bottom = 504.0
-wrap_mode = 1
-
-[connection signal="item_selected" from="Wallet_Id" to="." method="_on_wallet_item_selected"]
-[connection signal="item_selected" from="Extra" to="." method="_on_extra_item_selected"]
+[connection signal="item_selected" from="Wallet_id" to="." method="_on_wallet_item_selected"]
+[connection signal="item_selected" from="Wallet_2_id" to="." method="_on_extra_item_selected"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
