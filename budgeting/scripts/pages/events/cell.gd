@@ -1,27 +1,27 @@
 extends ColorRect
 # Подключение путей к объектам в сцене
-@onready var Background = $Background
+@onready var Parent = $"../../"
 @onready var Number = $Label
-@onready var Objects = $ScrollContainer/VBoxContainer
 @onready var Completed = $Completed
 
-# Переменная
-var event_path: Resource = load("res://scenes/fragments/list_elements/color_event.tscn")
+# Запуск изменения цвета ячейки
+func _ready() -> void: ColorScheme.repainting(self)
 
 # Изменение номера дня
-func set_object(index: int, today: bool = false, complete: bool = false):
-	Number.set_text(str(index))
-	if today: Background.color = Color.html("#f7cdcd")
-	else: Background.color = Color.html("#ffffff")
-	Completed.visible = complete
-	for i in range(len(get_parent().get_parent().lines)):
-		if int(get_parent().get_parent().lines[0].date.split("-")[-1]) != index: break
-		Objects.add_child(event_path.instantiate())
-		Objects.get_child(-1).set_object(get_parent().get_parent().lines[0], get_parent().get_parent().events_color)
-		get_parent().get_parent().lines.pop_front()
+func set_values(idx: int, current_month: bool, next_month: bool, day_count: int) -> void:
+	if idx >= 0 and idx < day_count:
+		Number.set_text(str(idx+1))
+		if get_parent().get_child_count() % 7 in [0, 6]: color = ColorScheme.get_sys_color(4.7)
+		if current_month and Global.get_date().day == idx + 1: color = ColorScheme.get_sys_color(3)
+	else: color = ColorScheme.get_sys_color(6)
+	if (not next_month or not Number.text) and (Global.get_date().day > idx + 1 or day_count <= idx or not current_month):
+		Completed.visible = true
+		Completed.modulate = ColorScheme.get_color(95, 100)
+	
+# Изменение видимости маркера наличия событий
+func add_event() -> void: $Marker.visible = true
+	
+# Обработка наведения курсоры мыши на ячейку
+func _on_mouse_entered() -> void: Global.run_func(Parent, "set_cell", [Number.text])
 
-# Выделение событий цветом
-func mark_event(id: int) -> void: for i in Objects.get_children(): if i.id == id: i.color = Color.AQUAMARINE
-
-# Снятие выделения с события
-func deselect_event(id: int, color: Color) -> void: for i in Objects.get_children(): if i.id == id: i.color = color
+func _on_mouse_exited() -> void: Global.run_func(Parent, "reset_cell", [Number.text])

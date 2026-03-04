@@ -1,29 +1,30 @@
-extends Control
+extends Page
 # Подключение путей к объектам в сцене
-@onready var Filter = $Filter
 @onready var FilterWallet = $Filter/Wallet
 @onready var FilterSection = $Filter/Section
-@onready var Objects = $ObjArray
-@onready var Schedule = $Schedule
 
-# Стартовое применение фильтров
+# Подключение сигнала
 func _ready() -> void:
-	for i in [Request.Tables.SECTIONS, Request.Tables.WALLETS]: Filter.set_OB_items(i)
-	Filter.get_filter()
-	Global.emit_signal("update_page")
+	Filter.set_OB_items(Request.Tables.WALLETS) # Заполнение списка кошельков
+	super._ready()
 	
+# Запуск обновления данных на странице
+func _update_page() -> void:
+	# Изменение списка разделов что бы при смене языка названия разделов переводились
+	var save_selected_section: int = FilterSection.selected
+	Filter.set_OB_items(Request.Tables.SECTIONS) # Заполнение списка разделов
+	FilterSection.selected = save_selected_section
+	File.set_OB_elements(FilterSection) # Применение перевода для списка разделов
+	super._update_page() # Обновление данных на странице
+
+# Изменить позже
 # Изменение значений фильтрации извне
-func set_object(obj_id, _parent = null) -> void:
+func set_object(obj_id: Variant, _parent: Variant = null) -> void:
 	if obj_id is Array:
 		Filter.set_filter(FilterWallet, obj_id[0])
 		Filter.set_filter(FilterSection, obj_id[1])
 	else: Filter.set_filter(FilterWallet, obj_id)
 	Filter.get_filter()
-
-# Применение фильтров
-func set_filter() -> void:
-	if not Filter: return
-	Schedule.update_schedule(Filter.filter.where, Filter.filter.date)
 
 # Обработка нажатия кнопки создания движения средств
 func _on_cash_flow_button_down() -> void:

@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://b75endpxrahwp"]
 
-[ext_resource type="Script" uid="uid://ccsms4oqgh7lp" path="res://scripts/windows/percent.gd" id="1_8ps14"]
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_f3kic"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_f3kic"]
-[ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/calendar/date_selection.tscn" id="3_30y3e"]
+[ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="3_30y3e"]
 [ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_f3kic"]
 
 [node name="Percent" type="Control"]
@@ -10,30 +10,11 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-script = ExtResource("1_8ps14")
-table = 2
+script = ExtResource("1_f3kic")
+page_type = 9
 
 [node name="Window" parent="." instance=ExtResource("2_f3kic")]
 layout_mode = 0
-
-[node name="Count" type="Label" parent="."]
-layout_mode = 0
-offset_left = 454.0
-offset_top = 80.0
-offset_right = 863.0
-offset_bottom = 108.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "0.0"
-
-[node name="CountLabel" type="Label" parent="Count"]
-layout_mode = 0
-offset_left = -326.0
-offset_right = -5.0
-offset_bottom = 28.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Значение выбранного кредита:"
 
 [node name="Error" type="Label" parent="."]
 layout_mode = 0
@@ -46,16 +27,16 @@ theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 script = ExtResource("3_f3kic")
 
-[node name="Loan" type="OptionButton" parent="."]
+[node name="Wallet_2_id" type="OptionButton" parent="."]
 layout_mode = 0
-offset_left = 320.0
-offset_top = 181.0
+offset_left = 400.0
+offset_top = 256.0
 offset_right = 693.0
-offset_bottom = 212.0
+offset_bottom = 287.0
 
-[node name="Label" type="Label" parent="Loan"]
+[node name="LLabel" type="Label" parent="Wallet_2_id"]
 layout_mode = 0
-offset_left = -210.0
+offset_left = -285.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -67,17 +48,17 @@ vertical_alignment = 1
 [node name="Value" type="TextEdit" parent="."]
 clip_contents = false
 layout_mode = 0
-offset_left = 320.0
-offset_top = 232.0
+offset_left = 400.0
+offset_top = 307.0
 offset_right = 693.0
-offset_bottom = 263.0
+offset_bottom = 338.0
 text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
 [node name="Label" type="Label" parent="Value"]
 layout_mode = 0
-offset_left = -210.0
+offset_left = -285.0
 offset_right = -5.0
 offset_bottom = 31.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -86,6 +67,17 @@ text = "Новая сумма"
 horizontal_alignment = 2
 vertical_alignment = 1
 
+[node name="Count" type="Label" parent="Value"]
+layout_mode = 0
+offset_left = -285.0
+offset_top = 31.0
+offset_right = 293.0
+offset_bottom = 59.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "0.0"
+horizontal_alignment = 2
+
 [node name="Date" parent="." instance=ExtResource("3_30y3e")]
 layout_mode = 0
 offset_left = 709.0
@@ -93,23 +85,5 @@ offset_top = 163.0
 offset_right = 999.0
 offset_bottom = 473.0
 
-[node name="NoteLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 284.0
-offset_right = 308.0
-offset_bottom = 312.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Комментарий:"
-
-[node name="Note" type="TextEdit" parent="."]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 316.0
-offset_right = 693.0
-offset_bottom = 455.0
-wrap_mode = 1
-
-[connection signal="item_selected" from="Loan" to="." method="_on_loan_item_selected"]
+[connection signal="item_selected" from="Wallet_2_id" to="." method="_on_loan_item_selected"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]

@@ -1,0 +1,112 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4efnma5ol3vo"]
+
+[ext_resource type="Script" uid="uid://co10civxeq7i5" path="res://scripts/pages/cleaning.gd" id="1_tgrcd"]
+
+[node name="Cleaning" type="ColorRect"]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.670588, 0.733333, 0.72549, 1)
+script = ExtResource("1_tgrcd")
+
+[node name="Cleaning" type="Label" parent="."]
+layout_mode = 0
+offset_left = 576.0
+offset_top = 10.0
+offset_right = 1062.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.5187, 0.57, 0.564015, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Очистка данных"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Close" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1092.0
+offset_top = 10.0
+offset_right = 1142.0
+offset_bottom = 52.0
+tooltip_text = "Отменить изменения"
+theme_override_constants/outline_size = 14
+theme_override_font_sizes/font_size = 24
+text = "X"
+
+[node name="CashFlows" type="Button" parent="."]
+layout_mode = 0
+offset_left = 314.0
+offset_top = 200.0
+offset_right = 839.0
+offset_bottom = 231.0
+text = "Очистить движения средств"
+
+[node name="Label" type="Label" parent="CashFlows"]
+layout_mode = 0
+offset_left = -237.0
+offset_top = 36.0
+offset_right = 711.0
+offset_bottom = 85.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+text = "Удаление данных о движениях средств, с даты создания которых прошло более 2х лет"
+horizontal_alignment = 1
+autowrap_mode = 1
+
+[node name="ClearEvents" type="Button" parent="."]
+layout_mode = 0
+offset_left = 314.0
+offset_top = 305.0
+offset_right = 839.0
+offset_bottom = 336.0
+text = "Очистить события"
+
+[node name="Label" type="Label" parent="ClearEvents"]
+layout_mode = 0
+offset_left = -237.0
+offset_top = 36.0
+offset_right = 711.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+text = "Удаление данных о событиях для которых было назначено повторение \"один раз\", с момента завершения которых прошло больше 2х месяцев"
+horizontal_alignment = 1
+autowrap_mode = 1
+
+[node name="Loans" type="Button" parent="."]
+layout_mode = 0
+offset_left = 314.0
+offset_top = 410.0
+offset_right = 839.0
+offset_bottom = 441.0
+text = "Очистить займы"
+
+[node name="Label" type="Label" parent="Loans"]
+layout_mode = 0
+offset_left = -237.0
+offset_top = 36.0
+offset_right = 711.0
+offset_bottom = 85.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+text = "Удаление данных о выплаченных займах, с момента погашения которых прошло больше 2х месяцев"
+horizontal_alignment = 1
+autowrap_mode = 1
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+auto_translate_mode = 1
+title = "Очистка данных"
+initial_position = 1
+size = Vector2i(460, 106)
+ok_button_text = "Да"
+dialog_text = "Вы уверены? Выбранные данные будут удалены безвозвратно"
+dialog_autowrap = true
+cancel_button_text = "Нет"
+
+[connection signal="button_down" from="Close" to="." method="_on_close_button_down"]
+[connection signal="button_down" from="CashFlows" to="." method="_on_cash_flows_button_down"]
+[connection signal="button_down" from="ClearEvents" to="." method="_on_clear_events_button_down"]
+[connection signal="button_down" from="Loans" to="." method="_on_loans_button_down"]
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_confirmed"]

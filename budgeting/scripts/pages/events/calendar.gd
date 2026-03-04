@@ -1,54 +1,52 @@
-extends FillingCalendar
-# Подключение пути к объектам в сцене
-@onready var Legend = $Legend/VBoxContainer
+extends Calendar
+# Подключение путей к объектам в сцене
+@onready var SelectedCell = $SelectedCell
+@onready var Events = $Events/VBoxContainer
 
 # Переменные
-var legend_objects: Array = [] # Список объектов для заполнения легенды
-var legend_element_path: Resource = load("res://scenes/fragments/list_elements/event_legend.tscn") # Путь к сцене элемента легенды
+@onready var lines: ArrayLines = ArrayLines.new("res://scenes/fragments/list_elements/event_legend.tscn") # Объект для создания строк списков
+var event_days: Array = [] # Список дат для маркировки
+var select_cell: int = 0 # Индекс выбранной ячейки календаря
 
-# Подключение сигнала
-func _ready() -> void: Global.connect("update_page", Callable(self, "update_page"))
-
-# Постепенное заполнение календаря
+# Постепенное создание элементов страницы
 func _process(delta: float) -> void:
 	super._process(delta)
-	# Заполнение легенды
-	if len(legend_objects) > 0:
-		Legend.add_child(legend_element_path.instantiate())
-		Legend.get_child(-1).set_values(legend_objects.pop_front())
+	lines.add_obj(Events, Request.ObjectVariants.EVENT, self)
+	if not _end_create() and len(event_days) > 0:
+		Cells.get_child(int(event_days.pop_front().date.split("-")[-1]) + date.weekday() - 1).add_event()
+		if len(event_days) == 0: SelectedCell.visible = true
 
-# Изменение параметров запроса
-func set_data(_where: String = "", new_date: String = "", _order: String = "") -> void:
-	if new_date != "":
-		date = new_date
-		day_count = Request.select_day_count(date)
-	if _where == "" and new_date == "" and _order == "": return
-	update_page()
-	
-# Заполнение страницы
-func update_page(close_page: String = "") -> void:
-	# Очистка страницы
-	for i in [Calendar, Legend]: for l in i.get_children():
-		l.queue_free()
-		i.remove_child(l)
-	# Создание первой строки легенды
-	Legend.add_child(legend_element_path.instantiate())
-	Legend.get_child(-1).color = Color.html("#dfdfdf")
-	# Получение данных
-	events_color = {}
-	lines = Request.select_events(date)
-	for i in lines: if i.event_id not in events_color.keys():
-		events_color[i.event_id] = "#ffffff"
-		legend_objects.append(i)
-		legend_objects[-1].id = i.event_id
-	for i in range(len(events_color.keys())):
-		events_color[events_color.keys()[i]] = ColorScheme.get_color(events_color.keys()[i]-1, Request.select(Request.Tables.EVENTS, "COUNT(id)-1 count")[0].count)
-		legend_objects[i].color = events_color[events_color.keys()[i]]
-	# Обновление страницы родителя
-	if get_parent().get("update_page"):	get_parent().update_page(close_page)
+# Обновление данных
+func update_data(filter: Variant = {}) -> void:
+	super.update_data(filter)
+	ColorScheme.repainting(self)
+	SelectedCell.visible = false
+	event_days = Request.select_event_days()
+	_update_legend(select_cell)
 
-# Выделение событий цветом
-func mark_event(id: int) -> void: for i in Calendar.get_children(): i.mark_event(id)
+# Обновление списка событий
+func _update_legend(idx: int = 0) -> void:
+	# Изменение индекса выбранной ячейки если она отсутствует
+	if not idx:
+		idx = Global.get_date().day
+		if not date.date_comparison(Global.sys_date, "==", false): idx = 1
+	lines.clear(Request.select_multiplied_events_list(str(idx)), Events)
+	# Изменение расположения маркера выбранной даты
+	# Получение позиции по горизонтали
+	var weekday: int = (date.weekday() + idx) % 7 - 1
+	if weekday < 0: weekday = 6
+	SelectedCell.position.x = (78 * weekday) + 45 - (2 * (weekday - 1))
+	# Получение позиции по вертикали
+	var week_number: int = int((date.weekday() + idx) / 7.) - 1
+	if weekday == 6: week_number -= 1
+	SelectedCell.position.y = (78 * week_number) + 80 - (2 * (week_number - 2))
 
-# Снятие выделения с события
-func deselect_event(id: int, color: Color) -> void: for i in Calendar.get_children(): i.deselect_event(id, color)
+# Изменение списка при выборе ячейки календаря
+func set_cell(index: String = "0") -> void:
+	select_cell = int(index)
+	_update_legend(select_cell)
+
+# Изменение списка при сбросе выбора ячейки
+func reset_cell(index: String) -> void:
+	if int(index) != select_cell: return
+	set_cell()

@@ -1,9 +1,4 @@
-extends Control
-# Подключение пути к объектам в сцене
-@onready var Objects = $ObjArray
-
-# Подключение сигнала
-func _ready() -> void: Global.emit_signal("update_page")
+extends Page
 
 # Обработка нажатия кнопки создания нового займа
 func _on_add_loan_button_down() -> void:

@@ -13,7 +13,7 @@ func _ready() -> void:
 	_on_loan_item_selected(0, false)
 	
 # Изменение объекта
-func set_object(obj_id, parent = null) -> void:
+func set_object(obj_id: Variant, parent: Variant = null) -> void:
 	if not parent:  set_all(obj_id)
 	else: _on_loan_item_selected(obj_id, false)
 
@@ -24,10 +24,10 @@ func set_all(obj_id: int) -> void:
 	var value: Array = Request.select(table, "*", "id="+str(id))
 	if len(value) < 0: return
 	for i in get_children():
-		if i.name.to_lower() not in value[0].keys() + ["extra"]: continue
+		if Global.lower(i) not in value[0].keys() + ["extra"]: continue
 		match i.get_class():
-			"TextEdit": i.set_text(str(value[0][i.name.to_lower()]))
-			"ColorRect": if i.name == "Date": i.set_date(value[0][i.name.to_lower()])
+			"TextEdit": i.set_text(str(value[0][Global.lower(i)]))
+			"ColorRect": if i.name == "Date": i.set_date(value[0][Global.lower(i)])
 			"OptionButton": _on_loan_item_selected(value[0].wallet_2_id - 1, false)
 	last_value = float(Value.get_text())
 	set_result()

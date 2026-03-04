@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsx3m46g0v12c"]
+[gd_scene load_steps=3 format=3 uid="uid://div2us2v66io2"]
 
-[ext_resource type="Script" uid="uid://d1bx3gr4kqxhh" path="res://scripts/fragments/list_elements/event_legend.gd" id="1_s85bs"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/Fragment.gd" id="1_s85bs"]
 [ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_l5l8v"]
 
-[node name="Event_legend" type="ColorRect"]
+[node name="Event" type="ColorRect"]
 custom_minimum_size = Vector2(546, 23)
 offset_right = 546.0
 offset_bottom = 23.0
@@ -12,29 +12,55 @@ mouse_filter = 1
 color = Color(0.955963, 0.955963, 0.955963, 1)
 script = ExtResource("1_s85bs")
 
-[node name="Marker" type="ColorRect" parent="."]
+[node name="EventType" type="Label" parent="."]
+visible = false
+layout_mode = 1
+offset_right = 38.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="EventType"]
+layout_mode = 0
+offset_left = 38.0
+offset_right = 162.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+vertical_alignment = 1
+autowrap_mode = 1
+
+[node name="Label" type="Label" parent="EventType"]
 visible = false
 layout_mode = 0
-offset_left = 5.0
-offset_right = 51.0
+offset_left = 162.0
+offset_right = 198.0
 offset_bottom = 23.0
-
-[node name="Line2D" type="Line2D" parent="Marker"]
-points = PackedVector2Array(0, 23, 0, 0.5, 46, 0.5, 46, 22.5, 0, 22.5)
-width = 1.0
-default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+clip_text = true
 
 [node name="Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
-layout_mode = 0
-offset_left = 56.0
-offset_right = 541.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -348.0
+offset_right = -8.0
 offset_bottom = 23.0
+grow_horizontal = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Название раздела"
+theme_override_constants/line_spacing = -5
+text = "Название события"
 horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
 script = ExtResource("2_l5l8v")
 next_page = 5
 next_page_dir = 1

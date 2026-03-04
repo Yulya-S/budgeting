@@ -2,8 +2,6 @@ extends Control
 # Подключение путей к объектам в сцене
 @onready var Language = $Language
 @onready var Password = $Password
-@onready var ShowPassword = $Password/Show
-@onready var Remember = $Remember
 @onready var Error = $Error
 
 # Заполнение списка языков программы
@@ -12,14 +10,18 @@ func _ready() -> void: File.load_lang(Language)
 # Автоматический вход
 func _process(_delta: float) -> void: if File.config.enter: _on_enter_button_down(false, true)
 
-# Проверка возможности использования пароля
+# Изменение значений текстовых контейнеров
+func _on_login_text_changed() -> void: Global.text_changed_TextEdit($Login)
+
+func _on_password_text_changed() -> void: Global.text_changed_TextEdit(Password)
+
+# Проверка пользователя
 func _check_user(login: bool, check_field: bool = true) -> bool:
 	Error.clear()
 	# Заполнение файла конфигурации
-	if check_field: for i in get_children():
-		if i is TextEdit:
-			if Error.check_mandatory_fields(i):	return false
-			File.config[i.name.to_lower()] = File.hide_data(i.get_text())
+	if check_field: for i in get_children(): if i is TextEdit:
+		if Error.check_mandatory_fields(i):	return false
+		File.config[Global.lower(i)] = File.hide_data(i.get_text())
 	return Request.select_existence_user(login) # Получение результата проверки из базы данных
 
 # Генерация названия базы данных
@@ -33,7 +35,7 @@ func _generate_db_name() -> String:
 func _entrance(auto: bool = false) -> void:
 	# Сохранение файла конфигурации для автоматического входа
 	if not auto:
-		File.config.enter = Remember.button_pressed
+		File.config.enter = $Remember.button_pressed
 		if File.config.enter: File.save_config()
 	# Вход в аккаунт
 	var data: Dictionary = Request.select_user()

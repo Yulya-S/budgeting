@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://covbv83eqowki"]
+[gd_scene load_steps=8 format=3 uid="uid://covbv83eqowki"]
 
 [ext_resource type="Script" uid="uid://c085rmbc47jhr" path="res://scripts/pages/loan.gd" id="1_gfb22"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_gfb22"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="3_d4621"]
+[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="3_h6v1m"]
 [ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_kg306"]
+[ext_resource type="Texture2D" uid="uid://cgrjoxjtjep5j" path="res://img/interface/percent.png" id="4_d4621"]
+[ext_resource type="Texture2D" uid="uid://vgpoit67iqmu" path="res://img/add/add_cash_flow.png" id="5_a1r7x"]
 
 [node name="Loan" type="Control"]
 layout_mode = 3
@@ -25,26 +28,32 @@ color = Color(0.376471, 0.72549, 0.698039, 1)
 [node name="AddLoan" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 9.5
+offset_top = 6.0
 offset_right = 148.0
-offset_bottom = 40.5
-text = "Создать займ"
+offset_bottom = 134.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Создать займ"
+icon = ExtResource("3_h6v1m")
 
 [node name="AddInterest" type="Button" parent="Menu"]
 layout_mode = 0
-offset_left = 168.0
-offset_top = 9.5
-offset_right = 418.0
-offset_bottom = 40.5
-text = "Добавить проценты по займу"
+offset_left = 65.0
+offset_top = 6.0
+offset_right = 193.0
+offset_bottom = 134.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Добавить проценты по займу"
+icon = ExtResource("4_d4621")
 
 [node name="AddPayment" type="Button" parent="Menu"]
 layout_mode = 0
-offset_left = 438.0
-offset_top = 9.5
-offset_right = 667.0
-offset_bottom = 40.5
-text = "Добавить платёж по займу"
+offset_left = 110.0
+offset_top = 6.0
+offset_right = 238.0
+offset_bottom = 134.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Добавить платёж по займу"
+icon = ExtResource("5_a1r7x")
 
 [node name="Filter" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(1152, 65)
@@ -120,11 +129,13 @@ offset_top = 24.0
 offset_right = 852.25
 offset_bottom = 55.0
 alignment = 1
+text_overrun_behavior = 3
+clip_text = true
 selected = 0
 item_count = 3
-popup/item_0/text = "По дате добавления"
+popup/item_0/text = "__FO1"
 popup/item_0/id = 0
-popup/item_1/text = "По алфавиту"
+popup/item_1/text = "__FO2"
 popup/item_1/id = 1
 popup/item_2/text = "По сумме остатка"
 popup/item_2/id = 2
@@ -152,9 +163,10 @@ layout_mode = 0
 offset_top = 170.0
 offset_right = 1152.0
 offset_bottom = 643.0
-obj = 4
+obj = 3
 
 [connection signal="button_down" from="Menu/AddLoan" to="." method="_on_add_loan_button_down"]
 [connection signal="button_down" from="Menu/AddInterest" to="." method="_on_add_interest_button_down"]
 [connection signal="button_down" from="Menu/AddPayment" to="." method="_on_add_payment_button_down"]
+[connection signal="text_changed" from="Filter/Title" to="Filter" method="_on_title_text_changed"]
 [connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]

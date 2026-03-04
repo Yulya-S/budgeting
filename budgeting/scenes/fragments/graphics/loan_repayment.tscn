@@ -1,25 +1,17 @@
 [gd_scene load_steps=2 format=3 uid="uid://nhpwuw8k2gn1"]
 
-[ext_resource type="Script" uid="uid://rrujsqtmcm1l" path="res://scripts/fragments/graphics/loan_repayment.gd" id="1_ybdpp"]
+[ext_resource type="Script" uid="uid://cysgxx6c0o4ev" path="res://scripts/fragments/graphics/line_graph.gd" id="1_ybdpp"]
 
-[node name="LoanRepayment" type="ColorRect"]
+[node name="LoanRepayment" type="Control"]
 custom_minimum_size = Vector2(1152, 124)
+layout_mode = 3
+anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_ybdpp")
+graph_type = 2
 
-[node name="X" type="Line2D" parent="."]
-points = PackedVector2Array(10, 119, 1142, 119)
+[node name="Border" type="Line2D" parent="."]
+points = PackedVector2Array(10, 5, 10, 119, 1142, 119)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
-
-[node name="Y" type="Line2D" parent="."]
-points = PackedVector2Array(10, 119, 10, 5)
-width = 2.0
-default_color = Color(0, 0, 0, 1)
-
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 0
-offset_top = -2.0
-offset_right = 1152.0
-color = Color(0, 0, 0, 1)

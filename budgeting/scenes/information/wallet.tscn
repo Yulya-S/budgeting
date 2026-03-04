@@ -1,0 +1,215 @@
+[gd_scene load_steps=8 format=3 uid="uid://cxhpstba1mqi5"]
+
+[ext_resource type="Script" uid="uid://ct7pumat37ciy" path="res://scripts/pages/information.gd" id="1_k7ufo"]
+[ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_caijd"]
+[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="3_ru164"]
+[ext_resource type="Texture2D" uid="uid://b85cbftwbxvmv" path="res://img/interface/brush.png" id="4_kliq4"]
+[ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="5_4wg3a"]
+[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="6_on1hd"]
+[ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="7_jbvvl"]
+
+[node name="WalletInf" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k7ufo")
+
+[node name="Head" parent="." instance=ExtResource("2_caijd")]
+layout_mode = 0
+
+[node name="Menu" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 50.0
+offset_right = 1152.0
+offset_bottom = 100.0
+color = Color(0.376471, 0.72549, 0.698039, 1)
+
+[node name="WalletLabel" type="Label" parent="Menu"]
+layout_mode = 0
+offset_left = 275.0
+offset_right = 1140.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/line_spacing = -10
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 25
+text = "Информация о счете"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
+
+[node name="Back" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 6.0
+offset_right = 148.0
+offset_bottom = 134.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Назад"
+icon = ExtResource("3_ru164")
+
+[node name="Update" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 6.0
+offset_right = 193.0
+offset_bottom = 134.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Изменить"
+icon = ExtResource("4_kliq4")
+
+[node name="CashFlow" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 110.0
+offset_top = 6.0
+offset_right = 238.0
+offset_bottom = 134.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Записать движение средств"
+icon = ExtResource("5_4wg3a")
+
+[node name="Transactions" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 155.0
+offset_top = 6.0
+offset_right = 283.0
+offset_bottom = 134.0
+scale = Vector2(0.31, 0.31)
+tooltip_text = "Список транзакций"
+icon = ExtResource("6_on1hd")
+
+[node name="Filter" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 100.0
+offset_right = 1152.0
+offset_bottom = 156.0
+color = Color(0.627451, 0.913725, 0.894118, 1)
+
+[node name="Title" type="Label" parent="Filter"]
+layout_mode = 2
+offset_left = 20.0
+offset_right = 468.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 20
+text = "Название"
+vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
+
+[node name="Total" type="Label" parent="Filter"]
+layout_mode = 2
+offset_left = 821.0
+offset_right = 1142.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 20
+text = "0.0"
+vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
+
+[node name="WLabel" type="Label" parent="Filter/Total"]
+layout_mode = 2
+offset_left = -259.0
+offset_right = -5.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 20
+text = "Значение счета:"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
+
+[node name="ObjArray" parent="." instance=ExtResource("7_jbvvl")]
+layout_mode = 0
+offset_top = 161.0
+offset_right = 1152.0
+offset_bottom = 592.0
+obj = 8
+
+[node name="Total" type="ColorRect" parent="."]
+layout_mode = 2
+offset_top = 598.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.873298, 0.873299, 0.873298, 1)
+
+[node name="TLabel" type="Label" parent="Total"]
+layout_mode = 2
+offset_left = 5.0
+offset_right = 155.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 20
+text = "Итог:"
+vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
+
+[node name="Count" type="Label" parent="Total"]
+layout_mode = 2
+offset_left = 486.0
+offset_right = 693.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 20
+text = "0"
+vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
+
+[node name="Label" type="Label" parent="Total/Count"]
+layout_mode = 2
+offset_left = -283.0
+offset_right = -5.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 20
+text = "Количество транзакций:"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
+
+[node name="Cash_flow" type="Label" parent="Total"]
+layout_mode = 2
+offset_left = 890.0
+offset_right = 1142.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 20
+text = "0.0"
+vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
+
+[node name="Label" type="Label" parent="Total/Cash_flow"]
+layout_mode = 2
+offset_left = -187.0
+offset_right = -7.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 20
+text = "Сумма:"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
+
+[connection signal="button_down" from="Menu/Back" to="." method="_on_back_button_down"]
+[connection signal="button_down" from="Menu/Update" to="." method="_on_update_button_down"]

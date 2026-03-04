@@ -1,25 +1,35 @@
-extends Control
-# Подключение пути к объектам в сцене
-@onready var Objects = null
-@onready var Filter = $Filter
+extends Page
+# Подгружаемые объекты
+var objArray: Resource = load("res://scenes/fragments/obj_array.tscn")
+var calendar: Resource = load("res://scenes/pages/events/calendar.tscn")
+# Переменная
+var start_update: bool = false # Был ли отправлен запрос на изменение страницы
 
-var objArray = load("res://scenes/fragments/obj_array.tscn")
-var calendar = load("res://scenes/pages/events/calendar.tscn")
+# Начало создания объектов на странице
+func _process(_delta: float) -> void:
+	if Request.completion_creation_et and start_update:
+		Objects.update_data(Filter)
+		start_update = false
 
-# Запуск фильтрации
-func _ready() -> void:
-	#add_child(objArray.instantiate())
-	#Objects = get_child(-1)
-	#get_child(-1).set_obj(get_child(-1).ListObjects.EVENT)
-	#get_child(-1).size = Vector2(1152, 473)
-	#get_child(-1).position = Vector2(0, 170)
-	
-	add_child(calendar.instantiate())
-	Objects = get_child(-1)
-	#get_child(-1).set_obj(get_child(-1).ListObjects.EVENT)
-	#get_child(-1).size = Vector2(456, 473)
+# Запуск обновления данных на странице
+func _update_page() -> void:
+	Global.delete_child(self, get_child(-1)) # Удаление предыдущего формата отображения событий
+	# Создание нового формата отображения событий
+	if not Request.select_value(Request.Tables.SETTINGS, "event_page_calendar"): _create_calendar(calendar, Vector2(456, 473))
+	else: _create_calendar(objArray, Vector2(1152, 473))
+	super._update_page()
+
+# Создание календаря
+func _create_calendar(obj: Resource, new_size: Vector2) -> void:
+	add_child(obj.instantiate())
+	get_child(-1).size = new_size
 	get_child(-1).position = Vector2(0, 170)
-	Filter.get_filter()
+	Objects = get_child(-1) # Сохранение пути к списку событий
+
+# Отправка запроса на обновление таблицы с событиями
+func update_data() -> void:
+	Request.start_create_multiplied_events_table(Filter.get_filter().date)
+	start_update = true
 
 # Обработка нажатия кнопки создания события
 func _on_add_event_button_down() -> void: Global.emit_signal("open_window", Global.Pages.EVENT)

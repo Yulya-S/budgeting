@@ -1,4 +1,4 @@
-extends ColorRect
+extends PageWindow
 # Подключение путей к объектам в сцене
 # Параметры
 @onready var Language = $Language
@@ -10,9 +10,6 @@ extends ColorRect
 # Цвета
 @onready var Colors = $Colors
 @onready var color1 = $Colors/Color_1
-@onready var color2 = $Colors/Color_2
-# Пример оформления
-@onready var Example = $Example
 
 # Стартовое изменение страницы настроек
 func _ready() -> void:
@@ -22,23 +19,23 @@ func _ready() -> void:
 	# Настройка выбора цвета
 	for i in Colors.get_children():
 		if i is ColorPickerButton:
-			var picker = i.get_picker()
-			picker.picker_shape = 2
+			var picker: ColorPicker = i.get_picker()
+			picker.picker_shape = ColorPicker.SHAPE_VHS_CIRCLE
 			picker.color_modes_visible = false
 			picker.sliders_visible = false
 			picker.presets_visible = false
-			i.color = Color("#"+data[i.name.to_lower()])
+			i.color = Color("#"+data[Global.lower(i)])
 	_on_preinstalled_toggled(bool(data.color_preset))
 	DarkTheme.button_pressed = bool(data.dark_theme)
 	if data.color_preset: _on_color_scheme_cus_item_selected(data.color_scheme)
 	else: _on_color_scheme_pre_item_selected(data.color_scheme)
 
-# Изменение цветов в примере отображения
+# Изменение цветов в примере
 func changed_color() -> void:
 	_color_reading()
-	ColorScheme.repainting(Example)
+	ColorScheme.repainting($Example)
 		
-# Составление цветовой палитры
+# Сборка цветовой палитры
 func _color_reading() -> void:
 	var g_colors: PackedColorArray = PackedColorArray([])
 	var g_offsets: PackedFloat32Array = PackedFloat32Array([])
@@ -58,7 +55,7 @@ func show_colors() -> void:
 # Изменение цвета
 func _contrast(c1: String, c2: String) -> void:
 	color1.color = Color("#" + c1)
-	color2.color = Color("#" + c2)
+	$Colors/Color_2.color = Color("#" + c2)
 
 # Смена темы между светлой и тёмной
 func _change_theme(c1_l: String, c2_l: String, c1_d: String, c2_d: String) -> void:
@@ -114,15 +111,11 @@ func _on_color_scheme_pre_item_selected(index: int) -> void:
 		3: _change_theme("ad5252", "808080", "813333", "3b3b3b") # Ржавый металл
 		4: _change_theme("df8662", "72c8a3", "8f4e33", "2d5d57") # Лиса на поляне
 		5: _change_theme("e198ae", "b9e198", "801938", "44622b") # Ягода на ветке
+		6: _change_theme("981475", "3b9fc8", "ab3c96", "2c3498") # Ежевика
 		_: # Серая
 			ColorSchemeCus.selected = 0
 			color1.color = Color("#636363")
 	changed_color()
-
-# Обработка нажатия кнопки закрытия окна
-func _on_close_button_down() -> void:
-	queue_free()
-	get_parent().remove_child(self)
 
 # Обработка нажатия кнопки удаления пользователя
 func _on_delete_button_down() -> void: $ConfirmationDialog.visible = true
@@ -143,7 +136,7 @@ func _on_apply_button_down() -> void:
 			"OptionButton": values.append(i.selected)
 			"Control": for l in i.get_children(): values.append('"'+l.color.to_html()+'"')
 	values.pop_front()
-	values.append('"'+Time.get_date_string_from_system()+'"')
+	values.append('"'+Request.select_last_entry()+'"')
 	# Сохранение записи в базе данных
 	Request.update_record(Request.Tables.SETTINGS, 1, values)
 	_on_close_button_down()

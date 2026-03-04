@@ -147,6 +147,8 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "budgeting - 1.0"
 
 [connection signal="item_selected" from="Language" to="." method="_on_language_item_selected"]
+[connection signal="text_changed" from="Login" to="." method="_on_login_text_changed"]
+[connection signal="text_changed" from="Password" to="." method="_on_password_text_changed"]
 [connection signal="toggled" from="Password/Show" to="." method="_on_show_password_toggled"]
 [connection signal="button_down" from="Registration" to="." method="_on_registration_button_down"]
 [connection signal="button_down" from="Enter" to="." method="_on_enter_button_down"]
