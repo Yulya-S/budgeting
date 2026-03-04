@@ -235,14 +235,14 @@ func _standard_language() -> Dictionary:
 			"text": "Все данные раздела будут удалены"},
 		# Окно создания / изменения движений средств
 		"CashFlowWindowWallet_idLabel": "Имя счета", "CashFlowWindowSection_idLabel": "Статья",
-		"CashFlowWindowValueLabel": "Сумма транзакции:",
+		"ValueVLabel": "Сумма транзакции:",
 		# Окно создания / изменения платежа по займу
 		"Wallet_idWLabel": "Источник списания", "Wallet_2_idLLabel": "Выбранный займ",
 		"PaymentValueLabel": "Сумма платежа:",
 		# Окно создания / изменения процента по займу
 		"PercentValueLabel": "Прибавка к займу",
 		# Окно создания / изменения займов
-		"LoanWindowTitleLabel": "Имя займа:", "LoanWindowWallet_idLabel": "Целевой счет",
+		"LoanWindowTitleLabel": "Имя займа:", "W2Label": "Целевой счет",
 		"LoanWindowValueLabel": "Сумма займа:",
 		# Окно создания / изменения события
 		"EventWindowTitleLabel": "Название события:", "Event_typeLabel": "Тип события",
@@ -366,7 +366,7 @@ func _cr_en() -> void:
 			"text": "All data in this section will be deleted."},
 		# Окно создания / изменения движений средств
 		"CashFlowWindowWallet_idLabel": "Wallet name", "CashFlowWindowSection_idLabel": "Section",
-		"CashFlowWindowValueLabel": "Transaction amount:",
+		"ValueVLabel": "Transaction amount:",
 		# Окно создания / изменения платежа по займу
 		"Wallet_idWLabel": "Source of write-off", "Wallet_2_idLLabel": "Selected loan",
 		"PaymentValueLabel": "Payment amount:",

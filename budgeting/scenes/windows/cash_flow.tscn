@@ -88,7 +88,7 @@ text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
-[node name="Label" type="Label" parent="Value"]
+[node name="VLabel" type="Label" parent="Value"]
 layout_mode = 0
 offset_left = -285.0
 offset_right = -5.0

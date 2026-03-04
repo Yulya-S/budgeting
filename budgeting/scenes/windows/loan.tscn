@@ -59,7 +59,7 @@ offset_bottom = 320.0
 focus_next = NodePath("../Value")
 focus_previous = NodePath("../Title")
 
-[node name="Label" type="Label" parent="Wallet_id"]
+[node name="W2Label" type="Label" parent="Wallet_id"]
 layout_mode = 0
 offset_left = -285.0
 offset_right = -5.0

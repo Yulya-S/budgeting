@@ -35,7 +35,7 @@ offset_top = 239.0
 offset_right = 693.0
 offset_bottom = 270.0
 
-[node name="Label" type="Label" parent="Wallet_id"]
+[node name="WLabel" type="Label" parent="Wallet_id"]
 layout_mode = 0
 offset_left = -285.0
 offset_right = -5.0
@@ -53,7 +53,7 @@ offset_top = 289.0
 offset_right = 693.0
 offset_bottom = 320.0
 
-[node name="Label" type="Label" parent="Wallet_2_id"]
+[node name="W2Label" type="Label" parent="Wallet_2_id"]
 layout_mode = 0
 offset_left = -285.0
 offset_right = -5.0
@@ -75,7 +75,7 @@ text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
-[node name="Label" type="Label" parent="Value"]
+[node name="VLabel" type="Label" parent="Value"]
 layout_mode = 0
 offset_left = -285.0
 offset_right = -5.0
@@ -93,6 +93,4 @@ offset_top = 163.0
 offset_right = 999.0
 offset_bottom = 473.0
 
-[connection signal="item_selected" from="Wallet_id" to="." method="_on_wallet_item_selected"]
-[connection signal="item_selected" from="Wallet_2_id" to="." method="_on_extra_item_selected"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
