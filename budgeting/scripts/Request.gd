@@ -597,6 +597,7 @@ func match_deleted(idx: String, obj_type: Global.Pages) -> void:
 		Global.Pages.WALLET: return _delete_wallet_obj(idx)
 		Global.Pages.SECTION: return _delete_section_obj(idx)
 		Global.Pages.CASH_FLOW: return _delete_cash_flow_obj(idx)
+		Global.Pages.TRANSFER: return _delete_transfer_obj(idx)
 		Global.Pages.PAYMENT: return _delete_payment_obj(idx)
 		Global.Pages.PERCENT: return _delete_percent_obj(idx)
 		Global.Pages.LOAN: return _delete_loan_obj(idx)
@@ -644,6 +645,13 @@ func _delete_cash_flow_obj(idx: String) -> void:
 	db.query("DELETE FROM cash_flows WHERE id = "+idx+";")
 	db.query("UPDATE cash_flows SET id = id - 1 WHERE id > " + idx + ";")
 	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "cash_flows";')
+
+# Запрос на удаление перевода средств
+func _delete_transfer_obj(idx) -> void:
+	var data: Dictionary = _select("* FROM cash_flows", "id = "+idx)[0]
+	db.query("UPDATE wallets SET value = value + "+str(data.value)+" WHERE id = "+str(data.wallet_id)+";")
+	db.query("UPDATE wallets SET value = value - "+str(data.value)+" WHERE id = "+str(data.wallet_2_id)+";")
+	db.query("DELETE FROM cash_flows WHERE id = " + idx + ";")
 
 # Запрос на удаление платежа по займу
 func _delete_payment_obj(idx: String) -> void:

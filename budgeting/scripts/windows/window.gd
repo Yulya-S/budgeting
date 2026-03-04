@@ -9,8 +9,24 @@ var idx: int = 0 # Индекс изменяемого объекта
 func _ready() -> void:
 	ColorScheme.repainting(self)
 	File.set_lang(self)
-	if page_type == Global.Pages.LOAN:
+	if page_type in [Global.Pages.LOAN, Global.Pages.CASH_FLOW, Global.Pages.TRANSFER, Global.Pages.PAYMENT]:
 		Global.fill_optionButton($Wallet_id, Request._select("* FROM wallets"))
+	if page_type == Global.Pages.CASH_FLOW:
+		Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 4"))
+		_on_section_id_item_selected()
+	elif page_type == Global.Pages.TRANSFER:
+		Global.fill_optionButton($Wallet_2_id, Request._select("* FROM wallets"))
+	elif page_type in [Global.Pages.PERCENT, Global.Pages.PAYMENT]:
+		Global.fill_optionButton($Wallet_2_id, Request._select("* FROM loans", "total > 0"))
+
+# Смена значения займа
+func _process(_delta: float) -> void:
+	if page_type not in [Global.Pages.PAYMENT, Global.Pages.PERCENT]: return
+	var total: float = Request.get_loan_total(idx, Global.get_OB_id($Wallet_2_id), $Date.get_date())
+	if page_type == Global.Pages.PAYMENT: $Wallet_2_id/Total.set_text(str(total))
+	elif page_type == Global.Pages.PERCENT:
+		var value: float = 0.0 if $Value.get_text() == "" else float($Value.get_text())
+		$Value/Count.set_text(str(total)+" + "+str(value)+" = "+str(total + value))
 
 # Обновление данных на странице
 func set_page(new_idx: int) -> void:
@@ -116,3 +132,7 @@ func _on_value_text_changed() -> void: Global.text_changed_TextEdit($Value, true
 
 # Изменение типа события
 func _on_event_type_item_selected(index: int) -> void: $Value.visible = index > 0
+
+# Изменение раздела
+func _on_section_id_item_selected(index: int = 0) -> void:
+	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request._select("* FROM sections")[index + 4].income))])
