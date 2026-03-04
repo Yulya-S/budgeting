@@ -10,6 +10,11 @@ extends ScrollContainer
 # Применение размера VBoxContainer
 func _ready() -> void: if not first_line: Objects.alignment = VBoxContainer.ALIGNMENT_END
 
+# Смена объекта списка
+func update_obj(new_obj: Request.ObjectVariants) -> void:
+	obj = new_obj
+	lines = ArrayLines.new("res://scenes/fragments/list_elements/"+Global.enum_key(Request.ObjectVariants, obj)+".tscn")
+
 # Изменение размера контейнера
 func set_container_size(new_size: Vector2) -> void:
 	size = new_size

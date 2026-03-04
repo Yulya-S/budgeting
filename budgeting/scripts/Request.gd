@@ -1,7 +1,7 @@
 extends Node
 # Перечисление
 enum Tables {WALLETS, SECTIONS, SUBSECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, NOTIFICATIONS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
-enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, NOTIFICATION, FAST_CREATION, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
+enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, NOTIFICATION, FAST_CREATION, WALLET_TRANSACTION, SUBSECTION} # Варианты списков объектов по которым могут быть запросы
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -524,13 +524,16 @@ func _select_wts_list(where: String) -> Array:
 func select_inf_data(where: String, idx: int, type: Global.Pages) -> Dictionary:
 	if where == "": return {}
 	var value: Dictionary = {}
-	if type == Global.Pages.WALLET:
-		value = _select("*, value as total FROM wallets", "id = "+str(idx))[0]
-		value.merge(_select("coalesce(COUNT(cf.id), 0) count FROM cash_flows cf", where)[0])
-		return _update_wallets_list(value)
-	value = _select("l.*, (SELECT value FROM cash_flows WHERE section_id = 2 and wallet_2_id = l.id) value FROM loans l", "l.id = " + str(idx))[0]
-	value["percent"] = _select_loan_percent(idx)
-	return value
+	match type:
+		Global.Pages.WALLET:
+			value = _select("*, value as total FROM wallets", "id = "+str(idx))[0]
+			value.merge(_select("coalesce(COUNT(cf.id), 0) count FROM cash_flows cf", where)[0])
+			return _update_wallets_list(value)
+		Global.Pages.LOAN:
+			value = _select("l.*, (SELECT value FROM cash_flows WHERE section_id = 2 and wallet_2_id = l.id) value FROM loans l", "l.id = " + str(idx))[0]
+			value["percent"] = _select_loan_percent(idx)
+			return value
+	return select_sections_list("s.id = "+str(idx))[0]
 
 # Получение среднего процента от займа
 func _select_loan_percent(idx: int) -> String:
