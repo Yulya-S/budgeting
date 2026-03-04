@@ -735,6 +735,7 @@ func match_created(obj_type: Global.Pages, values: Array) -> void:
 		Global.Pages.SECTION: return _create_section(values)
 		Global.Pages.CASH_FLOW: return _create_cash_flow(values)
 		Global.Pages.PAYMENT: return _create_payment(values)
+		Global.Pages.PERCENT: return _create_percent(values)
 		Global.Pages.LOAN: return _create_loan(values)
 		Global.Pages.EVENT: return _create_event(values)
 
@@ -757,6 +758,11 @@ func _create_cash_flow(values: Array) -> void:
 func _create_payment(values: Array) -> void:
 	db.query("INSERT INTO cash_flows (section_id, wallet_id, wallet_2_id, value, date) VALUES (3, "+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
 	db.query("UPDATE loans SET total = total - "+values[2]+" WHERE id = "+values[1])
+
+# Запрос на создание процентов по займу
+func _create_percent(values: Array) -> void:
+	db.query("INSERT INTO cash_flows (section_id, wallet_2_id, value, date) VALUES (4, "+values[0]+", "+values[1]+', "'+values[2]+'");')
+	db.query("UPDATE loans SET total = total + "+values[1]+" WHERE id = "+values[0])
 
 # Запрос на создание займа
 func _create_loan(values: Array) -> void:

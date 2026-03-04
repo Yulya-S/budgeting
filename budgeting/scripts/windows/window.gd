@@ -46,6 +46,7 @@ func check_object() -> bool:
 		Global.Pages.SECTION: return _check_section()
 		Global.Pages.CASH_FLOW: return _check_cash_flow()
 		Global.Pages.PAYMENT: return _check_payment()
+		Global.Pages.PERCENT: return _check_percent()
 		Global.Pages.LOAN: return _check_loan()
 		Global.Pages.EVENT: return _check_event()
 	return false
@@ -70,6 +71,12 @@ func _check_payment() -> bool:
 	if $Value.get_text() == "" or float($Value.get_text()) <= 0: return false
 	if Request.loan_check_first_date(Global.get_OB_id($Wallet_2_id), $Date.get_date()): return false
 	if Request._select("* FROM loans", "id = "+str(Global.get_OB_id($Wallet_2_id)))[0].total - float($Value.get_text()) < 0: return false
+	return true
+	
+# Проверка возможности создания процентов по займу
+func _check_percent() -> bool:
+	if $Value.get_text() == "" or float($Value.get_text()) <= 0: return false
+	if Request.loan_check_first_date(Global.get_OB_id($Wallet_2_id), $Date.get_date()): return false
 	return true
 
 # Проверка возможности создания займа

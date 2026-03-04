@@ -13,6 +13,7 @@ func _ready() -> void:
 	
 # Смена значения займа
 func _process(_delta: float) -> void:
+	if page_type not in [Global.Pages.PAYMENT, Global.Pages.PERCENT]: return
 	var total: float = Request.get_loan_total(idx, Global.get_OB_id($Wallet_2_id), $Date.get_date())
 	if page_type == Global.Pages.PAYMENT: $Wallet_2_id/Total.set_text(str(total))
 	elif page_type == Global.Pages.PERCENT:
