@@ -238,7 +238,9 @@ func _standard_language() -> Dictionary:
 		"CashFlowWindowValueLabel": "Сумма транзакции:",
 		# Окно создания / изменения платежа по займу
 		"Wallet_idWLabel": "Источник списания", "Wallet_2_idLLabel": "Выбранный займ",
-		"PaymentValueLabel": "Сумма платежа:", 
+		"PaymentValueLabel": "Сумма платежа:",
+		# Окно создания / изменения процента по займу
+		"PercentValueLabel": "Прибавка к займу",
 		# Окно создания / изменения займов
 		"LoanWindowTitleLabel": "Имя займа:", "LoanWindowWallet_idLabel": "Целевой счет",
 		"LoanWindowValueLabel": "Сумма займа:",
@@ -367,7 +369,9 @@ func _cr_en() -> void:
 		"CashFlowWindowValueLabel": "Transaction amount:",
 		# Окно создания / изменения платежа по займу
 		"Wallet_idWLabel": "Source of write-off", "Wallet_2_idLLabel": "Selected loan",
-		"PaymentValueLabel": "Payment amount:", 
+		"PaymentValueLabel": "Payment amount:",
+		# Окно создания / изменения процента по займу
+		"PercentValueLabel": "Loan addition",
 		# Окно создания / изменения займов
 		"LoanWindowTitleLabel": "Loan name:", "LoanWindowWallet_idLabel": "Target wallet",
 		"LoanWindowValueLabel": "Loan amount:",
