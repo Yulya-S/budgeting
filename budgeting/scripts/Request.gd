@@ -1,6 +1,6 @@
 extends Node
 # Перечисление
-enum Tables {WALLETS, SECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, NOTIFICATIONS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
+enum Tables {WALLETS, SECTIONS, SUBSECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, NOTIFICATIONS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
 enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, NOTIFICATION, FAST_CREATION, WALLET_TRANSACTION} # Варианты списков объектов по которым могут быть запросы
 
 # Переменная
@@ -29,6 +29,7 @@ func connection_db(db_name: String) -> void:
 	# Создание таблиц в базе
 	_create_table("wallets", "title VARCHAR(255), value FLOAT")
 	_create_table("sections", "title VARCHAR(255), month_limit FLOAT, income BOOLEAN")
+	_create_table("subsections", "parent_id INT, title VARCHAR(255), month_limit FLOAT", ["(`parent_id`) REFERENCES `sections`(`id`)"])
 	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, value FLOAT, date DATE", ["(`wallet_id`) REFERENCES `wallets`(`id`)", "(`section_id`) REFERENCES `sections`(`id`)"])
 	_create_table("loans", "title VARCHAR(255), total FLOAT")
 	_create_table("events", "title VARCHAR(255), event_type INT, value FLOAT, repetition_rate INT, date DATE")
@@ -37,8 +38,9 @@ func connection_db(db_name: String) -> void:
 	_create_table("settings", "color_preset BOOLEAN, color_scheme INT, color_1 VARCHAR(255), color_2 VARCHAR(255), color_3 VARCHAR(255), color_4 VARCHAR(255), dark_theme BOOLEAN, event_page_calendar BOOLEAN, last_entry DATE")
 	_create_table("notifications", "event_id INT, new BOOL, date DATE", ["(`event_id`) REFERENCES `events`(`id`)"])
 	_create_table("fast_creations", "wallet_id INT, section_id INT", ["(`wallet_id`) REFERENCES `wallets`(`id`)", "(`section_id`) REFERENCES `sections`(`id`)"])
-	if len(select(Tables.SECTIONS)) != 0: return
-	for i in ["__ST1", "__ST2", "__ST3", "__ST4"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
+	if len(select(Tables.SECTIONS)) == 0: for i in ["__ST1", "__ST2"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
+	if len(select(Tables.SUBSECTIONS)) == 0: for i in ["__SS1", "__SS2", "__SS3"]: insert_record(Tables.SUBSECTIONS, [2, '"'+i+'"', -1])
+	if len(select(Tables.SETTINGS)) == 0: db.query('INSERT INTO settings (color_preset, color_scheme, color_1, color_2, color_3, color_4, dark_theme, event_page_calendar, last_entry) VALUES (0, 0, "3a9891ff", "c8c8c8ff", "000000ff", "000000ff", 0, 0, "'+Global.date_to_str()+'")')
 
 # Запрос на создание таблицы
 func _create_table(title: String, columns: String, foreign: Array = []) -> void:
