@@ -39,11 +39,12 @@ func _open_window(page: Global.Pages, id: Variant = null,
 	add_child(load("res://scenes/"+Global.enum_key(Global.Dirs, dir)+"/"+Global.enum_key(Global.Pages, page)+".tscn").instantiate())
 	if not _ch_inf(): get_child(-1).set_page(id, page)
 	elif dir == Global.Dirs.WINDOWS and id: get_child(-1).set_page(id)
-	if get_child_count() > 1 and _check_inf_page(): Global.delete_child(self, get_child(-1))
+	if get_child_count() > 1 and _check_inf_page():
+		Global.delete_child(self, get_child(-1))
 
 # Проверка имени крайней страницы
 func _check_inf_page() -> bool:
-	if _ch_inf(-2) and _ch_inf(): return false
+	if _ch_inf(-2) or _ch_inf(): return false
 	if _ch_par("page_type") and _ch_par(): return true
 	return false
 
@@ -69,4 +70,5 @@ func _open_new_page(page: Global.Pages, id: Variant = null, parent: Variant = nu
 	_update_last_entry()
 
 # Проверка закрытия окна инфомрации при удалении объекта
-func close_inf_page() -> void: if not _ch_inf(-2): get_child(-2)._on_back_button_down()
+func close_inf_page() -> void:
+	if not _ch_inf(-2) and get_child(-1).name != "Subsection": get_child(-2)._on_back_button_down()
