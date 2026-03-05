@@ -15,7 +15,7 @@ script = ExtResource("1_rbn4l")
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 1
 offset_left = 10.0
-offset_right = 228.4
+offset_right = 229.0
 offset_bottom = 23.0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
@@ -28,11 +28,25 @@ script = ExtResource("2_nyojl")
 next_page = 3
 next_page_dir = 1
 
+[node name="Sub_title" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 1
+offset_left = 234.0
+offset_right = 400.0
+offset_bottom = 23.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+text = "Подраздел"
+vertical_alignment = 1
+autowrap_mode = 1
+
 [node name="Wallet_Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 1
-offset_left = 238.0
-offset_right = 456.4
+offset_left = 405.4
+offset_right = 605.4
 offset_bottom = 23.0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
@@ -48,8 +62,8 @@ next_page_dir = 2
 [node name="Wallet_2_Title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 1
-offset_left = 481.0
-offset_right = 699.4
+offset_left = 630.4
+offset_right = 830.4
 offset_bottom = 23.0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
@@ -72,8 +86,8 @@ vertical_alignment = 1
 
 [node name="Value" type="Label" parent="."]
 layout_mode = 1
-offset_left = 694.0
-offset_right = 912.4
+offset_left = 835.0
+offset_right = 985.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Сумма"
@@ -86,8 +100,8 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -230.0
-offset_right = -11.6
+offset_left = -162.0
+offset_right = -12.0
 offset_bottom = 23.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)

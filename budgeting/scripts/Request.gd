@@ -274,8 +274,8 @@ func _select_cash_flows_list(where: String = "", date: String = Global.date_to_s
 	if date != "":
 		if where != "": where = " AND " + where
 		where = where_date(date) + where
-	return _select("cf.*, s.title, s.income, w.title wallet_title FROM `cash_flows` cf LEFT JOIN sections s ON cf.section_id=s.id
-		LEFT JOIN wallets w ON cf.wallet_id=w.id", where, order)
+	return _select("cf.*, s.title, COALESCE(ss.title, '') sub_title, s.income, w.title wallet_title FROM `cash_flows` cf LEFT JOIN sections s ON cf.section_id=s.id
+		LEFT JOIN wallets w ON cf.wallet_id=w.id LEFT JOIN subsections ss ON cf.subsection_id=ss.id", where, order)
 
 # Запрос на изменение списка разделов
 func _update_cash_flows_list(line: Dictionary) -> Dictionary:

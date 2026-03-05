@@ -192,8 +192,9 @@ func _standard_language() -> Dictionary:
 		# Страница движений средств
 		"FilterWalletLabel": "Имя счёта", "FilterSectionLabel": "Статья",
 		"CashFlowFilterOrder": ["По статье", "По возрастанию суммы", "По убыванию суммы"],
-		"CashFlowTitle": "Название раздела", "CashFlowWallet_Title": "Источник",
-		"CashFlowWallet_2_Title": "Цель", "CashFlowValue": "Сумма", "Date": "Дата",
+		"CashFlowTitle": "Название раздела", "CashFlowSub_title": "Подраздел",
+		"CashFlowWallet_Title": "Источник", "CashFlowWallet_2_Title": "Цель",
+		"CashFlowValue": "Сумма", "Date": "Дата",
 		# Страница займов
 		"AddLoan": "Создать займ", "AddInterest": "Добавить проценты по займу", "AddPayment": "Добавить платёж по займу",
 		"FilterStatusLabel": "Статус", "FilterStatus": ["Выплачено", "В процессе"],
@@ -323,8 +324,9 @@ func _cr_en() -> void:
 		# Страница движений средств
 		"FilterWalletLabel": "Account name", "FilterSectionLabel": "Article",
 		"CashFlowFilterOrder": ["According to the article", "Ascending amount", "In descending order of amount"],
-		"CashFlowTitle": "Section title", "CashFlowWallet_Title": "Source",
-		"CashFlowWallet_2_Title": "Target", "CashFlowValue": "Amount", "Date": "Date",
+		"CashFlowTitle": "Section title", "CashFlowSub_title": "Subsection",
+		"CashFlowWallet_Title": "Source", "CashFlowWallet_2_Title": "Target",
+		"CashFlowValue": "Amount", "Date": "Date",
 		# Страница займов
 		"AddLoan": "Create a loan", "AddInterest": "Add interest to the loan", "AddPayment": "Add a loan payment",
 		"FilterStatusLabel": "Status", "FilterStatus": ["Paid", "In progress"],
