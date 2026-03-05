@@ -11,9 +11,12 @@ func _ready() -> void:
 	File.set_lang(self)
 	if page_type in [Global.Pages.LOAN, Global.Pages.CASH_FLOW, Global.Pages.TRANSFER, Global.Pages.PAYMENT]:
 		Global.fill_optionButton($Wallet_id, Request._select("* FROM wallets"))
-	if page_type == Global.Pages.CASH_FLOW:
-		Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 4"))
+	if page_type in [Global.Pages.CASH_FLOW, ]:
+		Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 2"))
 		_on_section_id_item_selected()
+	elif page_type == Global.Pages.SUBSECTION:
+		Global.fill_optionButton($Parent_id, Request._select("* FROM sections", "id > 2"))
+		_on_parent_id_item_selected()
 	elif page_type == Global.Pages.TRANSFER:
 		Global.fill_optionButton($Wallet_2_id, Request._select("* FROM wallets"))
 	elif page_type in [Global.Pages.PERCENT, Global.Pages.PAYMENT]:
@@ -135,4 +138,10 @@ func _on_event_type_item_selected(index: int) -> void: $Value.visible = index > 
 
 # Изменение раздела
 func _on_section_id_item_selected(index: int = 0) -> void:
-	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request._select("* FROM sections")[index + 4].income))])
+	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request._select("* FROM sections")[index + 2].income))])
+
+# Изменение родительского раздела
+func _on_parent_id_item_selected(index: int = 0) -> void:
+	var income: bool = Request._select("* FROM sections")[index + 2].income
+	$Parent_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
+	$Month_Limit.visible =  not income

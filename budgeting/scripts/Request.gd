@@ -575,7 +575,8 @@ func select_loan_graphics(idx: int) -> Array:
 func match_elem(idx: String, obj_type: Global.Pages) -> Dictionary:
 	match obj_type:
 		Global.Pages.WALLET: return _select_wallet_obj(idx)
-		Global.Pages.SECTION: if int(idx) > 4: return _select_section_obj(idx)
+		Global.Pages.SECTION: if int(idx) > 2: return _select_section_obj(idx)
+		Global.Pages.SUBSECTION: if int(idx) > 3: return _select_subsection_obj(idx)
 		Global.Pages.LOAN: return _select_loan_obj(idx)
 		Global.Pages.EVENT: return _select_event_obj(idx)
 		_: return _select_cash_flow_obj(idx)
@@ -588,6 +589,12 @@ func _select_wallet_obj(idx: String) -> Dictionary:
 # Запрос на получение объекта таблицы разделов
 func _select_section_obj(idx: String) -> Dictionary:
 	var value: Dictionary = _select("* FROM sections", "id = " + idx)[0]
+	if value.month_limit == -1.0: value.month_limit = 0.0
+	return value
+	
+# Запрос на получение объекта таблицы подразделов
+func _select_subsection_obj(idx: String) -> Dictionary:
+	var value: Dictionary = _select("* FROM subsections", "id = " + idx)[0]
 	if value.month_limit == -1.0: value.month_limit = 0.0
 	return value
 

@@ -43,3 +43,6 @@ func _on_back_button_down() -> void:
 
 # Обработка нажатия кнопки "Изменить"
 func _on_update_button_down() -> void: Global.emit_signal("open_window", page_type, idx)
+
+# Обработка нажатия кнопки "Создать подраздел"
+func _on_add_subsection_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SUBSECTION)

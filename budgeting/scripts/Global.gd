@@ -5,7 +5,7 @@ signal open_new_page(page: Pages, id, parent: Variant) # Открытие стр
 signal update_page(close_page: String) # Обновление данных на странице
 
 # Перечисления
-enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, TRANSFER, PAYMENT, PERCENT, REGISTRATION, HINTS, SETTINGS, CLEANING} # Страницы приложения
+enum Pages {BASIC, WALLET, SECTION, SUBSECTION, CASH_FLOW, LOAN, EVENT, REPORT, TRANSFER, PAYMENT, PERCENT, REGISTRATION, HINTS, SETTINGS, CLEANING} # Страницы приложения
 enum Dirs {PAGES, WINDOWS, INFORMATION} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 

@@ -57,6 +57,9 @@ func _set_special_values(data: Dictionary) -> void:
 			$Completed.visible = data.completed
 			$Completed.size = custom_minimum_size
 		"section":
+			if get_parent().get_parent().obj == Request.ObjectVariants.SUBSECTION:
+				$Title.next_page = Global.Pages.SUBSECTION
+				$Title.next_page_dir = Global.Dirs.WINDOWS
 			$ConsumptionIncome.set_text("" if data.id <= 4 else "__CI" + str(data.income))
 			$Progress.visible = not data.income and data.month_limit > 0
 			$Marker.size[1] = custom_minimum_size[1]
