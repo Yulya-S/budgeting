@@ -718,6 +718,7 @@ func match_updated(idx: String, obj_type: Global.Pages, values: Array) -> void:
 	match obj_type:
 		Global.Pages.WALLET: return _update_wallet(idx, values)
 		Global.Pages.SECTION: return _update_section(idx, values)
+		Global.Pages.SUBSECTION: return _update_subsection(idx, values)
 		Global.Pages.CASH_FLOW: return _update_cash_flow(idx, values)
 		Global.Pages.TRANSFER: return _update_transfer(idx, values)
 		Global.Pages.PAYMENT: return _update_payment(idx, values)
@@ -734,7 +735,12 @@ func _update_section(idx: String, values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
 	db.query('UPDATE sections SET title = "'+values[0]+'", income ='+values[1]+", month_limit = "+values[2]+" WHERE id = "+idx+";")
 
-# Запрос на изменение раздела
+# Запрос на изменене подраздела
+func _update_subsection(idx, values) -> void:
+	if _select("* FROM sections", "id = "+values[1])[0].income == 1: values[2] = "-1.0"
+	db.query('UPDATE subsections SET title = "'+values[0]+'", parent_id ='+values[1]+", month_limit = "+values[2]+" WHERE id = "+idx+";")
+
+# Запрос на изменение движения средств
 func _update_cash_flow(idx: String, values: Array) -> void:
 	var data: Dictionary = _select("cf.*, s.income FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id", "cf.id = "+idx)[0]
 	if not data.income: data.value *= -1
@@ -806,7 +812,7 @@ func _create_section(values: Array) -> void:
 
 # Запрос на создание подраздела
 func _create_subsection(values: Array) -> void:
-	if values[1] == "true": values[2] = "-1.0"
+	if _select("* FROM sections", "id = "+values[1])[0].income == 1: values[2] = "-1.0"
 	if len(_select("* FROM subsections", "parent_id = "+values[1])) == 0:
 		db.query('INSERT INTO subsections (title, parent_id, month_limit) VALUES ("__SS4", '+values[1]+", -1);")
 	db.query('INSERT INTO subsections (title, parent_id, month_limit) VALUES ("'+values[0]+'", '+values[1]+", "+values[2]+");")
