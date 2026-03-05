@@ -13,7 +13,7 @@ offset_bottom = 648.0
 script = ExtResource("1_bh4ot")
 page_type = 7
 
-[node name="Window" parent="." instance=ExtResource("2_bh4ot")]
+[node name="TWindow" parent="." instance=ExtResource("2_bh4ot")]
 layout_mode = 0
 
 [node name="Error" type="Label" parent="."]

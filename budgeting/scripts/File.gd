@@ -222,7 +222,7 @@ func _standard_language() -> Dictionary:
 		"TLabel": "Итог:", "TotalCountLabel": "Количество транзакций:",
 		"TotalCash_flowLabel": "Сумма:",
 		# Страница информации о разделах
-		"SectionLabel": "Информация о статье", "FilterSLabel": "Значение по статье:",
+		"SectionLabel": "Информация о разделе", "FilterSLabel": "Значение по разделу:",
 		# Страница информации о займах
 		"LoanLabel": "Информация о займе", "PercentLabel": "Средний процент по займу:",
 		"TotalLLabel": "Оставшаяся сумма:", "TotalValueLabel": "Изначальная сумма:",
@@ -236,17 +236,29 @@ func _standard_language() -> Dictionary:
 		"Month_LimitLabel": "Ежемесячное ограничение:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Удаление раздела",
 			"text": "Все данные раздела будут удалены"},
+		# Окно создания / изменения подраздела
+		"SubsectionTitleLabel": "Название подраздела:", "Parent_idLabel": "Родительский раздел",
+		"SubsectionWindowConfirmationDialog": { "title": "Удаление подраздела",
+			"text": "Все данные подраздела будут удалены"},
 		# Окно создания / изменения движений средств
 		"CashFlowWindowWallet_idLabel": "Имя счета", "CashFlowWindowSection_idLabel": "Статья",
 		"ValueVLabel": "Сумма транзакции:",
+		"TWindowConfirmationDialog": { "title": "Отмена транзакции",
+			"text": "Транзакция будет отменена"},
 		# Окно создания / изменения платежа по займу
 		"Wallet_idWLabel": "Источник списания", "Wallet_2_idLLabel": "Выбранный займ",
 		"PaymentValueLabel": "Сумма платежа:",
+		"PaymentWindowConfirmationDialog": { "title": "Удаление платежа по займу",
+			"text": "Платёж будет отменен"},
 		# Окно создания / изменения процента по займу
 		"PercentValueLabel": "Прибавка к займу",
+		"PercentWindowConfirmationDialog": { "title": "Удаление процента по займу",
+			"text": "Добавленные проценты по займу будут удалены"},
 		# Окно создания / изменения займов
 		"LoanWindowTitleLabel": "Имя займа:", "W2Label": "Целевой счет",
 		"LoanWindowValueLabel": "Сумма займа:",
+		"LoanWindowWindowConfirmationDialog": { "title": "Удаление займа",
+			"text": "Все данные займа будут удалены"},
 		# Окно создания / изменения события
 		"EventWindowTitleLabel": "Название события:", "Event_typeLabel": "Тип события",
 		"Repetition_rateLabel": "Частота повторения", "EventWindowValueLabel": "Значение:",
@@ -371,17 +383,29 @@ func _cr_en() -> void:
 		"Month_LimitLabel": "Monthly limitation:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Deleting a partition",
 			"text": "All data in this section will be deleted."},
+		# Окно создания / изменения подраздела
+		"SubsectionTitleLabel": "Subsection title:", "Parent_idLabel": "Parent section",
+		"SubsectionWindowConfirmationDialog": { "title": "Deleting a subsection",
+			"text": "All data in the subsection will be deleted"},
 		# Окно создания / изменения движений средств
 		"CashFlowWindowWallet_idLabel": "Wallet name", "CashFlowWindowSection_idLabel": "Section",
 		"ValueVLabel": "Transaction amount:",
+		"TWindowConfirmationDialog": { "title": "Cancel transaction",
+			"text": "The transaction will be cancelled"},
 		# Окно создания / изменения платежа по займу
 		"Wallet_idWLabel": "Source of write-off", "Wallet_2_idLLabel": "Selected loan",
 		"PaymentValueLabel": "Payment amount:",
+		"PaymentWindowConfirmationDialog": { "title": "Deleting a loan payment",
+			"text": "Payment will be canceled"},
 		# Окно создания / изменения процента по займу
 		"PercentValueLabel": "Loan addition",
+		"PercentWindowConfirmationDialog": { "title": "Removing interest on a loan",
+			"text": "Added interest on the loan will be removed"},
 		# Окно создания / изменения займов
-		"LoanWindowTitleLabel": "Loan name:", "LoanWindowWallet_idLabel": "Target wallet",
+		"LoanWindowTitleLabel": "Loan name:", "W2Label": "Target wallet",
 		"LoanWindowValueLabel": "Loan amount:",
+		"LoanWindowWindowConfirmationDialog": { "title": "Delete a loan",
+			"text": "All loan data will be deleted"},
 		# Окно создания / изменения события
 		"EventWindowTitleLabel": "Event name:", "Event_typeLabel": "Event type",
 		"Repetition_rateLabel": "Repetition rate", "EventWindowValueLabel": "Value:",
