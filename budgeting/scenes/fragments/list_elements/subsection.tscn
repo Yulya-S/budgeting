@@ -1,0 +1,95 @@
+[gd_scene load_steps=5 format=3 uid="uid://dc6437mdq1jsm"]
+
+[ext_resource type="Script" uid="uid://cxpfn7yfgevad" path="res://scripts/fragments/list_elements/section.gd" id="1_xc873"]
+[ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_thrd1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vuo4t"]
+bg_color = Color(0, 0, 0, 0.160784)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fue4g"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="Subsection" type="ColorRect"]
+custom_minimum_size = Vector2(969, 23)
+offset_right = 969.0
+offset_bottom = 23.0
+color = Color(0.955963, 0.955963, 0.955963, 1)
+script = ExtResource("1_xc873")
+
+[node name="Marker" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 6.0
+offset_right = 32.0
+offset_bottom = 23.0
+mouse_filter = 1
+color = Color(0.729412, 0.729412, 0.729412, 1)
+
+[node name="Progress" type="ProgressBar" parent="."]
+visible = false
+layout_mode = 1
+offset_left = 197.0
+offset_top = 5.0
+offset_right = 382.0
+offset_bottom = 18.0
+theme_override_styles/background = SubResource("StyleBoxFlat_vuo4t")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fue4g")
+value = 50.0
+show_percentage = false
+
+[node name="Value" type="Label" parent="."]
+layout_mode = 1
+offset_left = 37.0
+offset_right = 192.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Текущее значение"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
+
+[node name="Month_Limit" type="Label" parent="."]
+layout_mode = 1
+offset_left = 387.0
+offset_right = 542.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Ограничение"
+vertical_alignment = 1
+autowrap_mode = 1
+
+[node name="ConsumptionIncome" type="Label" parent="."]
+layout_mode = 1
+offset_left = 555.0
+offset_right = 706.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -262.0
+offset_right = -10.0
+offset_bottom = 23.0
+grow_horizontal = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+text = "Название подраздела"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 1
+script = ExtResource("2_thrd1")
+next_page = 2
+next_page_dir = 2
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Title" to="Title" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Title" to="Title" method="_on_mouse_exited"]

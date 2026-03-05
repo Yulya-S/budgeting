@@ -30,7 +30,8 @@ func connection_db(db_name: String) -> void:
 	_create_table("wallets", "title VARCHAR(255), value FLOAT")
 	_create_table("sections", "title VARCHAR(255), month_limit FLOAT, income BOOLEAN")
 	_create_table("subsections", "parent_id INT, title VARCHAR(255), month_limit FLOAT", ["(`parent_id`) REFERENCES `sections`(`id`)"])
-	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, value FLOAT, date DATE", ["(`wallet_id`) REFERENCES `wallets`(`id`)", "(`section_id`) REFERENCES `sections`(`id`)"])
+	_create_table("cash_flows", "wallet_id INT, wallet_2_id INT, section_id INT, subsection_id INT, value FLOAT, date DATE",
+		["(`wallet_id`) REFERENCES `wallets`(`id`)", "(`section_id`) REFERENCES `sections`(`id`)", "(`subsection_id`) REFERENCES `subsections`(`id`)"])
 	_create_table("loans", "title VARCHAR(255), total FLOAT")
 	_create_table("events", "title VARCHAR(255), event_type INT, value FLOAT, repetition_rate INT, date DATE")
 	_create_table("multiplied_events", "title VARCHAR(255), event_type INT, value FLOAT, date DATE, completed BOOLEAN, event_id INT")
@@ -186,9 +187,9 @@ func _process(_delta: float) -> void:
 # Получение данных из таблиц
 func _select(req_text: String, where: String = "", order: String = "", group: String = "") -> Array:
 	if where: where = " WHERE " + where
-	if order: order = " ORDER BY " + order
 	if group: group = " GROUP BY " + group
-	db.query("SELECT " + req_text + where + order + group + ";")
+	if order: order = " ORDER BY " + order
+	db.query("SELECT " + req_text + where + group + order + ";")
 	return db.query_result
 
 func select_value(table: Variant, column: String) -> Variant:
@@ -255,12 +256,18 @@ func _update_wallets_list(line: Dictionary, date: String = Global.date_to_str())
 func select_sections_list(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
 	return _select("s.*, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM `sections` s LEFT JOIN (SELECT cf.section_id, SUM(cf.value) v,
 		cf.date last_date, cf.id last_id FROM `cash_flows` cf WHERE "+where_date(date)+" GROUP BY cf.section_id) j ON s.id=j.section_id",where,order)
-	
+
 # Запрос на изменение списка разделов
 func _update_sections_list(line: Dictionary, parent: Variant) -> Dictionary:
 	line["marker"] = ColorScheme.get_color(parent.obj_count(), len(parent.lines.change_list) + parent.obj_count())
 	line["progress"] = (100. * line.value) / line.month_limit
 	return line
+	
+# Запрос на получение списка подразделов
+func _select_subsections_list(where: String = "") -> Array:
+	return _select("ss.*, s.income, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM subsections ss LEFT JOIN sections s ON ss.parent_id = s.id
+		LEFT JOIN (SELECT SUM(value) v, date last_date, id last_id, subsection_id FROM cash_flows cf GROUP BY section_id, subsection_id) j ON j.subsection_id = ss.id",
+		"ss.parent_id = "+where.split(" = ")[-1], "last_date DESC, id DESC")
 
 # Запрос на получение списка движений средств
 func _select_cash_flows_list(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
@@ -386,6 +393,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 	match list_element:
 		ObjectVariants.WALLET: return _select_wallets_list(filter_data.where, filter_data.order)
 		ObjectVariants.SECTION: return select_sections_list(filter_data.where, filter_data.date, filter_data.order)
+		ObjectVariants.SUBSECTION: return _select_subsections_list(filter_data.where)
 		ObjectVariants.CASH_FLOW: return _select_cash_flows_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.LOAN: return _select_loans_list(filter_data.where, filter_data.order)
 		ObjectVariants.EVENT: return select_multiplied_events_list()
@@ -399,7 +407,7 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 func match_update_list_element(list_element: ObjectVariants, line: Dictionary, parent = null) -> Dictionary:
 	match list_element:
 		ObjectVariants.WALLET: return _update_wallets_list(line)
-		ObjectVariants.SECTION:	return _update_sections_list(line, parent)
+		ObjectVariants.SECTION, ObjectVariants.SUBSECTION:	return _update_sections_list(line, parent)
 		ObjectVariants.CASH_FLOW: return _update_cash_flows_list(line)
 		ObjectVariants.LOAN: return _update_loans_list(line)
 		ObjectVariants.EVENT: return _update_events_list(line)

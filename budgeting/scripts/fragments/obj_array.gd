@@ -13,7 +13,9 @@ func _ready() -> void: if not first_line: Objects.alignment = VBoxContainer.ALIG
 # Смена объекта списка
 func update_obj(new_obj: Request.ObjectVariants) -> void:
 	obj = new_obj
-	lines = ArrayLines.new("res://scenes/fragments/list_elements/"+Global.enum_key(Request.ObjectVariants, obj)+".tscn")
+	var obj_name: String = Global.enum_key(Request.ObjectVariants, obj)
+	if obj == Request.ObjectVariants.SUBSECTION: obj_name = Global.enum_key(Request.ObjectVariants, Request.ObjectVariants.SECTION)
+	lines = ArrayLines.new("res://scenes/fragments/list_elements/"+obj_name+".tscn")
 
 # Изменение размера контейнера
 func set_container_size(new_size: Vector2) -> void:

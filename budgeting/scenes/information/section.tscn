@@ -96,6 +96,7 @@ tooltip_text = "Список транзакций"
 icon = ExtResource("6_ea0j8")
 
 [node name="Filter" type="ColorRect" parent="."]
+layout_mode = 0
 offset_top = 100.0
 offset_right = 1152.0
 offset_bottom = 156.0
