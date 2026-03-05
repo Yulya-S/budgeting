@@ -221,6 +221,8 @@ func _standard_language() -> Dictionary:
 		"Transactions": "Список транзакций", "TotalWLabel": "Значение счета:",
 		"TLabel": "Итог:", "TotalCountLabel": "Количество транзакций:",
 		"TotalCash_flowLabel": "Сумма:",
+		# Страница информации о разделах
+		"SectionLabel": "Информация о статье", "FilterSLabel": "Значение по статье:",
 		# Страница информации о займах
 		"LoanLabel": "Информация о займе", "PercentLabel": "Средний процент по займу:",
 		"TotalLLabel": "Оставшаяся сумма:", "TotalValueLabel": "Изначальная сумма:",
@@ -354,6 +356,8 @@ func _cr_en() -> void:
 		"Transactions": "List of transactions", "TotalWLabel": "Wallet value:",
 		"TLabel": "Total:", "TotalCountLabel": "Number of transactions:",
 		"TotalCash_flowLabel": "Sum:",
+		# Страница информации о разделах
+		"SectionLabel": "Section information", "FilterSLabel": "Value by section:",
 		# Страница информации о займах
 		"LoanLabel": "Loan information", "PercentLabel": "Average loan interest rate:",
 		"TotalLLabel": "Remaining amount:", "TotalValueLabel": "Initial amount:",
