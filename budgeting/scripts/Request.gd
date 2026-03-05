@@ -38,7 +38,8 @@ func connection_db(db_name: String) -> void:
 	# Создание таблиц для персонализации приложения
 	_create_table("settings", "color_preset BOOLEAN, color_scheme INT, color_1 VARCHAR(255), color_2 VARCHAR(255), color_3 VARCHAR(255), color_4 VARCHAR(255), dark_theme BOOLEAN, event_page_calendar BOOLEAN, last_entry DATE")
 	_create_table("notifications", "event_id INT, new BOOL, date DATE", ["(`event_id`) REFERENCES `events`(`id`)"])
-	_create_table("fast_creations", "wallet_id INT, section_id INT", ["(`wallet_id`) REFERENCES `wallets`(`id`)", "(`section_id`) REFERENCES `sections`(`id`)"])
+	_create_table("fast_creations", "wallet_id INT, section_id INT, subsection_id INT",
+		["(`wallet_id`) REFERENCES `wallets`(`id`)", "(`section_id`) REFERENCES `sections`(`id`)", "(`subsection_id`) REFERENCES `subsections`(`id`)"])
 	if len(select(Tables.SECTIONS)) == 0: for i in ["__ST1", "__ST2"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
 	if len(select(Tables.SUBSECTIONS)) == 0: for i in ["__SS1", "__SS2", "__SS3"]: insert_record(Tables.SUBSECTIONS, [2, '"'+i+'"', -1])
 	if len(select(Tables.SETTINGS)) == 0: db.query('INSERT INTO settings (color_preset, color_scheme, color_1, color_2, color_3, color_4, dark_theme, event_page_calendar, last_entry) VALUES (0, 0, "3a9891ff", "c8c8c8ff", "000000ff", "000000ff", 0, 0, "'+Global.date_to_str()+'")')
@@ -617,6 +618,7 @@ func match_deleted(idx: String, obj_type: Global.Pages) -> void:
 	match obj_type:
 		Global.Pages.WALLET: return _delete_wallet_obj(idx)
 		Global.Pages.SECTION: return _delete_section_obj(idx)
+		Global.Pages.SUBSECTION: return _delete_subsection_obj(idx)
 		Global.Pages.CASH_FLOW: return _delete_cash_flow_obj(idx)
 		Global.Pages.TRANSFER: return _delete_transfer_obj(idx)
 		Global.Pages.PAYMENT: return _delete_payment_obj(idx)
@@ -655,6 +657,24 @@ func _delete_section_obj(idx: String) -> void:
 	db.query("DELETE FROM fast_creations WHERE section_id = "+idx+";")
 	db.query("UPDATE fast_creations SET section_id = section_id - 1 WHERE section_id > " + idx + ";")
 	_table_ids_update("fast_creations")
+
+# Запрос на удаление подраздела
+func _delete_subsection_obj(idx: String) -> void:
+	var value: Dictionary = _select("* FROM subsections", "id = "+idx)[0]
+	# Удаление раздела
+	db.query("DELETE FROM subsections WHERE id = "+idx+";")
+	db.query("UPDATE subsections SET id = id - 1 WHERE id > " + idx + ";")
+	db.query('UPDATE sqlite_sequence SET seq = seq - 1 WHERE name = "subsections";')
+	# Удаление данных о движениях средств
+	db.query("DELETE FROM cash_flows WHERE subsection_id = "+idx+";")
+	db.query("UPDATE cash_flows SET subsection_id = subsection_id - 1 WHERE subsection_id > " + idx + ";")
+	_table_ids_update("cash_flows")
+	# Удаление быстрых созданий записей
+	db.query("DELETE FROM fast_creations WHERE subsection_id = "+idx+";")
+	db.query("UPDATE fast_creations SET subsection_id = subsection_id - 1 WHERE subsection_id > " + idx + ";")
+	_table_ids_update("fast_creations")
+	if len(_select("* FROM subsections", "parent_id = "+str(value.parent_id))) == 1:
+		_delete_subsection_obj(str(_select("* FROM subsections", "parent_id = "+str(value.parent_id)+' AND title = "__SS4"')[0].id))
 
 # Запрос на удаление движения средств
 func _delete_cash_flow_obj(idx: String) -> void:
