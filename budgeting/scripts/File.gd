@@ -258,7 +258,8 @@ func _standard_language() -> Dictionary:
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "По дате добавления", "__FO2": "По алфавиту",
 		# Объекты из базы данных
-		"__ST1": "Переводы", "__ST2": "Заём", "__SS1": "Получение", "__SS2": "Платеж", "__SS3": "Проценты",
+		"__ST1": "Переводы", "__ST2": "Заём", "__SS1": "Получение",
+		"__SS2": "Платеж", "__SS3": "Проценты", "__SS4": "Другое",
 		# Загрузка
 		"LoadLabel": "Загрузка уведомлений", "__L1": "Создаём список событий",
 		"__L2": "Создаём уведомления",
@@ -391,7 +392,8 @@ func _cr_en() -> void:
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "By date added", "__FO2": "Alphabetically",
 		# Объекты из базы данных
-		"__ST1": "Transfers", "__ST2": "Loan", "__SS1": "Getting а", "__SS2": "Payment", "__SS3": "Interest",
+		"__ST1": "Transfers", "__ST2": "Loan", "__SS1": "Getting а",
+		"__SS2": "Payment", "__SS3": "Interest", "__SS4": "Other",
 		# Загрузка
 		"LoadLabel": "Loading notifications", "__L1": "Creating a list of events",
 		"__L2": "Creating notifications",

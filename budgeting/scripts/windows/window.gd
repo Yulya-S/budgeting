@@ -63,6 +63,7 @@ func check_object() -> bool:
 	match page_type:
 		Global.Pages.WALLET: return _check_wallet()
 		Global.Pages.SECTION: return _check_section()
+		Global.Pages.SUBSECTION: return _check_subsection()
 		Global.Pages.CASH_FLOW: return _check_cash_flow()
 		Global.Pages.TRANSFER: return _check_transfer()
 		Global.Pages.PAYMENT: return _check_payment()
@@ -83,7 +84,12 @@ func _check_wallet() -> bool: return $Value.get_text() != "" and _check_textEdit
 func _check_section() -> bool:
 	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or $Income.button_pressed) and _check_textEdit($Title)
 
-# Проверка возможности создания раздела
+# Проверка возможности создания подраздела
+func _check_subsection() -> bool:
+	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or not $Month_Limit.visible) \
+		and $Title.get_text() != "" and Request.check_subsection_name($Title.get_text(), idx, Global.get_OB_id($Parent_id))
+
+# Проверка возможности создания движения средств
 func _check_cash_flow() -> bool: return $Value.get_text() != "" and float($Value.get_text()) > 0
 
 # Проверка возможности создания перевода средств

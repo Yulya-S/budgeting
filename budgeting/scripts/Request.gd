@@ -787,6 +787,7 @@ func match_created(obj_type: Global.Pages, values: Array) -> void:
 	match obj_type:
 		Global.Pages.WALLET: return _create_wallet(values)
 		Global.Pages.SECTION: return _create_section(values)
+		Global.Pages.SUBSECTION: return _create_subsection(values)
 		Global.Pages.CASH_FLOW: return _create_cash_flow(values)
 		Global.Pages.TRANSFER: return _create_transfer(values)
 		Global.Pages.PAYMENT: return _create_payment(values)
@@ -802,6 +803,13 @@ func _create_wallet(values: Array) -> void:
 func _create_section(values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
 	db.query('INSERT INTO sections (title, income, month_limit) VALUES ("'+values[0]+'", '+values[1]+", "+values[2]+");")
+
+# Запрос на создание подраздела
+func _create_subsection(values: Array) -> void:
+	if values[1] == "true": values[2] = "-1.0"
+	if len(_select("* FROM subsections", "parent_id = "+values[1])) == 0:
+		db.query('INSERT INTO subsections (title, parent_id, month_limit) VALUES ("__SS4", '+values[1]+", -1);")
+	db.query('INSERT INTO subsections (title, parent_id, month_limit) VALUES ("'+values[0]+'", '+values[1]+", "+values[2]+");")
 
 # Запрос на создание движения средств
 func _create_cash_flow(values: Array) -> void:
@@ -838,9 +846,13 @@ func _create_event(values: Array) -> void:
 	if int(values[2]) == 0: values[3] = "0.0"
 	db.query('INSERT INTO events (title, repetition_rate, event_type, value, date) VALUES ("'+values[0]+'",'+str(values[1])+", "+str(values[2])+", "+values[3]+', "'+values[4]+'");')
 
-# Проверка наличия с определенным имененем в таблицах
+# Проверка наличия записи с определенным имененем в таблицах
 func check_obj_name(obj_name: String, idx: int, table: Global.Pages) -> bool:
 	return len(_select("* FROM "+_get_table_name(table), 'title = "' + obj_name + '" AND id != ' + str(idx))) == 0
+
+# Проверка наличия подстатьи с определенным имененем в таблице раделов
+func check_subsection_name(obj_name: String, idx: int, parent_id: int) -> bool:
+	return len(_select("* FROM subsections", 'title = "' + obj_name + '" AND id != ' + str(idx)+" AND parent_id = "+str(parent_id))) == 0
 
 # Получение суммы займа до выбранной даты
 func get_loan_total(idx: int, w2idx: int, date: String) -> float:
