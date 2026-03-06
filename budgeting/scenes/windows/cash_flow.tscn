@@ -77,13 +77,33 @@ theme_override_font_sizes/font_size = 18
 text = "Расход"
 horizontal_alignment = 2
 
-[node name="Value" type="TextEdit" parent="."]
-clip_contents = false
+[node name="Subection_id" type="OptionButton" parent="."]
 layout_mode = 0
 offset_left = 400.0
 offset_top = 357.0
 offset_right = 693.0
 offset_bottom = 388.0
+text_overrun_behavior = 3
+clip_text = true
+
+[node name="CashFlowSub_title" type="Label" parent="Subection_id"]
+layout_mode = 0
+offset_left = -285.0
+offset_right = -5.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Подстатья"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Value" type="TextEdit" parent="."]
+clip_contents = false
+layout_mode = 0
+offset_left = 400.0
+offset_top = 407.0
+offset_right = 693.0
+offset_bottom = 438.0
 text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true

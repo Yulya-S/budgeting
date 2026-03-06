@@ -112,8 +112,8 @@ func _lang_match(obj: Variant, key: String) -> void:
 			if obj.name == "Order": obj.get_parent().reset_order()
 			var idx: int = 0
 			for i in range(obj.get_item_count()):
-				if obj.get_item_text(i) == "": continue
-				elif obj.get_item_text(i) in lang.keys() and "__" in obj.get_item_text(i):
+				if obj.get_item_text(i) == "" or obj.get_item_text(i) not in lang.keys(): continue
+				elif "__" in obj.get_item_text(i):
 					obj.set_item_text(i, lang[obj.get_item_text(i)])
 				elif lang[key] is Array:
 					if idx >= len(lang[key]): return
@@ -142,7 +142,7 @@ func set_lang(obj: Variant) -> void:
 	var key: String = _find_lang_keys(obj)
 	if obj is OptionButton and obj.name == "Month": key = "_Months"
 	elif obj is Label and "__" in obj.text and obj.text in lang.keys(): key = obj.text
-	if key != "": _lang_match(obj, key)
+	if key != "" or obj is OptionButton: _lang_match(obj, key)
 	for i in obj.get_children(): set_lang(i)
 
 # Создание стандартных вариантов локализации

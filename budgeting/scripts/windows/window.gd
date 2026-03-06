@@ -145,6 +145,10 @@ func _on_event_type_item_selected(index: int) -> void: $Value.visible = index > 
 # Изменение раздела
 func _on_section_id_item_selected(index: int = 0) -> void:
 	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request._select("* FROM sections")[index + 2].income))])
+	var values: Array = Request._select("* FROM subsections", '"__SS4" != title AND parent_id = '+str(index+3)) + Request._select("* FROM subsections", '"__SS4" == title AND parent_id = '+str(index+3))
+	$Subection_id.visible = len(values) > 0
+	$Value.position.y = 407.0 if len(values) > 0 else 357.0
+	if len(values) > 0: Global.fill_optionButton($Subection_id, values)
 
 # Изменение родительского раздела
 func _on_parent_id_item_selected(index: int = 0) -> void:

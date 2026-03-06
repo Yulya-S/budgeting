@@ -109,6 +109,7 @@ func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool =
 	if not container: return
 	if clear_OB: container.clear()
 	for i in objects: container.add_item(i.title, i.id)
+	File.set_lang(container)
 
 # Проверка что текст - это число
 func text_is_number(text: String) -> bool: return text.is_valid_int() or text.is_valid_float()
