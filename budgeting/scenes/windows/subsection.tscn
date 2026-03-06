@@ -10,7 +10,7 @@ anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
 script = ExtResource("1_agcjf")
-page_type = 3
+page_type = 10
 
 [node name="Window" parent="." instance=ExtResource("2_h5u6u")]
 layout_mode = 0

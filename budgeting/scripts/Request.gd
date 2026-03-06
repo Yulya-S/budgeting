@@ -657,6 +657,11 @@ func _delete_section_obj(idx: String) -> void:
 	db.query("DELETE FROM fast_creations WHERE section_id = "+idx+";")
 	db.query("UPDATE fast_creations SET section_id = section_id - 1 WHERE section_id > " + idx + ";")
 	_table_ids_update("fast_creations")
+	# Удваление подразделов
+	db.query("UPDATE cash_flows SET subsection_id = subsection_id - (SELECT COUNT(s.id) FROM subsections s, cash_flows cf WHERE s.parent_id = "+idx+" AND cf.subsection_id > s.id AND s.id != cf.subsection_id) WHERE section_id != "+idx+";")
+	db.query("UPDATE subsections SET parent_id = parent_id - 1 WHERE parent_id > " + idx + ";")
+	db.query("DELETE FROM subsections WHERE parent_id = "+idx+";")
+	_table_ids_update("subsections")
 
 # Запрос на удаление подраздела
 func _delete_subsection_obj(idx: String) -> void:
