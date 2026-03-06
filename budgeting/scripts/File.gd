@@ -184,8 +184,8 @@ func _standard_language() -> Dictionary:
 		"WalletFilterOrder": ["По текущей сумме"],
 		"WalletValue": "Текущее значение счета", "WalletCash_Flow": "Движение средств",
 		# Страница разделов
-		"AddSections": "Создать раздел", "FilterConsumptionIncomeLabel": "Тип статьи",
-		"FilterConsumptionIncome": ["Все типы", "Расходы", "Доходы", "Займы"],
+		"AddSection": "Создать раздел", "FilterConsumptionIncomeLabel": "Тип статьи",
+		"AddSubsection": "Создать подраздел", "FilterConsumptionIncome": ["Все типы", "Расходы", "Доходы", "Займы"],
 		"SectionFilterOrder": ["По дате последней транзакции", "По возрастанию суммы", "По убыванию суммы", "По ежемесячному лимиту"],
 		"SectionTitle": "Название раздела", "SectionValue": "Текущее значение", "Month_Limit": "Ограничение",
 		"__CI0": "Расход", "__CI1": "Доход",
@@ -331,8 +331,8 @@ func _cr_en() -> void:
 		"WalletFilterOrder": ["According to the current amount"],
 		"WalletValue": "Current account value", "WalletCash_Flow": "Movement of funds",
 		# Страница разделов
-		"AddSections": "Create a section", "FilterConsumptionIncomeLabel": "Article type",
-		"FilterConsumptionIncome": ["All types", "Expenses", "Income", "Loans"],
+		"AddSection": "Create a section", "FilterConsumptionIncomeLabel": "Article type",
+		"AddSubsection": "Create subsection", "FilterConsumptionIncome": ["All types", "Expenses", "Income", "Loans"],
 		"SectionFilterOrder": ["By last transaction date", "Ascending amount", "In descending order of amount", "By monthly limit"],
 		"SectionTitle": "Section title", "SectionValue": "Current value", "Month_Limit": "Limit",
 		"__CI0": "Expenditure", "__CI1": "Income",
