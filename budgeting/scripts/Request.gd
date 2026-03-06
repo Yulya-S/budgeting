@@ -596,6 +596,7 @@ func _select_section_obj(idx: String) -> Dictionary:
 # Запрос на получение объекта таблицы подразделов
 func _select_subsection_obj(idx: String) -> Dictionary:
 	var value: Dictionary = _select("* FROM subsections", "id = " + idx)[0]
+	if value.title == "__SS4": return {}
 	if value.month_limit == -1.0: value.month_limit = 0.0
 	return value
 
