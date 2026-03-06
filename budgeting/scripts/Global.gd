@@ -179,3 +179,6 @@ func fill_year_OB(container: OptionButton, idx: int, year: int = Global.get_date
 		if i + 1 > Global.get_date().year+int(last_month): break
 		container.add_item(str(i+1))
 	container.selected = 9
+	
+# Применить значение объекта выпадающего списка по его id
+func set_OB_id(container: OptionButton, idx: int) -> void: container.selected = container.get_item_index(idx)

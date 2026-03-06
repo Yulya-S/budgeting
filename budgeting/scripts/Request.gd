@@ -506,11 +506,12 @@ func delete_fast_creation(idx: int) -> void:
 
 # Проверка наличия достаточного количества кошельков и разделов для создания движений средств
 func check_sections_and_wallets() -> bool:
-	return _select("COUNT(id) c FROM wallets")[0].c >= 1 and _select("COUNT(id) c FROM sections")[0].c > 4
+	return _select("COUNT(id) c FROM wallets")[0].c >= 1 and _select("COUNT(id) c FROM sections")[0].c > 2
 
 # Запрос на создание объекта быстрого создания записей
 func insert_fast_creation() -> void:
-	db.query("INSERT INTO `fast_creations` (wallet_id, section_id) VALUES (1, 3);")
+	var subs_id = null if len(_select("* FROM subsections", "parent_id = 3")) == 0 else _select("* FROM subsections", "parent_id = 3")[0].id
+	db.query("INSERT INTO `fast_creations` (wallet_id, section_id, subsection_id) VALUES (1, 3,"+str(subs_id)+");")
 
 # Запрос на создание движения средств
 func insert_cash_flow(wallet_id: int, section_id: int, value: String, date: String = Global.date_to_str()) -> void:
@@ -523,8 +524,14 @@ func update_fc_wallet(idx: int, wallet_id: int) -> void:
 # Изменение значения раздела для объекта быстрого создания записей
 func update_fc_section(idx: int, section_id: int) -> int:
 	db.query("UPDATE fast_creations SET section_id = "+str(section_id)+" WHERE id = "+str(idx)+";")
+	if len(_select("* FROM subsections", "parent_id="+str(section_id))) == 0: update_fc_subsection(idx, "null")
+	else: update_fc_subsection(idx, _select("* FROM subsections", 'title == "__SS4" AND parent_id='+str(section_id))[0].id)
 	return int(_select("* FROM fast_creations fc LEFT JOIN sections s ON fc.section_id=s.id", "fc.id = "+str(idx))[0].income)
 
+# Изменение значения подраздела для быстрого создания записей
+func update_fc_subsection(idx: int, subsection_id: Variant) -> void:
+	db.query("UPDATE fast_creations SET subsection_id = "+str(subsection_id)+" WHERE id = "+str(idx)+";")
+	
 # Страница информации
 # Запрос на получение списка транзакций для выбранного кошелька
 func _select_wts_list(where: String) -> Array:
