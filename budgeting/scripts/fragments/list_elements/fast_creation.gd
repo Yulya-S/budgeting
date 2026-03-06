@@ -16,7 +16,7 @@ func _ready() -> void:
 func set_values(data: Dictionary) -> void:
 	id = data.id
 	Wallet.select(data.wallet_id-1)
-	Section.select(data.section_id-5)
+	Section.select(data.section_id-3)
 	_set_CI_text(data.income)
 	File.set_lang(self)
 
