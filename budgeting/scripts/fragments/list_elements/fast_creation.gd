@@ -31,7 +31,9 @@ func _on_delete_button_down() -> void:
 
 # Обработка нажатия кнопки создания движений средств
 func _on_add_button_down() -> void:
-	Request.insert_cash_flow(Global.get_OB_id(Wallet), Global.get_OB_id(Section), null if not Subsection.visible else Global.get_OB_id(Subsection), Value.get_text())
+	var sub_id: Variant = Global.get_OB_id(Subsection)
+	if not Subsection.visible: sub_id = null
+	Request.insert_cash_flow(Global.get_OB_id(Wallet), Global.get_OB_id(Section), sub_id, Value.get_text())
 	Global.emit_signal("update_page")
 	
 # Обработка изменения выбранного кошелька

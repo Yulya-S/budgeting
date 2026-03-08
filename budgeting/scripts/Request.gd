@@ -514,8 +514,8 @@ func insert_fast_creation() -> void:
 	db.query("INSERT INTO `fast_creations` (wallet_id, section_id, subsection_id) VALUES (1, 3,"+str(subs_id)+");")
 
 # Запрос на создание движения средств
-func insert_cash_flow(wallet_id: int, section_id: int, value: String, date: String = Global.date_to_str()) -> void:
-	db.query("INSERT INTO `cash_flows` (wallet_id, section_id, value, date) VALUES ("+str(wallet_id)+", "+str(section_id)+", "+value+', "'+date+'");')
+func insert_cash_flow(wallet_id: int, section_id: int, subsection_id: Variant, value: String, date: String = Global.date_to_str()) -> void:
+	db.query("INSERT INTO `cash_flows` (wallet_id, section_id, subsection_id, value, date) VALUES ("+str(wallet_id)+", "+str(section_id)+", "+str(subsection_id)+", "+value+', "'+date+'");')
 
 # Изменение значения кошелька для объекта быстрого создания записей
 func update_fc_wallet(idx: int, wallet_id: int) -> void:
