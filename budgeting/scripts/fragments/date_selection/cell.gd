@@ -9,7 +9,7 @@ func _ready() -> void: ColorScheme.repainting(self)
 
 # Обработка смены ячейки в процессе работы программы
 func _process(_delta: float) -> void:
-	ColorScheme.set_DS_cell_color(self, Number.get_text(), Global.g_parent(self, 2).selected_day.day == int(Number.get_text()), bool(state))
+	ColorScheme.set_DS_cell_color(self, Number.get_text(), SF.g_p(self).selected_day.day == SF.L_to_int(Number), bool(state))
 
 # Изменение номера дня
 func set_values(idx: int, _current_month: bool, _next_month: bool, day_count: int) -> void:
@@ -17,13 +17,13 @@ func set_values(idx: int, _current_month: bool, _next_month: bool, day_count: in
 
 # Обработка нажатия клавиш мыши 
 func _input(event: InputEvent) -> void:
-	if Number.get_text() == "" or state == Global.MouseOver.NORMAL: return
+	if SF.L_is_empty(Number) or state == Global.MouseOver.NORMAL: return
 	if event.is_action("click") and event.is_pressed():
-		Global.g_parent(self, 2).update_day(int(Number.get_text()))
+		SF.g_p(self).update_day(SF.L_to_int(Number))
 
 # Обработка наведения мыши на контейнер
 func _on_mouse_entered() -> void:
-	if Number.get_text() == "": return
+	if SF.L_is_empty(Number): return
 	state = Global.MouseOver.HOVER
 
 func _on_mouse_exited() -> void: state = Global.MouseOver.NORMAL
