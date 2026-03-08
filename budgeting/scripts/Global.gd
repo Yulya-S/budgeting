@@ -5,7 +5,7 @@ signal open_new_page(page: Pages, id, parent: Variant) # Открытие стр
 signal update_page(close_page: String) # Обновление данных на странице
 
 # Перечисления
-enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, TRANSFER, PAYMENT, PERCENT, REGISTRATION, HINTS, SETTINGS, CLEANING} # Страницы приложения
+enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, TRANSFER, PAYMENT, PERCENT, SUBSECTION, REGISTRATION, HINTS, SETTINGS, CLEANING} # Страницы приложения
 enum Dirs {PAGES, WINDOWS, INFORMATION} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
@@ -109,6 +109,7 @@ func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool =
 	if not container: return
 	if clear_OB: container.clear()
 	for i in objects: container.add_item(i.title, i.id)
+	File.set_lang(container)
 
 # Проверка что текст - это число
 func text_is_number(text: String) -> bool: return text.is_valid_int() or text.is_valid_float()
@@ -178,3 +179,6 @@ func fill_year_OB(container: OptionButton, idx: int, year: int = Global.get_date
 		if i + 1 > Global.get_date().year+int(last_month): break
 		container.add_item(str(i+1))
 	container.selected = 9
+	
+# Применить значение объекта выпадающего списка по его id
+func set_OB_id(container: OptionButton, idx: int) -> void: container.selected = container.get_item_index(idx)

@@ -28,11 +28,12 @@ func set_object(obj_id: Variant, _parent: Variant = null) -> void:
 
 # Обработка нажатия кнопки создания движения средств
 func _on_cash_flow_button_down() -> void:
-	if Request.select_possibility_opening_cashFlow():
-		if FilterWallet.selected > 0 and FilterSection.selected > 4: Global.emit_signal("open_window", Global.Pages.CASH_FLOW, [Global.get_OB_id(FilterWallet)-1, Global.get_OB_id(FilterSection)-1])
-		elif FilterWallet.selected > 0: Global.emit_signal("open_window", Global.Pages.CASH_FLOW, Global.get_OB_id(FilterWallet)-1, Global.Dirs.WINDOWS, Request.Tables.WALLETS)
-		elif FilterSection.selected > 4: Global.emit_signal("open_window", Global.Pages.CASH_FLOW, Global.get_OB_id(FilterSection)-1, Global.Dirs.WINDOWS, Request.Tables.SECTIONS)
-		else: Global.emit_signal("open_window", Global.Pages.CASH_FLOW)
+	Global.emit_signal("open_window", Global.Pages.CASH_FLOW)
+	#if Request.select_possibility_opening_cashFlow():
+		#if FilterWallet.selected > 0 and FilterSection.selected > 4: Global.emit_signal("open_window", Global.Pages.CASH_FLOW, [Global.get_OB_id(FilterWallet)-1, Global.get_OB_id(FilterSection)-1])
+		#elif FilterWallet.selected > 0: Global.emit_signal("open_window", Global.Pages.CASH_FLOW, Global.get_OB_id(FilterWallet)-1, Global.Dirs.WINDOWS, Request.Tables.WALLETS)
+		#elif FilterSection.selected > 4: Global.emit_signal("open_window", Global.Pages.CASH_FLOW, Global.get_OB_id(FilterSection)-1, Global.Dirs.WINDOWS, Request.Tables.SECTIONS)
+		#else: Global.emit_signal("open_window", Global.Pages.CASH_FLOW)
 
 # Обработка нажатия кнопки переноса средств между счетами
 func _on_transaction_button_down() -> void:

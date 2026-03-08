@@ -112,8 +112,8 @@ func _lang_match(obj: Variant, key: String) -> void:
 			if obj.name == "Order": obj.get_parent().reset_order()
 			var idx: int = 0
 			for i in range(obj.get_item_count()):
-				if obj.get_item_text(i) == "": continue
-				elif obj.get_item_text(i) in lang.keys() and "__" in obj.get_item_text(i):
+				if obj.get_item_text(i) == "" or obj.get_item_text(i) not in lang.keys(): continue
+				elif "__" in obj.get_item_text(i):
 					obj.set_item_text(i, lang[obj.get_item_text(i)])
 				elif lang[key] is Array:
 					if idx >= len(lang[key]): return
@@ -142,7 +142,7 @@ func set_lang(obj: Variant) -> void:
 	var key: String = _find_lang_keys(obj)
 	if obj is OptionButton and obj.name == "Month": key = "_Months"
 	elif obj is Label and "__" in obj.text and obj.text in lang.keys(): key = obj.text
-	if key != "": _lang_match(obj, key)
+	if key != "" or obj is OptionButton: _lang_match(obj, key)
 	for i in obj.get_children(): set_lang(i)
 
 # Создание стандартных вариантов локализации
@@ -184,16 +184,17 @@ func _standard_language() -> Dictionary:
 		"WalletFilterOrder": ["По текущей сумме"],
 		"WalletValue": "Текущее значение счета", "WalletCash_Flow": "Движение средств",
 		# Страница разделов
-		"AddSections": "Создать раздел", "FilterConsumptionIncomeLabel": "Тип статьи",
-		"FilterConsumptionIncome": ["Все типы", "Расходы", "Доходы", "Займы"],
+		"AddSection": "Создать раздел", "FilterConsumptionIncomeLabel": "Тип статьи",
+		"AddSubsection": "Создать подраздел", "FilterConsumptionIncome": ["Все типы", "Расходы", "Доходы", "Займы"],
 		"SectionFilterOrder": ["По дате последней транзакции", "По возрастанию суммы", "По убыванию суммы", "По ежемесячному лимиту"],
 		"SectionTitle": "Название раздела", "SectionValue": "Текущее значение", "Month_Limit": "Ограничение",
 		"__CI0": "Расход", "__CI1": "Доход",
 		# Страница движений средств
 		"FilterWalletLabel": "Имя счёта", "FilterSectionLabel": "Статья",
 		"CashFlowFilterOrder": ["По статье", "По возрастанию суммы", "По убыванию суммы"],
-		"CashFlowTitle": "Название раздела", "CashFlowWallet_Title": "Источник",
-		"CashFlowWallet_2_Title": "Цель", "CashFlowValue": "Сумма", "Date": "Дата",
+		"CashFlowTitle": "Название раздела", "CashFlowSub_title": "Подраздел",
+		"CashFlowWallet_Title": "Источник", "CashFlowWallet_2_Title": "Цель",
+		"CashFlowValue": "Сумма", "Date": "Дата",
 		# Страница займов
 		"AddLoan": "Создать займ", "AddInterest": "Добавить проценты по займу", "AddPayment": "Добавить платёж по займу",
 		"FilterStatusLabel": "Статус", "FilterStatus": ["Выплачено", "В процессе"],
@@ -220,6 +221,8 @@ func _standard_language() -> Dictionary:
 		"Transactions": "Список транзакций", "TotalWLabel": "Значение счета:",
 		"TLabel": "Итог:", "TotalCountLabel": "Количество транзакций:",
 		"TotalCash_flowLabel": "Сумма:",
+		# Страница информации о разделах
+		"SectionLabel": "Информация о разделе", "FilterSLabel": "Значение по разделу:",
 		# Страница информации о займах
 		"LoanLabel": "Информация о займе", "PercentLabel": "Средний процент по займу:",
 		"TotalLLabel": "Оставшаяся сумма:", "TotalValueLabel": "Изначальная сумма:",
@@ -233,17 +236,29 @@ func _standard_language() -> Dictionary:
 		"Month_LimitLabel": "Ежемесячное ограничение:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Удаление раздела",
 			"text": "Все данные раздела будут удалены"},
+		# Окно создания / изменения подраздела
+		"SubsectionTitleLabel": "Название подраздела:", "Parent_idLabel": "Родительский раздел",
+		"SubsectionWindowConfirmationDialog": { "title": "Удаление подраздела",
+			"text": "Все данные подраздела будут удалены"},
 		# Окно создания / изменения движений средств
 		"CashFlowWindowWallet_idLabel": "Имя счета", "CashFlowWindowSection_idLabel": "Статья",
 		"ValueVLabel": "Сумма транзакции:",
+		"TWindowConfirmationDialog": { "title": "Отмена транзакции",
+			"text": "Транзакция будет отменена"},
 		# Окно создания / изменения платежа по займу
 		"Wallet_idWLabel": "Источник списания", "Wallet_2_idLLabel": "Выбранный займ",
 		"PaymentValueLabel": "Сумма платежа:",
+		"PaymentWindowConfirmationDialog": { "title": "Удаление платежа по займу",
+			"text": "Платёж будет отменен"},
 		# Окно создания / изменения процента по займу
 		"PercentValueLabel": "Прибавка к займу",
+		"PercentWindowConfirmationDialog": { "title": "Удаление процента по займу",
+			"text": "Добавленные проценты по займу будут удалены"},
 		# Окно создания / изменения займов
 		"LoanWindowTitleLabel": "Имя займа:", "W2Label": "Целевой счет",
 		"LoanWindowValueLabel": "Сумма займа:",
+		"LoanWindowWindowConfirmationDialog": { "title": "Удаление займа",
+			"text": "Все данные займа будут удалены"},
 		# Окно создания / изменения события
 		"EventWindowTitleLabel": "Название события:", "Event_typeLabel": "Тип события",
 		"Repetition_rateLabel": "Частота повторения", "EventWindowValueLabel": "Значение:",
@@ -255,7 +270,8 @@ func _standard_language() -> Dictionary:
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "По дате добавления", "__FO2": "По алфавиту",
 		# Объекты из базы данных
-		"__ST1": "Переводы", "__ST2": "Заём", "__ST3": "Платежи по займам", "__ST4": "Проценты по займу",
+		"__ST1": "Переводы", "__ST2": "Заём", "__SS1": "Получение",
+		"__SS2": "Платеж", "__SS3": "Проценты", "__SS4": "Другое",
 		# Загрузка
 		"LoadLabel": "Загрузка уведомлений", "__L1": "Создаём список событий",
 		"__L2": "Создаём уведомления",
@@ -315,16 +331,17 @@ func _cr_en() -> void:
 		"WalletFilterOrder": ["According to the current amount"],
 		"WalletValue": "Current account value", "WalletCash_Flow": "Movement of funds",
 		# Страница разделов
-		"AddSections": "Create a section", "FilterConsumptionIncomeLabel": "Article type",
-		"FilterConsumptionIncome": ["All types", "Expenses", "Income", "Loans"],
+		"AddSection": "Create a section", "FilterConsumptionIncomeLabel": "Article type",
+		"AddSubsection": "Create subsection", "FilterConsumptionIncome": ["All types", "Expenses", "Income", "Loans"],
 		"SectionFilterOrder": ["By last transaction date", "Ascending amount", "In descending order of amount", "By monthly limit"],
 		"SectionTitle": "Section title", "SectionValue": "Current value", "Month_Limit": "Limit",
 		"__CI0": "Expenditure", "__CI1": "Income",
 		# Страница движений средств
 		"FilterWalletLabel": "Account name", "FilterSectionLabel": "Article",
 		"CashFlowFilterOrder": ["According to the article", "Ascending amount", "In descending order of amount"],
-		"CashFlowTitle": "Section title", "CashFlowWallet_Title": "Source",
-		"CashFlowWallet_2_Title": "Target", "CashFlowValue": "Amount", "Date": "Date",
+		"CashFlowTitle": "Section title", "CashFlowSub_title": "Subsection",
+		"CashFlowWallet_Title": "Source", "CashFlowWallet_2_Title": "Target",
+		"CashFlowValue": "Amount", "Date": "Date",
 		# Страница займов
 		"AddLoan": "Create a loan", "AddInterest": "Add interest to the loan", "AddPayment": "Add a loan payment",
 		"FilterStatusLabel": "Status", "FilterStatus": ["Paid", "In progress"],
@@ -352,6 +369,8 @@ func _cr_en() -> void:
 		"Transactions": "List of transactions", "TotalWLabel": "Wallet value:",
 		"TLabel": "Total:", "TotalCountLabel": "Number of transactions:",
 		"TotalCash_flowLabel": "Sum:",
+		# Страница информации о разделах
+		"SectionLabel": "Section information", "FilterSLabel": "Value by section:",
 		# Страница информации о займах
 		"LoanLabel": "Loan information", "PercentLabel": "Average loan interest rate:",
 		"TotalLLabel": "Remaining amount:", "TotalValueLabel": "Initial amount:",
@@ -364,17 +383,29 @@ func _cr_en() -> void:
 		"Month_LimitLabel": "Monthly limitation:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Deleting a partition",
 			"text": "All data in this section will be deleted."},
+		# Окно создания / изменения подраздела
+		"SubsectionTitleLabel": "Subsection title:", "Parent_idLabel": "Parent section",
+		"SubsectionWindowConfirmationDialog": { "title": "Deleting a subsection",
+			"text": "All data in the subsection will be deleted"},
 		# Окно создания / изменения движений средств
 		"CashFlowWindowWallet_idLabel": "Wallet name", "CashFlowWindowSection_idLabel": "Section",
 		"ValueVLabel": "Transaction amount:",
+		"TWindowConfirmationDialog": { "title": "Cancel transaction",
+			"text": "The transaction will be cancelled"},
 		# Окно создания / изменения платежа по займу
 		"Wallet_idWLabel": "Source of write-off", "Wallet_2_idLLabel": "Selected loan",
 		"PaymentValueLabel": "Payment amount:",
+		"PaymentWindowConfirmationDialog": { "title": "Deleting a loan payment",
+			"text": "Payment will be canceled"},
 		# Окно создания / изменения процента по займу
 		"PercentValueLabel": "Loan addition",
+		"PercentWindowConfirmationDialog": { "title": "Removing interest on a loan",
+			"text": "Added interest on the loan will be removed"},
 		# Окно создания / изменения займов
-		"LoanWindowTitleLabel": "Loan name:", "LoanWindowWallet_idLabel": "Target wallet",
+		"LoanWindowTitleLabel": "Loan name:", "W2Label": "Target wallet",
 		"LoanWindowValueLabel": "Loan amount:",
+		"LoanWindowWindowConfirmationDialog": { "title": "Delete a loan",
+			"text": "All loan data will be deleted"},
 		# Окно создания / изменения события
 		"EventWindowTitleLabel": "Event name:", "Event_typeLabel": "Event type",
 		"Repetition_rateLabel": "Repetition rate", "EventWindowValueLabel": "Value:",
@@ -385,7 +416,8 @@ func _cr_en() -> void:
 		# Общие фрагменты для фильтра сортировки (По id, по алфавиту)
 		"__FO1": "By date added", "__FO2": "Alphabetically",
 		# Объекты из базы данных
-		"__ST1": "Transfers", "__ST2": "Loan", "__ST3": "Loan Payments", "__ST4": "Loan Interest",
+		"__ST1": "Transfers", "__ST2": "Loan", "__SS1": "Getting а",
+		"__SS2": "Payment", "__SS3": "Interest", "__SS4": "Other",
 		# Загрузка
 		"LoadLabel": "Loading notifications", "__L1": "Creating a list of events",
 		"__L2": "Creating notifications",

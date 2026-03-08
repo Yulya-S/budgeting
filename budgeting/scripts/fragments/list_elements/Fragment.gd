@@ -57,21 +57,25 @@ func _set_special_values(data: Dictionary) -> void:
 			$Completed.visible = data.completed
 			$Completed.size = custom_minimum_size
 		"section":
-			$ConsumptionIncome.set_text("" if data.id <= 4 else "__CI" + str(data.income))
+			if get_parent().get_parent().obj == Request.ObjectVariants.SUBSECTION:
+				$Title.next_page = Global.Pages.SUBSECTION
+				$Title.next_page_dir = Global.Dirs.WINDOWS
+			else: $ConsumptionIncome.set_text("" if data.id <= 2 else "__CI" + str(data.income))
 			$Progress.visible = not data.income and data.month_limit > 0
 			$Marker.size[1] = custom_minimum_size[1]
 			if data.month_limit <= 0 or data.income: $Month_Limit.set_text("")
 		"cash_flow":
 			match data.section_id:
 				1: Title.next_page = Global.Pages.TRANSFER
-				2, 4:
-					$Wallet_Title.next_page = Global.Pages.LOAN
-					if data.section_id == 2: Title.id = data.wallet_id
-					else: $Wallet_2_Title.visible = false
-					Title.next_page = Global.Pages.LOAN if data.section_id == 2 else Global.Pages.PERCENT
-				3:
-					$Wallet_2_Title.next_page = Global.Pages.LOAN
-					Title.next_page = Global.Pages.PAYMENT
+				2:
+					if data.subsection_id == 2:
+						$Wallet_2_Title.next_page = Global.Pages.LOAN
+						Title.next_page = Global.Pages.PAYMENT
+					else:
+						$Wallet_Title.next_page = Global.Pages.LOAN
+						if data.subsection_id == 1: Title.id = data.wallet_id
+						else: $Wallet_2_Title.visible = false
+						Title.next_page = Global.Pages.LOAN if data.subsection_id == 1 else Global.Pages.PERCENT
 				_:
 					if data.income: $Wallet_Title.visible = false
 					else: $Wallet_2_Title.visible = false

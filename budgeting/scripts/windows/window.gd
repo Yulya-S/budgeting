@@ -11,9 +11,12 @@ func _ready() -> void:
 	File.set_lang(self)
 	if page_type in [Global.Pages.LOAN, Global.Pages.CASH_FLOW, Global.Pages.TRANSFER, Global.Pages.PAYMENT]:
 		Global.fill_optionButton($Wallet_id, Request._select("* FROM wallets"))
-	if page_type == Global.Pages.CASH_FLOW:
-		Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 4"))
+	if page_type in [Global.Pages.CASH_FLOW, ]:
+		Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 2"))
 		_on_section_id_item_selected()
+	elif page_type == Global.Pages.SUBSECTION:
+		Global.fill_optionButton($Parent_id, Request._select("* FROM sections", "id > 2"))
+		_on_parent_id_item_selected()
 	elif page_type == Global.Pages.TRANSFER:
 		Global.fill_optionButton($Wallet_2_id, Request._select("* FROM wallets"))
 	elif page_type in [Global.Pages.PERCENT, Global.Pages.PAYMENT]:
@@ -60,6 +63,7 @@ func check_object() -> bool:
 	match page_type:
 		Global.Pages.WALLET: return _check_wallet()
 		Global.Pages.SECTION: return _check_section()
+		Global.Pages.SUBSECTION: return _check_subsection()
 		Global.Pages.CASH_FLOW: return _check_cash_flow()
 		Global.Pages.TRANSFER: return _check_transfer()
 		Global.Pages.PAYMENT: return _check_payment()
@@ -80,7 +84,12 @@ func _check_wallet() -> bool: return $Value.get_text() != "" and _check_textEdit
 func _check_section() -> bool:
 	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or $Income.button_pressed) and _check_textEdit($Title)
 
-# Проверка возможности создания раздела
+# Проверка возможности создания подраздела
+func _check_subsection() -> bool:
+	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or not $Month_Limit.visible) \
+		and $Title.get_text() != "" and Request.check_subsection_name($Title.get_text(), idx, Global.get_OB_id($Parent_id))
+
+# Проверка возможности создания движения средств
 func _check_cash_flow() -> bool: return $Value.get_text() != "" and float($Value.get_text()) > 0
 
 # Проверка возможности создания перевода средств
@@ -135,4 +144,14 @@ func _on_event_type_item_selected(index: int) -> void: $Value.visible = index > 
 
 # Изменение раздела
 func _on_section_id_item_selected(index: int = 0) -> void:
-	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request._select("* FROM sections")[index + 4].income))])
+	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request._select("* FROM sections")[index + 2].income))])
+	var values: Array = Request._select("* FROM subsections", '"__SS4" != title AND parent_id = '+str(index+3)) + Request._select("* FROM subsections", '"__SS4" == title AND parent_id = '+str(index+3))
+	$Subection_id.visible = len(values) > 0
+	$Value.position.y = 407.0 if len(values) > 0 else 357.0
+	if len(values) > 0: Global.fill_optionButton($Subection_id, values)
+
+# Изменение родительского раздела
+func _on_parent_id_item_selected(index: int = 0) -> void:
+	var income: bool = Request._select("* FROM sections")[index + 2].income
+	$Parent_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
+	$Month_Limit.visible =  not income
