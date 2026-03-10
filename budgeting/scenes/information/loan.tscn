@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cgrjoxjtjep5j" path="res://img/interface/percent.png" id="5_gveen"]
 [ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="6_pnbtf"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="7_mddxm"]
-[ext_resource type="PackedScene" uid="uid://nhpwuw8k2gn1" path="res://scenes/fragments/graphics/loan_repayment.tscn" id="8_bmtg2"]
+[ext_resource type="Script" uid="uid://cysgxx6c0o4ev" path="res://scripts/fragments/graphics/line_graph.gd" id="8_w21rr"]
 
 [node name="LoanInf" type="Control"]
 layout_mode = 3
@@ -139,11 +139,15 @@ offset_right = 1152.0
 offset_bottom = 597.0
 obj = 2
 
-[node name="LoanRepayment" parent="." instance=ExtResource("8_bmtg2")]
-layout_mode = 0
+[node name="LoanRepayment" type="Control" parent="."]
+custom_minimum_size = Vector2(1152, 124)
+layout_mode = 2
+anchors_preset = 0
 offset_top = 156.0
 offset_right = 1152.0
 offset_bottom = 280.0
+script = ExtResource("8_w21rr")
+graph_type = 2
 
 [node name="Total" type="ColorRect" parent="."]
 layout_mode = 0

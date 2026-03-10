@@ -23,6 +23,9 @@ func get_sys_color(index: float, count: float = 6) -> Color: return get_color(in
 # Получение значения цвета из градиента шкал
 func get_scale_color(index: float, count: float = 1) -> Color: return get_color(index, count, scales_gradient)
 
+# Получение цвета текста и рамок
+func border_color() -> Color: return ColorScheme.get_sys_color(0, 1)
+
 # Получение цветов из базы данных
 func color_reading() -> void:
 	var g_colors: PackedColorArray = PackedColorArray([])

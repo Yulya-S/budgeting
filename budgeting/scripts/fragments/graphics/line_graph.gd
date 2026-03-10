@@ -65,10 +65,13 @@ func _line(idx: int, values_array: Array, max_value: float, x_step: float, heigh
 
 # Линейный для отчетов
 func _report(max_value: float, x_step: float = (size.x - 25) / (len(values) - 1)) -> void:
+	draw_line(Vector2(10, 116), Vector2(10, 6), ColorScheme.border_color(), 2)
+	draw_line(Vector2(10, 60), Vector2(1142.0, 60), ColorScheme.border_color(), 2)
 	for i in range(len(values)-1): _line(i, values, max_value, x_step, 55.)
 
 # Линейный для займов
 func _loan(max_value: float, x_step: float = (size.x - 25) / (len(values) - 1)) -> void:
+	draw_multiline([Vector2(10, 6), Vector2(10, 120), Vector2(1142, 120)], ColorScheme.border_color(), 2)
 	if len(values) == 1: draw_circle(Vector2(10., 55.), 3, Color.FIREBRICK)
 	if len(values) < 2: return # Отмена отрисовки графика
 	for i in range(len(values)-1): _line(i, values, max_value, x_step, 119.)
@@ -77,7 +80,7 @@ func _loan(max_value: float, x_step: float = (size.x - 25) / (len(values) - 1)) 
 func _candlestick(max_value: float, x_step: float = size.x / len(values)) -> void:
 	for i in range(len(values)):
 		var x: float = x_step * i
-		var border_color: Color = ColorScheme.get_sys_color(0, 1)
+		var border_color: Color = ColorScheme.border_color()
 		_draw_str(x, 120, str(int(i) + 1), x_step, border_color)
 		if values[i] == 0: continue # Отмена отрисовки если значение точки отсутствует
 		var y_size: float = 50. * abs(values[i]) / abs(max_value)
