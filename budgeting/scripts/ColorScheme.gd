@@ -20,6 +20,9 @@ func get_color(index: float, count: float, gradient: Gradient = chart_gradient) 
 # Получение значения цвета из градиента системы
 func get_sys_color(index: float, count: float = 6) -> Color: return get_color(index, count, system_gradient)
 
+# Получение значения цвета из градиента шкал
+func get_scale_color(index: float, count: float = 1) -> Color: return get_color(index, count, scales_gradient)
+
 # Получение цветов из базы данных
 func color_reading() -> void:
 	var g_colors: PackedColorArray = PackedColorArray([])
