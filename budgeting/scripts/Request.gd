@@ -536,7 +536,7 @@ func update_fc_subsection(idx: int, subsection_id: Variant) -> void:
 # Запрос на получение списка транзакций для выбранного кошелька
 func _select_wts_list(where: String) -> Array:
 	var idx: String = where.split(")")[0].split("_id = ")[-1]
-	return _select("s.id, s.title, COUNT(cf.id) count, SUM(IIF((NOT s.income AND cf.section_id!= 1 AND cf.subsection!=1) OR cf.subsection_id = 2 OR (cf.section_id = 1 AND cf.wallet_id = "+idx+"), cf.value * -1, cf.value)) value FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id ", where, "", "cf.section_id")
+	return _select("s.id, s.title, COUNT(cf.id) count, SUM(IIF((NOT s.income AND cf.section_id!= 1 AND cf.subsection_id!=1) OR cf.subsection_id = 2 OR (cf.section_id = 1 AND cf.wallet_id = "+idx+"), cf.value * -1, cf.value)) value FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id ", where, "", "cf.section_id")
 
 # Запрос на получение общей информаци об объекте
 func select_inf_data(where: String, idx: int, type: Global.Pages) -> Dictionary:
