@@ -17,3 +17,7 @@ func color_and_lang(obj: Variant) -> void:
 
 # Изменение текста на нижний регистр
 func l(obj: Variant) -> String: return obj.name.to_lower()
+
+# Отправка сигнала открытия окна
+func op_w(next_page: Global.Pages, id: Variant, next_page_dir: Global.Dirs) -> void:
+	Global.emit_signal("open_window", next_page, id, next_page_dir)

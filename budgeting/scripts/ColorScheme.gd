@@ -97,7 +97,7 @@ func _set_icon(obj: Variant, theme_name: String, icon: String) -> void:
 	obj.add_theme_icon_override(theme_name, load("res://img/godot_icon/" + theme_name + "_" + icon))
 
 # Замена цвета ячеек окна выбора даты
-func set_DS_cell_color(obj: ColorRect, text: String, selected: bool, hovered: bool) -> void:
+func set_DS_cell_color(obj: Variant, text: String, selected: bool, hovered: bool) -> void:
 	if hovered: _change_color(obj, 4)
 	elif selected: _change_color(obj, 2)
 	elif text != "": _change_color(obj, 6)

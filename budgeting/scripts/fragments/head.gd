@@ -32,7 +32,7 @@ func _on_notification_cleaning_button_down() -> void:
 	NotificationObjects.update_data()
 
 # Вызов сигнала открытия окна поверх текущего
-func _emit_ow(new_page: Global.Pages) -> void: Global.emit_signal("open_window", new_page, null, Global.Dirs.PAGES)
+func _emit_ow(new_page: Global.Pages) -> void: SF.op_w(new_page, null, Global.Dirs.PAGES)
 
 # Вызов сигнала открытия нового окна
 func _emit_onp(new_page: Global.Pages) -> void: Global.emit_signal("open_new_page", new_page)

@@ -1,8 +1,6 @@
-extends ColorRect
+extends InteractiveObj
 # Подключение пути к объекту в сцене
 @onready var Number = $Number
-# Переменная
-var state: Global.MouseOver = Global.MouseOver.NORMAL # Текущее состояние объекта
 
 # Запуск изменения цвета ячейки
 func _ready() -> void: ColorScheme.repainting(self)
@@ -15,15 +13,13 @@ func _process(_delta: float) -> void:
 func set_values(idx: int, _current_month: bool, _next_month: bool, day_count: int) -> void:
 	if idx >= 0 and idx < day_count: Number.set_text(str(idx + 1))
 
-# Обработка нажатия клавиш мыши 
-func _input(event: InputEvent) -> void:
-	if SF.L_is_empty(Number) or state == Global.MouseOver.NORMAL: return
-	if event.is_action("click") and event.is_pressed():
-		SF.g_p(self).update_day(SF.L_to_int(Number))
+# Подпроверка возможности обработки нажатия на объект
+func _other_check() -> bool: return SF.L_is_empty(Number)
+
+# Функция запускаемая при нажатии на объект
+func _start_func() -> void: SF.g_p(self).update_day(SF.L_to_int(Number))
 
 # Обработка наведения мыши на контейнер
 func _on_mouse_entered() -> void:
 	if SF.L_is_empty(Number): return
-	state = Global.MouseOver.HOVER
-
-func _on_mouse_exited() -> void: state = Global.MouseOver.NORMAL
+	super._on_mouse_entered()
