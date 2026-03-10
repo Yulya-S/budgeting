@@ -1,17 +1,14 @@
 extends ColorRect
 class_name List_element
-# Подключение пути к объекту в сцене
-@onready var Title = get_node_or_null("Title")
 
 # Изменение размера контейнера по размеру родителя
 func _ready() -> void:
-	if get_parent().get_child_count() == 1: File.set_lang(self)
-	custom_minimum_size[0] = Global.g_parent(self, 2).size[0]
-	set_line_size()
-	ColorScheme.repainting(self)
+	custom_minimum_size[0] = SF.g_p(self).size[0]
+	_set_line_size()
+	SF.color_and_lang(self)
 	
 # Изменение высоты строки списка
-func set_line_size() -> void:
+func _set_line_size() -> void:
 	var max_count: int = 1
 	var front_size: int = 16
 	for i in get_children(): if i is Label: if i.get_line_count() > max_count:
@@ -19,32 +16,34 @@ func set_line_size() -> void:
 		front_size = i.get_theme_font_size("front_size")
 	custom_minimum_size[1] = max_count * front_size + ((max_count - 1) * 2) + 10.
 	for i in get_children(): if i.get("size"): i.size[1] = custom_minimum_size[1]
-	
+
+# Получение имени строки со словом id
+func _name_id(obj: Variant) -> String: return SF.l(obj).split("title")[0]+"id"
+
 # Изменение значений в сцене
 func set_values(data: Dictionary) -> void:
 	for i in get_children():
-		if Global.lower(i) not in data.keys(): continue # Отмена применения значения
+		if SF.l(i) not in data.keys(): continue # Отмена применения значения
 		# Применение значений
 		match i.get_class():
 			"ProgressBar":
-				i.value = data[Global.lower(i)]
+				i.value = data[SF.l(i)]
 				i.modulate = ColorScheme.get_color(i.value, i.max_value, ColorScheme.scales_gradient)
 			"ColorRect":
-				if data[Global.lower(i)] is bool: i.visible = data[Global.lower(i)]
-				elif data[Global.lower(i)] is Color:
-					i.color = data[Global.lower(i)]
+				if data[SF.l(i)] is bool: i.visible = data[SF.l(i)]
+				elif data[SF.l(i)] is Color:
+					i.color = data[SF.l(i)]
 					i.visible = true
 			"Label":
-				if "title" not in Global.lower(i) or not i.get("set_object"):
-					i.set_text(str(data[Global.lower(i)]))
+				if "title" not in SF.l(i) or not i.get("set_object"):
+					i.set_text(str(data[SF.l(i)]))
 				else:
-					if Global.lower(i).split("title")[0]+"id" in data.keys():
-						if data[Global.lower(i).split("title")[0]+"id"]:
-							i.set_object(data[Global.lower(i)],  data[Global.lower(i).split("title")[0]+"id"])
-						elif data[Global.lower(i)] == null: i.set_text("-")
+					if _name_id(i) in data.keys():
+						if data[_name_id(i)]: i.set_object(data[SF.l(i)],  data[_name_id(i)])
+						elif data[SF.l(i)] == null: i.set_text("-")
 	_set_special_values(data)
 	File.set_lang(self)
-	set_line_size()
+	_set_line_size()
 
 # Применение значений для особых элементов списка
 func _set_special_values(data: Dictionary) -> void:
@@ -57,7 +56,7 @@ func _set_special_values(data: Dictionary) -> void:
 			$Completed.visible = data.completed
 			$Completed.size = custom_minimum_size
 		"section":
-			if get_parent().get_parent().obj == Request.ObjectVariants.SUBSECTION:
+			if SF.g_p(self).obj == Request.ObjectVariants.SUBSECTION:
 				$Title.next_page = Global.Pages.SUBSECTION
 				$Title.next_page_dir = Global.Dirs.WINDOWS
 			else: $ConsumptionIncome.set_text("" if data.id <= 2 else "__CI" + str(data.income))
@@ -66,16 +65,16 @@ func _set_special_values(data: Dictionary) -> void:
 			if data.month_limit <= 0 or data.income: $Month_Limit.set_text("")
 		"cash_flow":
 			match data.section_id:
-				1: Title.next_page = Global.Pages.TRANSFER
+				1: $Title.next_page = Global.Pages.TRANSFER
 				2:
 					if data.subsection_id == 2:
 						$Wallet_2_Title.next_page = Global.Pages.LOAN
-						Title.next_page = Global.Pages.PAYMENT
+						$Title.next_page = Global.Pages.PAYMENT
 					else:
 						$Wallet_Title.next_page = Global.Pages.LOAN
-						if data.subsection_id == 1: Title.id = data.wallet_id
+						if data.subsection_id == 1: $Title.id = data.wallet_id
 						else: $Wallet_2_Title.visible = false
-						Title.next_page = Global.Pages.LOAN if data.subsection_id == 1 else Global.Pages.PERCENT
+						$Title.next_page = Global.Pages.LOAN if data.subsection_id == 1 else Global.Pages.PERCENT
 				_:
 					if data.income: $Wallet_Title.visible = false
 					else: $Wallet_2_Title.visible = false
@@ -86,4 +85,5 @@ func _event_values(data: Dictionary, et_text: String) -> void:
 	$EventType.text = et_text
 	$EventType/Value.text = str(data.value)
 	# Отображение информации о нехватке средств для "расходных" событий
-	if not data.completed and data.event_type == 1 and data.profit_accounting < 0: $EventType/Label.visible = true
+	if not data.completed and data.event_type == 1 and data.profit_accounting < 0:
+		$EventType/Label.visible = true

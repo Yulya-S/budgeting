@@ -14,3 +14,6 @@ func L_is_empty(obj: Variant) -> bool: return obj.get_text() == ""
 func color_and_lang(obj: Variant) -> void:
 	ColorScheme.repainting(obj)
 	File.set_lang(obj)
+
+# Изменение текста на нижний регистр
+func l(obj: Variant) -> String: return obj.name.to_lower()

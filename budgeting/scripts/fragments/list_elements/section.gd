@@ -11,6 +11,6 @@ func set_values(data: Dictionary) -> void:
 	$Progress.size[1] -= 10
 	
 # Обработка наведения мыши на контейнер
-func _on_mouse_entered() -> void: if Title.id: Global.run_func(ParentPage, "highlighting_graph_sections", [m_index])
+func _on_mouse_entered() -> void: if $Title.id: Global.run_func(ParentPage, "highlighting_graph_sections", [m_index])
 
-func _on_mouse_exited() -> void: if Title.id: Global.run_func(ParentPage, "highlighting_graph_sections", [m_index, false])
+func _on_mouse_exited() -> void: if $Title.id: Global.run_func(ParentPage, "highlighting_graph_sections", [m_index, false])
