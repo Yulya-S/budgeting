@@ -1,19 +1,24 @@
 extends Control
 # Переменные
-var radius: float = 50 # Радиус графика
 var values: Array = [] # Значения для построения графика
 var higliter_idx: Variant = null # Индекс выделенного фрагмента
 
 # Сокрытие маркера и изменение радиуса диаграммы
-func _ready() -> void:
-	radius = min(size.x, size.y)/2.
-	$Marker.visible = false
+func _ready() -> void: $Marker.visible = false
+	
+# Получение радиуса графика
+func _radius() -> float: return min(size.x, size.y)/2.
+
+# Отрисовка сигмента графика
+func _draw_arc(radius: float, start_a: float, end_a: float, p_c: int, color: Color) -> void:
+	draw_arc(Vector2(_radius(), _radius()), radius, deg_to_rad(start_a), deg_to_rad(end_a), p_c, color, _radius())
 
 # Отрисовка графика
 func _draw() -> void:
 	# База для графика
-	draw_circle(Vector2(radius, radius), radius + 4., Color.WHITE, true)
-	draw_circle(Vector2(radius, radius), radius, Color.BLACK, false, 3)
+	var vector: Vector2 = Vector2(_radius(), _radius())
+	draw_circle(vector, _radius() + 4., Color.WHITE, true)
+	draw_circle(vector, _radius(), Color.BLACK, false, 3)
 	# Получение значений для расчета
 	if len(values) == 0: return
 	var sum: float = 0
@@ -22,14 +27,13 @@ func _draw() -> void:
 	# Создание секций
 	for i in range(len(values)):
 		if values[i] <= 0: continue
-		# Смена цвета для секции
-		var new_color: Color = ColorScheme.highlighter_color if higliter_idx == i else ColorScheme.get_color(i, len(values) - 1.)
-		var arc_size: float = (values[i] * 360.) / sum
-		if arc_size < 2: continue
+		var arc_step: float = (values[i] * 360.) / sum
+		if arc_step < 2: continue
 		# Отрисовка секции
-		draw_arc(Vector2(radius, radius), (radius/2.)+2., deg_to_rad(deg-2.), deg_to_rad(deg+arc_size+2.), int(arc_size+4), Color.BLACK, radius)
-		draw_arc(Vector2(radius, radius), (radius/2.)-1., deg_to_rad(deg), deg_to_rad(deg+arc_size), int(arc_size), new_color, radius)
-		deg += arc_size
+		_draw_arc((_radius()/2.) + 2., deg - 2., deg + arc_step+2., arc_step + 4, Color.BLACK)
+		_draw_arc((_radius()/2.) - 1., deg, deg + arc_step, arc_step,
+			ColorScheme.highlighter_color if higliter_idx == i else ColorScheme.get_color(i, len(values) - 1.))
+		deg += arc_step
 
 # Заполнение списка значений
 func update_data(filter: Variant = {}, key: String = "value") -> void:
