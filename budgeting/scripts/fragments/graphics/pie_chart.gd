@@ -30,8 +30,8 @@ func _draw() -> void:
 		var arc_step: float = (values[i] * 360.) / sum
 		if arc_step < 2: continue
 		# Отрисовка секции
-		_draw_arc((_radius()/2.) + 2., deg - 2., deg + arc_step+2., arc_step + 4, Color.BLACK)
-		_draw_arc((_radius()/2.) - 1., deg, deg + arc_step, arc_step,
+		_draw_arc((_radius()/2.) + 2., deg - 2., deg + arc_step+2., int(arc_step + 4), Color.BLACK)
+		_draw_arc((_radius()/2.) - 1., deg, deg + arc_step, int(arc_step),
 			ColorScheme.highlighter_color if higliter_idx == i else ColorScheme.get_color(i, len(values) - 1.))
 		deg += arc_step
 
