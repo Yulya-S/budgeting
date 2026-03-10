@@ -68,7 +68,7 @@ func get_other_month(date: Variant, next: bool = false, first_date: bool = false
 	var new_date: Dictionary = date.duplicate() if date is Dictionary else date_to_dict(date)
 	if next:
 		new_date.month += 1
-		if new_date.month > 12:
+		if new_date.month > len(File.lang._Months):
 			new_date.year += 1
 			new_date.month = 1
 	else:
@@ -76,7 +76,7 @@ func get_other_month(date: Variant, next: bool = false, first_date: bool = false
 		new_date.month -= 1
 		if new_date.month <= 0:
 			new_date.year -= 1
-			new_date.month = 12
+			new_date.month = len(File.lang._Months)
 	if first_date: new_date.day = 1
 	if date is Dictionary: return new_date
 	return date_to_str(new_date)

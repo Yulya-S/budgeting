@@ -11,31 +11,30 @@ func _ready() -> void: _update_year_month()
 # Изменение выбранной даты
 func set_date(new_date: String) -> void:
 	selected_day = Global.date_to_dict(new_date)
-	_update_year_month(selected_day.duplicate())
+	_update_year_month(selected_day)
+	
+# Получение даты в формате String
+func _date() -> String: return Global.date_to_str(selected_day)
 
 # Получение выбранной в календаре даты
-func get_date() -> String: return Global.date_to_str(selected_day)
+func get_date() -> String: return _date()
 
 # Обновление данных
-func update_data(_filter: Variant = {}) -> void:
-	super.update_data({"date": Global.date_to_str(selected_day)})
+func update_data(_filter: Variant = {}) -> void: super.update_data({"date": _date()})
 
 # Изменение настроек календаря
 func _update_year_month(new_date: Dictionary = Global.sys_date.date) -> void:
 	_on_year_item_selected()
 	_update_month()
-	selected_day.day = new_date.day
+	update_day(new_date.day)
 
 # Изменение номера дня
 func update_day(day: int) -> void: selected_day.day = day
 
 # Изменение значения месяца
 func _update_month(value: int = 0) -> void:
-	selected_day.month += value
-	if selected_day.month > len(File.lang._Months): selected_day.month = 1
-	elif selected_day.month <= 0: selected_day.month = len(File.lang._Months)
+	if value != 0: selected_day = Global.get_other_month(selected_day, value > 0, true)
 	Month.set_text(File.lang._Months[selected_day.month - 1])
-	selected_day.day = 1
 	update_data()
 
 # Обработка нажатия кнопки следующего месяца
