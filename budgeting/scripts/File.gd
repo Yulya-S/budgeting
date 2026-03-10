@@ -165,7 +165,7 @@ func _standard_language() -> Dictionary:
 		"TestLabel": "Пример текста", "DarkTheme": ["Светлая тема", "Тёмная тема"],
 		"SettingsEventType": ["Календарь событий", "Список событий"],
 		"Preinstalled": ["Предустановленная тема", "Пользовательская тема"],
-		"ColorSchemePre": ["Стандартный", "Серый", "Лимон со смородиной", "Ржавый металл", "Лиса на поляне", "Ягода на ветке", "Ежевика"],
+		"ColorSchemePre": ["Стандартный", "Серый", "Лимон со смородиной", "Ржавый металл", "Лиса на поляне", "Ягода на ветке", "Ежевика", "Пингвин"],
 		"ColorSchemeCus": ["Моно", "Контраст", "Триада", "Тетрада"],
 		"SettingsConfirmationDialog": {"text": "Все данные пользователя будут удалены", "title": "Удаление пользователя"},
 		# Окно очистки данных
@@ -313,7 +313,7 @@ func _cr_en() -> void:
 		"TestLabel": "Example text", "DarkTheme": ["Light theme", "Dark theme"],
 		"SettingsEventType": ["Events calendar", "List of events"],
 		"Preinstalled": ["Pre-installed theme", "Custom Theme"],
-		"ColorSchemePre": ["Standard", "Grey", "Lemon with currants", "Rusty metal", "A fox in a clearing", "Berry on a branch", "Blackberry"],
+		"ColorSchemePre": ["Standard", "Grey", "Lemon with currants", "Rusty metal", "A fox in a clearing", "Berry on a branch", "Blackberry", "Penguin"],
 		"ColorSchemeCus": ["Mono", "Contrast", "Triad", "Tetrad"],
 		"SettingsConfirmationDialog": {"text": "All user data will be deleted", "title": "Deleting a user"},
 		# Окно очистки данных

@@ -34,8 +34,9 @@ func color_reading() -> void:
 	var data: Dictionary = Request.select(Request.Tables.SETTINGS)[0]
 	var color_count: int = 0
 	if data.color_preset: color_count = data.color_scheme + 1
-	else: color_count = 1 if data.color_scheme == 1 else 2
-	
+	elif data.color_scheme == 1: color_count = 1
+	else:
+		color_count = 3 if data.color_scheme == 7 else 2
 	for i in range(color_count):
 		g_colors.append(data["color_" + str(i + 1)])
 		g_offsets.append(0.2 + ((0.8 / color_count) * i))

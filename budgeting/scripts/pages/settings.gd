@@ -52,10 +52,16 @@ func show_colors() -> void:
 	hide_colors()
 	for i in range(ColorSchemeCus.selected + 1): Colors.get_child(i).visible = true
 	
-# Изменение цвета
+# Изменение цвета - контраст
 func _contrast(c1: String, c2: String) -> void:
 	color1.color = Color("#" + c1)
 	$Colors/Color_2.color = Color("#" + c2)
+	
+# Изменение цвета - триада
+func _triad(c1: String, c2: String, c3: String) -> void:
+	color1.color = Color("#" + c1)
+	$Colors/Color_2.color = Color("#" + c2)
+	$Colors/Color_3.color = Color("#" + c3)
 
 # Смена темы между светлой и тёмной
 func _change_theme(c1_l: String, c2_l: String, c1_d: String, c2_d: String) -> void:
@@ -112,6 +118,10 @@ func _on_color_scheme_pre_item_selected(index: int) -> void:
 		4: _change_theme("df8662", "72c8a3", "8f4e33", "2d5d57") # Лиса на поляне
 		5: _change_theme("e198ae", "b9e198", "801938", "44622b") # Ягода на ветке
 		6: _change_theme("981475", "3b9fc8", "ab3c96", "2c3498") # Ежевика
+		7: # Пингвин
+			ColorSchemeCus.selected = 2
+			if DarkTheme.button_pressed: _triad("9c9c98", "ab5732", "474745")
+			else: _triad("474745", "9c9c98", "ffe1ca")
 		_: # Серая
 			ColorSchemeCus.selected = 0
 			color1.color = Color("#636363")
