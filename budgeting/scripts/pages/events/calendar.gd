@@ -4,7 +4,7 @@ extends Calendar
 @onready var Events = $Events/VBoxContainer
 
 # Переменные
-@onready var lines: ArrayLines = ArrayLines.new("event_legend") # Объект для создания строк списков
+@onready var lines: ArrayLines = ArrayLines.new("event_legend") # Объект для создания строк списка
 var event_days: Array = [] # Список дат для маркировки
 var select_cell: int = 0 # Индекс выбранной ячейки календаря
 
@@ -12,9 +12,9 @@ var select_cell: int = 0 # Индекс выбранной ячейки кале
 func _process(delta: float) -> void:
 	super._process(delta)
 	lines.add_obj(Events, Request.ObjectVariants.EVENT, self)
-	if not _end_create() and len(event_days) > 0:
-		Cells.get_child(int(event_days.pop_front().date.split("-")[-1]) + date.weekday() - 1).add_event()
-		if len(event_days) == 0: SelectedCell.visible = true
+	if not _end_create():
+		if len(event_days) > 0: Cells.get_child(int(event_days.pop_front().date.split("-")[-1]) + date.weekday() - 1).add_event()
+		SelectedCell.visible = true
 
 # Обновление данных
 func update_data(filter: Variant = {}) -> void:
