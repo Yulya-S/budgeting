@@ -119,7 +119,7 @@ func repainting(obj: Variant) -> void:
 			for i in ["", "focus_", "pressed_"]: set_font_color(obj, "font_"+i+"color")
 			set_font_color(obj, "font_hover_color", 3)
 		"Label":
-			set_font_color(obj)
+			if obj.name != "Error": set_font_color(obj)
 			set_font_color(obj, "font_outline_color", 6)
 		_: match obj.name:
 			"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
