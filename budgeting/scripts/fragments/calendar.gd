@@ -3,7 +3,7 @@ class_name Calendar
 # Подключение пути к объекту в сцене
 @onready var Cells = $Cells
 # Экспортируемая переменная
-@export var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Сцена ячейки календаря
+@export var cell_path: Resource = load("res://scenes/pages/events_calendar/cell.tscn") # Сцена ячейки календаря
 # Переменная
 @onready var date: NewDate = NewDate.new(Global.get_date()) # Выбранная дата
 
