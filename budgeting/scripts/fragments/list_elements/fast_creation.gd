@@ -41,7 +41,7 @@ func _select(text: String) -> Array:
 
 # Изменение видимости информации о разделе
 func _update_section_visible(income: bool) -> void:
-	$Section/ConsumptionIncome.set_text(File.lang["__CI" + str(income)])
+	$Section/ConsumptionIncome.set_text(File.lang["__CI" + str(int(income))])
 	var values: Array = _select('"__SS4" != title') + _select('"__SS4" == title')
 	Subsection.visible = len(values) > 0
 	if len(values) > 0:
