@@ -886,9 +886,13 @@ func _create_event(values: Array) -> void:
 	if int(values[2]) == 0: values[3] = "0.0"
 	db.query('INSERT INTO events (title, repetition_rate, event_type, value, date) VALUES ("'+values[0]+'",'+str(values[1])+", "+str(values[2])+", "+values[3]+', "'+values[4]+'");')
 
-# Проверка наличия записи с определенным имененем в таблицах
-func check_obj_name(obj_name: String, idx: int, table: Global.Pages) -> bool:
-	return len(_select("* FROM "+_get_table_name(table), 'title = "' + obj_name + '" AND id != ' + str(idx))) == 0
+# Проверка наличия записи с определенным имененем в таблице кошельков
+func check_wallet_name(obj_name: String, idx: int) -> bool:
+	return len(_select("* FROM wallets", 'title = "' + obj_name + '" AND id != ' + str(idx))) == 0
+
+# Проверка наличия записи с определенным имененем в таблице разделов
+func check_section_name(obj_name: String, idx: int) -> bool:
+	return len(_select("* FROM sections", 'title = "' + obj_name + '" AND id != ' + str(idx))) == 0
 
 # Проверка наличия подстатьи с определенным имененем в таблице раделов
 func check_subsection_name(obj_name: String, idx: int, parent_id: int) -> bool:

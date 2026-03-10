@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://2ktjulcaj65p"]
+[gd_scene load_steps=3 format=3 uid="uid://2ktjulcaj65p"]
+
+[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="1_0gtsr"]
 
 [sub_resource type="GDScript" id="GDScript_iofeo"]
 script/source = "extends ColorRect
@@ -50,6 +52,17 @@ offset_left = 110.0
 offset_top = 60.0
 offset_right = 1042.0
 offset_bottom = 588.0
+
+[node name="Error" type="Label" parent="."]
+offset_left = 110.0
+offset_top = 502.0
+offset_right = 1042.0
+offset_bottom = 528.0
+theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_0gtsr")
 
 [node name="Delete" type="Button" parent="."]
 visible = false

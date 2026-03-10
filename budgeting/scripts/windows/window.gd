@@ -1,5 +1,7 @@
 extends Control
 class_name Windows
+# Подключение пути к объекту в сцене
+@onready var Error = get_child(0).get_child(2)
 # Экспортируемая переменная
 @export var page_type: Global.Pages = Global.Pages.WALLET # Тип создаваемого / Изменяемого объкта
 # Переменная
@@ -60,6 +62,7 @@ func _create_func_name(obj: Variant) -> String:
 
 # Проверка верности заполнения полей
 func check_object() -> bool:
+	Error.clear()
 	match page_type:
 		Global.Pages.WALLET: return _check_wallet()
 		Global.Pages.SECTION: return _check_section()
@@ -74,48 +77,81 @@ func check_object() -> bool:
 
 # Проверка что имя 
 func _check_textEdit(obj: TextEdit) -> bool:
-	if obj.get_text() == "": return false
-	return Request.check_obj_name(obj.get_text(), idx, page_type)
+	if obj.get_text() == "":
+		Error.set_state(Error._E1)
+		return false
+	return Request.check_obj_name(obj.get_text(), idx)
 
 # Проверка возможности создания кошелька
-func _check_wallet() -> bool: return $Value.get_text() != "" and _check_textEdit($Title)
+func _check_wallet() -> bool:
+	if Error.check_mandatory_fields([$Title, $Value]): return false
+	if not Request.check_wallet_name($Title.get_text(), idx):
+		return Error.set_state(Error.States._E4)
+	return true
 
 # Проверка возможности создания раздела
 func _check_section() -> bool:
-	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or $Income.button_pressed) and _check_textEdit($Title)
-
+	if Error.check($Title): return false
+	if not Request.check_section_name($Title.get_text(), idx):
+		return Error.set_state(Error.States._E4)
+	if ($Month_Limit.get_text() == "" or float($Month_Limit.get_text()) <= 0) and not $Income.button_pressed:
+		return Error.set_state(Error.States._E5)
+	return true
+	
 # Проверка возможности создания подраздела
 func _check_subsection() -> bool:
-	return (($Month_Limit.get_text() != "" and float($Month_Limit.get_text()) > 0) or not $Month_Limit.visible) \
-		and $Title.get_text() != "" and Request.check_subsection_name($Title.get_text(), idx, Global.get_OB_id($Parent_id))
+	if Error.check($Title): return false
+	if not Request.check_subsection_name($Title.get_text(), idx, Global.get_OB_id($Parent_id)):
+		return Error.set_state(Error.States._E4)
+	if ($Month_Limit.get_text() == "" or float($Month_Limit.get_text()) <= 0) and $Month_Limit.visible:
+		return Error.set_state(Error.States._E5)
+	return true
 
 # Проверка возможности создания движения средств
-func _check_cash_flow() -> bool: return $Value.get_text() != "" and float($Value.get_text()) > 0
+func _check_cash_flow() -> bool:
+	if $Value.get_text() == "" or float($Value.get_text()) <= 0:
+		return Error.set_state(Error.States._E5)
+	return false
 
 # Проверка возможности создания перевода средств
 func _check_transfer() -> bool:
-	return $Value.get_text() != "" and float($Value.get_text()) > 0 and Global.get_OB_id($Wallet_id) != Global.get_OB_id($Wallet_2_id)
+	if Global.get_OB_id($Wallet_id) == Global.get_OB_id($Wallet_2_id):
+		return Error.set_state(Error.States._E6)
+	if $Value.get_text() == "" or float($Value.get_text()) <= 0:
+		return Error.set_state(Error.States._E5)
+	return true
 
 # Проверка возможности создания платежа по займу
 func _check_payment() -> bool:
-	if $Value.get_text() == "" or float($Value.get_text()) <= 0: return false
-	if Request.loan_check_first_date(Global.get_OB_id($Wallet_2_id), $Date.get_date()): return false
-	if Request._select("* FROM loans", "id = "+str(Global.get_OB_id($Wallet_2_id)))[0].total - float($Value.get_text()) < 0: return false
+	if $Value.get_text() == "" or float($Value.get_text()) <= 0:
+		return Error.set_state(Error.States._E5)
+	if Request.loan_check_first_date(Global.get_OB_id($Wallet_2_id), $Date.get_date()):
+		return Error.set_state(Error.States._E7)
+	if Request._select("* FROM loans", "id = "+str(Global.get_OB_id($Wallet_2_id)))[0].total - float($Value.get_text()) < 0:
+		return Error.set_state(Error.States._E8)
 	return true
 	
 # Проверка возможности создания процентов по займу
 func _check_percent() -> bool:
-	if $Value.get_text() == "" or float($Value.get_text()) <= 0: return false
-	if Request.loan_check_first_date(Global.get_OB_id($Wallet_2_id), $Date.get_date()): return false
+	if $Value.get_text() == "" or float($Value.get_text()) <= 0:
+		return Error.set_state(Error.States._E5)
+	if Request.loan_check_first_date(Global.get_OB_id($Wallet_2_id), $Date.get_date()):
+		return Error.set_state(Error.States._E7)
 	return true
 
 # Проверка возможности создания займа
 func _check_loan() -> bool:
-	return $Value.get_text() != "" and float($Value.get_text()) > 0 and $Title.get_text() != ""
+	if Error.check($Title): return false
+	if $Value.get_text() == "" or float($Value.get_text()) <= 0:
+		return Error.set_state(Error.States._E5)
+	return true
 
 # Проверка возможности создания события
 func _check_event() -> bool:
-	return (($Value.get_text() != "" and float($Value.get_text()) > 0) or $Event_type.selected == 0) and $Title.get_text() != ""
+	if Error.check($Title): return false
+	if ($Value.get_text() == "" or float($Value.get_text()) <= 0) and $Event_type.selected != 0:
+		return Error.set_state(Error.States._E5)
+	return true
 
 # Получение значений со страницы
 func get_values() -> Array:

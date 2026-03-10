@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cjjhlo2lps3ww"]
+[gd_scene load_steps=3 format=3 uid="uid://cjjhlo2lps3ww"]
 
 [ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_5ih53"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="1_ex3f0"]
-[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_5ih53"]
 
 [node name="WalletWindow" type="Control"]
 layout_mode = 3
@@ -13,18 +12,6 @@ script = ExtResource("1_5ih53")
 
 [node name="Window" parent="." instance=ExtResource("1_ex3f0")]
 layout_mode = 0
-
-[node name="Error" type="Label" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 110.0
-offset_top = 197.0
-offset_right = 1042.0
-offset_bottom = 225.0
-theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
-theme_override_font_sizes/font_size = 18
-horizontal_alignment = 1
-script = ExtResource("3_5ih53")
 
 [node name="Title" type="TextEdit" parent="."]
 clip_contents = false

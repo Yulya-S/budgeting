@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://b75endpxrahwp"]
+[gd_scene load_steps=4 format=3 uid="uid://b75endpxrahwp"]
 
 [ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_f3kic"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_f3kic"]
 [ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="3_30y3e"]
-[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_f3kic"]
 
 [node name="Percent" type="Control"]
 layout_mode = 3
@@ -15,17 +14,6 @@ page_type = 9
 
 [node name="Window" parent="." instance=ExtResource("2_f3kic")]
 layout_mode = 0
-
-[node name="Error" type="Label" parent="."]
-layout_mode = 0
-offset_left = 110.0
-offset_top = 111.0
-offset_right = 693.0
-offset_bottom = 139.0
-theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
-theme_override_font_sizes/font_size = 18
-horizontal_alignment = 1
-script = ExtResource("3_f3kic")
 
 [node name="Wallet_2_id" type="OptionButton" parent="."]
 layout_mode = 0

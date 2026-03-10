@@ -53,7 +53,7 @@ func _on_language_item_selected(_index: int) -> void: File.read_lang(Language)
 # Обработка нажатия кнопки регистрации
 func _on_registration_button_down() -> void:
 	if not _check_user(false):
-		Error.set_state(Error.States._E02)
+		Error.set_state(Error.States._E2)
 		return
 	Request.insert_record(Request.Tables.USERS, ['"'+File.config.login+'"', '"'+File.config.password+'"', '"'+_generate_db_name()+'"'])
 	_entrance()
@@ -62,6 +62,6 @@ func _on_registration_button_down() -> void:
 func _on_enter_button_down(check_field: bool = true, auto: bool = false) -> void:
 	if not _check_user(true, check_field):
 		File.clear_config()
-		Error.set_state(Error.States._E03)
+		Error.set_state(Error.States._E3)
 		return
 	_entrance(auto)

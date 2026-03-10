@@ -280,13 +280,14 @@ func _standard_language() -> Dictionary:
 		# Особые объекты
 		"_Months": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
 		"_Errors": {
-			"_E01": "Обязательные поля должны быть заполнены",
-			"_E02": "Имя пользователя занято",
-			"_E03": "Неверный логин или пароль",
-			"_E04": "Объект уже существует",
-			"_E05": "Значение должно быть больше нуля",
-			"_E06": "На счету недостаточно средств",
-			"_E07": "Введенное значение привышает необходимое значение для полного погашения займа"
+			"_E1": "Обязательные поля должны быть заполнены",
+			"_E2": "Имя пользователя занято",
+			"_E3": "Неверный логин или пароль",
+			"_E4": "Объект с выбранным именем уже существует",
+			"_E5": "Значение должно быть больше нуля",
+			"_E6": "Выбранные для перевода счета должны различаться",
+			"_E7": "Выбранная дата находится до даты оформления займа",
+			"_E8": "Введенная сумма превышает необходимое значение для полного погашения займа"
 		}}
 
 # Русский
@@ -424,12 +425,13 @@ func _cr_en() -> void:
 		# Особые объекты
 		"_Months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 		"_Errors": {
-			"_E01": "Required fields must be filled in",
-			"_E02": "Username taken",
-			"_E03": "Incorrect login or password",
-			"_E04": "The object already exists",
-			"_E05": "Value must be greater than zero",
-			"_E06": "There are insufficient funds in the account",
-			"_E07": "The entered value exceeds the required value for full repayment of the loan"
+			"_E1": "Required fields must be filled in",
+			"_E2": "Username taken",
+			"_E3": "Incorrect login or password",
+			"_E4": "An object with the selected name already exists",
+			"_E5": "Value must be greater than zero",
+			"_E6": "The wallets selected for transfer must be different",
+			"_E7": "The selected date is before the loan registration date",
+			"_E8": "The amount entered exceeds the required amount for full repayment of the loan"
 		}
 	})
