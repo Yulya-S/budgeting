@@ -9,3 +9,8 @@ func L_to_int(obj: Variant) -> int: return int(obj.get_text())
 
 # Проверка что текстовое поле пусто
 func L_is_empty(obj: Variant) -> bool: return obj.get_text() == ""
+
+# Применение цветовой палитры и перевода объекта
+func color_and_lang(obj: Variant) -> void:
+	ColorScheme.repainting(obj)
+	File.set_lang(obj)
