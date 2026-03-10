@@ -1,5 +1,5 @@
 extends ColorRect
-class_name Fragment
+class_name List_element
 # Подключение пути к объекту в сцене
 @onready var Title = get_node_or_null("Title")
 

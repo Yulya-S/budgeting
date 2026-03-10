@@ -1,4 +1,4 @@
-extends Fragment
+extends List_element
 # Подключение пути к объекту в сцене
 @onready var ParentPage = $"../../../"
 # Переменная
