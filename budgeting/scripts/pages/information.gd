@@ -22,7 +22,7 @@ func update_data() -> void:
 	for i in [$Filter/Title] + _get_labels(): Global.set_label_from_data(i, data)
 	if page_type == Global.Pages.SECTION:
 		File.set_lang($Filter/Title)
-		$ObjArray.update_obj(Request.ObjectVariants.SUBSECTION if len(Request._select("* FROM subsections WHERE parent_id = "+str(idx))) > 0 else Request.ObjectVariants.CASH_FLOW)
+		$ObjArray.update_section_inf_obj(len(Request._select("* FROM subsections WHERE parent_id = "+str(idx))) > 0)
 	super.update_data()
 
 # Получение списка заголовков для применения значений
