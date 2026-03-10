@@ -1,13 +1,13 @@
 [gd_scene load_steps=2 format=3 uid="uid://m3f0plaic2iq"]
 
-[ext_resource type="Script" uid="uid://dt7s0n1q1ej04" path="res://scripts/pages/events/cell.gd" id="1_1ycus"]
+[ext_resource type="Script" uid="uid://dt7s0n1q1ej04" path="res://scripts/pages/event_calendar/cell.gd" id="1_5kvr5"]
 
 [node name="Cell" type="ColorRect"]
 custom_minimum_size = Vector2(78, 78)
 offset_right = 78.0
 offset_bottom = 78.0
 color = Color(0.77084, 0.770839, 0.770839, 1)
-script = ExtResource("1_1ycus")
+script = ExtResource("1_5kvr5")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
@@ -28,7 +28,6 @@ mouse_filter = 1
 color = Color(0.74, 0, 0, 1)
 
 [node name="Completed" type="ColorRect" parent="."]
-visible = false
 custom_minimum_size = Vector2(74, 20)
 layout_mode = 0
 offset_left = 2.0
@@ -36,11 +35,11 @@ offset_top = 2.0
 offset_right = 76.0
 offset_bottom = 76.0
 mouse_filter = 2
-color = Color(1, 1, 1, 0.396078)
+color = Color(1, 1, 1, 0)
 
 [node name="Frame" type="Line2D" parent="."]
 position = Vector2(2, 2)
-points = PackedVector2Array(-2, 75, 75, 75, 75, -1, -1, -1, -1, 70.0904)
+points = PackedVector2Array(-1, -1, 75, -1, 75, 75, -1, 75)
 closed = true
 width = 3.0
 default_color = Color(0, 0, 0, 1)

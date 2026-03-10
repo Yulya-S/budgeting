@@ -103,6 +103,16 @@ func set_DS_cell_color(obj: Variant, text: String, selected: bool, hovered: bool
 	elif text != "": _change_color(obj, 6)
 	else: _change_color(obj, 5)
 
+# Замена цвета ячеек календаря на странице событий
+func set_calendar_cell_color(obj: Variant, day_off: bool, current: bool, complete: bool) -> void:
+	if obj.Number.text != "":
+		if current: _change_color(obj, 3)
+		elif day_off: _change_color(obj, 4.7)
+	else: _change_color(obj, 5.2)
+	if complete:
+		obj.get_child(-2).color = ColorScheme.get_color(95, 100)
+		obj.get_child(-2).color.a = 101. / 255.
+
 # Применение цветовой палитры к странице
 func repainting(obj: Variant) -> void:
 	match obj.get_class():

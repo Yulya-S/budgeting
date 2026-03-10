@@ -4,7 +4,7 @@ extends Page
 @onready var FCObjects = $FastCreations/ObjArray
 
 # Переменные для календаря событий
-var cell_path: Resource = load("res://scenes/pages/events/cell.tscn") # Путь к сцене ячеек календаря
+var cell_path: Resource = load("res://scenes/pages/events_calendar/cell.tscn") # Путь к сцене ячеек календаря
 var event_days: Array = [] # Список дат для маркировки
 var start_update: bool = false # Был ли отправлен запрос на изменение страницы
 

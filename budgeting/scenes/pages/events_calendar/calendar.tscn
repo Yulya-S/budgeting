@@ -1,13 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://h73m6svxm2de"]
+[gd_scene load_steps=3 format=3 uid="uid://h73m6svxm2de"]
 
-[ext_resource type="Script" uid="uid://cu5kqv5efq27f" path="res://scripts/pages/events/calendar.gd" id="1_kwdma"]
+[ext_resource type="Script" uid="uid://cu5kqv5efq27f" path="res://scripts/pages/event_calendar/calendar.gd" id="1_scj1g"]
+[ext_resource type="PackedScene" uid="uid://m3f0plaic2iq" path="res://scenes/pages/events_calendar/cell.tscn" id="2_ittmh"]
 
 [node name="Calendar" type="Control"]
 custom_minimum_size = Vector2(1152, 473)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
-script = ExtResource("1_kwdma")
+script = ExtResource("1_scj1g")
+cell_path = ExtResource("2_ittmh")
 
 [node name="Cells" type="GridContainer" parent="."]
 custom_minimum_size = Vector2(456, 473)
