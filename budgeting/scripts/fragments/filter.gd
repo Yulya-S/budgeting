@@ -47,22 +47,25 @@ func get_filter() -> Dictionary:
 	if filter.date is Array: filter.date = Global.date_to_sql_date("-".join(filter.date+[1]))
 	return filter
 
+# Получение списка ключей
+func _get_keys(obj: Variant) -> Array: return OB_items[obj.name].keys()
+
+func _update_value(obj: Variant, value_name: String, sep: String) -> void:
+	if filter[value_name] != "": filter[value_name] += sep
+	filter[value_name] += OB_items[obj.name][str(obj.selected)]
+
 # Обработка дополнительных фильтров
 func _other_filters(obj: Variant) -> void:
 	if obj.name not in OB_items.keys(): return
 	# Фильтры с добавлением объектов
-	if "section" in OB_items[obj.name].keys():
-		if Global.call("get_OB_"+OB_items[obj.name].section, obj) == 0: return
+	if "section" in _get_keys(obj):
+		if Global.call("get_OB_id", obj) == 0: return
 		if filter.where != "": filter.where += " AND "
-		filter.where += OB_items[obj.name].text.replace("__"+OB_items[obj.name].section+"__", str(Global.call("get_OB_"+OB_items[obj.name].section, obj)))
+		filter.where += OB_items[obj.name].text.replace("__id__", str(Global.call("get_OB_id", obj)))
 		return
-	if str(obj.selected) not in OB_items[obj.name].keys(): return
-	if "filter" not in OB_items[obj.name].keys():
-		if filter.where != "": filter.where += " AND "
-		filter.where += OB_items[obj.name][str(obj.selected)]
-	else:
-		if filter.order != "": filter.order += ", "
-		filter.order += OB_items[obj.name][str(obj.selected)]
+	if str(obj.selected) not in _get_keys(obj): return
+	if "filter" not in _get_keys(obj): _update_value(obj, "where", " AND ")
+	else: _update_value(obj, "order", ", ")
 
 # Обработка выбора года
 func _on_year_item_selected(index: int = -1) -> void: Global.fill_year_OB($Year, index)
