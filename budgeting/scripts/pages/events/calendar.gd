@@ -4,7 +4,7 @@ extends Calendar
 @onready var Events = $Events/VBoxContainer
 
 # Переменные
-@onready var lines: ArrayLines = ArrayLines.new("res://scenes/fragments/list_elements/event_legend.tscn") # Объект для создания строк списков
+@onready var lines: ArrayLines = ArrayLines.new("event_legend") # Объект для создания строк списков
 var event_days: Array = [] # Список дат для маркировки
 var select_cell: int = 0 # Индекс выбранной ячейки календаря
 

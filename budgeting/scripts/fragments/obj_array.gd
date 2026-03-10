@@ -5,10 +5,7 @@ extends ScrollContainer
 @export var obj: Request.ObjectVariants = Request.ObjectVariants.EVENT # Выбранный объект списка
 @export var first_line: bool = true # Будет ли создан заголовок списка
 # Переменная объекта для создания строк списка
-@onready var lines: ArrayLines = ArrayLines.new(_get_path(Global.enum_key(Request.ObjectVariants, obj)))
-
-# Сборка текстового пути к объекту
-func _get_path(text: String) -> String: return "res://scenes/fragments/list_elements/"+text+".tscn"
+@onready var lines: ArrayLines = ArrayLines.new(Global.enum_key(Request.ObjectVariants, obj))
 
 # Применение размера VBoxContainer
 func _ready() -> void: if not first_line: Objects.alignment = VBoxContainer.ALIGNMENT_END
@@ -16,7 +13,7 @@ func _ready() -> void: if not first_line: Objects.alignment = VBoxContainer.ALIG
 # Смена объекта списка
 func update_section_inf_obj(subsection: bool) -> void:
 	obj = Request.ObjectVariants.SUBSECTION if subsection else Request.ObjectVariants.CASH_FLOW
-	lines = ArrayLines.new(_get_path("section" if subsection else "cash_flow"))
+	lines = ArrayLines.new("section" if subsection else "cash_flow")
 
 # Изменение размера контейнера
 func set_container_size(new_size: Vector2) -> void:

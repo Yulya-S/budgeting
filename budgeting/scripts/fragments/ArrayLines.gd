@@ -6,7 +6,8 @@ var change_list: Array = [] # Список для изменения
 var path: Resource = null # Путь к сцене объекта для создания
 
 # Изменение пути к объекту
-func _init(new_path: String) -> void: path = load(new_path)
+func _init(new_path: String) -> void:
+	path = load("res://scenes/fragments/list_elements/" + new_path + ".tscn")
 
 # Обновление списков
 func add_obj(parent: Variant, ObjectVariant: Request.ObjectVariants, requesting: Variant) -> void:
