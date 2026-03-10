@@ -1,4 +1,4 @@
-extends List_element
+extends ListElement
 # Переменная
 var m_index: int = 0 # Индекс объекта для изменения цветового маркера
 

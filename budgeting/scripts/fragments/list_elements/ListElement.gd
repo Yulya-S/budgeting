@@ -1,5 +1,5 @@
 extends ColorRect
-class_name List_element
+class_name ListElement
 
 # Изменение размера контейнера по размеру родителя
 func _ready() -> void:

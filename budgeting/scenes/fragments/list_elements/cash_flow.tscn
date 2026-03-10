@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bbm4ew21ko7e1"]
 
-[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/List_element.gd" id="1_rbn4l"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/ListElement.gd" id="1_rbn4l"]
 [ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_nyojl"]
 
 [node name="CashFlow" type="ColorRect"]

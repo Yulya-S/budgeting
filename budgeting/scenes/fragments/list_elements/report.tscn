@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cuhlck3p0pdxh"]
 
-[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/List_element.gd" id="1_258vl"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/ListElement.gd" id="1_258vl"]
 
 [node name="Report" type="ColorRect"]
 custom_minimum_size = Vector2(1152, 23)
