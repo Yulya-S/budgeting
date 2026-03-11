@@ -57,6 +57,13 @@ func _run_update(obj: Variant = self) -> void:
 func _get_filter(obj: Variant) -> Array:
 	match Global.current_page:
 		Global.Pages.BASIC: return [] if obj.get_parent().name != "Sections" else [{"where":"s.month_limit>=0", "order": "value DESC"}]
+		Global.Pages.REPORT:
+			var filter_data: Dictionary = Filter.get_filter()
+			if "Rep" in obj.get_parent().name: filter_data.where = obj.get_parent().name.replace("Rep", "").to_lower()
+			elif obj.get_parent().name == "Sections":
+				filter_data.where = "s.month_limit>=0"
+				filter_data.order = "value DESC"
+			return [filter_data]
 	return [Filter]
 
 # Изменение данных после смены дня
