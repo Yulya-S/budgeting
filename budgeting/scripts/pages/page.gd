@@ -26,6 +26,9 @@ func _update_page() -> void:
 # Дополнительные изменения на странице
 func _match_other_update() -> void:
 	match Global.current_page:
+		Global.Pages.BASIC:
+			$Menu/Budget.set_text(str(Request.select_wallets_sum()))
+			$Menu/CashFlow.set_text(str(Request.select_funds_movements()))
 		Global.Pages.CASH_FLOW:
 			var save_selected_section: int = $Filter/Section.selected
 			Filter.set_OB_items(Request.Tables.SECTIONS) # Заполнение списка разделов
@@ -33,7 +36,14 @@ func _match_other_update() -> void:
 			File.set_OB_elements($Filter/Section) # Применение перевода для списка разделов
 
 # Обновление данных
-func update_data() -> void: _run_update()
+func update_data() -> void:
+	_run_update()
+	if Global.current_page == Global.Pages.BASIC:
+		Global.clear_scene(get("Cells"))
+		# Отправка запроса на обновление таблицы с событиями
+		Request.start_create_multiplied_events_table(Global.date_to_str())
+		set("start_update", true)
+		Global.run_func(self, "_fc_size_match")
 	
 # Запуск функции изменения данных
 func _run_update(obj: Variant = self) -> void:
@@ -41,7 +51,10 @@ func _run_update(obj: Variant = self) -> void:
 	for i in obj.get_children(): _run_update(i)
 	
 # Получение данных фильтра
-func _get_filter(_obj: Variant) -> Array: return [Filter]
+func _get_filter(obj: Variant) -> Array:
+	match Global.current_page:
+		Global.Pages.BASIC: return [] if obj.get_parent().name != "Sections" else [{"where":"s.month_limit>=0", "order": "value DESC"}]
+	return [Filter]
 
 # Изменение данных после смены дня
 func new_day() -> void:
