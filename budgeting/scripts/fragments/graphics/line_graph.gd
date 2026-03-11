@@ -84,7 +84,7 @@ func _candlestick(max_value: float, x_step: float = size.x / len(values)) -> voi
 		_draw_str(x, 120, str(int(i) + 1), x_step, border_color)
 		if values[i] == 0: continue # Отмена отрисовки если значение точки отсутствует
 		var y_size: float = 50. * abs(values[i]) / abs(max_value)
-		var data: Array = [ColorScheme.get_scale_color(0), 60 - y_size + 2, 90.]
+		var data: Array = [ColorScheme.get_scale_color(0), 58 - y_size, 90.]
 		if values[i] < 0: data = [ColorScheme.get_scale_color(1), 60, 30.]
 		draw_rect(Rect2(Vector2(x - 2, data[1] - 2), Vector2(x_step + 2, y_size + 4)), border_color)
 		draw_rect(Rect2(Vector2(x, data[1]), Vector2(x_step - 2, y_size)), data[0])
