@@ -380,7 +380,7 @@ func _cr_en() -> void:
 		"WalletWindowWindowConfirmationDialog": { "title": "Removing a wallet",
 			"text": "All wallet data will be deleted."},
 		# Окно создания / изменения раздела
-		"SectionWindowTitleLabel": "Section title:", "Income": ["Expenses", "Income"],
+		"SectionWindowTitleLabel": "Section title:", "SectionWindowIncome": ["Expenses", "Income"],
 		"Month_LimitLabel": "Monthly limitation:",
 		"SectionWindowWindowConfirmationDialog": { "title": "Deleting a partition",
 			"text": "All data in this section will be deleted."},
