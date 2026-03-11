@@ -15,6 +15,9 @@ func set_page(new_idx: int, new_page_type: Global.Pages = Global.Pages.WALLET) -
 		Global.Pages.SECTION: filter_data = {"where": "section_id = "+str(idx)}
 	update_data()
 
+# отмена запуска дополнительных изменений на странице
+func _match_other_update() -> void: pass
+
 # Обновление данных
 func update_data() -> void:
 	if idx == 0: return
@@ -23,7 +26,7 @@ func update_data() -> void:
 	if page_type == Global.Pages.SECTION:
 		File.set_lang($Filter/Title)
 		$ObjArray.update_section_inf_obj(len(Request._select("* FROM subsections WHERE parent_id = "+str(idx))) > 0)
-	super.update_data()
+	_run_update()
 
 # Получение списка заголовков для применения значений
 func _get_labels() -> Array:

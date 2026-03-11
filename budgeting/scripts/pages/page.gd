@@ -5,6 +5,7 @@ class_name Page
 @onready var Filter = get_node_or_null("Filter")
 @onready var FilterSection = get_node_or_null("Filter/Section")
 @onready var FilterWallet = get_node_or_null("Filter/Wallet")
+@onready var PieChart = get_node_or_null("PieChart")
 
 # Подключение сигнала
 func _ready() -> void:
@@ -76,8 +77,9 @@ func new_day() -> void:
 
 # Применение выделений секций на круговой диаграмме для страницы разделов
 func highlighting_graph_sections(idx: int, set_highlighting: bool = true) -> void:
-	if set_highlighting: $PieChart.set_highlighter(idx)
-	else: $PieChart.reset_highlighter(idx)
+	if not PieChart: return
+	if set_highlighting: PieChart.set_highlighter(idx)
+	else: PieChart.reset_highlighter(idx)
 
 # Обработка нажатий кнопок
 # Общие обработки

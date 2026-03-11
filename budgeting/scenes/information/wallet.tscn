@@ -135,7 +135,7 @@ layout_mode = 0
 offset_top = 161.0
 offset_right = 1152.0
 offset_bottom = 592.0
-obj = 8
+obj = 9
 
 [node name="Total" type="ColorRect" parent="."]
 layout_mode = 2
