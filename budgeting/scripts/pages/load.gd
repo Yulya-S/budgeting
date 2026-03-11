@@ -2,21 +2,25 @@ extends ColorRect
 @onready var Progress = $ProgressBar
 @onready var Message = $Message
 # Переменные
-@onready var last_entry: String = Request.select_last_entry()
+@onready var last_entry: String = Request.select_last_entry() # Получение даты последнего входа
 var create: bool = true # Этап создания событий
 var events: Array = [] # Список событий для добавления в уведомления
 
 # Применение цветовой палитры и перевода
 func _ready() -> void:
-	ColorScheme.repainting(self)
-	File.set_lang(self)
+	SF.color_and_lang(self)
 	_create_table()
 
+# Смена значения max_value и текста загрузки
+func _update(count: Array, message_idx: int) -> void:
+	Progress.max_value = len(count)
+	Message.set_text(File.lang["__L"+str(message_idx + 1)])
+	create = not bool(message_idx)
+
+# Запуск обновления событий
 func _create_table() -> void:
 	Request.start_create_multiplied_events_table(last_entry)
-	Progress.max_value = len(Request.events)
-	create = true
-	Message.set_text(File.lang["__L1"])
+	_update(Request.events, 0)
 
 # Отображение процесса загрузки
 func _process(_delta: float) -> void:
@@ -24,9 +28,7 @@ func _process(_delta: float) -> void:
 		_set_value(Request.events)
 		if Request.completion_creation_et:
 			events = Request.select_notif_events(last_entry)
-			Progress.max_value = len(events)
-			Message.set_text(File.lang["__L2"])
-			create = false
+			_update(events, 1)
 	elif len(events) > 0:
 		_set_value(events)
 		Request.insert_notifications(events.pop_front())
