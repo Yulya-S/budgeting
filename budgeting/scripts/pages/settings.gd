@@ -7,9 +7,7 @@ extends PageWindow
 @onready var DarkTheme = $Dark_Theme
 @onready var ColorSchemePre = $ColorSchemePre
 @onready var ColorSchemeCus = $ColorSchemeCus
-# Цвета
 @onready var Colors = $Colors
-@onready var color1 = $Colors/Color_1
 
 # Стартовое изменение страницы настроек
 func _ready() -> void:
