@@ -38,6 +38,12 @@ func _get_labels() -> Array:
 # Получение данных фильтра
 func _get_filter(_obj: Variant) -> Array: return [filter_data]
 
+# Открытие окна
+func _open_w(new_page: Global.Pages) -> void: SF.op_w(new_page, idx, Global.Dirs.WINDOWS, page_type)
+
+# Проверка что выбранный займ ещё не погашен
+func _check_loan() -> bool: return len(Request.select(Request.Tables.LOANS, "*", "total>0 AND id="+str(idx))) > 0
+
 # Обработки нажатий кнопок
 # Назад
 func _on_back_button_down() -> void:
@@ -47,17 +53,17 @@ func _on_back_button_down() -> void:
 # Изменить
 func _on_update_button_down() -> void: SF.op_w(page_type, idx)
 
-# Создать движение средств
-func _on_cash_flow_button_down() -> void: SF.op_w(Global.Pages.CASH_FLOW)
-
 # Список транзакций
 func _on_transactions_button_down() -> void: SF.op_np(Global.Pages.CASH_FLOW, idx, page_type)
 
+# Создать движение средств
+func _on_cash_flow_button_down() -> void: _open_w(Global.Pages.CASH_FLOW)
+
 # Создать подраздел
-func _on_add_subsection_button_down() -> void: SF.op_w(Global.Pages.SUBSECTION)
+func _on_add_subsection_button_down() -> void: _open_w(Global.Pages.SUBSECTION)
 
 # Добавить процент по займу
-func _on_add_interest_button_down() -> void: SF.op_w(Global.Pages.PERCENT)
+func _on_add_interest_button_down() -> void: if _check_loan(): _open_w(Global.Pages.PERCENT)
 
 # Добавить платёж по займу
-func _on_add_payment_button_down() -> void: SF.op_w(Global.Pages.PAYMENT)
+func _on_add_payment_button_down() -> void: if _check_loan(): _open_w(Global.Pages.PAYMENT)

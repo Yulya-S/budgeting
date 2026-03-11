@@ -33,6 +33,9 @@ func _process(_delta: float) -> void:
 		var value: float = 0.0 if $Value.get_text() == "" else float($Value.get_text())
 		$Value/Count.set_text(str(total)+" + "+str(value)+" = "+str(total + value))
 
+# Обновление данных на сранице с учётом родительской страницы
+func set_from_page(obj_idx: int, parent: Global.Pages) -> void: print(obj_idx, ", ", parent)
+
 # Обновление данных на странице
 func set_page(new_idx: int) -> void:
 	var data: Dictionary = Request.match_elem(str(new_idx), page_type)
