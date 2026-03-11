@@ -29,6 +29,9 @@ func _match_other_update() -> void:
 		Global.Pages.BASIC:
 			$Menu/Budget.set_text(str(Request.select_wallets_sum()))
 			$Menu/CashFlow.set_text(str(Request.select_funds_movements()))
+		Global.Pages.EVENT:
+			Global.delete_child(self, get_child(-1)) # Удаление предыдущего формата отображения событий
+			Global.run_func(self, "_create")
 		Global.Pages.CASH_FLOW:
 			var save_selected_section: int = $Filter/Section.selected
 			Filter.set_OB_items(Request.Tables.SECTIONS) # Заполнение списка разделов
