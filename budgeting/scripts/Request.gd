@@ -1,7 +1,7 @@
 extends Node
 # Перечисление
 enum Tables {WALLETS, SECTIONS, SUBSECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, NOTIFICATIONS, SQLITE_SEQUENCE, USERS} # Таблицы в базе данных
-enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, NOTIFICATION, FAST_CREATION, WALLET_TRANSACTION, SUBSECTION} # Варианты списков объектов по которым могут быть запросы
+enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT_W, REPORT_S, NOTIFICATION, FAST_CREATION, WALLET_TRANSACTION, SUBSECTION} # Варианты списков объектов по которым могут быть запросы
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -368,22 +368,16 @@ func select_event_days(where: String = "") -> Array: return _select("date FROM m
 func _select_wallets_report(date: String = Global.date_to_str()) -> Array:
 	return _select("w.id, w.title,
 		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE ((cf.wallet_id=w.id AND (s.income=1 OR cf.subsection_id=1)) OR (cf.section_id=1 AND cf.wallet_2_id=w.id)) AND "+where_date(date, "cf.date")+"), 0.0) income,
-		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE ((cf.wallet_id=w.id AND s.income=0 AND cf.section_id>2) OR (cf.section_id=1 AND cf.wallet_id=w.id) OR cf.section_id=3) AND "+where_date(date, "cf.date")+"), 0.0) expenditure,
+		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE ((cf.wallet_id=w.id AND ((s.income=0 AND cf.section_id>2) OR cf.subsection_id = 2)) OR (cf.section_id=1 AND cf.wallet_id=w.id)) AND "+where_date(date, "cf.date")+"), 0.0) expenditure,
 		COALESCE((SELECT SUM(IIF((cf.section_id=1 and cf.wallet_id=w.id)OR cf.subsection_id=2 OR (s.income=0 and cf.section_id>2 and cf.wallet_id=w.id), cf.value*-1, cf.value)) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE (cf.wallet_id=w.id or (cf.wallet_2_id=w.id and cf.section_id=1)) AND "+where_date(date, "cf.date", "<")+"), 0.0) cash_flow
 		FROM wallets w")
 
 # Запрос на получение списка отчета по разделам
 func _select_sections_report(date: String = Global.date_to_str()) -> Array:
-	return _select("t.id, t.title,
+	return _select("* FROM (SELECT t.id, t.title,
 		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE (s.income=1 OR cf.subsection_id=1) AND cf.section_id=t.id AND "+where_date(date, "cf.date")+"), 0.0) income,
-		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE s.income=0 AND (cf.section_id>2 OR cf.subsection_id=2) AND cf.section_id=t.id AND "+where_date(date, "cf.date")+"), 0.0) expenditure,
-		COALESCE((SELECT SUM(IIF((s.income=0 AND (cf.section_id>2 OR cf.subsection_id=2)), cf.value*-1, cf.value)) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE cf.section_id=t.id AND "+where_date(date, "cf.date", "<")+"), 0.0) cash_flow
-		FROM sections t WHERE t.id != 1")
-
-# Запрос на получение списка отчета
-func _select_reports_list(table: String = "wallets", date: String = Global.date_to_str()):
-	if table == "wallets": return _select_wallets_report(date)
-	return _select_sections_report(date)
+		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE s.income=0 AND (cf.section_id>2 OR cf.subsection_id=2) AND cf.section_id=t.id AND "+where_date(date, "cf.date")+"), 0.0) expenditure
+		FROM sections t WHERE t.id != 1) WHERE (income != 0 OR expenditure != 0)")
 	
 # Запрос на изменение списка отчета
 func _update_reports_list(line: Dictionary) -> Dictionary:
@@ -399,7 +393,8 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 		ObjectVariants.CASH_FLOW: return _select_cash_flows_list(filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.LOAN: return _select_loans_list(filter_data.where, filter_data.order)
 		ObjectVariants.EVENT: return select_multiplied_events_list()
-		ObjectVariants.REPORT: return _select_reports_list(filter_data.where, filter_data.date)
+		ObjectVariants.REPORT_W: return _select_wallets_report(filter_data.date)
+		ObjectVariants.REPORT_S: return _select_sections_report(filter_data.date)
 		ObjectVariants.NOTIFICATION: return _select_notifications_list()
 		ObjectVariants.FAST_CREATION: return _select_fast_creations_list()
 		ObjectVariants.WALLET_TRANSACTION: return _select_wts_list(filter_data.where)
@@ -413,7 +408,7 @@ func match_update_list_element(list_element: ObjectVariants, line: Dictionary, p
 		ObjectVariants.CASH_FLOW: return _update_cash_flows_list(line)
 		ObjectVariants.LOAN: return _update_loans_list(line)
 		ObjectVariants.EVENT: return _update_events_list(line)
-		ObjectVariants.REPORT: return _update_reports_list(line)
+		ObjectVariants.REPORT_W: return _update_reports_list(line)
 	return line
 
 # Функции очистки данных
