@@ -80,3 +80,15 @@ func _on_CashFlow_transaction_button_down() -> void:
 	if len(Request.select(Request.Tables.WALLETS)) > 1:
 		if $Filter/Wallet.selected > 0: Global.emit_signal("open_window", Global.Pages.TRANSFER, Global.get_OB_id($Filter/Wallet)-1, Global.Dirs.WINDOWS, Request.Tables.WALLETS)
 		else: Global.emit_signal("open_window", Global.Pages.TRANSFER)
+		
+# Обработка нажатия кнопки создания нового займа
+func _on_Loan_add_loan_button_down() -> void:
+	if len(Request.select(Request.Tables.WALLETS)) > 0: Global.emit_signal("open_window", Global.Pages.LOAN)
+
+# Обработка нажатия кнопки добавления процентов по займу
+func _on_Loan_add_interest_button_down() -> void:
+	if len(Request.select(Request.Tables.LOANS, "*", "total>0")) > 0: Global.emit_signal("open_window", Global.Pages.PERCENT)
+
+# Обработка нажатия кнопки погашения займа
+func _on_Loan_add_payment_button_down() -> void:
+	if Request.select_possibility_opening_payment(): Global.emit_signal("open_window", Global.Pages.PAYMENT)
