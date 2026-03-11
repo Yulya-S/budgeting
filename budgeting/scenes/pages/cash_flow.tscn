@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://kdy6ds4fx23h"]
 
-[ext_resource type="Script" uid="uid://kbdd4pa6livs" path="res://scripts/pages/cash_flow.gd" id="1_2tflp"]
+[ext_resource type="Script" uid="uid://bed4b7oq4mqdk" path="res://scripts/pages/page.gd" id="1_njwxx"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_8gck2"]
 [ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_8gck2"]
 [ext_resource type="PackedScene" uid="uid://c078s7whekfej" path="res://scenes/fragments/graphics/daily_transactions.tscn" id="3_mkcc5"]
@@ -13,7 +13,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-script = ExtResource("1_2tflp")
+script = ExtResource("1_njwxx")
 
 [node name="Head" parent="." instance=ExtResource("2_8gck2")]
 layout_mode = 0
@@ -232,7 +232,7 @@ offset_right = 1152.0
 offset_bottom = 643.0
 obj = 2
 
-[connection signal="button_down" from="Menu/Transaction" to="." method="_on_transaction_button_down"]
-[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
+[connection signal="button_down" from="Menu/Transaction" to="." method="_on_CashFlow_transaction_button_down"]
+[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_CashFlow_cash_flow_button_down"]
 [connection signal="item_selected" from="Filter/Year" to="Filter" method="_on_year_item_selected"]
 [connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]

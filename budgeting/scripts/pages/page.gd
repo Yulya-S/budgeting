@@ -5,14 +5,33 @@ class_name Page
 @onready var Filter = get_node_or_null("Filter")
 
 # Подключение сигнала
-func _ready() -> void: Global.connect_signal_update_page(self)
+func _ready() -> void:
+	if Global.current_page == Global.Pages.CASH_FLOW: # Заполнение списка кошельков
+		Filter.set_OB_items(Request.Tables.WALLETS)
+		Filter.set_OB_items(Request.Tables.SECTIONS)
+	Global.connect_signal_update_page(self)
+
+# Применение фильтра если переход на страницу произошел со страницы информации
+func set_cash_flow_filter(idx: int, parent: Global.Pages) -> void:
+	if parent == Global.Pages.WALLET: $Filter/Wallet.selected = idx
+	else: $Filter/Section.selected = idx
+	update_data()
 
 # Запуск обновления данных на странице
 func _update_page() -> void:
-	ColorScheme.repainting(self)
-	File.set_lang(self)
+	_match_other_update()
+	SF.color_and_lang(self)
 	update_data()
-	
+
+# Дополнительные изменения на странице
+func _match_other_update() -> void:
+	match Global.current_page:
+		Global.Pages.CASH_FLOW:
+			var save_selected_section: int = $Filter/Section.selected
+			Filter.set_OB_items(Request.Tables.SECTIONS) # Заполнение списка разделов
+			$Filter/Section.selected = save_selected_section
+			File.set_OB_elements($Filter/Section) # Применение перевода для списка разделов
+
 # Обновление данных
 func update_data() -> void: _run_update()
 	
@@ -29,3 +48,19 @@ func new_day() -> void:
 	if Filter: Filter.reset_date_filters()
 	$Head.update_date()
 	update_data()
+
+# Обработка нажатий кнопок
+# Обработка нажатия кнопки создания движения средств
+func _on_CashFlow_cash_flow_button_down() -> void:
+	Global.emit_signal("open_window", Global.Pages.CASH_FLOW)
+	#if Request.select_possibility_opening_cashFlow():
+		#if FilterWallet.selected > 0 and FilterSection.selected > 4: Global.emit_signal("open_window", Global.Pages.CASH_FLOW, [Global.get_OB_id(FilterWallet)-1, Global.get_OB_id(FilterSection)-1])
+		#elif FilterWallet.selected > 0: Global.emit_signal("open_window", Global.Pages.CASH_FLOW, Global.get_OB_id(FilterWallet)-1, Global.Dirs.WINDOWS, Request.Tables.WALLETS)
+		#elif FilterSection.selected > 4: Global.emit_signal("open_window", Global.Pages.CASH_FLOW, Global.get_OB_id(FilterSection)-1, Global.Dirs.WINDOWS, Request.Tables.SECTIONS)
+		#else: Global.emit_signal("open_window", Global.Pages.CASH_FLOW)
+
+# Обработка нажатия кнопки переноса средств между счетами
+func _on_CashFlow_transaction_button_down() -> void:
+	if len(Request.select(Request.Tables.WALLETS)) > 1:
+		if $Filter/Wallet.selected > 0: Global.emit_signal("open_window", Global.Pages.TRANSFER, Global.get_OB_id($Filter/Wallet)-1, Global.Dirs.WINDOWS, Request.Tables.WALLETS)
+		else: Global.emit_signal("open_window", Global.Pages.TRANSFER)

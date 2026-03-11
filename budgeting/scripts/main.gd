@@ -67,6 +67,7 @@ func _open_new_page(page: Global.Pages, id: Variant = null, parent: Variant = nu
 		if child.name == "Timer": continue
 		Global.delete_child(self, child)
 	_open_window(page, id, Global.Dirs.PAGES, parent)
+	if page == Global.Pages.CASH_FLOW and id: get_child(-1).set_cash_flow_filter(id, parent)
 	_update_last_entry()
 
 # Проверка закрытия окна инфомрации при удалении объекта

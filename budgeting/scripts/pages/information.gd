@@ -46,3 +46,5 @@ func _on_update_button_down() -> void: Global.emit_signal("open_window", page_ty
 
 # Обработка нажатия кнопки "Создать подраздел"
 func _on_add_subsection_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SUBSECTION)
+
+func _on_transactions_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.CASH_FLOW, idx, page_type)
