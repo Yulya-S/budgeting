@@ -378,7 +378,7 @@ func _select_sections_report(date: String = Global.date_to_str()) -> Array:
 		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE (s.income=1 OR cf.subsection_id=1) AND cf.section_id=t.id AND "+where_date(date, "cf.date")+"), 0.0) income,
 		COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE s.income=0 AND (cf.section_id>2 OR cf.subsection_id=2) AND cf.section_id=t.id AND "+where_date(date, "cf.date")+"), 0.0) expenditure,
 		COALESCE((SELECT SUM(IIF((s.income=0 AND (cf.section_id>2 OR cf.subsection_id=2)), cf.value*-1, cf.value)) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE cf.section_id=t.id AND "+where_date(date, "cf.date", "<")+"), 0.0) cash_flow
-		FROM sections t WHERE t.id NOT IN (1, 4)")
+		FROM sections t WHERE t.id != 1")
 
 # Запрос на получение списка отчета
 func _select_reports_list(table: String = "wallets", date: String = Global.date_to_str()):
