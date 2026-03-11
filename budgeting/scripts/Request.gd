@@ -572,7 +572,7 @@ func _update_loans_list(line: Dictionary) -> Dictionary:
 # Получение значений для построения графика займов
 func select_loan_graphics(idx: int) -> Array:
 	if idx == 0: return []
-	return _select("IIF(subsection_id=2, value*-1, value) value, date as day FROM cash_flows", "wallet_2_id = " + str(idx) + " AND section_id=2")
+	return _select("SUM(IIF(subsection_id=2, value*-1, value)) value, date as day FROM cash_flows", "wallet_2_id = " + str(idx) + " AND section_id=2", "", "day")
 
 # Запросы связанные с окнами создания / изменения объектов
 # Распределение запросов для получения объектов таблиц
