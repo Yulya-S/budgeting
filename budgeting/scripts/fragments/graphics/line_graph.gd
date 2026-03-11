@@ -71,11 +71,11 @@ func _report(max_value: float, x_step: float = (size.x - 25) / (len(values) - 1)
 
 # Линейный для займов
 func _loan(max_value: float, x_step: float = (size.x - 25) / (len(values) - 1)) -> void:
-	draw_line(Vector2(10, 120), Vector2(10, 6), ColorScheme.border_color(), 2)
+	draw_line(Vector2(10, 120), Vector2(10, 4), ColorScheme.border_color(), 2)
 	draw_line(Vector2(10, 120), Vector2(1142, 120), ColorScheme.border_color(), 2)
 	if len(values) == 1: draw_circle(Vector2(10., 55.), 3, Color.FIREBRICK)
 	if len(values) < 2: return # Отмена отрисовки графика
-	for i in range(len(values)-1): _line(i, values, max_value, x_step, 119.)
+	for i in range(len(values)-1): _line(i, values, max_value, x_step, 102.)
 
 # Свечной
 func _candlestick(max_value: float, x_step: float = size.x / len(values)) -> void:
