@@ -232,7 +232,7 @@ offset_right = 1152.0
 offset_bottom = 643.0
 obj = 2
 
-[connection signal="button_down" from="Menu/Transaction" to="." method="_on_CashFlow_transaction_button_down"]
-[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_CashFlow_cash_flow_button_down"]
+[connection signal="button_down" from="Menu/Transaction" to="." method="_on_transaction_button_down"]
+[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
 [connection signal="item_selected" from="Filter/Year" to="Filter" method="_on_year_item_selected"]
 [connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]

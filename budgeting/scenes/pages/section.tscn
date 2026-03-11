@@ -248,9 +248,9 @@ offset_right = 1152.0
 offset_bottom = 643.0
 obj = 1
 
-[connection signal="button_down" from="Menu/AddSection" to="." method="_on_Section_add_section_button_down"]
+[connection signal="button_down" from="Menu/AddSection" to="." method="_on_add_button_down"]
 [connection signal="button_down" from="Menu/AddSubsection" to="." method="_on_Section_add_subsection_button_down"]
-[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_Section_cash_flow_button_down"]
+[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
 [connection signal="text_changed" from="Filter/Title" to="Filter" method="_on_title_text_changed"]
 [connection signal="item_selected" from="Filter/Year" to="Filter" method="_on_year_item_selected"]
 [connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]
