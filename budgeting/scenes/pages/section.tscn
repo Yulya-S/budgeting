@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://kb12kdasv2yv"]
 
-[ext_resource type="Script" uid="uid://djxfcsdvyoykq" path="res://scripts/pages/section.gd" id="1_42u4g"]
+[ext_resource type="Script" uid="uid://bed4b7oq4mqdk" path="res://scripts/pages/page.gd" id="1_y5ii3"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_4yy0k"]
 [ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="3_21h3v"]
 [ext_resource type="Script" uid="uid://bqkl3syde584f" path="res://scripts/fragments/filter.gd" id="3_42u4g"]
@@ -14,7 +14,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-script = ExtResource("1_42u4g")
+script = ExtResource("1_y5ii3")
 
 [node name="Head" parent="." instance=ExtResource("2_4yy0k")]
 layout_mode = 0
@@ -248,9 +248,9 @@ offset_right = 1152.0
 offset_bottom = 643.0
 obj = 1
 
-[connection signal="button_down" from="Menu/AddSection" to="." method="_on_add_sections_button_down"]
-[connection signal="button_down" from="Menu/AddSubsection" to="." method="_on_cash_flow_button_down"]
-[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
+[connection signal="button_down" from="Menu/AddSection" to="." method="_on_Section_add_section_button_down"]
+[connection signal="button_down" from="Menu/AddSubsection" to="." method="_on_Section_add_subsection_button_down"]
+[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_Section_cash_flow_button_down"]
 [connection signal="text_changed" from="Filter/Title" to="Filter" method="_on_title_text_changed"]
 [connection signal="item_selected" from="Filter/Year" to="Filter" method="_on_year_item_selected"]
 [connection signal="button_down" from="Filter/Button" to="Filter" method="_on_button_button_down"]
