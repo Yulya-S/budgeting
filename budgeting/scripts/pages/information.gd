@@ -1,5 +1,4 @@
 extends Page
-
 # Переменные
 var idx: int = 0 # Индекс выбранного объекта
 @export var page_type: Global.Pages = Global.Pages.WALLET # Выбранный тип страницы информации
@@ -39,15 +38,26 @@ func _get_labels() -> Array:
 # Получение данных фильтра
 func _get_filter(_obj: Variant) -> Array: return [filter_data]
 
-# Обработка нажатия кнопки "Назад"
+# Обработки нажатий кнопок
+# Назад
 func _on_back_button_down() -> void:
 	Global.delete_child(get_parent(), self)
 	idx = 0
 
-# Обработка нажатия кнопки "Изменить"
-func _on_update_button_down() -> void: Global.emit_signal("open_window", page_type, idx)
+# Изменить
+func _on_update_button_down() -> void: SF.op_w(page_type, idx)
 
-# Обработка нажатия кнопки "Создать подраздел"
-func _on_add_subsection_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SUBSECTION)
+# Создать движение средств
+func _on_cash_flow_button_down() -> void: SF.op_w(Global.Pages.CASH_FLOW)
 
-func _on_transactions_button_down() -> void: Global.emit_signal("open_new_page", Global.Pages.CASH_FLOW, idx, page_type)
+# Список транзакций
+func _on_transactions_button_down() -> void: SF.op_np(Global.Pages.CASH_FLOW, idx, page_type)
+
+# Создать подраздел
+func _on_add_subsection_button_down() -> void: SF.op_w(Global.Pages.SUBSECTION)
+
+# Добавить процент по займу
+func _on_add_interest_button_down() -> void: SF.op_w(Global.Pages.PERCENT)
+
+# Добавить платёж по займу
+func _on_add_payment_button_down() -> void: SF.op_w(Global.Pages.PAYMENT)

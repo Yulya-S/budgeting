@@ -22,3 +22,7 @@ func l(obj: Variant) -> String: return obj.name.to_lower()
 func op_w(next_page: Global.Pages, id: Variant = null,
 		next_page_dir: Global.Dirs = Global.Dirs.WINDOWS, parent: Variant = null) -> void:
 	Global.emit_signal("open_window", next_page, id, next_page_dir, parent)
+	
+# Отправка сигнала открытия нового окна
+func op_np(page: Global.Pages, id: Variant = null, parent: Variant = null) -> void:
+	Global.emit_signal("open_new_page", page, id, parent)

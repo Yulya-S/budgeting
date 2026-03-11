@@ -213,4 +213,5 @@ text_overrun_behavior = 3
 
 [connection signal="button_down" from="Menu/Back" to="." method="_on_back_button_down"]
 [connection signal="button_down" from="Menu/Update" to="." method="_on_update_button_down"]
+[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
 [connection signal="button_down" from="Menu/Transactions" to="." method="_on_transactions_button_down"]
