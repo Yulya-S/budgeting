@@ -46,9 +46,9 @@ text_overrun_behavior = 3
 [node name="Back" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 148.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Назад"
 icon = ExtResource("3_i7hoo")
@@ -56,9 +56,9 @@ icon = ExtResource("3_i7hoo")
 [node name="Update" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 65.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 193.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Изменить"
 icon = ExtResource("4_5fhyb")
@@ -66,9 +66,9 @@ icon = ExtResource("4_5fhyb")
 [node name="AddInterest" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 110.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 238.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Добавить проценты по займу"
 icon = ExtResource("5_gveen")
@@ -76,9 +76,9 @@ icon = ExtResource("5_gveen")
 [node name="AddPayment" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 155.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 283.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Добавить платёж"
 icon = ExtResource("6_pnbtf")
