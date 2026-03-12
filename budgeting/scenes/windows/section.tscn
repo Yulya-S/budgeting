@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bm8d2roc1o62"]
 
-[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_lnpay"]
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/pages/window.gd" id="1_lnpay"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_lnpay"]
 
 [node name="SectionWindow" type="Control"]

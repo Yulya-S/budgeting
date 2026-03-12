@@ -832,54 +832,54 @@ func match_created(obj_type: Global.Pages, values: Array) -> void:
 
 # Запрос на создание кошелька
 func _create_wallet(values: Array) -> void:
-	db.query('INSERT INTO wallets (title, value) VALUES ("'+values[0]+'",'+values[1]+");")
+	db.query("INSERT INTO wallets (title, value) VALUES ("+values[0]+", "+values[1]+");")
 	
 # Запрос на создание раздела
 func _create_section(values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
-	db.query('INSERT INTO sections (title, income, month_limit) VALUES ("'+values[0]+'", '+values[1]+", "+values[2]+");")
+	db.query("INSERT INTO sections (title, income, month_limit) VALUES ("+values[0]+", "+values[1]+", "+values[2]+");")
 
 # Запрос на создание подраздела
 func _create_subsection(values: Array) -> void:
 	if _select("* FROM sections", "id = "+values[1])[0].income == 1: values[2] = "-1.0"
 	if len(_select("* FROM subsections", "parent_id = "+values[1])) == 0:
 		db.query('INSERT INTO subsections (title, parent_id, month_limit) VALUES ("__SS4", '+values[1]+", -1);")
-	db.query('INSERT INTO subsections (title, parent_id, month_limit) VALUES ("'+values[0]+'", '+values[1]+", "+values[2]+");")
+	db.query("INSERT INTO subsections (title, parent_id, month_limit) VALUES ("+values[0]+", "+values[1]+", "+values[2]+");")
 
 # Запрос на создание движения средств
 func _create_cash_flow(values: Array) -> void:
-	db.query("INSERT INTO cash_flows (wallet_id, section_id, value, date) VALUES ("+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
+	db.query("INSERT INTO cash_flows (wallet_id, section_id, value, date) VALUES ("+values[0]+", "+values[1]+", "+values[2]+", "+values[3]+");")
 	if not _select("* FROM sections", "id = "+values[1])[0].income: values[2] = str(float(values[2]) * -1)
 	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[0])
 
 # Запрос на создание перевода средств
 func _create_transfer(values: Array) -> void:
-	db.query("INSERT INTO cash_flows (section_id, wallet_id, wallet_2_id, value, date) VALUES (1, "+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
+	db.query("INSERT INTO cash_flows (section_id, wallet_id, wallet_2_id, value, date) VALUES (1, "+values[0]+", "+values[1]+", "+values[2]+", "+values[3]+");")
 	db.query("UPDATE wallets SET value = value - "+values[2]+" WHERE id = "+values[0])
 	db.query("UPDATE wallets SET value = value + "+values[2]+" WHERE id = "+values[1])
 
 # Запрос на создание платежей по займу
 func _create_payment(values: Array) -> void:
-	db.query("INSERT INTO cash_flows (section_id, wallet_id, wallet_2_id, value, date) VALUES (3, "+values[0]+", "+values[1]+", "+values[2]+', "'+values[3]+'");')
+	db.query("INSERT INTO cash_flows (section_id, wallet_id, wallet_2_id, value, date) VALUES (3, "+values[0]+", "+values[1]+", "+values[2]+", "+values[3]+");")
 	db.query("UPDATE wallets SET value = value - "+values[2]+" WHERE id = "+values[0])
 	db.query("UPDATE loans SET total = total - "+values[2]+" WHERE id = "+values[1])
 
 # Запрос на создание процентов по займу
 func _create_percent(values: Array) -> void:
-	db.query("INSERT INTO cash_flows (section_id, wallet_2_id, value, date) VALUES (4, "+values[0]+", "+values[1]+', "'+values[2]+'");')
+	db.query("INSERT INTO cash_flows (section_id, wallet_2_id, value, date) VALUES (4, "+values[0]+", "+values[1]+", "+values[2]+");")
 	db.query("UPDATE loans SET total = total + "+values[1]+" WHERE id = "+values[0])
 
 # Запрос на создание займа
 func _create_loan(values: Array) -> void:
 	db.query('INSERT INTO loans (title, total) VALUES ("'+values[0]+'", '+values[2]+");")
 	var loan_id: int = _select("* FROM loans")[-1].id
-	db.query("INSERT INTO cash_flows (wallet_id, wallet_2_id, section_id, value, date) VALUES ("+values[1]+", "+str(loan_id)+", 2, "+values[2]+', "'+values[3]+'");')
+	db.query("INSERT INTO cash_flows (wallet_id, wallet_2_id, section_id, value, date) VALUES ("+values[1]+", "+str(loan_id)+", 2, "+values[2]+", "+values[3]+");")
 	db.query("UPDATE wallets SET value = value + " + values[2] + " WHERE id = " + values[1] + ";")
 
 # Запрос на создание события
 func _create_event(values: Array) -> void:
 	if int(values[2]) == 0: values[3] = "0.0"
-	db.query('INSERT INTO events (title, repetition_rate, event_type, value, date) VALUES ("'+values[0]+'",'+str(values[1])+", "+str(values[2])+", "+values[3]+', "'+values[4]+'");')
+	db.query("INSERT INTO events (title, repetition_rate, event_type, value, date) VALUES ("+values[0]+", "+str(values[1])+", "+str(values[2])+", "+values[3]+", "+values[4]+");")
 
 # Проверка наличия записи с определенным имененем в таблице кошельков
 func check_wallet_name(obj_name: String, idx: int) -> bool:

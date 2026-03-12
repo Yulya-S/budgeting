@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cjjhlo2lps3ww"]
 
-[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_5ih53"]
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/pages/window.gd" id="1_5ih53"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="1_ex3f0"]
 
 [node name="WalletWindow" type="Control"]

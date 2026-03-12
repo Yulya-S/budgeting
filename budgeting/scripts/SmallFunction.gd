@@ -7,6 +7,9 @@ func g_p(obj: Variant, level: int = 2, save_level: int = 1) -> Variant:
 # Получение int значения из текстового поля
 func L_to_int(obj: Variant) -> int: return int(obj.get_text())
 
+# Получение float значения из текстового поля
+func L_to_float(obj: Variant) -> float: return float(obj.get_text())
+
 # Проверка что текстовое поле пусто
 func L_is_empty(obj: Variant) -> bool: return obj.get_text() == ""
 

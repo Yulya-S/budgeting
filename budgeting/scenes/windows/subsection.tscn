@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://3fba87w26wfm"]
 
-[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_agcjf"]
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/pages/window.gd" id="1_agcjf"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_h5u6u"]
 
 [node name="Subsection" type="Control"]
