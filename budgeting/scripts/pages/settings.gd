@@ -27,7 +27,7 @@ func _ready() -> void:
 					picker.color_modes_visible = false
 					picker.sliders_visible = false
 					picker.presets_visible = false
-					l.color = Color("#"+data[SF.l(l)])
+					l.color = Color("#"+data[SF.l(l)] if data[SF.l(l)] != null else "#000000")
 
 # Изменение цветов в примере
 func changed_color() -> void:
@@ -36,12 +36,9 @@ func changed_color() -> void:
 		
 # Сборка цветовой палитры
 func _color_reading() -> void:
-	var g_colors: PackedColorArray = PackedColorArray([])
-	var g_offsets: PackedFloat32Array = PackedFloat32Array([])
-	for i in range(ColorSchemeCus.selected + 1):
-		g_colors.append(Colors.get_child(i).color)
-		g_offsets.append(0.2 + ((0.8 / (ColorSchemeCus.selected + 1)) * i))
-	ColorScheme.color_assembly(g_colors, g_offsets, DarkTheme.button_pressed)
+	var colors: Array = []
+	for i in range(ColorSchemeCus.selected + 1): colors.append(Colors.get_child(i).color)
+	ColorScheme.color_assembly(colors, DarkTheme.button_pressed)
 	
 # Скрытие параметров цвета
 func hide_colors() -> void: for i in Colors.get_children(): i.visible = false
@@ -126,7 +123,10 @@ func _on_apply_button_down() -> void:
 		match i.get_class():
 			"CheckButton": values.append(i.button_pressed)
 			"OptionButton": values.append(i.selected)
-			"Control": for l in i.get_children(): values.append('"'+l.color.to_html()+'"')
+			"Control": for l in i.get_children():
+				if int(l.name.split("_")[-1]) - 1 <= ColorSchemeCus.selected:
+					values.append('"'+l.color.to_html()+'"')
+				else: values.append("null")
 	values.pop_front()
 	values.append('"'+Request.select_last_entry()+'"')
 	# Сохранение записи в базе данных

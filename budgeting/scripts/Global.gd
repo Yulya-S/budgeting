@@ -182,3 +182,16 @@ func fill_year_OB(container: OptionButton, idx: int, year: int = Global.get_date
 	
 # Применить значение объекта выпадающего списка по его id
 func set_OB_id(container: OptionButton, idx: int) -> void: container.selected = container.get_item_index(idx)
+
+# Создание градиента
+func custom_gradient(values: Array, system: bool = false) -> Gradient:
+	var new_grad: Gradient = Gradient.new()
+	new_grad.colors = PackedColorArray(values)
+	var offsets: Array = []
+	if not system: for i in range(len(values)): offsets.append(i * (1. / (len(values) - 1.)))
+	else:
+		for i in range(len(values) - 2): offsets.append(0.2 + (0.8 / (len(values) - 2.)) * i)
+		offsets = [0.] + offsets + [1.]
+	new_grad.offsets = PackedFloat32Array(offsets)
+	return new_grad
+	
