@@ -2,17 +2,19 @@ extends Node
 # Переменные
 const BasesPath: String = "user://bases/" # Расположение директории пользовательских данных
 # Файл конфигураций
-var config: Dictionary = {"enter": false, "lang": "ru", "login": "", "password": ""} # Конфигурации
+var config: Dictionary = _empty_conf() # Конфигурации
 const ConfigFilePath: String = BasesPath + "config.json" # Путь к файлу конфигураций
 # Файл языка приложения
 var lang: Dictionary = {} # Язык
 const LangDir: String = BasesPath + "language/" # Директория языков
 
 # Общая часть
+# Создание папки при её отсутствии
+func _make_dir(path: String) -> void:
+	if not DirAccess.dir_exists_absolute(path): DirAccess.make_dir_absolute(path)
+
 # Создание папок для хранения данных
-func create_dirs() -> void:
-	if not DirAccess.dir_exists_absolute(BasesPath): DirAccess.make_dir_absolute(BasesPath)
-	if not DirAccess.dir_exists_absolute(LangDir): DirAccess.make_dir_absolute(LangDir)
+func create_dirs() -> void: for i in [BasesPath, LangDir]: _make_dir(i)
 
 # Сохранение данных в файл
 func _store_json(file_path: String, data: Dictionary) -> void:
@@ -29,7 +31,7 @@ func _read_file(file_path: String) -> Dictionary:
 	return json.data
 	
 # Шифрование данных
-func hide_data(data: String) -> String:	return Marshalls.utf8_to_base64(data)
+func hide_data(data: String) -> String: return Marshalls.utf8_to_base64(data)
 
 # Дешифрование данных
 func show_data(data: String) -> String: return Marshalls.base64_to_utf8(data)
@@ -51,9 +53,12 @@ func read_config() -> void:
 	if new.keys() == config.keys(): config = new
 	else: save_config()
 
+# Пустой словарь конфигурации
+func _empty_conf() -> Dictionary: return {"enter": false, "lang": "ru", "login": "", "password": ""}
+
 # Очистка данных пользователя
 func clear_config() -> void:
-	config = {"enter": false, "lang": config.lang, "login": "", "password": ""}
+	config = _empty_conf()
 	save_config()
 
 # Файл локализации
@@ -65,7 +70,7 @@ func load_lang(container: OptionButton) -> void:
 		if i.split(".")[0] == config.lang:
 			container.select(container.item_count-1)
 			read_lang(container)
-			
+
 # Создание файлов языков
 func create_langs() -> void:
 	# Убрать этот фрагмент - он нужен чтобы не удалять каждый раз файлы локализации вручную
@@ -74,12 +79,12 @@ func create_langs() -> void:
 	
 	_cr_ru()
 	_cr_en()
-	
+
 # Создание файла перевода
 func _cr_lang_file(f_name: String, value: Dictionary) -> void:
 	if FileAccess.file_exists(LangDir+f_name+".json"): return
 	_store_json(LangDir+f_name+".json", value)
-	
+
 # Считывание перевода
 func read_lang(container: OptionButton) -> void:
 	lang = _read_file(LangDir+Global.get_OB_text(container)+".json")
@@ -95,7 +100,12 @@ func _find_lang_keys(obj: Variant, key: String = "") -> String:
 	key = obj.name + key
 	if "_" in key and len(key.split("_")) <= 2 and key.split("_")[1].is_valid_int(): key = key.split("_")[0]
 	if key not in lang.keys(): return _find_lang_keys(obj.get_parent(), key)
-	else: return key
+	return key
+
+# Применение перевода фрагмента окна подтверждения действия
+func _set_confD(obj: Variant, text: String) -> void:
+	if text in lang._ConfirmationDialog.keys():
+		obj.call("set_"+text+"_button_text", lang._ConfirmationDialog[text])
 
 # Изменение текста объекта в зависимости от типа объекта
 func _lang_match(obj: Variant, key: String) -> void:
@@ -121,12 +131,10 @@ func _lang_match(obj: Variant, key: String) -> void:
 					obj.set_item_text(i, lang[key][idx])
 					idx += 1
 		"ConfirmationDialog":
-			if "_ConfirmationDialog" in lang.keys():
-				if "cancel" in lang._ConfirmationDialog.keys(): obj.set_cancel_button_text(lang._ConfirmationDialog.cancel)
-				if "ok" in lang._ConfirmationDialog.keys(): obj.set_ok_button_text(lang._ConfirmationDialog.ok)
+			if "_ConfirmationDialog" in lang.keys(): for i in ["cancel", "ok"]: _set_confD(obj, i)
 			if "text" in lang[key].keys(): obj.set_text(lang["__sure"]+" "+lang[key].text)
 			if "title" in lang[key].keys(): obj.set_title(lang[key].title)
-			
+
 # Изменение текста состояния кнопки переключателя
 func set_CB(obj: CheckButton) -> void:
 	var key: String = _find_lang_keys(obj)
