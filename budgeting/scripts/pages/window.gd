@@ -34,7 +34,13 @@ func _process(_delta: float) -> void:
 			$Value/Count.set_text(str(total)+" + "+str(value)+" = "+str(total + value))
 
 # Обновление данных на сранице с учётом родительской страницы
-func set_from_page(obj_idx: int, parent: Global.Pages) -> void: print(obj_idx, ", ", parent)
+func set_from_page(obj_idx: int, parent: Global.Pages) -> void:
+	match page_type:
+		Global.Pages.CASH_FLOW:
+			if parent == Global.Pages.WALLET: $Wallet_id.selected = obj_idx - 1
+			else: _on_section_id_item_selected(obj_idx-3)
+		Global.Pages.SUBSECTION: _on_parent_id_item_selected(obj_idx-3)
+		_: Global.set_OB_id($Wallet_2_id, obj_idx)
 
 # Получение пути к Window
 func _window() -> Node: return get_child(0)
@@ -61,7 +67,6 @@ func set_page(new_idx: int) -> void:
 						return
 					data[SF.l(i)] = i.get_item_index(data[SF.l(i)])
 				Global.run_func(self, _create_func_name(i), [data[SF.l(i)]])
-				i.selected = data[SF.l(i)]
 		if i.name == "Date": i.set_date(data[SF.l(i)])
 
 # Сборка имени функции
@@ -149,10 +154,13 @@ func _on_title_text_changed() -> void: Global.text_changed_TextEdit($Title)
 func _on_value_text_changed() -> void: Global.text_changed_TextEdit($Value, true)
 
 # Изменение типа события
-func _on_event_type_item_selected(index: int) -> void: $Value.visible = index > 0
+func _on_event_type_item_selected(index: int) -> void:
+	$Event_type.selected = index
+	$Value.visible = index > 0
 
 # Изменение раздела
 func _on_section_id_item_selected(index: int = 0) -> void:
+	$Section_id.selected = index
 	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request._select("* FROM sections")[index + 2].income))])
 	var values: Array = Request._select("* FROM subsections", '"__SS4" != title AND parent_id = '+str(index+3)) + Request._select("* FROM subsections", '"__SS4" == title AND parent_id = '+str(index+3))
 	$Subsection_id.visible = len(values) > 0
@@ -161,6 +169,7 @@ func _on_section_id_item_selected(index: int = 0) -> void:
 
 # Изменение родительского раздела
 func _on_parent_id_item_selected(index: int = 0) -> void:
+	$Parent_id.selected = index
 	var income: bool = Request._select("* FROM sections")[index + 2].income
 	$Parent_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
 	$Month_Limit.visible =  not income
