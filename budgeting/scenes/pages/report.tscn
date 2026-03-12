@@ -86,7 +86,7 @@ layout_mode = 2
 theme_override_constants/separation = 50
 
 [node name="WalletsRep" type="Control" parent="ObjArray/VBoxContainer"]
-custom_minimum_size = Vector2(1152, 160)
+custom_minimum_size = Vector2(1152, 210)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ObjArray/VBoxContainer/WalletsRep"]
@@ -103,11 +103,11 @@ text = "Общая информация о счетах"
 layout_mode = 0
 offset_top = 55.0
 offset_right = 1144.0
-offset_bottom = 156.0
+offset_bottom = 206.0
 obj = 5
 
 [node name="Separator" type="Line2D" parent="ObjArray/VBoxContainer/WalletsRep"]
-position = Vector2(0, 166)
+position = Vector2(0, 216)
 points = PackedVector2Array(0, 0, 1152, 0)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
@@ -140,7 +140,7 @@ width = 2.0
 default_color = Color(0, 0, 0, 1)
 
 [node name="Sections" type="Control" parent="ObjArray/VBoxContainer"]
-custom_minimum_size = Vector2(1152, 160)
+custom_minimum_size = Vector2(1152, 210)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ObjArray/VBoxContainer/Sections"]
@@ -155,20 +155,20 @@ text = "Расходы по статьям"
 
 [node name="PieChart" parent="ObjArray/VBoxContainer/Sections" instance=ExtResource("5_6gj5i")]
 offset_left = 25.0
-offset_top = 55.0
+offset_top = 80.0
 offset_right = 126.0
-offset_bottom = 156.0
+offset_bottom = 181.0
 
 [node name="ObjArray" parent="ObjArray/VBoxContainer/Sections" instance=ExtResource("3_uupuk")]
 layout_mode = 0
 offset_left = 161.0
 offset_top = 55.0
 offset_right = 1144.0
-offset_bottom = 156.0
+offset_bottom = 206.0
 obj = 1
 
 [node name="Separator" type="Line2D" parent="ObjArray/VBoxContainer/Sections"]
-position = Vector2(0, 166)
+position = Vector2(0, 216)
 points = PackedVector2Array(0, 0, 1152, 0)
 width = 2.0
 default_color = Color(0, 0, 0, 1)
