@@ -12,6 +12,9 @@ func set_page(new_idx: int, new_page_type: Global.Pages = Global.Pages.WALLET) -
 		Global.Pages.WALLET: filter_data = {"where": "((cf.section_id = 1 AND cf.wallet_2_id = "+str(idx)+") OR cf.wallet_id = " + str(idx) + ") AND " + Request.where_date(Global.date_to_str(), "cf.date")}
 		Global.Pages.LOAN: filter_data = {"where": "cf.section_id=2 AND cf.wallet_2_id = " + str(idx), "date": ""}
 		Global.Pages.SECTION: filter_data = {"where": "section_id = "+str(idx)}
+	if page_type == Global.Pages.SECTION and idx <= 2:
+		for i in [$Menu/Update, $Menu/AddSubsection, $Menu/CashFlow]: i.visible = false
+		$Menu/Transactions.position.x = 65.0
 	update_data()
 
 # отмена запуска дополнительных изменений на странице
