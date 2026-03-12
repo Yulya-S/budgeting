@@ -112,7 +112,8 @@ func _lang_match(obj: Variant, key: String) -> void:
 			if obj.name == "Order": obj.get_parent().reset_order()
 			var idx: int = 0
 			for i in range(obj.get_item_count()):
-				if obj.get_item_text(i) == "" or obj.get_item_text(i) not in lang.keys(): continue
+				if obj.get_item_text(i) == "" or (obj.get_item_text(i) not in lang.keys() and key not in lang.keys()):
+					continue
 				elif "__" in obj.get_item_text(i):
 					obj.set_item_text(i, lang[obj.get_item_text(i)])
 				elif lang[key] is Array:
