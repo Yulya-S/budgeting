@@ -33,7 +33,7 @@ func update_day(day: int) -> void: selected_day.day = day
 
 # Изменение значения месяца
 func _update_month(value: int = 0) -> void:
-	if value != 0: selected_day = Global.get_other_month(selected_day, value > 0, true)
+	if value != 0: selected_day = Global.get_other_month(selected_day, value > 0)
 	Month.set_text(File.lang._Months[selected_day.month - 1])
 	update_data()
 

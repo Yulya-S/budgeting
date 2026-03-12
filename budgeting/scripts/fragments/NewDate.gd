@@ -4,7 +4,7 @@ class_name NewDate
 @onready var date: Dictionary = {} # Дата
 @onready var day_count: int = 0 # Количество дней в месяце
 
-func _init(new_date: Variant) -> void: set_value(new_date)
+func _init(new_date: Variant = Time.get_datetime_dict_from_system()) -> void: set_value(new_date)
 
 # Изменение значений переменных
 func set_value(new_date: Variant):

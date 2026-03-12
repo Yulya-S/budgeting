@@ -33,7 +33,7 @@ func _process(_delta: float) -> void:
 		_set_value(events)
 		Request.insert_notifications(events.pop_front())
 	else:
-		last_entry = Global.get_other_month(last_entry, true, true)
+		last_entry = Global.get_other_month(last_entry, true)
 		if Global.date_comparison(Global.date_to_dict(last_entry), Global.get_date(), ">"):
 			get_parent().start_update()
 			Global.delete_child(get_parent(), self)

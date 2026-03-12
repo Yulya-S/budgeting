@@ -342,7 +342,7 @@ func _select_events_list(date: String, date2: String) -> Array:
 # Начало создания таблицы событий
 func start_create_multiplied_events_table(date: String) -> void:
 	selected_date.set_value(date)
-	next_month.set_value(Global.get_other_month(selected_date.date, true, true))
+	next_month.set_value(Global.get_other_month(selected_date.date, true))
 	last_month_day_count = select_day_count(Global.get_other_month(date))
 	events = _select_events_list(date, date if selected_date.date.day < selected_date.day_count - 14 else Global.date_to_str(next_month.date))
 	db.query("DELETE FROM multiplied_events")

@@ -11,17 +11,15 @@ enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
 
 # Переменные
 var current_page: Pages = Pages.REGISTRATION # Текущая страница
-@onready var sys_date: NewDate = NewDate.new(Time.get_datetime_dict_from_system()) # Текущая дата
+@onready var sys_date: NewDate = NewDate.new() # Текущая дата
 
 # Создание директорий и файлов приложения
 func _ready() -> void:
-	File.create_dirs()
-	File.create_config()
-	File.create_langs()
+	for i in [File.create_dirs, File.create_config, File.create_langs]: i.call()
 	Request.connection_user_db()
 
 # Перезагрузка системной даты	
-func update_sys_date() -> void: sys_date = NewDate.new(Time.get_datetime_dict_from_system())
+func update_sys_date() -> void: sys_date = NewDate.new()
 
 # Получение имени объекта из перечисления
 func enum_key(enums: Dictionary, obj: int) -> String: return enums.keys()[obj].to_lower()
@@ -34,12 +32,15 @@ func connect_signal_update_page(obj: Variant):
 	connect("update_page", Callable(obj, "_update_page"))
 	obj._update_page()
 
+# Получение пустого фильтра
+func _empty_filter() -> Dictionary: return {"date": date_to_str(), "where": "", "order": ""}
+
 # Получение результата работы функции get_filter, на случай пустого фильтра
 func get_filter(filter: Variant = {}) -> Dictionary:
 	if filter is not Dictionary:
-		if not filter.get("get_filter"): return {"date": date_to_str(), "where": "", "order": ""}
+		if not filter.get("get_filter"): return _empty_filter()
 		return filter.get_filter()
-	var new_filter: Dictionary = {"date": date_to_str(), "where": "", "order": ""}
+	var new_filter: Dictionary = _empty_filter()
 	filter = filter.duplicate()
 	for i in new_filter.keys(): if i not in filter.keys(): filter[i] = new_filter[i]
 	return filter
@@ -64,37 +65,48 @@ func date_to_dict(date_to_update: String = date_to_str(get_date())) -> Dictionar
 func date_to_sql_date(text: String) -> String: return date_to_str(date_to_dict(text))
 
 # Получение следующего/предыдущего месяца
-func get_other_month(date: Variant, next: bool = false, first_date: bool = false) -> Variant:
+func get_other_month(date: Variant, next: bool = false) -> Variant:
 	var new_date: Dictionary = date.duplicate() if date is Dictionary else date_to_dict(date)
+	new_date.month += 1 if next else -1
+	new_date.day = 1
 	if next:
-		new_date.month += 1
 		if new_date.month > len(File.lang._Months):
 			new_date.year += 1
 			new_date.month = 1
 	else:
-		new_date.day = 1
-		new_date.month -= 1
 		if new_date.month <= 0:
 			new_date.year -= 1
 			new_date.month = len(File.lang._Months)
-	if first_date: new_date.day = 1
-	if date is Dictionary: return new_date
-	return date_to_str(new_date)
+	return new_date if date is Dictionary else date_to_str(new_date)
+
+# Проверка равенства года и месяца
+func _check_equality(d1: Dictionary, d2: Dictionary) -> bool:
+	return d1.year == d2.year and d1.month == d2.month
+
+# Проверка что одна дата меньше или больше другой
+func _check_more_less(d1: Dictionary, d2: Dictionary,
+		less: bool, column: String) -> bool:
+	return (d1[column] < d2[column]) if less else (d1[column] > d2[column])
+
+# Фрагмент проверки даты
+func _check_date(d1: Dictionary, d2: Dictionary, less: bool, account_day) -> bool:
+	if _check_more_less(d1, d2, less, "year") or (d1.year == d2.year and
+		_check_more_less(d1, d2, true, "month")): return true
+	return account_day and _check_equality(d1, d2) and _check_more_less(d1, d2, less, "day")
+
+# Проверка что дата (больше или равна) или (меньше или равна)
+func _check_complex_date(d1: Dictionary, d2: Dictionary, less: bool, account_day: bool) -> bool:
+	return date_comparison(d1, d2, "==", account_day) or \
+		date_comparison(d1, d2, "<" if less else ">", account_day)
 
 # Сравнение дат
-func date_comparison(date1: Dictionary, date2: Dictionary, operator: String = "==", account_day: bool = true) -> bool:
+func date_comparison(d1: Dictionary, d2: Dictionary, operator: String = "==", account_day: bool = true) -> bool:
 	match operator:
-		"=>": return date_comparison(date1, date2, "==", account_day) or date_comparison(date1, date2, ">", account_day)
-		"=<": return date_comparison(date1, date2, "==", account_day) or date_comparison(date1, date2, "<", account_day)
-		"==": if date1.year == date2.year and date1.month == date2.month: return not account_day or date1.day == date2.day
-		">":
-			if date1.year > date2.year: return true
-			if date1.year == date2.year and date1.month > date2.month: return true
-			return account_day and date1.year == date2.year and date1.month == date2.month and date1.day > date2.day
-		"<":
-			if date1.year < date2.year: return true
-			if date1.year == date2.year and date1.month < date2.month: return true
-			return account_day and date1.year == date2.year and date1.month == date2.month and date1.day < date2.day
+		"=>": return _check_complex_date(d1, d2, false, account_day)
+		"=<": return _check_complex_date(d1, d2, true, account_day)
+		"==": if _check_equality(d1, d2): return not account_day or d1.day == d2.day
+		">": return _check_date(d1, d2, false, account_day)
+		"<": return _check_date(d1, d2, true, account_day)
 	return false
 
 # Работа с кнопками
@@ -152,21 +164,21 @@ func delete_child(parent: Variant, child: Variant) -> void:
 
 # Очистка сцены
 func clear_scene(obj: Variant) -> void: for child in obj.get_children(): delete_child(obj, child)
-		
+
 # Создание и изменение значения элемента
 func add_new_child(parent: Variant, path: Resource, values: Array = [], func_name: String = "set_values") -> void:
 	parent.add_child(path.instantiate())
 	run_func(parent.get_child(-1), func_name, values)
-	
+
 # Проверка наличия ключа в данных и применение при наличии
 func set_label_from_data(obj: Label, data: Dictionary) -> void:
-	if lower(obj) in data.keys(): obj.set_text(str(data[lower(obj)]))
-	
+	if lower(obj) in data.keys(): obj.set_text(str(data[SF.l(obj)]))
+
 # Получение родителя определенного уровня
 func g_parent(obj: Variant, lavel: int, save_lavel: int = 1) -> Variant:
 	if lavel == save_lavel: return obj.get_parent()
 	return g_parent(obj.get_parent(), lavel, save_lavel + 1)
-	
+
 # Получение текста в нижнем регистре
 func lower(obj: Variant) -> String: return obj.name.to_lower()
 
@@ -179,7 +191,7 @@ func fill_year_OB(container: OptionButton, idx: int, year: int = Global.get_date
 		if i + 1 > Global.get_date().year+int(last_month): break
 		container.add_item(str(i+1))
 	container.selected = 9
-	
+
 # Применить значение объекта выпадающего списка по его id
 func set_OB_id(container: OptionButton, idx: int) -> void: container.selected = container.get_item_index(idx)
 
@@ -194,4 +206,3 @@ func custom_gradient(values: Array, system: bool = false) -> Gradient:
 		offsets = [0.] + offsets + [1.]
 	new_grad.offsets = PackedFloat32Array(offsets)
 	return new_grad
-	
