@@ -8,17 +8,25 @@ func _ready() -> void:
 	Global.connect("open_window", Callable(self, "_open_window"))
 	Global.connect("open_new_page", Callable(self, "_open_new_page"))
 	# Изменение значения оставшегося в сутках времени
-	DayTimer.start((60. * 60. * 24.) - (Global.get_date().second + (60. * Global.get_date().minute) + (60. * 60. * Global.get_date().hour)))
+	DayTimer.start(_day_time() - (_date_f() + _date_f(1) + _date_f(2)))
 
+# Получение суммарного значения времени в сутках
+func _day_time() -> float: return 60. * 60. * 24.
+
+# Получение суммарного значения времени в сутках
+func _date_f(level: float = 0) -> float:
+	return (60. ** level) * Global.get_date()[["second", "minute", "hour"][level]]
+
+# Обновление даты последнего входа
 func _update_last_entry() -> void:
 	if Global.current_page == Global.Pages.REGISTRATION: return
 	if Request.select_last_entry() == Global.date_to_str(): return
-	add_child(load("res://scenes/pages/load.tscn").instantiate())
+	Global.add_new_child(self, load("res://scenes/pages/load.tscn"))
 	Request.update_last_entry()
 
 # Обработка окончания работы таймера
 func _on_timer_timeout() -> void:
-	DayTimer.start(60. * 60. * 24.)
+	DayTimer.start(_day_time())
 	Global.sys_date.set_value(Time.get_datetime_string_from_system())
 	_update_last_entry()
 
@@ -36,13 +44,12 @@ func _notification(what: int) -> void:
 # Открытие страницы
 func _open_window(page: Global.Pages, id: Variant = null,
 	dir: Global.Dirs = Global.Dirs.WINDOWS, parent: Variant = null) -> void:
-	add_child(load("res://scenes/"+Global.enum_key(Global.Dirs, dir)+"/"+Global.enum_key(Global.Pages, page)+".tscn").instantiate())
+	Global.add_new_child(self, load("res://scenes/"+Global.enum_key(Global.Dirs, dir)+"/"+Global.enum_key(Global.Pages, page)+".tscn"))
 	if not _ch_inf(): get_child(-1).set_page(id, page)
 	elif dir == Global.Dirs.WINDOWS and id:
 		if parent != null: get_child(-1).set_from_page(id, parent)
 		else: get_child(-1).set_page(id)
-	if get_child_count() > 1 and _check_inf_page():
-		Global.delete_child(self, get_child(-1))
+	if get_child_count() > 1 and _check_inf_page(): Global.delete_child(self, get_child(-1))
 
 # Проверка имени крайней страницы
 func _check_inf_page() -> bool:
