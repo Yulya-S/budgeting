@@ -246,7 +246,7 @@ func _standard_language() -> Dictionary:
 		"SectionWindowWindowConfirmationDialog": { "title": "Удаление раздела",
 			"text": "Все данные раздела будут удалены"},
 		# Окно создания / изменения подраздела
-		"SubsectionTitleLabel": "Название подраздела:", "Parent_idLabel": "Родительский раздел",
+		"SubsectionTitleLabel": "Название подраздела:", "SubsectionSection_idLabel": "Родительский раздел",
 		"SubsectionWindowConfirmationDialog": { "title": "Удаление подраздела",
 			"text": "Все данные подраздела будут удалены"},
 		# Окно создания / изменения движений средств
@@ -394,7 +394,7 @@ func _cr_en() -> void:
 		"SectionWindowWindowConfirmationDialog": { "title": "Deleting a partition",
 			"text": "All data in this section will be deleted."},
 		# Окно создания / изменения подраздела
-		"SubsectionTitleLabel": "Subsection title:", "Parent_idLabel": "Parent section",
+		"SubsectionTitleLabel": "Subsection title:", "SubsectionSection_idLabel": "Parent section",
 		"SubsectionWindowConfirmationDialog": { "title": "Deleting a subsection",
 			"text": "All data in the subsection will be deleted"},
 		# Окно создания / изменения движений средств

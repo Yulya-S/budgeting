@@ -17,7 +17,7 @@ func _ready() -> void:
 			Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 2"))
 			_on_section_id_item_selected()
 		Global.Pages.SUBSECTION:
-			Global.fill_optionButton($Parent_id, Request._select("* FROM sections", "id > 2"))
+			Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 2"))
 			_on_parent_id_item_selected()
 		Global.Pages.TRANSFER: Global.fill_optionButton($Wallet_2_id, Request._select("* FROM wallets"))
 		Global.Pages.PERCENT, Global.Pages.PAYMENT:
@@ -78,7 +78,7 @@ func check_object() -> bool:
 	match page_type:
 		Global.Pages.WALLET: return _check_wallet()
 		Global.Pages.SECTION: return _check_with_title(not $Income.button_pressed, _check_name())
-		Global.Pages.SUBSECTION: return _check_with_title($Month_Limit.visible, _check_name([Global.get_OB_id($Parent_id)]))
+		Global.Pages.SUBSECTION: return _check_with_title($Month_Limit.visible, _check_name([Global.get_OB_id($Section_id)]))
 		Global.Pages.CASH_FLOW: return _check_value($Value)
 		Global.Pages.TRANSFER: return _check_transfer()
 		Global.Pages.PAYMENT: return _check_payment()
@@ -162,14 +162,14 @@ func _on_event_type_item_selected(index: int) -> void:
 func _on_section_id_item_selected(index: int = 0) -> void:
 	$Section_id.selected = index
 	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request._select("* FROM sections")[index + 2].income))])
-	var values: Array = Request._select("* FROM subsections", '"__SS4" != title AND parent_id = '+str(index+3)) + Request._select("* FROM subsections", '"__SS4" == title AND parent_id = '+str(index+3))
+	var values: Array = Request._select("* FROM subsections", '"__SS4" != title AND section_id = '+str(index+3)) + Request._select("* FROM subsections", '"__SS4" == title AND section_id = '+str(index+3))
 	$Subsection_id.visible = len(values) > 0
 	$Value.position.y = 407.0 if len(values) > 0 else 357.0
 	if len(values) > 0: Global.fill_optionButton($Subsection_id, values)
 
 # Изменение родительского раздела
 func _on_parent_id_item_selected(index: int = 0) -> void:
-	$Parent_id.selected = index
+	$Section_id.selected = index
 	var income: bool = Request._select("* FROM sections")[index + 2].income
-	$Parent_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
+	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
 	$Month_Limit.visible =  not income

@@ -37,7 +37,7 @@ func _on_wallet_item_selected(_index: int) -> void: Request.update_fc_wallet(id,
 
 # Фрагмент запроса на получение подразделов
 func _select(text: String) -> Array:
-	return Request._select("* FROM subsections", text + " AND parent_id = "+str(Global.get_OB_id(Section)))
+	return Request._select("* FROM subsections", text + " AND section_id = "+str(Global.get_OB_id(Section)))
 
 # Изменение видимости информации о разделе
 func _update_section_visible(income: bool) -> void:

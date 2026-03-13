@@ -36,7 +36,7 @@ text = "Название подраздела:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Parent_id" type="OptionButton" parent="."]
+[node name="Section_id" type="OptionButton" parent="."]
 layout_mode = 0
 offset_left = 485.0
 offset_top = 263.0
@@ -45,7 +45,7 @@ offset_bottom = 294.0
 text_overrun_behavior = 3
 clip_text = true
 
-[node name="Label" type="Label" parent="Parent_id"]
+[node name="Label" type="Label" parent="Section_id"]
 layout_mode = 0
 offset_left = -325.0
 offset_right = -5.0
@@ -56,7 +56,7 @@ text = "Статья"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="ConsumptionIncome" type="Label" parent="Parent_id"]
+[node name="ConsumptionIncome" type="Label" parent="Section_id"]
 layout_mode = 0
 offset_left = -290.0
 offset_top = 31.0
@@ -91,5 +91,5 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
-[connection signal="item_selected" from="Parent_id" to="." method="_on_parent_id_item_selected"]
+[connection signal="item_selected" from="Section_id" to="." method="_on_parent_id_item_selected"]
 [connection signal="text_changed" from="Month_Limit" to="." method="_on_month_limit_text_changed"]

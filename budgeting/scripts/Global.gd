@@ -77,7 +77,8 @@ func get_other_month(date: Variant, next: bool = false) -> Variant:
 		if new_date.month <= 0:
 			new_date.year -= 1
 			new_date.month = len(File.lang._Months)
-	return new_date if date is Dictionary else date_to_str(new_date)
+	if date is Dictionary: return new_date
+	return date_to_str(new_date)
 
 # Проверка равенства года и месяца
 func _check_equality(d1: Dictionary, d2: Dictionary) -> bool:
