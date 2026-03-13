@@ -168,16 +168,16 @@ func _select_all_values_by_idx(table: Tables, idx: int, other: String = "") -> A
 	return _select_all_values(table, "id = " + str(idx) + other)
 
 # Проверка что количество записей в таблице кошельков больше определенного числа
-func _check_values_count(table: Tables, count: int = 0, where: String = "") -> bool:
-	return len(_select_all_values(table, where)) > count
+func _check_values_count(table: String, count: int = 0, where: String = "") -> bool:
+	return len(_select_all(table, where)) > count
 
 # Проверка достаточно ли данных в базе для создания движения средств
 func select_possibility_opening_cashFlow() -> bool:
-	return _check_values_count(Tables.WALLETS) and _check_values_count(Tables.SECTIONS, 2)
+	return _check_values_count("wallets") and _check_values_count("sections", 2)
 
 # Проверка достаточно ли данных в базе для создания платежа и добавления процентов по займу
 func select_possibility_opening_payment() -> bool:
-	return _check_values_count(Tables.WALLETS) and _check_values_count(Tables.LOANS, 0, "total > 0")
+	return _check_values_count("wallets") and _check_values_count("loans", 0, "total > 0")
 
 # Получение записи по её индексу
 func _select_record(table: String, columns: String, idx: int, other: String = "") -> Array:
@@ -283,7 +283,7 @@ func select_user() -> Dictionary:
 
 # Удаление пользователя
 func delete_user() -> void:
-	Request.connection_user_db()
+	connection_user_db()
 	var data: Dictionary = _select_all_values(Tables.USERS, 'login="'+File.config.login+'"')[0]
 	DirAccess.remove_absolute(File.BasesPath+File.show_data(data.base)+".db")
 	_delete_record("users", data.id)
@@ -540,7 +540,7 @@ func clear_loans() -> void:
 func presence_unread_notifications() -> bool: return _select("COUNT(id) count FROM notifications", "new")[0].count != 0
 
 # Проверка наличия уведомлений за текущую дату
-func checking_notifications() -> bool: return _check_values_count(Tables.NOTIFICATIONS, 0, 'date == "'+Global.date_to_str()+'"')
+func checking_notifications() -> bool: return _check_values_count("notifications", 0, 'date == "'+Global.date_to_str()+'"')
 
 # Получение списка событий для создания уведомлений
 func select_notif_events(date: String) -> Array: return _select_all_values(Tables.MULTIPLIED_EVENTS, 'date <= "'+Global.date_to_str()+'" AND date > "'+date+'" AND strftime("%m", date) = strftime("%m", "'+date+'")')
@@ -937,6 +937,11 @@ func _create_event(values: Array) -> void:
 # Получение всех записей из таблицы
 func _select_all(table: String, where: String = "", order: String = "") -> Array:
 	return _select("* FROM " + table, where, order)
+
+# Получение всех записей из таблицы по индексу
+func _select_all_id(table: String, idx: int, other: String = "") -> Array:
+	if other: other = "AND " + other
+	return _select_all(table, "id = " + str(idx) + other)
 
 # Проверка наличия записи с определенным именем
 func _check_name_in_table(obj_name: String, table_idx: int, idx: int, section_id: int = 0) -> bool:

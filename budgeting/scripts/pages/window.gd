@@ -124,7 +124,7 @@ func _check_first_date() -> bool:
 # Проверка возможности создания платежа по займу
 func _check_payment() -> bool:
 	if not _check_value($Value) or not _check_first_date(): return false
-	if Request._select("* FROM loans", "id = "+str(Global.get_OB_id($Wallet_2_id)))[0].total - SF.L_to_float($Value) < 0:
+	if Request._select_all_id("loans", Global.get_OB_id($Wallet_2_id))[0].total - SF.L_to_float($Value) < 0:
 		return Error.set_state(Error.States._E8)
 	return true
 
@@ -161,8 +161,8 @@ func _on_event_type_item_selected(index: int) -> void:
 # Изменение раздела
 func _on_section_id_item_selected(index: int = 0) -> void:
 	$Section_id.selected = index
-	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request._select("* FROM sections")[index + 2].income))])
-	var values: Array = Request._select("* FROM subsections", '"__SS4" != title AND section_id = '+str(index+3)) + Request._select("* FROM subsections", '"__SS4" == title AND section_id = '+str(index+3))
+	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request._select_all("sections")[index + 2].income))])
+	var values: Array = Request._select_all("subsections", '"__SS4" != title AND section_id = '+str(index+3)) + Request._select_all("subsections", '"__SS4" == title AND section_id = '+str(index+3))
 	$Subsection_id.visible = len(values) > 0
 	$Value.position.y = 407.0 if len(values) > 0 else 357.0
 	if len(values) > 0: Global.fill_optionButton($Subsection_id, values)
@@ -170,6 +170,6 @@ func _on_section_id_item_selected(index: int = 0) -> void:
 # Изменение родительского раздела
 func _on_parent_id_item_selected(index: int = 0) -> void:
 	$Section_id.selected = index
-	var income: bool = Request._select("* FROM sections")[index + 2].income
+	var income: bool = Request._select_all("sections")[index + 2].income
 	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
 	$Month_Limit.visible =  not income

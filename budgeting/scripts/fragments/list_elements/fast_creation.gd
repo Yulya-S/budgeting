@@ -9,8 +9,8 @@ var id: int = 0 # Индекс элемента
 
 # Заполнение выпадающих списков
 func _ready() -> void:
-	Global.fill_optionButton(Wallet, Request.select("wallets"))
-	Global.fill_optionButton(Section, Request.select("sections", "*", "id>2"))
+	Global.fill_optionButton(Wallet, Request._select_all("wallets"))
+	Global.fill_optionButton(Section, Request._select_all("sections", "id>2"))
 	SF.color_and_lang(self)
 
 # Изменение значений в сцене
@@ -37,7 +37,7 @@ func _on_wallet_item_selected(_index: int) -> void: Request.update_fc_wallet(id,
 
 # Фрагмент запроса на получение подразделов
 func _select(text: String) -> Array:
-	return Request._select("* FROM subsections", text + " AND section_id = "+str(Global.get_OB_id(Section)))
+	return Request._select_all("subsections", text + " AND section_id = "+str(Global.get_OB_id(Section)))
 
 # Изменение видимости информации о разделе
 func _update_section_visible(income: bool) -> void:
@@ -46,7 +46,7 @@ func _update_section_visible(income: bool) -> void:
 	Subsection.visible = len(values) > 0
 	if len(values) > 0:
 		Global.fill_optionButton(Subsection, values)
-		Global.set_OB_id(Subsection, Request._select("* FROM fast_creations", "id = "+str(id))[0].subsection_id)
+		Global.set_OB_id(Subsection, Request._select_all_id("fast_creations", id)[0].subsection_id)
 
 # Обработка изменения выбранного раздела
 func _on_section_item_selected(_index: int) -> void:

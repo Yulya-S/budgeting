@@ -23,7 +23,7 @@ func border_color() -> Color: return ColorScheme.get_sys_color(0, 1)
 # Получение цветов из базы данных
 func color_reading() -> void:
 	var colors: Array = []
-	var data: Dictionary = Request.select(Request.Tables.SETTINGS)[0]
+	var data: Dictionary = Request._select_all("settings")[0]
 	for i in range(4): colors.append(data["color_" + str(i + 1)])
 	color_assembly(colors.filter(func(value): return value != null), data.dark_theme)
 	# Изменение градиента для графиков и цвета подсветки под выбранную цветовую тему
@@ -109,9 +109,9 @@ func repainting(obj: Variant) -> void:
 		"Button", "TextEdit": _set_all_button_color_parametrs(obj)
 		"OptionButton":
 			_set_all_button_color_parametrs(obj)
-			_set_icon(obj, "arrow", str(int(Request.select(Request.Tables.SETTINGS)[0].dark_theme))+".png")
+			_set_icon(obj, "arrow", str(int(Request._select_all("settings")[0].dark_theme))+".png")
 		"CheckButton":
-			var dark_theme: String = str(int(Request.select(Request.Tables.SETTINGS)[0].dark_theme))
+			var dark_theme: String = str(int(Request._select_all("settings")[0].dark_theme))
 			for i in ["", "un"]: _set_icon(obj, i +"checked", dark_theme + ".tres")
 			for i in ["", "focus_", "pressed_"]: set_font_color(obj, i)
 			set_font_color(obj, "hover_", 3)

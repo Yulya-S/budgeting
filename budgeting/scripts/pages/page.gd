@@ -89,17 +89,17 @@ func _on_cash_flow_button_down() -> void:
 
 # Создания объектов
 func _on_add_button_down() -> void:
-	if Global.current_page == Global.Pages.LOAN and len(Request.select(Request.Tables.WALLETS)) <= 0: return
+	if Global.current_page == Global.Pages.LOAN and len(Request._select_all("wallets")) <= 0: return
 	SF.op_w(Global.current_page)
 	
 # Перевод средств между счетами
 func _on_transaction_button_down() -> void:
-	if len(Request.select(Request.Tables.WALLETS)) >= 2: SF.op_w(Global.Pages.TRANSFER)
+	if len(Request._select_all("wallets")) >= 2: SF.op_w(Global.Pages.TRANSFER)
 
 # Займы
 # Добавление процентов по займу
 func _on_Loan_add_interest_button_down() -> void:
-	if len(Request.select(Request.Tables.LOANS, "*", "total>0")) > 0: SF.op_w(Global.Pages.PERCENT)
+	if Request._check_values_count("loans", 0, "total>0"): SF.op_w(Global.Pages.PERCENT)
 
 # Погашение займа
 func _on_Loan_add_payment_button_down() -> void:

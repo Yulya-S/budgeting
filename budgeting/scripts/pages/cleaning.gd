@@ -20,8 +20,4 @@ func _show_CD(new_state: States) -> void:
 	state = new_state
 
 # Обработка подтверждения очистки данных
-func _on_confirmation_dialog_confirmed() -> void:
-	match state:
-		States.CASH_FLOWS: Request.clear_cash_flows()
-		States.EVENTS: Request.clear_events()
-		States.LOANS: Request.clear_loans()
+func _on_confirmation_dialog_confirmed() -> void: Request.call("clear_" + Global.enum_key(States, state).to_lower())
