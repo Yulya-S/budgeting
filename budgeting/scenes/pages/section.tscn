@@ -67,7 +67,7 @@ OB_items = {
 "ConsumptionIncome": {
 "1": "s.month_limit>=0 AND s.income=0",
 "2": "s.income=1",
-"3": "s.id<=4 AND s.id>1"
+"3": "s.id<=2"
 },
 "Order": {
 "0": "last_date DESC, last_id DESC",
@@ -115,7 +115,7 @@ popup/item_1/text = "Расходы"
 popup/item_1/id = 1
 popup/item_2/text = "Доходы"
 popup/item_2/id = 2
-popup/item_3/text = "Займы"
+popup/item_3/text = "Стандартные разделы"
 popup/item_3/id = 3
 
 [node name="Label" type="Label" parent="Filter/ConsumptionIncome"]
