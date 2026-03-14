@@ -897,6 +897,9 @@ func _create_subsection(values: Array) -> void:
 	if _select_all_values_by_idx(Tables.SECTIONS, int(values[1]))[0].income == 1: values[2] = "-1.0"
 	if len(_select_all_values(Tables.SUBSECTIONS, "section_id = "+values[1])) == 0:
 		_insert("subsections", "title, section_id, month_limit", ['"__SS4"', values[1], -1])
+		var other_sub_id: int = _select_all("subsections")[-1].id
+		_update("cash_flows", ["subsection_id"], [other_sub_id], "section_id = "+values[1])
+		_update("fast_creations", ["subsection_id"], [other_sub_id], "section_id = "+values[1])
 	_insert("subsections", "title, section_id, month_limit", values)
 
 # Запрос на создание движения средств
