@@ -73,11 +73,6 @@ func add_part_request(text: String, column: String, value: Variant, operator: St
 	text += column + " " + operator + " " + str(value)
 	return text
 
-# Добавление фрагмента текста в запрос с проверкой что значение не null
-func add_part_request_with_check(text: String, column: String, value: Variant, operator: String = "=", sep: String = " AND ") -> String:
-	if not value: return text
-	return add_part_request(text, column, value, operator, sep)
-
 # Создание записей
 # Отправка запроса на создание записи в таблице
 func _insert(table: String, columns: String, values: Array) -> void:
@@ -327,6 +322,7 @@ func _update_wallets_list(line: Dictionary, date: String = Global.date_to_str())
 	
 # Запрос на получение списка разделов
 func select_sections_list(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
+	if 'LIKE "%%"' not in where: where += " AND s.id > 2"
 	return _select("s.*, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM `sections` s LEFT JOIN (SELECT cf.section_id, SUM(cf.value) v,
 		cf.date last_date, cf.id last_id FROM `cash_flows` cf WHERE "+where_date(date)+" GROUP BY cf.section_id) j ON s.id=j.section_id",where,order)
 
