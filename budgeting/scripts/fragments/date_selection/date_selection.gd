@@ -12,7 +12,7 @@ func _ready() -> void: _update_year_month()
 func set_date(new_date: String) -> void:
 	selected_day = Global.date_to_dict(new_date)
 	_update_year_month(selected_day)
-	
+
 # Получение даты в формате String
 func _date() -> String: return Global.date_to_str(selected_day)
 
@@ -47,5 +47,5 @@ func _on_previous_button_down() -> void: _update_month(-1)
 func _on_year_item_selected(index: int = -1) -> void:
 	if index > -1: selected_day.year = int(Global.get_OB_text(Year))
 	Global.fill_year_OB(Year, index, selected_day.year)
-	selected_day.day = 1
+	if index > -1: selected_day.day = 1
 	update_data()
