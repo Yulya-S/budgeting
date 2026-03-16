@@ -130,5 +130,5 @@ func _on_apply_button_down() -> void:
 	values.pop_front()
 	values.append('"'+Request.select_last_entry()+'"')
 	# Сохранение записи в базе данных
-	Request._update_record("settings", ["color_preset", "color_scheme", "color_1", "color_2", "color_3", "color_4", "dark_theme", "event_page_calendar", "last_entry"], values, 1)
+	Request._update_with_columns(Request.Tables.SETTINGS, 1, values)
 	_on_close_button_down()
