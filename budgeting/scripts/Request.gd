@@ -134,7 +134,7 @@ func _select_all_values_by_idx(table: Tables, idx: int, other: String = "") -> A
 	return _select_all_values(table, "id = " + str(idx) + other)
 
 # Проверки возможности открытия окон создания / изменения объектов
-func match_check_possibility(page_type: Global.Pages) -> void:
+func match_check(page_type: Global.Pages) -> void:
 	match page_type:
 		Global.Pages.CASH_FLOW: if not (_check_wallet_count() and _check_values_count(Tables.SECTIONS, 2)): return
 		Global.Pages.PAYMENT: if not (_check_wallet_count() and _check_values_count(Tables.LOANS, 0, "total > 0")): return
@@ -149,31 +149,9 @@ func _check_values_count(table: Variant, count: int = 0, where: String = "") -> 
 # Проверка чтобы количество кошельков было больше 0
 func _check_wallet_count() -> bool: return _check_values_count(Tables.WALLETS)
 
-# Проверка возможности создать объект
-func select_possibility_opening_objects() -> bool:
-	return not _check_wallet_count() or Global.current_page != Global.Pages.LOAN
-
-# Получение записи по её индексу
-func _select_record(table: String, columns: String, idx: int, other: String = "") -> Array:
-	if other: other = "AND " + other
-	return _select(columns + " FROM " + table, "id = "+str(idx)+other)
-
 # Получение названия объекта под определенным индексом
-func _select_title(table: Tables, idx: int) -> String: return _select_record(_get_table_name(table), "title", idx)[0].title
-
-# Получение информации об объекте с учетом возможности его отсутствия
-func select_inf_value(table: Tables, idx: int) -> Dictionary:
-	var value: Array = _select_all_values(table, "id = "+str(idx))
-	if len(value) == 0: return {}
-	return value[0]
-
-# Получение информации о займе
-func select_loan_inf(idx: int) -> Dictionary:
-	var value: Dictionary = select_inf_value(Tables.LOANS, idx)
-	if value == {}: return value
-	value["value"] = _select_all_values(Tables.CASH_FLOWS, "section_id=2 AND subsection_id=1 AND wallet_2_id="+str(idx))[0].value
-	value["percents"] = str(select_loan_percent(idx)) + "%"
-	return value
+func _select_title(table: Tables, idx: int) -> String:
+	return _select("title FROM " + _get_table_name(table), "id = "+str(idx))[0].title
 
 # Получение кошелька по индексу
 func select_wallet(idx: int) -> Array: return _select_all_values_by_idx(Tables.WALLETS, idx)
@@ -841,20 +819,20 @@ func _insert_transfer(values: Array) -> void:
 
 # Запрос на создание платежей по займу
 func _insert_payment(values: Array) -> void:
-	_insert(Tables.CASH_FLOWS, "section_id, wallet_id, wallet_2_id, value, date", [3] + values)
+	_insert(Tables.CASH_FLOWS, "section_id, subsection_id, wallet_id, wallet_2_id, value, date", [2, 2] + values)
 	_update_record(Tables.WALLETS, ["value"], ["value - " + values[2]], int(values[0]))
 	_update_record(Tables.LOANS, ["total"], ["total + " + values[2]], int(values[1]))
 
 # Запрос на создание процентов по займу
 func _insert_percent(values: Array) -> void:
-	_insert(Tables.CASH_FLOWS, "section_id, wallet_2_id, value, date", [4] + values)
+	_insert(Tables.CASH_FLOWS, "section_id, subsection_id, wallet_2_id, value, date", [2, 3] + values)
 	_update_record(Tables.LOANS, ["total"], ["total + " + values[1]], int(values[0]))
 
 # Запрос на создание займа
 func _insert_loan(values: Array) -> void:
 	_insert_witn_columns(Tables.LOANS, [values[0], values[2]])
 	var loan_id: int = _select_all_values(Tables.LOANS)[-1].id
-	_insert(Tables.CASH_FLOWS, "wallet_2_id, section_id, wallet_id, value, date", [loan_id, 2] + values.slice(1))
+	_insert(Tables.CASH_FLOWS, "wallet_2_id, section_id, subsection_id, wallet_id, value, date", [loan_id, 2, 1] + values.slice(1))
 	_update_record(Tables.WALLETS, ["value"], ["value + " + values[2]], int(values[1]))
 
 # Запрос на создание события

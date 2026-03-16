@@ -77,14 +77,14 @@ func check_object() -> bool:
 	Error.clear()
 	match page_type:
 		Global.Pages.WALLET: return _check_wallet()
-		Global.Pages.SECTION: return _check_with_title(not $Income.button_pressed, _check_name())
-		Global.Pages.SUBSECTION: return _check_with_title($Month_Limit.visible, _check_name([Global.get_OB_id($Section_id)]))
+		Global.Pages.SECTION: return _check_with_title($Month_Limit, not $Income.button_pressed, _check_name())
+		Global.Pages.SUBSECTION: return _check_with_title($Month_Limit, $Month_Limit.visible, _check_name([Global.get_OB_id($Section_id)]))
 		Global.Pages.CASH_FLOW: return _check_value($Value)
 		Global.Pages.TRANSFER: return _check_transfer()
 		Global.Pages.PAYMENT: return _check_payment()
 		Global.Pages.PERCENT: return _check_value($Value) and _check_first_date()
-		Global.Pages.LOAN: return _check_with_title()
-		Global.Pages.EVENT: return _check_with_title($Event_type.selected != 0)
+		Global.Pages.LOAN: return _check_with_title($Value)
+		Global.Pages.EVENT: return _check_with_title($Value, $Event_type.selected != 0)
 	return false
 
 # Проверка для числовых полей
@@ -100,9 +100,9 @@ func _check_name(other: Array = []) -> bool:
 	return true
 	
 # Проверка названия объекта и его значение
-func _check_with_title(other_value: bool = true, other_check: bool = true) -> bool:
+func _check_with_title(value_node: Node, other_value: bool = true, other_check: bool = true) -> bool:
 	if Error.check($Title): return false
-	return other_check and _check_value($Month_Limit, other_value)
+	return other_check and _check_value(value_node, other_value)
 
 # Проверка возможности создания кошелька
 func _check_wallet() -> bool:
