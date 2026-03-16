@@ -729,7 +729,7 @@ func _delete_subsection(idx: String) -> void:
 	# Удаление быстрых созданий записей
 	_del_upd_idx_and_values(Tables.FAST_CREATIONS, idx, "subsection_")
 	if len(_select_all_values(Tables.SUBSECTIONS, "section_id = "+str(value.section_id))) == 1:
-		_delete_subsection_obj(str(_select_all_values(Tables.SUBSECTIONS, "section_id = "+str(value.section_id)+' AND title = "__SS4"')[0].id))
+		_delete_subsection(str(_select_all_values(Tables.SUBSECTIONS, "section_id = "+str(value.section_id)+' AND title = "__SS4"')[0].id))
 
 # Запрос на удаление движения средств
 func _delete_cash_flow(idx: String) -> void:
