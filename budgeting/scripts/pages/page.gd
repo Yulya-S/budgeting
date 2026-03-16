@@ -84,26 +84,22 @@ func highlighting_graph_sections(idx: int, set_highlighting: bool = true) -> voi
 # Обработка нажатий кнопок
 # Общие обработки
 # Cоздание движения средств
-func _on_cash_flow_button_down() -> void:
-	if Request.select_possibility_opening_cashFlow(): SF.op_w(Global.Pages.CASH_FLOW)
+func _on_cash_flow_button_down() -> void: Request.match_check_possibility(Global.Pages.CASH_FLOW)
 
 # Создания объектов
 func _on_add_button_down() -> void:
-	if Global.current_page == Global.Pages.LOAN and len(Request._select_all("wallets")) <= 0: return
-	SF.op_w(Global.current_page)
-	
+	if Global.current_page != Global.Pages.LOAN or Request._check_wallet_count():
+		SF.op_w(Global.current_page)
+
 # Перевод средств между счетами
-func _on_transaction_button_down() -> void:
-	if len(Request._select_all("wallets")) >= 2: SF.op_w(Global.Pages.TRANSFER)
+func _on_transaction_button_down() -> void: Request.match_check_possibility(Global.Pages.TRANSFER)
 
 # Займы
 # Добавление процентов по займу
-func _on_Loan_add_interest_button_down() -> void:
-	if Request._check_values_count("loans", 0, "total>0"): SF.op_w(Global.Pages.PERCENT)
+func _on_Loan_add_interest_button_down() -> void: Request.match_check_possibility(Global.Pages.PERCENT)
 
 # Погашение займа
-func _on_Loan_add_payment_button_down() -> void:
-	if Request.select_possibility_opening_payment(): SF.op_w(Global.Pages.PAYMENT)
+func _on_Loan_add_payment_button_down() -> void: Request.match_check_possibility(Global.Pages.PAYMENT)
 
 # Разделы
 # Создания подраздела

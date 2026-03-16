@@ -26,7 +26,7 @@ func connection_user_db() -> void:
 	_create_table(Tables.USERS, ["login VARCHAR(255)", "password VARCHAR(255)", "base VARCHAR(255)"])
 
 # Проверка что в таблице есть объекты
-func _check_table(table: Tables) -> bool: return len(select(table)) == 0
+func _check_table(table: Tables) -> bool: return len(_select_all(table)) == 0
 
 # Создание стандартных объектов в таблице
 func _insert_standart(table: Tables, values: Array, substitution_data: Array = [0]) -> void:
@@ -120,46 +120,9 @@ func _delete_record(table: Variant, idx: int, other: String = "") -> void:
 	_update(table, ["id"], ["id - 1"], "id > " + str(idx))
 	_update(Tables.SQLITE_SEQUENCE, ["seq"], ["seq - 1"], 'name = "' + _get_table_name(table) + '"')
 
-# Удалить это
-# Отправка запроса на создание записи таблице
-func insert(table: Variant, columns: Array, values: Array) -> void:
-	if table is Tables: table = _get_table_name(table)
-	db.query("INSERT INTO `"+_get_table_name(table)+"` ("+",".join(columns)+") VALUES ("+",".join(values)+");")
-
-# Добавление записи
-func insert_record(table: Variant, values: Array) -> void:
-	insert(table, _get_columns(table), values)
-
-# Отправка запроса на изменение записей в таблице
-func update(table: Variant, values: String, where: String) -> void:
-	db.query("UPDATE `"+_get_table_name(table)+"` SET "+values+" WHERE "+where + ";")
-
-# Изменение записи
-func update_record(table: Variant, id: int, values: Array) -> void:
-	var request_text: String = ""
-	var columns: Array = _get_columns(table)
-	for i in len(values): request_text = add_part_request(request_text, columns[i], values[i], "=", ", ")
-	update(table, request_text, "id=" + str(id))
-
-# Отправка запроса на удаление записи в таблице
-func delete(table: Variant, id: int) -> void:
-	db.query("DELETE FROM `"+_get_table_name(table)+"` WHERE id="+str(id)+";")
-	update(Tables.SQLITE_SEQUENCE, "seq=seq-1", 'name="'+_get_table_name(table)+'"')
-	update(table, "id=id-1", "id>"+str(id))
-
-#конец удаления
-
-
 # Сборка даты
 func where_date(date: String = Global.date_to_str(), column: String = "date", operator: String = "=") -> String:
 	return "STRFTIME('%Y-%m', "+column+")" + operator + 'STRFTIME("%Y-%m", "'+date+'")'
-
-
-# Удалить это
-# Получение данных из таблиц
-func select(table: Variant, columns: String = "*", where: String = "", order: String = "", left: String = "") -> Array:
-	if left: left = " LEFT JOIN "+left
-	return _select(columns+" FROM "+_get_table_name(table)+left, where, order)
 
 # Получение всех записей из таблицы
 func _select_all_values(table: Tables, where: String = "", order: String = "") -> Array:
@@ -170,17 +133,25 @@ func _select_all_values_by_idx(table: Tables, idx: int, other: String = "") -> A
 	if other: other = "AND " + other
 	return _select_all_values(table, "id = " + str(idx) + other)
 
+# Проверки возможности открытия окон создания / изменения объектов
+func match_check_possibility(page_type: Global.Pages) -> void:
+	match page_type:
+		Global.Pages.CASH_FLOW: if not (_check_wallet_count() and _check_values_count(Tables.SECTIONS, 2)): return
+		Global.Pages.PAYMENT: if not (_check_wallet_count() and _check_values_count(Tables.LOANS, 0, "total > 0")): return
+		Global.Pages.TRANSFER: if not _check_values_count(Tables.WALLETS, 1): return
+		Global.Pages.PERCENT: if not _check_values_count(Tables.LOANS, 0, "total>0"): return
+	SF.op_w(page_type)
+
 # Проверка что количество записей в таблице кошельков больше определенного числа
 func _check_values_count(table: Variant, count: int = 0, where: String = "") -> bool:
 	return len(_select_all(table, where)) > count
 
-# Проверка достаточно ли данных в базе для создания движения средств
-func select_possibility_opening_cashFlow() -> bool:
-	return _check_values_count(Tables.WALLETS) and _check_values_count(Tables.SECTIONS, 2)
+# Проверка чтобы количество кошельков было больше 0
+func _check_wallet_count() -> bool: return _check_values_count(Tables.WALLETS)
 
-# Проверка достаточно ли данных в базе для создания платежа и добавления процентов по займу
-func select_possibility_opening_payment() -> bool:
-	return _check_values_count(Tables.WALLETS) and _check_values_count(Tables.LOANS, 0, "total > 0")
+# Проверка возможности создать объект
+func select_possibility_opening_objects() -> bool:
+	return not _check_wallet_count() or Global.current_page != Global.Pages.LOAN
 
 # Получение записи по её индексу
 func _select_record(table: String, columns: String, idx: int, other: String = "") -> Array:
@@ -266,7 +237,7 @@ func _select(req_text: String, where: String = "", order: String = "", group: St
 
 # Получение значения словаря из результата запроса
 func select_value(table: Variant, column: String) -> Variant:
-	var value: Array = select(table)
+	var value: Array = _select_all(table)
 	if len(value) > 0: return value[0][column]
 	return null
 
@@ -422,7 +393,7 @@ func start_create_multiplied_events_table(date: String) -> void:
 	last_month_day_count = select_day_count(Global.get_other_month(date))
 	events = _select_events_list(date, date if selected_date.date.day < selected_date.day_count - 14 else Global.date_to_str(next_month.date))
 	_delete(Tables.MULTIPLIED_EVENTS)
-	update(Tables.SQLITE_SEQUENCE, "seq=0", 'name="multiplied_events"')
+	_update(Tables.SQLITE_SEQUENCE, ["seq"], ["0"], 'name="multiplied_events"')
 	completion_creation_et = false
 
 # Получение записей из таблицы размноженых событий
