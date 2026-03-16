@@ -31,17 +31,17 @@ func connection_db(db_name: String) -> void:
 	_open_db(db_name)
 	# Создание таблиц в базе
 	_create_table("wallets", ["value FLOAT"], true)
-	_create_table("sections", ["month_limit FLOAT", "income BOOLEAN"], true)
+	_create_table("sections", ["income BOOLEAN", "month_limit FLOAT"], true)
 	_create_table("subsections", ["section_id INT", "month_limit FLOAT"], true)
 	_create_table("cash_flows", ["wallet_id INT", "wallet_2_id INT", "section_id INT", "subsection_id INT", "value FLOAT", "date DATE"])
 	_create_table("loans", ["total FLOAT"], true)
-	_create_table("events", ["event_type INT", "value FLOAT", "repetition_rate INT", "date DATE"], true)
+	_create_table("events", ["repetition_rate INT", "event_type INT", "value FLOAT", "date DATE"], true)
 	_create_table("multiplied_events", ["event_type INT", "value FLOAT", "date DATE", "completed BOOLEAN", "event_id INT"], true)
 	# Создание таблиц для персонализации приложения
 	_create_table("settings", ["color_preset BOOLEAN", "color_scheme INT", "color_1 VARCHAR(255)", "color_2 VARCHAR(255)", "color_3 VARCHAR(255)", "color_4 VARCHAR(255)", "dark_theme BOOLEAN", "event_page_calendar BOOLEAN", "last_entry DATE"])
 	_create_table("notifications", ["event_id INT", "new BOOL", "date DATE"])
 	_create_table("fast_creations", ["wallet_id INT", "section_id INT", "subsection_id INT"])
-	if _check_table(Tables.SECTIONS): for i in ["__ST1", "__ST2"]: insert_record(Tables.SECTIONS, ['"'+i+'"', -1, false])
+	if _check_table(Tables.SECTIONS): for i in ["__ST1", "__ST2"]: insert_record(Tables.SECTIONS, ['"'+i+'"', false, -1])
 	if _check_table(Tables.SUBSECTIONS): for i in ["__SS1", "__SS2", "__SS3"]: insert_record(Tables.SUBSECTIONS, [2, '"'+i+'"', -1])
 	if _check_table(Tables.SETTINGS): db.query('INSERT INTO settings (color_preset, color_scheme, color_1, color_2, dark_theme, event_page_calendar, last_entry) VALUES (0, 0, "3a9891ff", "c8c8c8ff", 0, 0, "'+Global.date_to_str()+'")')
 
@@ -75,11 +75,11 @@ func add_part_request(text: String, column: String, value: Variant, operator: St
 
 # Создание записей
 # Отправка запроса на создание записи в таблице
-func _insert(table: String, columns: String, values: Array) -> void:
-	db.query("INSERT INTO `"+table+"` ("+columns+") VALUES ("+", ".join(values)+");")
+func _insert(table: Variant, columns: String, values: Array) -> void:
+	db.query("INSERT INTO `"+_get_table_name(table)+"` ("+columns+") VALUES ("+", ".join(values)+");")
 
 # Отправка запроса на создание записи со всеми калонками таблицы
-func _insert_witn_columns(table: String, values: Array) -> void:
+func _insert_witn_columns(table: Variant, values: Array) -> void:
 	_insert(table, ", ".join(_get_columns(table)), values)
 
 # Обновление записей
@@ -574,8 +574,8 @@ func check_sections_and_wallets() -> bool:
 
 # Запрос на создание объекта быстрого создания записей
 func insert_fast_creation() -> void:
-	var subs_id = null if len(_select_all_values(Tables.SUBSECTIONS, "section_id = 3")) == 0 else _select_all_values(Tables.SUBSECTIONS, "section_id = 3")[0].id
-	_insert("fast_creations", "wallet_id, section_id, subsection_id", [1, 3, subs_id])
+	var subs_id = "null" if len(_select_all_values(Tables.SUBSECTIONS, "section_id = 3")) == 0 else _select_all_values(Tables.SUBSECTIONS, "section_id = 3")[0].id
+	_insert_witn_columns(Tables.FAST_CREATIONS, [1, 3, subs_id])
 
 # Запрос на создание движения средств
 func insert_cash_flow(wallet_id: int, section_id: int, subsection_id: Variant, value: String, date: String = Global.date_to_str()) -> void:
@@ -865,17 +865,17 @@ func _create_wallet(values: Array) -> void: _insert("wallets", "title, value", v
 # Запрос на создание раздела
 func _create_section(values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
-	_insert("sections", "title, income, month_limit", values)
+	_insert_witn_columns(Tables.SECTIONS, values)
 
 # Запрос на создание подраздела
 func _create_subsection(values: Array) -> void:
 	if _select_all_values_by_idx(Tables.SECTIONS, int(values[1]))[0].income == 1: values[2] = "-1.0"
 	if len(_select_all_values(Tables.SUBSECTIONS, "section_id = "+values[1])) == 0:
-		_insert("subsections", "title, section_id, month_limit", ['"__SS4"', values[1], -1])
+		_insert_witn_columns(Tables.SUBSECTIONS, ['"__SS4"', values[1], -1])
 		var other_sub_id: int = _select_all("subsections")[-1].id
 		_update("cash_flows", ["subsection_id"], [other_sub_id], "section_id = "+values[1])
 		_update("fast_creations", ["subsection_id"], [other_sub_id], "section_id = "+values[1])
-	_insert("subsections", "title, section_id, month_limit", values)
+	_insert_witn_columns(Tables.SUBSECTIONS, values)
 
 # Запрос на создание движения средств
 func _create_cash_flow(values: Array) -> void:
@@ -901,7 +901,7 @@ func _create_percent(values: Array) -> void:
 
 # Запрос на создание займа
 func _create_loan(values: Array) -> void:
-	_insert("loans", "title, total", [values[0], values[2]])
+	_insert_witn_columns(Tables.LOANS, [values[0], values[2]])
 	var loan_id: int = _select_all_values(Tables.LOANS)[-1].id
 	_insert("cash_flows", "wallet_2_id, section_id, wallet_id, value, date", [loan_id, 2] + values.slice(1))
 	_update_record("wallets", ["value"], ["value + " + values[2]], int(values[1]))
@@ -909,7 +909,7 @@ func _create_loan(values: Array) -> void:
 # Запрос на создание события
 func _create_event(values: Array) -> void:
 	if int(values[2]) == 0: values[3] = "0.0"
-	_insert("events", "title, repetition_rate, event_type, value, date", values)
+	_insert_witn_columns(Tables.EVENTS, values)
 
 # Получение всех записей из таблицы
 func _select_all(table: String, where: String = "", order: String = "") -> Array:
