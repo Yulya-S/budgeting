@@ -27,6 +27,10 @@ func connection_user_db() -> void:
 # Проверка что в таблице есть объекты
 func _check_table(table: Tables) -> bool: return len(select(table)) == 0
 
+# Создание стандартных объектов в таблице
+func _insert_standart(table: Tables, values: Array, substitution_data: Array = [0]) -> void:
+	if _check_table(table): for i in substitution_data: _insert_witn_columns(table, [i] + values)
+
 # Подключение базы данных
 func connection_db(db_name: String) -> void:
 	_open_db(db_name)
@@ -42,9 +46,9 @@ func connection_db(db_name: String) -> void:
 	_create_table("settings", ["color_preset BOOLEAN", "color_scheme INT", "color_1 VARCHAR(255)", "color_2 VARCHAR(255)", "color_3 VARCHAR(255)", "color_4 VARCHAR(255)", "dark_theme BOOLEAN", "event_page_calendar BOOLEAN", "last_entry DATE"])
 	_create_table("notifications", ["event_id INT", "new BOOL", "date DATE"])
 	_create_table("fast_creations", ["wallet_id INT", "section_id INT", "subsection_id INT"])
-	if _check_table(Tables.SECTIONS): for i in ["__ST1", "__ST2"]: insert_record(Tables.SECTIONS, ['"'+i+'"', false, -1])
-	if _check_table(Tables.SUBSECTIONS): for i in ["__SS1", "__SS2", "__SS3"]: insert_record(Tables.SUBSECTIONS, [2, '"'+i+'"', -1])
-	if _check_table(Tables.SETTINGS): db.query('INSERT INTO settings (color_preset, color_scheme, color_1, color_2, dark_theme, event_page_calendar, last_entry) VALUES (0, 0, "3a9891ff", "c8c8c8ff", 0, 0, "'+Global.date_to_str()+'")')
+	_insert_standart(Tables.SECTIONS, [false, -1], ['"__ST1"', '"__ST2"'])
+	_insert_standart(Tables.SUBSECTIONS, [2, -1], ['"__SS1"', '"__SS2"', '"__SS3"'])
+	_insert_standart(Tables.SETTINGS, [0, "3a9891ff", "c8c8c8ff", "null", "null", 0, 0, '"'+Global.date_to_str()+'"'])
 
 # Запрос на создание таблицы
 func _create_table(title: String, t_columns: Array, title_c: bool = false) -> void:
