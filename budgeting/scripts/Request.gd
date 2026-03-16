@@ -2,6 +2,7 @@ extends Node
 # Перечисление
 enum Tables {WALLETS, SECTIONS, SUBSECTIONS, CASH_FLOWS, LOANS, EVENTS, SETTINGS, NOTIFICATIONS, SQLITE_SEQUENCE, USERS, MULTIPLIED_EVENTS, FAST_CREATIONS} # Таблицы в базе данных
 enum ObjectVariants {WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT_W, REPORT_S, NOTIFICATION, FAST_CREATION, WALLET_TRANSACTION, SUBSECTION} # Варианты списков объектов по которым могут быть запросы
+enum ActionTypes {INSERT, UPDATE, DELETE} # Виды действий с объектами
 
 # Переменная
 var db: SQLite = null # Подключенная база данных
@@ -91,9 +92,13 @@ func _update(table: Variant, columns: Array, values: Array, where: String = "") 
 	db.query("UPDATE `"+_get_table_name(table)+"` SET "+",".join(v)+where+";")
 
 # Обновление записи по её индексу
-func _update_record(table: Variant, columns: Array, values: Array, idx: int, other: String = "") -> void:
+func _update_record(table: Variant, columns: Array, values: Array, idx: Variant, other: String = "") -> void:
 	if other: other = "AND " + other
 	_update(table, columns, values, "id = "+str(idx)+other)
+
+# Обновление всех колонок у записи
+func _update_with_columns(table: Variant, idx: Variant, values: Array, other: String = "") -> void:
+	_update_record(table, _get_columns(table), values, idx, other)
 
 # Удаление записей
 # Отправка запроса на удаление записей
@@ -683,20 +688,15 @@ func _select_loan_obj(idx: String) -> Dictionary:
 func _select_event_obj(idx: String) -> Dictionary:
 	idx = str(_select_all_values_by_idx(Tables.MULTIPLIED_EVENTS, int(idx))[0].event_id)
 	return _select_all_values_by_idx(Tables.EVENTS, int(idx))[0]
-	
-# Распределение запросов на удаление объектов таблицы
-func match_deleted(idx: String, obj_type: Global.Pages) -> void:
-	match obj_type:
-		Global.Pages.WALLET: return _delete_wallet_obj(idx)
-		Global.Pages.SECTION: return _delete_section_obj(idx)
-		Global.Pages.SUBSECTION: return _delete_subsection_obj(idx)
-		Global.Pages.CASH_FLOW: return _delete_cash_flow_obj(idx)
-		Global.Pages.TRANSFER: return _delete_transfer_obj(idx)
-		Global.Pages.PAYMENT: return _delete_payment_obj(idx)
-		Global.Pages.PERCENT: return _delete_percent_obj(idx)
-		Global.Pages.LOAN: return _delete_loan_obj(idx)
-		Global.Pages.EVENT: return _delete_event_obj(idx)
 
+# Обработчик действий с объектами
+func match_actions(action_type: ActionTypes, obj_type: Global.Pages, idx: String, values: Array = []) -> void:
+	match action_type:
+		ActionTypes.INSERT: call("_create_"+Global.enum_key(Global.Pages, obj_type), values)
+		ActionTypes.UPDATE: call("_update_"+Global.enum_key(Global.Pages, obj_type), idx, values)
+		ActionTypes.DELETE: call("_delete_"+Global.enum_key(Global.Pages, obj_type)+"_obj", idx)
+
+# Удаление
 # Удаление и обновление данных таблицы со сзвигом индексации
 func _del_upd_idx_and_values(table: Variant, idx: Variant, name_fr: String = "", other: String = "") -> void:
 	_delete_and_update_ids(table, name_fr + "id = " + str(idx) + other)
@@ -779,31 +779,19 @@ func _delete_event_obj(idx: String) -> void:
 	_delete_record("events", int(idx))
 	_del_upd_idx_and_values(Tables.NOTIFICATIONS, idx, "event_") # Удаление уведомлений
 
-# Распределение запросов на изменение объектов таблицы
-func match_updated(idx: String, obj_type: Global.Pages, values: Array) -> void:
-	match obj_type:
-		Global.Pages.WALLET: return _update_wallet(idx, values)
-		Global.Pages.SECTION: return _update_section(idx, values)
-		Global.Pages.SUBSECTION: return _update_subsection(idx, values)
-		Global.Pages.CASH_FLOW: return _update_cash_flow(idx, values)
-		Global.Pages.TRANSFER: return _update_transfer(idx, values)
-		Global.Pages.PAYMENT: return _update_payment(idx, values)
-		Global.Pages.PERCENT: return _update_percent(idx, values)
-		Global.Pages.LOAN: return _update_loan(idx, values)
-		Global.Pages.EVENT: return _update_event(idx, values)
-
+# Обновление
 # Запрос на изменение кошелька
 func _update_wallet(idx: String, values: Array) -> void: _update_record("wallets", ["title", "value"], values, int(idx))
 
 # Запрос на изменение раздела
 func _update_section(idx: String, values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
-	_update_record("sections", ["title", "income", "month_limit"], values, int(idx))
+	_update_with_columns(Tables.SECTIONS, idx, values)
 
 # Запрос на изменене подраздела
 func _update_subsection(idx, values) -> void:
 	if _select_all_values_by_idx(Tables.SECTIONS, int(values[1]))[0].income == 1: values[2] = "-1.0"
-	_update_record("subsections", ["title", "section_id", "month_limit"], values, int(idx))
+	_update_with_columns(Tables.SUBSECTIONS, idx, values)
 
 # Запрос на изменение движения средств
 func _update_cash_flow(idx: String, values: Array) -> void:
@@ -835,17 +823,18 @@ func _update_percent(idx: String, values: Array) -> void:
 
 # Запрос на изменение раздела
 func _update_loan(idx: String, values: Array) -> void:
-	_update_record("loans", ["title", "total"], values, int(idx))
+	_update_with_columns(Tables.LOANS, idx, values)
 	var last_value: Dictionary = _select_all_values(Tables.CASH_FLOWS, "subsection_id=1 AND wallet_2_id = "+idx)[0]
 	_update_value(Tables.WALLETS, "value", values[2], last_value.value, values[1], last_value.wallet_id)
-	_update("wallets", ["wallet_id", "value", "date"], values, "subsection_id=1 AND wallet_2_id = " + idx)
+	_update(Tables.CASH_FLOWS, ["wallet_id", "value", "date"], values, "subsection_id=1 AND wallet_2_id = " + idx)
 
 # Запрос на изменение раздела
 func _update_event(idx: String, values: Array) -> void:
 	if int(values[2]) == 0: values[3] = "0.0"
 	idx = str(_select_all_values_by_idx(Tables.MULTIPLIED_EVENTS, int(idx))[0].event_id)
-	_update_record("events", ["title", "repetition_rate", "event_type", "value", "date"], values, int(idx))
+	_update_with_columns(Tables.EVENTS, idx, values)
 
+# Создание
 # Распределение запросов на создание объектов таблицы
 func match_created(obj_type: Global.Pages, values: Array) -> void:
 	match obj_type:
