@@ -84,7 +84,7 @@ func highlighting_graph_sections(idx: int, set_highlighting: bool = true) -> voi
 # Обработка нажатий кнопок
 # Общие обработки
 # Cоздание движения средств
-func _on_cash_flow_button_down() -> void: Request.match_check_possibility(Global.Pages.CASH_FLOW)
+func _on_cash_flow_button_down() -> void: Request.match_check(Global.Pages.CASH_FLOW)
 
 # Создания объектов
 func _on_add_button_down() -> void:
@@ -92,14 +92,14 @@ func _on_add_button_down() -> void:
 		SF.op_w(Global.current_page)
 
 # Перевод средств между счетами
-func _on_transaction_button_down() -> void: Request.match_check_possibility(Global.Pages.TRANSFER)
+func _on_transaction_button_down() -> void: Request.match_check(Global.Pages.TRANSFER)
 
 # Займы
 # Добавление процентов по займу
-func _on_Loan_add_interest_button_down() -> void: Request.match_check_possibility(Global.Pages.PERCENT)
+func _on_Loan_add_interest_button_down() -> void: Request.match_check(Global.Pages.PERCENT)
 
 # Погашение займа
-func _on_Loan_add_payment_button_down() -> void: Request.match_check_possibility(Global.Pages.PAYMENT)
+func _on_Loan_add_payment_button_down() -> void: Request.match_check(Global.Pages.PAYMENT)
 
 # Разделы
 # Создания подраздела
