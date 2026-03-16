@@ -247,8 +247,8 @@ func _process(_delta: float) -> void:
 			1: _insert_events_with_step(value, new_date, selected_date.day_count, 2)
 			2: _insert_events_with_step(value, new_date, selected_date.day_count, 7)
 			0:
-				if selected_date.date_comparison(new_date, "=="): _insert_event(value, new_date)					
-				if selected_date.date.day != 1 and Global.date_comparison(next_month.date, new_date, "==", false): _insert_event(value, new_date)
+				if selected_date.date_comparison(new_date, "=="): _insert_multiplied_event(value, new_date)					
+				if selected_date.date.day != 1 and Global.date_comparison(next_month.date, new_date, "==", false): _insert_multiplied_event(value, new_date)
 			3, 4:
 				_insert_events_to_repetition_rate_3_4(value, new_date, selected_date.date)
 				if selected_date.date.day != 1: _insert_events_to_repetition_rate_3_4(value, new_date, next_month.date)
@@ -379,7 +379,7 @@ func _select_loans_list(where: String = "", order: String = "") -> Array:
 	return _select("l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.subsection_id=1 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id", where, order)
 
 # Добавление событий во временную таблицу
-func _insert_event(value: Dictionary, date: Dictionary) -> void:
+func _insert_multiplied_event(value: Dictionary, date: Dictionary) -> void:
 	var text_date: String = Global.date_to_str(date).split(" ")[0]
 	_insert_witn_columns("multiplied_events", ["'"+value.title+"'", value.event_type, value.value, "'"+text_date+"'", Global.date_comparison(Global.get_date(), date, ">"), value.id])
 
@@ -393,7 +393,7 @@ func _insert_events_with_step(value: Dictionary, new_date: Dictionary, day_count
 			date_dup = next_month.date.duplicate()
 			date_dup.day = new_date.day - day_count
 		elif date_dup.day > next_month.day_count: break
-		_insert_event(value, date_dup)
+		_insert_multiplied_event(value, date_dup)
 		new_date.day += step
 
 # Создание событий для частоты раз в месяц и раз в год
@@ -401,10 +401,10 @@ func _insert_events_to_repetition_rate_3_4(value: Dictionary, new_date: Dictiona
 	new_date.year = date.year
 	if value.repetition_rate == 3:
 		new_date.month = date.month
-		if last_month_day_count < new_date.day: _insert_event(value, new_date)
-		if selected_date.day_count >= new_date.day: _insert_event(value, new_date)
-	elif new_date.month == date.month and selected_date.day_count >= new_date.day: _insert_event(value, new_date)
-	elif new_date.month == Global.get_other_month(date).month and last_month_day_count < new_date.day: _insert_event(value, new_date)
+		if last_month_day_count < new_date.day: _insert_multiplied_event(value, new_date)
+		if selected_date.day_count >= new_date.day: _insert_multiplied_event(value, new_date)
+	elif new_date.month == date.month and selected_date.day_count >= new_date.day: _insert_multiplied_event(value, new_date)
+	elif new_date.month == Global.get_other_month(date).month and last_month_day_count < new_date.day: _insert_multiplied_event(value, new_date)
 		
 # Получение событий в текущем месяце с датой первого появления
 func _select_events_list(date: String, date2: String) -> Array:
@@ -692,9 +692,9 @@ func _select_event_obj(idx: String) -> Dictionary:
 # Обработчик действий с объектами
 func match_actions(action_type: ActionTypes, obj_type: Global.Pages, idx: String, values: Array = []) -> void:
 	match action_type:
-		ActionTypes.INSERT: call("_create_"+Global.enum_key(Global.Pages, obj_type), values)
+		ActionTypes.INSERT: call("_insert_"+Global.enum_key(Global.Pages, obj_type), values)
 		ActionTypes.UPDATE: call("_update_"+Global.enum_key(Global.Pages, obj_type), idx, values)
-		ActionTypes.DELETE: call("_delete_"+Global.enum_key(Global.Pages, obj_type)+"_obj", idx)
+		ActionTypes.DELETE: call("_delete_"+Global.enum_key(Global.Pages, obj_type), idx)
 
 # Удаление
 # Удаление и обновление данных таблицы со сзвигом индексации
@@ -703,7 +703,7 @@ func _del_upd_idx_and_values(table: Variant, idx: Variant, name_fr: String = "",
 	_update(table, [name_fr + "id"], [name_fr + "id - 1"], name_fr + "id > " + idx)
 	
 # Запрос на удаление кошелька
-func _delete_wallet_obj(idx: String) -> void:
+func _delete_wallet(idx: String) -> void:
 	_delete_record("wallets", int(idx)) # Удаление кошелька
 	# Удаление данных о движениях средств
 	_del_upd_idx_and_values(Tables.CASH_FLOWS, idx, "wallet_", " OR (wallet_2_id = "+idx+" AND section_id = 1)")
@@ -713,7 +713,7 @@ func _delete_wallet_obj(idx: String) -> void:
 	_del_upd_idx_and_values(Tables.FAST_CREATIONS, idx, "wallet_")
 
 # Запрос на удаление раздела
-func _delete_section_obj(idx: String) -> void:
+func _delete_section(idx: String) -> void:
 	_delete_record("sections", int(idx)) # Удаление раздела
 	_del_upd_idx_and_values(Tables.CASH_FLOWS, idx, "section_") # Удаление данных о движениях средств
 	_del_upd_idx_and_values(Tables.FAST_CREATIONS, idx, "section_") # Удаление быстрых созданий записей
@@ -722,7 +722,7 @@ func _delete_section_obj(idx: String) -> void:
 	_update("cash_flows", ["subsection_id"], ["subsection_id - (SELECT COUNT(s.id) FROM subsections s, cash_flows cf WHERE s.section_id = "+idx+" AND cf.subsection_id > s.id AND s.id != cf.subsection_id)"], "section_id != " + idx)
 
 # Запрос на удаление подраздела
-func _delete_subsection_obj(idx: String) -> void:
+func _delete_subsection(idx: String) -> void:
 	var value: Dictionary = _select_all_values_by_idx(Tables.SUBSECTIONS, int(idx))[0]
 	_delete_record("subsections", int(idx)) # Удаление раздела
 	_del_upd_idx_and_values(Tables.CASH_FLOWS, idx, "subsection_") # Удаление данных о движениях средств
@@ -732,7 +732,7 @@ func _delete_subsection_obj(idx: String) -> void:
 		_delete_subsection_obj(str(_select_all_values(Tables.SUBSECTIONS, "section_id = "+str(value.section_id)+' AND title = "__SS4"')[0].id))
 
 # Запрос на удаление движения средств
-func _delete_cash_flow_obj(idx: String) -> void:
+func _delete_cash_flow(idx: String) -> void:
 	# Отмена транзакции
 	var data: Dictionary = _select("cf.*, s.income FROM cash_flows cf LEFT JOIN sections s ON cf.section_id = s.id", "cf.id = "+idx)[0]
 	if not data.income: data.value *= -1
@@ -746,26 +746,26 @@ func _update_value(table: Tables, value_name: String, value_1: Variant,
 	_update_record(table, [value_name], [value_name + " - " + value_2], int(idx_2))
 
 # Запрос на удаление перевода средств
-func _delete_transfer_obj(idx: String) -> void:
+func _delete_transfer(idx: String) -> void:
 	var data: Dictionary = _select_all_values_by_idx(Tables.CASH_FLOWS, int(idx))[0]
 	_update_value(Tables.WALLETS, "value", data.value, data.value, data.wallet_id, data.wallet_2_id)
 	_delete("cash_flows", "id = " + idx)
 
 # Запрос на удаление платежа по займу
-func _delete_payment_obj(idx: String) -> void:
+func _delete_payment(idx: String) -> void:
 	var data: Dictionary = _select_all_values_by_idx(Tables.CASH_FLOWS, int(idx))[0]
 	_update_record("wallets", ["value"], ["value + " + str(data.value)], data.wallet_id)
 	_update_record("loans", ["total"], ["total + " + str(data.value)], data.wallet_2_id)
 	_delete("cash_flows", "id = " + idx)
 	
 # Запрос на удаление процента по займу
-func _delete_percent_obj(idx: String) -> void:
+func _delete_percent(idx: String) -> void:
 	var data: Dictionary = _select_all_values_by_idx(Tables.CASH_FLOWS, int(idx))[0]
 	_update_record("loans", ["total"], ["total - " + str(data.value)], data.wallet_2_id)
 	_delete("cash_flows", "id = " + idx)
 
 # Запрос на удаление займа
-func _delete_loan_obj(idx: String) -> void:
+func _delete_loan(idx: String) -> void:
 	_delete_record("loans", int(idx)) # Удаление займа
 	# Отмена транзакции
 	var values: Dictionary = _select_all_values(Tables.CASH_FLOWS, "subsection_id=1 AND wallet_2_id = "+idx)[0]
@@ -773,7 +773,7 @@ func _delete_loan_obj(idx: String) -> void:
 	_del_upd_idx_and_values(Tables.CASH_FLOWS, idx, "wallet_2_") # Удаление движений средств
 
 # Запрос на удаление события
-func _delete_event_obj(idx: String) -> void:
+func _delete_event(idx: String) -> void:
 	# Удаление события
 	idx = str(_select_all_values_by_idx(Tables.MULTIPLIED_EVENTS, int(idx))[0].event_id)
 	_delete_record("events", int(idx))
@@ -835,29 +835,16 @@ func _update_event(idx: String, values: Array) -> void:
 	_update_with_columns(Tables.EVENTS, idx, values)
 
 # Создание
-# Распределение запросов на создание объектов таблицы
-func match_created(obj_type: Global.Pages, values: Array) -> void:
-	match obj_type:
-		Global.Pages.WALLET: return _create_wallet(values)
-		Global.Pages.SECTION: return _create_section(values)
-		Global.Pages.SUBSECTION: return _create_subsection(values)
-		Global.Pages.CASH_FLOW: return _create_cash_flow(values)
-		Global.Pages.TRANSFER: return _create_transfer(values)
-		Global.Pages.PAYMENT: return _create_payment(values)
-		Global.Pages.PERCENT: return _create_percent(values)
-		Global.Pages.LOAN: return _create_loan(values)
-		Global.Pages.EVENT: return _create_event(values)
-
 # Запрос на создание кошелька
-func _create_wallet(values: Array) -> void: _insert("wallets", "title, value", values)
+func _insert_wallet(values: Array) -> void: _insert("wallets", "title, value", values)
 
 # Запрос на создание раздела
-func _create_section(values: Array) -> void:
+func _insert_section(values: Array) -> void:
 	if values[1] == "true": values[2] = "-1.0"
 	_insert_witn_columns(Tables.SECTIONS, values)
 
 # Запрос на создание подраздела
-func _create_subsection(values: Array) -> void:
+func _insert_subsection(values: Array) -> void:
 	if _select_all_values_by_idx(Tables.SECTIONS, int(values[1]))[0].income == 1: values[2] = "-1.0"
 	if len(_select_all_values(Tables.SUBSECTIONS, "section_id = "+values[1])) == 0:
 		_insert_witn_columns(Tables.SUBSECTIONS, ['"__SS4"', values[1], -1])
@@ -867,36 +854,36 @@ func _create_subsection(values: Array) -> void:
 	_insert_witn_columns(Tables.SUBSECTIONS, values)
 
 # Запрос на создание движения средств
-func _create_cash_flow(values: Array) -> void:
+func _insert_cash_flow(values: Array) -> void:
 	_insert("cash_flows", "wallet_id, section_id, subsection_id, value, date", values)
 	if not _select_all_values_by_idx(Tables.SECTIONS, int(values[1]))[0].income: values[3] = str(float(values[3]) * -1)
 	_update_record("wallets", ["value"], ["value + " + values[3]], int(values[0]))
 
 # Запрос на создание перевода средств
-func _create_transfer(values: Array) -> void:
+func _insert_transfer(values: Array) -> void:
 	_insert("cash_flows", "section_id, wallet_id, wallet_2_id, value, date", [1] + values)
 	_update_value(Tables.WALLETS, "value", values[2], values[2], values[1], values[0])
 
 # Запрос на создание платежей по займу
-func _create_payment(values: Array) -> void:
+func _insert_payment(values: Array) -> void:
 	_insert("cash_flows", "section_id, wallet_id, wallet_2_id, value, date", [3] + values)
 	_update_record("wallets", ["value"], ["value - " + values[2]], int(values[0]))
 	_update_record("loans", ["total"], ["total + " + values[2]], int(values[1]))
 
 # Запрос на создание процентов по займу
-func _create_percent(values: Array) -> void:
+func _insert_percent(values: Array) -> void:
 	_insert("cash_flows", "section_id, wallet_2_id, value, date", [4] + values)
 	_update_record("loans", ["total"], ["total + " + values[1]], int(values[0]))
 
 # Запрос на создание займа
-func _create_loan(values: Array) -> void:
+func _insert_loan(values: Array) -> void:
 	_insert_witn_columns(Tables.LOANS, [values[0], values[2]])
 	var loan_id: int = _select_all_values(Tables.LOANS)[-1].id
 	_insert("cash_flows", "wallet_2_id, section_id, wallet_id, value, date", [loan_id, 2] + values.slice(1))
 	_update_record("wallets", ["value"], ["value + " + values[2]], int(values[1]))
 
 # Запрос на создание события
-func _create_event(values: Array) -> void:
+func _insert_event(values: Array) -> void:
 	if int(values[2]) == 0: values[3] = "0.0"
 	_insert_witn_columns(Tables.EVENTS, values)
 
