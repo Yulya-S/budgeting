@@ -95,7 +95,7 @@ func connection_db(db_name: String) -> void:
 	# Создание стандартных данных
 	_insert_standart(Tables.SECTIONS, [false, -1], ['"__ST1"', '"__ST2"'])
 	_insert_standart(Tables.SUBSECTIONS, [2, -1], ['"__SS1"', '"__SS2"', '"__SS3"'])
-	_insert_standart(Tables.SETTINGS, [0, "3a9891ff", "c8c8c8ff", "null",
+	_insert_standart(Tables.SETTINGS, [0, '"3a9891ff"', '"c8c8c8ff"', "null",
 		"null", 0, 0, '"'+Global.date_to_str()+'"'])
 
 # Запрос на создание таблицы
