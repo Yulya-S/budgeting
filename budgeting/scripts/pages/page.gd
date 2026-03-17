@@ -88,7 +88,7 @@ func _on_cash_flow_button_down() -> void: Request.match_check(Global.Pages.CASH_
 
 # Создания объектов
 func _on_add_button_down() -> void:
-	if Global.current_page != Global.Pages.LOAN or Request._check_wallet_count():
+	if Global.current_page != Global.Pages.LOAN or Request.check_wallet_count():
 		SF.op_w(Global.current_page)
 
 # Перевод средств между счетами

@@ -30,7 +30,7 @@ func fc_update() -> void:
 
 # Изменение размеров объектов страницы
 func _fc_size_match() -> void:
-	match len(Request._select_fast_creations_list()):
+	match len(Request.select_fast_creations_list()):
 		0: _set_size_pos(0)
 		1: _set_size_pos(41)
 		_: _set_size_pos(86)

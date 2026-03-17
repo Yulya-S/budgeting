@@ -13,7 +13,7 @@ func _process(_delta: float) -> void:
 
 # Создание нового формата отображения событий
 func _create() -> void:
-	if not Request._select_all(Request.Tables.SETTINGS)[0].event_page_calendar: _create_calendar(calendar, Vector2(456, 473))
+	if not Request.select_settings().event_page_calendar: _create_calendar(calendar, Vector2(456, 473))
 	else: _create_calendar(objArray, Vector2(1152, 473))
 
 # Создание календаря

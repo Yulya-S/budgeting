@@ -30,7 +30,7 @@ func set_OB_items(table: Request.Tables) -> void:
 	var node: OptionButton = get_node(node_name[0].to_upper() + node_name.substr(1, len(node_name)-2))
 	node.clear()
 	node.add_item("", 0)
-	Global.fill_optionButton(node, Request._select_all(table), false)
+	Global.fill_optionButton(node, Request.select_all(table), false)
 
 # Сборка фильтра
 func get_filter() -> Dictionary:

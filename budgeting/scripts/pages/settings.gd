@@ -12,7 +12,7 @@ extends PageWindow
 # Стартовое изменение страницы настроек
 func _ready() -> void:
 	File.load_lang(Language)
-	var data: Dictionary = Request._select_all("settings")[0] # Получение настроек
+	var data: Dictionary = Request.select_settings() # Получение настроек
 	for i in get_children():
 		match i.get_class():
 			"CheckButton":
@@ -130,5 +130,5 @@ func _on_apply_button_down() -> void:
 	values.pop_front()
 	values.append('"'+Request.select_last_entry()+'"')
 	# Сохранение записи в базе данных
-	Request._update_with_columns(Request.Tables.SETTINGS, 1, values)
+	Request.update_with_columns(Request.Tables.SETTINGS, 1, values)
 	_on_close_button_down()

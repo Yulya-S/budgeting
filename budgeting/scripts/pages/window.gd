@@ -11,17 +11,17 @@ var idx: int = 0 # Индекс изменяемого объекта
 func _ready() -> void:
 	SF.color_and_lang(self)
 	if page_type in [Global.Pages.LOAN, Global.Pages.CASH_FLOW, Global.Pages.TRANSFER, Global.Pages.PAYMENT]:
-		Global.fill_optionButton($Wallet_id, Request._select("* FROM wallets"))
+		Global.fill_optionButton($Wallet_id, Request.select("* FROM wallets"))
 	match page_type:
 		Global.Pages.CASH_FLOW:
-			Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 2"))
+			Global.fill_optionButton($Section_id, Request.select("* FROM sections", "id > 2"))
 			_on_section_id_item_selected()
 		Global.Pages.SUBSECTION:
-			Global.fill_optionButton($Section_id, Request._select("* FROM sections", "id > 2"))
+			Global.fill_optionButton($Section_id, Request.select("* FROM sections", "id > 2"))
 			_on_parent_id_item_selected()
-		Global.Pages.TRANSFER: Global.fill_optionButton($Wallet_2_id, Request._select("* FROM wallets"))
+		Global.Pages.TRANSFER: Global.fill_optionButton($Wallet_2_id, Request.select("* FROM wallets"))
 		Global.Pages.PERCENT, Global.Pages.PAYMENT:
-			Global.fill_optionButton($Wallet_2_id, Request._select("* FROM loans", "total > 0"))
+			Global.fill_optionButton($Wallet_2_id, Request.select("* FROM loans", "total > 0"))
 
 # Смена значения займа
 func _process(_delta: float) -> void:
@@ -124,7 +124,7 @@ func _check_first_date() -> bool:
 # Проверка возможности создания платежа по займу
 func _check_payment() -> bool:
 	if not _check_value($Value) or not _check_first_date(): return false
-	if Request._select_all_id("loans", Global.get_OB_id($Wallet_2_id))[0].total - SF.L_to_float($Value) < 0:
+	if Request.select_all_id("loans", Global.get_OB_id($Wallet_2_id))[0].total - SF.L_to_float($Value) < 0:
 		return Error.set_state(Error.States._E8)
 	return true
 
@@ -161,8 +161,8 @@ func _on_event_type_item_selected(index: int) -> void:
 # Изменение раздела
 func _on_section_id_item_selected(index: int = 0) -> void:
 	$Section_id.selected = index
-	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request._select_all("sections")[index + 2].income))])
-	var values: Array = Request._select_all("subsections", '"__SS4" != title AND section_id = '+str(index+3)) + Request._select_all("subsections", '"__SS4" == title AND section_id = '+str(index+3))
+	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request.select_all("sections")[index + 2].income))])
+	var values: Array = Request.select_all("subsections", '"__SS4" != title AND section_id = '+str(index+3)) + Request.select_all("subsections", '"__SS4" == title AND section_id = '+str(index+3))
 	$Subsection_id.visible = len(values) > 0
 	$Value.position.y = 407.0 if len(values) > 0 else 357.0
 	if len(values) > 0: Global.fill_optionButton($Subsection_id, values)
@@ -170,6 +170,6 @@ func _on_section_id_item_selected(index: int = 0) -> void:
 # Изменение родительского раздела
 func _on_parent_id_item_selected(index: int = 0) -> void:
 	$Section_id.selected = index
-	var income: bool = Request._select_all("sections")[index + 2].income
+	var income: bool = Request.select_all("sections")[index + 2].income
 	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
 	$Month_Limit.visible =  not income
