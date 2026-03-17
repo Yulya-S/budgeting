@@ -485,6 +485,7 @@ func _delete_loan(idx: String) -> void:
 func _delete_event(idx: String) -> void:
 	idx = str(select_all_id(Tables.MULTIPLIED_EVENTS, int(idx))[0].event_id)
 	_delete_record(Tables.EVENTS, int(idx))
+	_delete_and_update_ids(Tables.MULTIPLIED_EVENTS, "event_id = " + idx)
 	_del_upd_idx_and_values(Tables.NOTIFICATIONS, idx, "event_")
 
 # Запросы на получение данных
