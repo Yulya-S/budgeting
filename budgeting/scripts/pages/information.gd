@@ -27,7 +27,8 @@ func update_data() -> void:
 	for i in [$Filter/Title] + _get_labels(): Global.set_label_from_data(i, data)
 	if page_type == Global.Pages.SECTION:
 		File.set_lang($Filter/Title)
-		$ObjArray.update_section_inf_obj(Request._check_values_count("subsections", 0, "section_id = " + str(idx)))
+		$ObjArray.update_section_inf_obj(Request._check_values_count(
+			Request.Tables.SUBSECTIONS, 0, "section_id = " + str(idx)))
 	_run_update()
 
 # Получение списка заголовков для применения значений
@@ -45,7 +46,7 @@ func _get_filter(_obj: Variant) -> Array: return [filter_data]
 func _open_w(new_page: Global.Pages) -> void: SF.op_w(new_page, idx, Global.Dirs.WINDOWS, page_type)
 
 # Проверка что выбранный займ ещё не погашен
-func _check_loan() -> bool: return Request._check_values_count("loans", 0, "total>0 AND id=" + str(idx))
+func _check_loan() -> bool: return Request._check_loan_count("id=" + str(idx))
 
 # Обработки нажатий кнопок
 # Назад

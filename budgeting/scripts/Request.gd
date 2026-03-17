@@ -127,18 +127,26 @@ func _select_all_values_by_idx(table: Tables, idx: int, other: String = "") -> A
 # Проверки возможности открытия окон создания / изменения объектов
 func match_check(page_type: Global.Pages) -> void:
 	match page_type:
-		Global.Pages.CASH_FLOW: if not (_check_wallet_count() and _check_values_count(Tables.SECTIONS, 2)): return
-		Global.Pages.PAYMENT: if not (_check_wallet_count() and _check_values_count(Tables.LOANS, 0, "total > 0")): return
-		Global.Pages.TRANSFER: if not _check_values_count(Tables.WALLETS, 1): return
-		Global.Pages.PERCENT: if not _check_values_count(Tables.LOANS, 0, "total>0"): return
+		Global.Pages.TRANSFER: if not _check_wallet_count(1): return
+		Global.Pages.PERCENT: if not _check_loan_count(): return
+		Global.Pages.PAYMENT:
+			if not (_check_wallet_count() and _check_loan_count()): return
+		Global.Pages.CASH_FLOW:
+			if not (_check_wallet_count() and _check_values_count(Tables.SECTIONS, 2)): return
 	SF.op_w(page_type)
 
 # Проверка что количество записей в таблице кошельков больше определенного числа
 func _check_values_count(table: Variant, count: int = 0, where: String = "") -> bool:
 	return len(_select_all(table, where)) > count
 
-# Проверка чтобы количество кошельков было больше 0
-func _check_wallet_count() -> bool: return _check_values_count(Tables.WALLETS)
+# Проверка чтобы количество кошельков было больше определенного значения
+func _check_wallet_count(count: int = 0) -> bool:
+	return _check_values_count(Tables.WALLETS, count)
+
+# Проверка чтобы количество кошельков было больше определенного значения
+func _check_loan_count(where: String = "") -> bool:
+	if where: where = " AND " + where
+	return _check_values_count(Tables.LOANS, 0, "total > 0" + where)
 
 # Получение названия объекта под определенным индексом
 func _select_title(table: Tables, idx: int) -> String:
@@ -155,12 +163,15 @@ func _process(_delta: float) -> void:
 		match value.repetition_rate:
 			1: _insert_events_with_step(value, new_date, selected_date.day_count, 2)
 			2: _insert_events_with_step(value, new_date, selected_date.day_count, 7)
-			0:
-				if selected_date.date_comparison(new_date, "=="): _insert_multiplied_event(value, new_date)					
-				if selected_date.date.day != 1 and Global.date_comparison(next_month.date, new_date, "==", false): _insert_multiplied_event(value, new_date)
 			3, 4:
 				_insert_events_to_repetition_rate_3_4(value, new_date, selected_date.date)
-				if selected_date.date.day != 1: _insert_events_to_repetition_rate_3_4(value, new_date, next_month.date)
+				if selected_date.date.day != 1:
+					_insert_events_to_repetition_rate_3_4(value, new_date, next_month.date)
+			0:
+				if selected_date.date_comparison(new_date, "=="):
+					_insert_multiplied_event(value, new_date)
+				if next_month.date_comparison(new_date, "==", false) and selected_date.date.day != 1:
+					_insert_multiplied_event(value, new_date)
 
 # Получение данных из таблиц
 func _select(req_text: String, where: String = "", order: String = "", group: String = "") -> Array:
