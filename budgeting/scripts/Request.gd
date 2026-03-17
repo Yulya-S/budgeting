@@ -760,9 +760,9 @@ func _insert_transfer(values: Array) -> void:
 
 # Запрос на создание платежей по займу
 func _insert_payment(values: Array) -> void:
-	_insert(Tables.CASH_FLOWS, "section_id, subsection_id, wallet_id, wallet_2_id, value, date", [2, 2] + values)
+	_insert_witn_columns(Tables.CASH_FLOWS, values.slice(0, 2) + [2, 2] + values.slice(2))
 	_update_record(Tables.WALLETS, ["value"], ["value-" + values[2]], int(values[0]))
-	_update_record(Tables.LOANS, ["total"], ["total+" + values[2]], int(values[1]))
+	_update_record(Tables.LOANS, ["total"], ["total-" + values[2]], int(values[1]))
 
 # Запрос на создание процентов по займу
 func _insert_percent(values: Array) -> void:
@@ -816,6 +816,5 @@ func get_loan_total(idx: int, w2idx: int, date: String) -> float:
 
 # Проверка минимальной даты от которой можно провести транзакции по займам
 func loan_check_first_date(idx: int, date: String) -> bool:
-	_select('"' + date + '"<(SELECT date FROM cash_flows WHERE
-		subsection_id=1 AND wallet_2_id=' + str(idx) + ") res")
-	return bool(db.query_result[0].res)
+	return bool(_select('"' + date + '"<(SELECT date FROM cash_flows WHERE
+		subsection_id=1 AND wallet_2_id=' + str(idx) + ") res")[0].res)
