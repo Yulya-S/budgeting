@@ -55,7 +55,7 @@ func _on_registration_button_down() -> void:
 	if not _check_user(false):
 		Error.set_state(Error.States._E2)
 		return
-	Request._insert_record("users", ['"'+File.config.login+'"', '"'+File.config.password+'"', '"'+_generate_db_name()+'"'])
+	Request._insert_witn_columns("users", ['"'+File.config.login+'"', '"'+File.config.password+'"', '"'+_generate_db_name()+'"'])
 	_entrance()
 
 # Обработка нажатия кнопки входа
