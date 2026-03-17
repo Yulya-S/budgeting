@@ -135,15 +135,16 @@ func match_check(page_type: Global.Pages) -> void:
 			if not (_check_wallet_count() and _check_values_count(Tables.SECTIONS, 2)): return
 	SF.op_w(page_type)
 
-# Проверка что количество записей в таблице кошельков больше определенного числа
+# Функции проверки количества данных в таблице больше определенного значения
+# Количество объектов
 func _check_values_count(table: Variant, count: int = 0, where: String = "") -> bool:
 	return len(_select_all(table, where)) > count
 
-# Проверка чтобы количество кошельков было больше определенного значения
+# Количество кошельков
 func _check_wallet_count(count: int = 0) -> bool:
 	return _check_values_count(Tables.WALLETS, count)
 
-# Проверка чтобы количество кошельков было больше определенного значения
+# Количество займов
 func _check_loan_count(where: String = "") -> bool:
 	if where: where = " AND " + where
 	return _check_values_count(Tables.LOANS, 0, "total > 0" + where)
