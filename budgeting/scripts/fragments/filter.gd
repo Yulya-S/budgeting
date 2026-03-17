@@ -38,7 +38,7 @@ func get_filter() -> Dictionary:
 	for i in get_children():
 		if "OR" in filter.where.split("AND")[-1] and filter.where[-1] != ")": filter.where = "("+filter.where+")"
 		match i.name:
-			"Title": filter.where = Request.add_part_request("", title_pref+"title", i.get_text(), "LIKE")
+			"Title": filter.where = title_pref + 'title LIKE "%' + i.get_text() + '%"'
 			"Year": filter.date = [Global.get_OB_text(i)]
 			"Month": filter.date.append(i.selected + 1)
 			"Button": continue

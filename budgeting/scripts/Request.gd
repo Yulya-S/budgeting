@@ -25,12 +25,10 @@ func connection_user_db() -> void:
 	_open_db()
 	_create_table(Tables.USERS, ["login VARCHAR(255)", "password VARCHAR(255)", "base VARCHAR(255)"])
 
-# Проверка что в таблице есть объекты
-func _check_table(table: Tables) -> bool: return len(_select_all(table)) == 0
-
 # Создание стандартных объектов в таблице
 func _insert_standart(table: Tables, values: Array, substitution_data: Array = [0]) -> void:
-	if _check_table(table): for i in substitution_data: _insert_witn_columns(table, [i] + values)
+	if len(_select_all(table)) == 0:
+		for i in substitution_data: _insert_witn_columns(table, [i] + values)
 
 # Подключение базы данных
 func connection_db(db_name: String) -> void:
@@ -72,13 +70,6 @@ func _get_columns(table: Variant) -> Array:
 	for i in db.query_result: result.append(i.name)
 	result.pop_front()
 	return result
-
-# Добавление фрагмента текста в запрос
-func add_part_request(text: String, column: String, value: Variant, operator: String = "=", sep: String = " AND ") -> String:
-	if text: text += sep 
-	if operator == "LIKE": value = '"%' + str(value) + '%"'
-	text += column + " " + operator + " " + str(value)
-	return text
 
 # Создание записей
 # Отправка запроса на создание записи в таблице
@@ -153,40 +144,6 @@ func _check_wallet_count() -> bool: return _check_values_count(Tables.WALLETS)
 func _select_title(table: Tables, idx: int) -> String:
 	return _select("title FROM " + _get_table_name(table), "id = "+str(idx))[0].title
 
-# Получение кошелька по индексу
-func select_wallet(idx: int) -> Array: return _select_all_values_by_idx(Tables.WALLETS, idx)
-
-# Получение раздела по индексу
-func select_section(idx: int) -> Array: return _select_all_values_by_idx(Tables.SECTIONS, idx)
-
-# Получение займа по индексу
-func select_loan(idx: int) -> Array:
-	return _select("cf.*, l.title FROM cash_flows cf LEFT JOIN loans l ON l.id=wallet_2_id", "section_id=2 AND subsection_id=2 AND wallet_2_id="+str(idx))
-
-# Получение события по индексу
-func select_event(idx: int) -> Array:
-	var results: Array = _select_all_values_by_idx(Tables.EVENTS, idx)
-	for i in range(len(results)): results[i].repetition_rate += 1
-	return results
-
-# Получение среднего процента по займу при учете процесса погашения займа
-func select_loan_percent(idx: int) -> int:
-	var summ: float = 0.0
-	var percents: Array = []
-	for i in _select_all_values(Tables.CASH_FLOWS, "section_id=2 AND wallet_2_id="+str(idx), "date"):
-		match i.subsection_id:
-			1: summ = i.value
-			2: summ -= i.value
-			3:
-				percents.append((i.value * 100.) / summ)
-				summ += i.value
-	if len(percents) == 0: return 0
-	var result: float = 0
-	for i in percents:
-		result += i
-	return int(round(result / len(percents)))
-
-# Годится
 # Постепенное создание событий в таблице событий
 func _process(_delta: float) -> void:
 	if not completion_creation_et:
@@ -212,12 +169,6 @@ func _select(req_text: String, where: String = "", order: String = "", group: St
 	if order: order = " ORDER BY " + order
 	db.query("SELECT " + req_text + where + group + order + ";")
 	return db.query_result
-
-# Получение значения словаря из результата запроса
-func select_value(table: Variant, column: String) -> Variant:
-	var value: Array = _select_all(table)
-	if len(value) > 0: return value[0][column]
-	return null
 
 # Проверка существует выбранный пользователь
 func select_existence_user(login: bool) -> bool:
@@ -265,11 +216,6 @@ func select_past_funds_movements(date: String = Global.date_to_str()) -> float:
 # Получение движения средств
 func select_funds_movements() -> float: return _select(_funds_movements_text(), where_date())[0].value
 
-# Запрос на получение списка кошельков
-func _select_wallets_list(where: String, order: String) -> Array:
-	return _select("*, (SELECT cf.date FROM cash_flows cf WHERE (cf.section_id!=2
-		AND cf.wallet_2_id=w.id) OR cf.wallet_id=w.id ORDER BY cf.date DESC) last_date FROM wallets w",where,order)
-
 # Запрос на изменение списка кошельков
 func _update_wallets_list(line: Dictionary, date: String = Global.date_to_str()) -> Dictionary:
 	var value: Array = _select("SUM(IIF((cf.section_id=1 and cf.wallet_id="+str(line.id)+")OR cf.subsection_id=2 OR (s.income=0 and cf.section_id>2 and cf.wallet_id="+str(line.id)+"), cf.value*-1, cf.value)) value
@@ -283,52 +229,11 @@ func select_sections_list(where: String = "", date: String = Global.date_to_str(
 	return _select("s.*, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM `sections` s LEFT JOIN (SELECT cf.section_id, SUM(cf.value) v,
 		cf.date last_date, cf.id last_id FROM `cash_flows` cf WHERE "+where_date(date)+" GROUP BY cf.section_id) j ON s.id=j.section_id",where,order)
 
-# Запрос на изменение списка разделов
-func _update_sections_list(line: Dictionary, parent: Variant) -> Dictionary:
-	line["marker"] = ColorScheme.get_color(parent.obj_count(), len(parent.lines.change_list) + parent.obj_count())
-	line["progress"] = (100. * line.value) / line.month_limit
-	return line
-	
-# Запрос на получение списка подразделов
-func _select_subsections_list(where: String = "") -> Array:
-	return _select("ss.*, s.income, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM subsections ss LEFT JOIN sections s ON ss.section_id = s.id
-		LEFT JOIN (SELECT SUM(value) v, date last_date, id last_id, subsection_id FROM cash_flows cf GROUP BY section_id, subsection_id) j ON j.subsection_id = ss.id",
-		"ss.section_id = "+where.split(" = ")[-1], "last_date DESC, id DESC")
-
-# Запрос на получение списка движений средств
-func _select_cash_flows_list(where: String = "", date: String = Global.date_to_str(), order: String = "") -> Array:
-	if date != "":
-		if where != "": where = " AND " + where
-		where = where_date(date) + where
-	return _select("cf.*, s.title, COALESCE(ss.title, '') sub_title, s.income, w.title wallet_title FROM `cash_flows` cf LEFT JOIN sections s ON cf.section_id=s.id
-		LEFT JOIN wallets w ON cf.wallet_id=w.id LEFT JOIN subsections ss ON cf.subsection_id=ss.id", where, order)
-
-# Запрос на изменение списка разделов
-func _update_cash_flows_list(line: Dictionary) -> Dictionary:
-	match line.section_id:
-		1: line["wallet_2_title"] = _select_title(Tables.WALLETS, line.wallet_2_id)
-		2:
-			if line.subsection_id == 1: line["wallet_2_title"] = _select_title(Tables.LOANS, line.wallet_2_id)
-			else:
-				line["wallet_2_title"] = line.wallet_title
-				line.wallet_title = _select_title(Tables.LOANS, line.wallet_2_id)
-				var save_id: int = line.wallet_id if line.wallet_id else 0
-				line.wallet_id = line.wallet_2_id
-				line.wallet_2_id = save_id
-		_: if line.income:
-			line["wallet_2_title"] = line.wallet_title
-			line.wallet_2_id = line.wallet_id
-	return line
-	
 # Получение суммы движений средств распределенных по дням
 func select_cash_flow_graphics(where: String, date: String = Global.date_to_str()) -> Array:
 	if where: where = " AND " + where
 	return _select("SUM(CASE WHEN cf.section_id=1 OR cf.subsection_id=3 THEN 0 WHEN cf.subsection_id = 2 OR (s.income = 0 AND s.month_limit<>-1)  THEN cf.value * -1 ELSE cf.value END) value,
 		strftime('%d', cf.date) day FROM cash_flows cf LEFT JOIN sections s ON cf.section_id=s.id ", where_date(date)+where, "", "cf.date")
-
-# Получение списка займов
-func _select_loans_list(where: String = "", order: String = "") -> Array:
-	return _select("l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.subsection_id=1 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id", where, order)
 
 # Добавление событий во временную таблицу
 func _insert_multiplied_event(value: Dictionary, date: Dictionary) -> void:
@@ -357,19 +262,16 @@ func _insert_events_to_repetition_rate_3_4(value: Dictionary, new_date: Dictiona
 		if selected_date.day_count >= new_date.day: _insert_multiplied_event(value, new_date)
 	elif new_date.month == date.month and selected_date.day_count >= new_date.day: _insert_multiplied_event(value, new_date)
 	elif new_date.month == Global.get_other_month(date).month and last_month_day_count < new_date.day: _insert_multiplied_event(value, new_date)
-		
-# Получение событий в текущем месяце с датой первого появления
-func _select_events_list(date: String, date2: String) -> Array:
-	return _select("*, Date(julianday(date) + juli + CASE WHEN juli<0 THEN juli*-1 WHEN repetition_rate=1 THEN juli%2
-		WHEN repetition_rate=2 THEN 7-juli%7 ELSE juli*-1 END) new_date FROM (SELECT *, (julianday(Date('"+date+\
-		"'))-julianday(date)) juli FROM events) AS event", where_date(date2, "date", "<="), "new_date")
-	
+
 # Начало создания таблицы событий
 func start_create_multiplied_events_table(date: String) -> void:
 	selected_date.set_value(date)
 	next_month.set_value(Global.get_other_month(selected_date.date, true))
 	last_month_day_count = select_day_count(Global.get_other_month(date))
-	events = _select_events_list(date, date if selected_date.date.day < selected_date.day_count - 14 else Global.date_to_str(next_month.date))
+	events = _select("*, Date(julianday(date) + juli + CASE WHEN juli<0 THEN juli*-1 WHEN repetition_rate=1 THEN juli%2
+		WHEN repetition_rate=2 THEN 7-juli%7 ELSE juli*-1 END) new_date FROM (SELECT *, (julianday(Date('"+date+\
+		"'))-julianday(date)) juli FROM events) AS event",
+		where_date(date if selected_date.date.day < selected_date.day_count - 14 else Global.date_to_str(next_month.date), "date", "<="), "new_date")
 	_delete(Tables.MULTIPLIED_EVENTS)
 	_update(Tables.SQLITE_SEQUENCE, ["seq"], ["0"], 'name="multiplied_events"')
 	completion_creation_et = false
@@ -382,82 +284,89 @@ func select_multiplied_events_list(where: String = "") -> Array:
 # Фрагмент запроса на получение суммы значений по таблице
 func _table_sum(table: Variant) -> String: return _coalesce("value")+" value FROM " + _get_table_name(table)
 
-# Запрос на изменение списка разделов
-func _update_events_list(line: Dictionary) -> Dictionary:
-	if line.event_type == 1:
-		line["profit_accounting"] = _select(_table_sum(Tables.WALLETS))[0].value + _select(_table_sum(Tables.MULTIPLIED_EVENTS), 'event_type=2 AND date<"'+line.date+'"')[0].value - line.value
-	return line
-
-# Запрос на получение списка событий без дубликации записей
-func _select_unique_events() -> Array: return _select("title, event_id FROM multiplied_events GROUP BY event_id")
-
 # Получение списка дней с покрайней мере одним событием
 func select_event_days(where: String = "") -> Array: return _select("date FROM multiplied_events", where, "", "date")
 
 # Фрагмент разпроса на получение спика отчето по счетам
 func _coalesce_select_fr() -> String: return "COALESCE((SELECT SUM(cf.value) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id "
 
-# Запрос на получение списка отчета по счетам
-func _select_wallets_report(date: String = Global.date_to_str()) -> Array:
-	return _select("w.id, w.title, " + _coalesce_select_fr() +
-		"WHERE ((cf.wallet_id=w.id AND (s.income=1 OR cf.subsection_id=1)) OR (cf.section_id=1 AND cf.wallet_2_id=w.id)) AND "+where_date(date, "cf.date")+"), 0.0) income, "+
-		_coalesce_select_fr()+"WHERE ((cf.wallet_id=w.id AND ((s.income=0 AND cf.section_id>2) OR cf.subsection_id = 2)) OR (cf.section_id=1 AND cf.wallet_id=w.id)) AND "+where_date(date, "cf.date")+"), 0.0) expenditure,
-		COALESCE((SELECT SUM(IIF((cf.section_id=1 and cf.wallet_id=w.id)OR cf.subsection_id=2 OR (s.income=0 and cf.section_id>2 and cf.wallet_id=w.id), cf.value*-1, cf.value)) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id WHERE (cf.wallet_id=w.id or (cf.wallet_2_id=w.id and cf.section_id=1)) AND "+where_date(date, "cf.date", "<")+"), 0.0) cash_flow
-		FROM wallets w")
-
-# Запрос на получение списка отчета по разделам
-func _select_sections_report(date: String = Global.date_to_str()) -> Array:
-	return _select("* FROM (SELECT t.id, t.title,"+ _coalesce_select_fr() + \
-		"WHERE (s.income=1 OR cf.subsection_id=1) AND cf.section_id=t.id AND "+where_date(date, "cf.date")+"), 0.0) income, "+
-		_coalesce_select_fr()+"WHERE s.income=0 AND (cf.section_id>2 OR cf.subsection_id=2) AND cf.section_id=t.id AND "+where_date(date, "cf.date")+"), 0.0) expenditure
-		FROM sections t WHERE t.id != 1) WHERE (income != 0 OR expenditure != 0)")
-
-# Запрос на изменение списка отчета
-func _update_reports_list(line: Dictionary) -> Dictionary:
-	line["value"] = line.cash_flow + line.income - line.expenditure
-	return line
-
 # Распределение запросов для заполнения списков на страницах
 func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Array:
 	match list_element:
-		ObjectVariants.WALLET: return _select_wallets_list(filter_data.where, filter_data.order)
+		ObjectVariants.WALLET:
+			return _select("*, (SELECT cf.date FROM cash_flows cf WHERE (cf.section_id!=2
+				AND cf.wallet_2_id=w.id) OR cf.wallet_id=w.id ORDER BY cf.date DESC) last_date FROM wallets w", filter_data.where, filter_data.order)
 		ObjectVariants.SECTION: return select_sections_list(filter_data.where, filter_data.date, filter_data.order)
-		ObjectVariants.SUBSECTION: return _select_subsections_list(filter_data.where)
-		ObjectVariants.CASH_FLOW: return _select_cash_flows_list(filter_data.where, filter_data.date, filter_data.order)
-		ObjectVariants.LOAN: return _select_loans_list(filter_data.where, filter_data.order)
+		ObjectVariants.SUBSECTION:
+			return _select("ss.*, s.income, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM subsections ss LEFT JOIN sections s ON ss.section_id = s.id
+				LEFT JOIN (SELECT SUM(value) v, date last_date, id last_id, subsection_id FROM cash_flows cf GROUP BY section_id, subsection_id) j ON j.subsection_id = ss.id",
+				"ss.section_id = "+filter_data.where.split(" = ")[-1], "last_date DESC, id DESC")
+		ObjectVariants.CASH_FLOW:
+			var where: String = filter_data.where
+			if filter_data.date != "":
+				if where != "": where = " AND " + where
+				where = where_date(filter_data.date) + where
+			return _select("cf.*, s.title, COALESCE(ss.title, '') sub_title, s.income, w.title wallet_title FROM `cash_flows` cf LEFT JOIN sections s ON cf.section_id=s.id
+				LEFT JOIN wallets w ON cf.wallet_id=w.id LEFT JOIN subsections ss ON cf.subsection_id=ss.id", where, filter_data.order)
+		ObjectVariants.LOAN: return _select("l.*, cf.wallet_id, w.title wallet_title, cf.value FROM loans l LEFT JOIN cash_flows cf ON cf.subsection_id=1 AND cf.wallet_2_id=l.id LEFT JOIN wallets w ON cf.wallet_id=w.id", filter_data.where, filter_data.order)
 		ObjectVariants.EVENT: return select_multiplied_events_list()
-		ObjectVariants.REPORT_W: return _select_wallets_report(filter_data.date)
-		ObjectVariants.REPORT_S: return _select_sections_report(filter_data.date)
-		ObjectVariants.NOTIFICATION: return _select_notifications_list()
+		ObjectVariants.REPORT_W:
+			return _select("w.id, w.title, " + _coalesce_select_fr() +
+				"WHERE ((cf.wallet_id=w.id AND (s.income=1 OR cf.subsection_id=1)) OR (cf.section_id=1 AND cf.wallet_2_id=w.id)) AND "+where_date(filter_data.date, "cf.date")+"), 0.0) income, "+
+				_coalesce_select_fr()+"WHERE ((cf.wallet_id=w.id AND ((s.income=0 AND cf.section_id>2) OR cf.subsection_id = 2)) OR (cf.section_id=1 AND cf.wallet_id=w.id)) AND "+where_date(filter_data.date, "cf.date")+"), 0.0) expenditure,
+				COALESCE((SELECT SUM(IIF((cf.section_id=1 and cf.wallet_id=w.id)OR cf.subsection_id=2 OR (s.income=0 and cf.section_id>2 and cf.wallet_id=w.id), cf.value*-1, cf.value)) FROM cash_flows cf LEFT JOIN sections s on cf.section_id=s.id
+				WHERE (cf.wallet_id=w.id or (cf.wallet_2_id=w.id and cf.section_id=1)) AND "+where_date(filter_data.date, "cf.date", "<")+"), 0.0) cash_flow FROM wallets w")
+		ObjectVariants.REPORT_S:
+			return _select("* FROM (SELECT t.id, t.title,"+ _coalesce_select_fr() + \
+				"WHERE (s.income=1 OR cf.subsection_id=1) AND cf.section_id=t.id AND "+where_date(filter_data.date, "cf.date")+"), 0.0) income, "+
+				_coalesce_select_fr()+"WHERE s.income=0 AND (cf.section_id>2 OR cf.subsection_id=2) AND cf.section_id=t.id AND "+where_date(filter_data.date, "cf.date")+"), 0.0) expenditure
+				FROM sections t WHERE t.id != 1) WHERE (income != 0 OR expenditure != 0)")
+		ObjectVariants.NOTIFICATION:
+			return _select("e.title, n.* FROM notifications n LEFT JOIN events e ON n.event_id=e.id", "", "n.date DESC")
 		ObjectVariants.FAST_CREATION: return _select_fast_creations_list()
-		ObjectVariants.WALLET_TRANSACTION: return _select_wts_list(filter_data.where)
+		ObjectVariants.WALLET_TRANSACTION:
+			var idx: String = filter_data.where.split(")")[0].split("_id = ")[-1]
+			return _select("s.id, s.title, COUNT(cf.id) count, SUM(IIF((NOT s.income AND cf.section_id!= 1 AND cf.subsection_id!=1)
+				OR cf.subsection_id = 2 OR (cf.section_id = 1 AND cf.wallet_id = "+idx+"), cf.value * -1, cf.value)) value FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id ", filter_data.where, "", "cf.section_id")
 	return []
 
 # Распределение запросов на обновление элементов списков на страницах
 func match_update_list_element(list_element: ObjectVariants, line: Dictionary, parent = null) -> Dictionary:
 	match list_element:
 		ObjectVariants.WALLET: return _update_wallets_list(line)
-		ObjectVariants.SECTION, ObjectVariants.SUBSECTION: return _update_sections_list(line, parent)
-		ObjectVariants.CASH_FLOW: return _update_cash_flows_list(line)
-		ObjectVariants.LOAN: return _update_loans_list(line)
-		ObjectVariants.EVENT: return _update_events_list(line)
-		ObjectVariants.REPORT_W: return _update_reports_list(line)
+		ObjectVariants.SECTION, ObjectVariants.SUBSECTION:
+			line["marker"] = ColorScheme.get_color(parent.obj_count(), len(parent.lines.change_list) + parent.obj_count())
+			line["progress"] = (100. * line.value) / line.month_limit
+		ObjectVariants.CASH_FLOW:
+			match line.section_id:
+				1: line["wallet_2_title"] = _select_title(Tables.WALLETS, line.wallet_2_id)
+				2:
+					if line.subsection_id == 1: line["wallet_2_title"] = _select_title(Tables.LOANS, line.wallet_2_id)
+					else:
+						line["wallet_2_title"] = line.wallet_title
+						line.wallet_title = _select_title(Tables.LOANS, line.wallet_2_id)
+						var save_id: int = line.wallet_id if line.wallet_id else 0
+						line.wallet_id = line.wallet_2_id
+						line.wallet_2_id = save_id
+				_: if line.income:
+					line["wallet_2_title"] = line.wallet_title
+					line.wallet_2_id = line.wallet_id
+		ObjectVariants.LOAN: line["percent"] = _select_loan_percent(line.id)
+		ObjectVariants.EVENT:
+			if line.event_type == 1:
+				line["profit_accounting"] = _select(_table_sum(Tables.WALLETS))[0].value + _select(_table_sum(Tables.MULTIPLIED_EVENTS), 'event_type=2 AND date<"'+line.date+'"')[0].value - line.value
+		ObjectVariants.REPORT_W: line["value"] = line.cash_flow + line.income - line.expenditure
 	return line
 
-# Функции очистки данных
-# Изменение значений id в таблице движений средств
-func _table_ids_update(table: Variant = "cash_flows") -> void:
+# Удаление данных из  таблицы и изменение индексов в ней
+func _delete_and_update_ids(table: Variant, where: String = "") -> void:
+	_delete(table, where)
 	_create_table(Tables.TEMP_TABLE, ["old_id INTEGER"])
 	db.query("INSERT INTO temp_table (old_id) SELECT ROWID FROM " + _get_table_name(table) + ";")
 	var sel: String = "(SELECT id FROM temp_table WHERE old_id = " + _get_table_name(table) + ".id)"
 	_update(table, ["id"], [sel], "EXISTS " + sel)
 	_update(Tables.SQLITE_SEQUENCE, ["seq"], ["(SELECT COUNT(*) FROM "+_get_table_name(table)+")"], 'name = "' + _get_table_name(table) + '"')
 	db.query("DROP TABLE temp_table;")
-
-# Удаление днных из  таблицы и изменение индексов в ней
-func _delete_and_update_ids(table: Variant, where: String = "") -> void:
-	_delete(table, where)
-	_table_ids_update(table)
 
 # Очистка движений средств
 func clear_cash_flows() -> void:
@@ -492,17 +401,11 @@ func clear_loans() -> void:
 # Запрос на поиск непрочитанных уведомлений
 func presence_unread_notifications() -> bool: return _select("COUNT(id) count FROM notifications", "new")[0].count != 0
 
-# Проверка наличия уведомлений за текущую дату
-func checking_notifications() -> bool: return _check_values_count(Tables.NOTIFICATIONS, 0, 'date == "'+Global.date_to_str()+'"')
-
 # Получение списка событий для создания уведомлений
 func select_notif_events(date: String) -> Array: return _select_all_values(Tables.MULTIPLIED_EVENTS, 'date <= "'+Global.date_to_str()+'" AND date > "'+date+'" AND strftime("%m", date) = strftime("%m", "'+date+'")')
 
 # Создание уведомления из события
 func insert_notifications(line: Dictionary) -> void: _insert_witn_columns(Tables.NOTIFICATIONS, [line.event_id, true, '"'+line.date+'"'])
-
-# Запрос на получение списка уведомлений
-func _select_notifications_list() -> Array: return _select("e.title, n.* FROM notifications n LEFT JOIN events e ON n.event_id=e.id", "", "n.date DESC")
 
 # Удаление пометки о нивизне уведомления
 func update_notifications_new() -> void: _update(Tables.NOTIFICATIONS, ["new"], [0])
@@ -552,12 +455,6 @@ func update_fc_section(idx: int, section_id: int) -> int:
 # Изменение значения подраздела для быстрого создания записей
 func update_fc_subsection(idx: int, subsection_id: Variant) -> void: _update_record(Tables.FAST_CREATIONS, ["subsection_id"], [subsection_id], idx)
 
-# Страница информации
-# Запрос на получение списка транзакций для выбранного кошелька
-func _select_wts_list(where: String) -> Array:
-	var idx: String = where.split(")")[0].split("_id = ")[-1]
-	return _select("s.id, s.title, COUNT(cf.id) count, SUM(IIF((NOT s.income AND cf.section_id!= 1 AND cf.subsection_id!=1) OR cf.subsection_id = 2 OR (cf.section_id = 1 AND cf.wallet_id = "+idx+"), cf.value * -1, cf.value)) value FROM cash_flows cf LEFT JOIN sections s ON s.id = cf.section_id ", where, "", "cf.section_id")
-
 # Запрос на получение общей информаци об объекте
 func select_inf_data(where: String, idx: int, type: Global.Pages) -> Dictionary:
 	if where == "": return {}
@@ -589,11 +486,6 @@ func _select_loan_percent(idx: int) -> String:
 	if count == 0: return str(0) + " %"
 	return str(int(round(result / count))) + " %"
 
-# Запрос на изменение списка займов
-func _update_loans_list(line: Dictionary) -> Dictionary:
-	line["percent"] = _select_loan_percent(line.id)
-	return line
-
 # Получение значений для построения графика займов
 func select_loan_graphics(idx: int) -> Array:
 	if idx == 0: return []
@@ -603,44 +495,24 @@ func select_loan_graphics(idx: int) -> Array:
 # Распределение запросов для получения объектов таблиц
 func match_elem(idx: String, obj_type: Global.Pages) -> Dictionary:
 	match obj_type:
-		Global.Pages.WALLET: return _select_wallet_obj(idx)
-		Global.Pages.SECTION: if int(idx) > 2: return _select_section_obj(idx)
-		Global.Pages.SUBSECTION: if int(idx) > 3: return _select_subsection_obj(idx)
-		Global.Pages.LOAN: return _select_loan_obj(idx)
-		Global.Pages.EVENT: return _select_event_obj(idx)
-		_: return _select_cash_flow_obj(idx)
+		Global.Pages.WALLET: return _select_all_values_by_idx(Tables.WALLETS, int(idx))[0]
+		Global.Pages.SECTION: if int(idx) > 2:
+			var value: Dictionary = _select_all_values_by_idx(Tables.SECTIONS, int(idx))[0]
+			if value.month_limit == -1.0: value.month_limit = 0.0
+			return value
+		Global.Pages.SUBSECTION: if int(idx) > 3:
+			var value: Dictionary = _select_all_values_by_idx(Tables.SUBSECTIONS, int(idx))[0]
+			if value.title == "__SS4": return {}
+			if value.month_limit == -1.0: value.month_limit = 0.0
+			return value
+		Global.Pages.LOAN:
+			if _select("COUNT(id) count FROM cash_flows", "subsection_id IN (2, 3) AND wallet_2_id = " + idx)[0].count > 0: return {}
+			return _select("cf.*, l.title FROM cash_flows cf LEFT JOIN loans l ON cf.wallet_2_id=l.id", "subsection_id=1 AND wallet_2_id = " + idx)[0]
+		Global.Pages.EVENT:
+			idx = str(_select_all_values_by_idx(Tables.MULTIPLIED_EVENTS, int(idx))[0].event_id)
+			return _select_all_values_by_idx(Tables.EVENTS, int(idx))[0]
+		_: return _select_all_values_by_idx(Tables.CASH_FLOWS, int(idx))[0]
 	return {}
-	
-# Запрос на получение объекта таблицы счетов
-func _select_wallet_obj(idx: String) -> Dictionary:
-	return _select_all_values_by_idx(Tables.WALLETS, int(idx))[0]
-
-# Запрос на получение объекта таблицы разделов
-func _select_section_obj(idx: String) -> Dictionary:
-	var value: Dictionary = _select_all_values_by_idx(Tables.SECTIONS, int(idx))[0]
-	if value.month_limit == -1.0: value.month_limit = 0.0
-	return value
-	
-# Запрос на получение объекта таблицы подразделов
-func _select_subsection_obj(idx: String) -> Dictionary:
-	var value: Dictionary = _select_all_values_by_idx(Tables.SUBSECTIONS, int(idx))[0]
-	if value.title == "__SS4": return {}
-	if value.month_limit == -1.0: value.month_limit = 0.0
-	return value
-
-# Запрос на получение объекта таблицы движений средств
-func _select_cash_flow_obj(idx: String) -> Dictionary:
-	return _select_all_values_by_idx(Tables.CASH_FLOWS, int(idx))[0]
-
-# Запрос на получение объекта таблицы займов
-func _select_loan_obj(idx: String) -> Dictionary:
-	if _select("COUNT(id) count FROM cash_flows", "subsection_id IN (2, 3) AND wallet_2_id = " + idx)[0].count > 0: return {}
-	return _select("cf.*, l.title FROM cash_flows cf LEFT JOIN loans l ON cf.wallet_2_id=l.id", "subsection_id=1 AND wallet_2_id = " + idx)[0]
-
-# Запрос на получение обекта таблицы событий
-func _select_event_obj(idx: String) -> Dictionary:
-	idx = str(_select_all_values_by_idx(Tables.MULTIPLIED_EVENTS, int(idx))[0].event_id)
-	return _select_all_values_by_idx(Tables.EVENTS, int(idx))[0]
 
 # Обработчик действий с объектами
 func match_actions(action_type: ActionTypes, obj_type: Global.Pages, idx: String, values: Array = []) -> void:
@@ -654,7 +526,7 @@ func match_actions(action_type: ActionTypes, obj_type: Global.Pages, idx: String
 func _del_upd_idx_and_values(table: Variant, idx: Variant, name_fr: String = "", other: String = "") -> void:
 	_delete_and_update_ids(table, name_fr + "id = " + str(idx) + other)
 	_update(table, [name_fr + "id"], [name_fr + "id - 1"], name_fr + "id > " + idx)
-	
+
 # Запрос на удаление кошелька
 func _delete_wallet(idx: String) -> void:
 	_delete_record(Tables.WALLETS, int(idx)) # Удаление кошелька
