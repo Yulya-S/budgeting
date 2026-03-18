@@ -613,8 +613,11 @@ func _select_loan_percent(idx: int) -> String:
 # Значения для построения графика займов
 func select_loan_graphics(idx: int) -> Array:
 	if idx == 0: return []
-	return select("SUM(IIF(subsection_id=2, value*-1, value)) value, date as day
-		FROM cash_flows", "wallet_2_id=" + str(idx) + " AND section_id=2", "", "day")
+	var result: Array = select("IIF(subsection_id=2, value*-1, value) value, DENSE_RANK() OVER (ORDER BY date) as day
+		FROM cash_flows", "wallet_2_id=" + str(idx) + " AND section_id=2")
+	result += select("COUNT(DISTINCT date) count FROM cash_flows",
+		"wallet_2_id=" + str(idx) + " AND section_id=2")
+	return result
 
 # Сумма займа до выбранной даты
 func get_loan_total(idx: int, w2idx: int, date: String) -> float:

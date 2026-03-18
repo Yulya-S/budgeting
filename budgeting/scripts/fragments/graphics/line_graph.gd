@@ -8,12 +8,16 @@ var values: Array = [] # Данные для отображения
 
 # Отрисовка графика
 func _draw() -> void:
-	if len(values) == 0: return
+	if _is_loan():
+		print(values)
+		var values_count: int = values.pop_back().count
+		var v: Array = []
+		for i in values: v.append(i.value)
+		_loan([v.max(), v.min() * -1].max(), (size.x - 25) / (values_count - 1))
+		return
 	var max_value: float = [values.max(), values.min() * -1].max()
-	match graph_type:
-		GraphTypes.REPORT: _report(max_value)
-		GraphTypes.LOAN: _loan(max_value)
-		GraphTypes.CANDLESTICK: _candlestick(max_value)
+	if graph_type == GraphTypes.REPORT: _report(max_value)
+	else: _candlestick(max_value)
 
 # Проверка что типом графика являеся - займ
 func _is_loan() -> bool: return graph_type == GraphTypes.LOAN
@@ -24,7 +28,7 @@ func update_data(filter: Variant = {}) -> void:
 	var filter_data: Dictionary = Global.get_filter(filter)
 	var data: Array = []
 	var req_res: Array = _get_data(filter_data)
-	if _is_loan(): for i in req_res: data.append(i.value)
+	if _is_loan(): data = req_res
 	else:
 		for i in range(Request.select_day_count(filter_data.date)): data.append(0.0)
 		for i in req_res: data[int(i.day) - 1] = i.value
@@ -39,7 +43,7 @@ func _get_data(filter: Dictionary = {}) -> Array:
 # Получение значений для заполнения графика
 func _update_values(data: Array, filter: Dictionary) -> Array:
 	match graph_type:
-		GraphTypes.LOAN: for i in range(1, len(data)): data[i] += data[i - 1]
+		GraphTypes.LOAN: for i in range(1, len(data) - 1): data[i].value += data[i - 1].value
 		GraphTypes.REPORT:
 			var total: float = Request.select_past_funds_movements(filter.date)
 			for i in range(len(data)):
@@ -57,10 +61,8 @@ func _draw_str(x, y, text: String, step, border) -> void:
 	draw_string(ThemeDB.fallback_font, Vector2(x, y), text, HORIZONTAL_ALIGNMENT_CENTER, step, 8, border)
 
 # Виды графиков
-# Общая часть для линейных графиков
-func _line(idx: int, values_array: Array, max_value: float, x_step: float, height: float) -> void:
-	var vectors: Array = []
-	for i in range(2): vectors.append(_get_vector(height, values_array, max_value, x_step, idx + i))
+# Отрисовка точек на графике
+func _line_and_dots(vectors: Array):
 	draw_line(vectors[0], vectors[1], Color.FIREBRICK, 2)
 	for i in range(2): draw_circle(vectors[i], 3, Color.FIREBRICK)
 
@@ -68,15 +70,24 @@ func _line(idx: int, values_array: Array, max_value: float, x_step: float, heigh
 func _report(max_value: float, x_step: float = (size.x - 25) / (len(values) - 1)) -> void:
 	draw_line(Vector2(10, 116), Vector2(10, 6), ColorScheme.border_color(), 2)
 	draw_line(Vector2(10, 60), Vector2(1142.0, 60), ColorScheme.border_color(), 2)
-	for i in range(len(values)-1): _line(i, values, max_value, x_step, 55.)
+	for i in range(len(values)-1):
+		var vectors: Array = []
+		for l in range(2):
+			vectors.append(Vector2(x_step * (i + l) + 10., (55. * values[i + l] / max_value) * -1 + 60))
+		_line_and_dots(vectors)
 
 # Линейный для займов
-func _loan(max_value: float, x_step: float = (size.x - 25) / (len(values) - 1)) -> void:
+func _loan(max_value: float, x_step: float) -> void:
 	draw_line(Vector2(10, 120), Vector2(10, 4), ColorScheme.border_color(), 2)
 	draw_line(Vector2(10, 120), Vector2(1142, 120), ColorScheme.border_color(), 2)
 	if len(values) == 1: draw_circle(Vector2(10., 55.), 3, Color.FIREBRICK)
 	if len(values) < 2: return # Отмена отрисовки графика
-	for i in range(len(values)-1): _line(i, values, max_value, x_step, 102.)
+	for i in range(len(values)-1):
+		var vectors: Array = []
+		for l in range(2):
+			vectors.append(Vector2(x_step * (values[i + l].day - 1) + 10.,
+				(102. * values[i + l].value / max_value) * -1 + 107))
+		_line_and_dots(vectors)
 
 # Свечной
 func _candlestick(max_value: float, x_step: float = (size.x - 20.) / len(values)) -> void:
