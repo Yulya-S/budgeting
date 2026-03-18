@@ -53,7 +53,8 @@ func _get_vector(height: float, v_array: Array, max_v: float, step: float, idx: 
 
 # Отрисовка текста на графике
 func _draw_str(x, y, text: String, step, border) -> void:
-	draw_string(ThemeDB.fallback_font, Vector2(x, y), text, HORIZONTAL_ALIGNMENT_CENTER, step, 9, border)
+	if len(text) > 8: return
+	draw_string(ThemeDB.fallback_font, Vector2(x, y), text, HORIZONTAL_ALIGNMENT_CENTER, step, 8, border)
 
 # Виды графиков
 # Общая часть для линейных графиков
@@ -78,9 +79,9 @@ func _loan(max_value: float, x_step: float = (size.x - 25) / (len(values) - 1)) 
 	for i in range(len(values)-1): _line(i, values, max_value, x_step, 102.)
 
 # Свечной
-func _candlestick(max_value: float, x_step: float = size.x / len(values)) -> void:
+func _candlestick(max_value: float, x_step: float = (size.x - 20.) / len(values)) -> void:
 	for i in range(len(values)):
-		var x: float = x_step * i
+		var x: float = (x_step * i) + 10.
 		var border_color: Color = ColorScheme.border_color()
 		_draw_str(x, 120, str(int(i) + 1), x_step, border_color)
 		if values[i] == 0: continue # Отмена отрисовки если значение точки отсутствует
