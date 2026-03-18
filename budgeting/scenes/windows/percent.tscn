@@ -73,5 +73,4 @@ offset_top = 163.0
 offset_right = 999.0
 offset_bottom = 473.0
 
-[connection signal="item_selected" from="Wallet_2_id" to="." method="_on_loan_item_selected"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]
