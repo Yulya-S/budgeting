@@ -11,8 +11,7 @@ color = Color(0.670588, 0.733333, 0.72549, 1)
 script = ExtResource("1_uohb5")
 
 [node name="Hints" type="Label" parent="."]
-layout_mode = 0
-offset_left = 576.0
+offset_left = 38.0
 offset_top = 10.0
 offset_right = 1062.0
 offset_bottom = 52.0
@@ -25,6 +24,7 @@ theme_override_font_sizes/font_size = 30
 text = "Инструкция"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Close" type="Button" parent="."]
 layout_mode = 0
@@ -39,17 +39,6 @@ text = "X"
 
 [node name="Next" type="Button" parent="."]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 596.0
-offset_right = 60.0
-offset_bottom = 638.0
-tooltip_text = "Отменить изменения"
-theme_override_constants/outline_size = 14
-theme_override_font_sizes/font_size = 24
-text = "X"
-
-[node name="Last" type="Button" parent="."]
-layout_mode = 0
 offset_left = 1092.0
 offset_top = 596.0
 offset_right = 1142.0
@@ -58,6 +47,17 @@ tooltip_text = "Отменить изменения"
 theme_override_constants/outline_size = 14
 theme_override_font_sizes/font_size = 24
 text = ">"
+
+[node name="Last" type="Button" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 596.0
+offset_right = 60.0
+offset_bottom = 638.0
+tooltip_text = "Отменить изменения"
+theme_override_constants/outline_size = 14
+theme_override_font_sizes/font_size = 24
+text = "<"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(574, 277)
@@ -89,6 +89,7 @@ offset_bottom = 638.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
+text_overrun_behavior = 3
 
 [node name="Label" type="Label" parent="Count"]
 layout_mode = 0
@@ -108,6 +109,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "1"
 horizontal_alignment = 2
+text_overrun_behavior = 3
 
 [connection signal="button_down" from="Close" to="." method="_on_close_button_down"]
 [connection signal="button_down" from="Next" to="." method="_on_next_button_down"]

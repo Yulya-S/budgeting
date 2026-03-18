@@ -96,6 +96,7 @@ offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Фрагмент названия"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Status" type="OptionButton" parent="Filter"]
 layout_mode = 0
@@ -104,6 +105,8 @@ offset_top = 24.0
 offset_right = 568.25
 offset_bottom = 55.0
 alignment = 1
+text_overrun_behavior = 3
+clip_text = true
 selected = 0
 item_count = 3
 popup/item_0/id = 0
@@ -121,6 +124,7 @@ offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Статус"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Order" type="OptionButton" parent="Filter"]
 layout_mode = 0
@@ -149,6 +153,7 @@ offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Порядок сортировки"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Button" type="Button" parent="Filter"]
 layout_mode = 0
@@ -157,6 +162,8 @@ offset_top = 24.0
 offset_right = 1136.25
 offset_bottom = 55.0
 text = "Применить"
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="ObjArray" parent="." instance=ExtResource("3_d4621")]
 layout_mode = 0

@@ -33,6 +33,7 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 20
 theme_override_font_sizes/font_size = 28
 text = "0.0"
+text_overrun_behavior = 3
 
 [node name="Label" type="Label" parent="Menu/Budget"]
 layout_mode = 0
@@ -45,6 +46,7 @@ theme_override_constants/outline_size = 20
 theme_override_font_sizes/font_size = 28
 text = "Бюджет:"
 horizontal_alignment = 2
+text_overrun_behavior = 3
 
 [node name="CashFlow" type="Label" parent="Menu"]
 layout_mode = 0
@@ -57,6 +59,7 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 20
 theme_override_font_sizes/font_size = 28
 text = "0.0"
+text_overrun_behavior = 3
 
 [node name="Label" type="Label" parent="Menu/CashFlow"]
 layout_mode = 0
@@ -69,6 +72,7 @@ theme_override_constants/outline_size = 20
 theme_override_font_sizes/font_size = 28
 text = "Денежный поток:"
 horizontal_alignment = 2
+text_overrun_behavior = 3
 
 [node name="ObjArray" type="ScrollContainer" parent="."]
 layout_mode = 0
@@ -93,6 +97,7 @@ offset_bottom = 40.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Список счетов"
+text_overrun_behavior = 3
 
 [node name="ObjArray" parent="ObjArray/VBoxContainer/Wallets" instance=ExtResource("3_ii1de")]
 layout_mode = 0
@@ -120,6 +125,7 @@ offset_bottom = 40.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Расходы по статьям"
+text_overrun_behavior = 3
 
 [node name="PieChart" parent="ObjArray/VBoxContainer/Sections" instance=ExtResource("4_1kehw")]
 offset_left = 25.0
@@ -154,6 +160,7 @@ offset_bottom = 40.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Распределение движений средств"
+text_overrun_behavior = 3
 
 [node name="DailyTransactions" parent="ObjArray/VBoxContainer/Cash_flows" instance=ExtResource("6_yvt7d")]
 layout_mode = 0
@@ -174,6 +181,7 @@ offset_bottom = 40.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Ближайшие события"
+text_overrun_behavior = 3
 
 [node name="Calendar" type="HBoxContainer" parent="ObjArray/VBoxContainer/Events"]
 layout_mode = 0

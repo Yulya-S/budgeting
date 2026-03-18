@@ -92,6 +92,7 @@ offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Имя счёта"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Section" type="OptionButton" parent="Filter"]
 layout_mode = 0
@@ -116,6 +117,7 @@ offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Статья"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Order" type="OptionButton" parent="Filter"]
 layout_mode = 0
@@ -146,6 +148,7 @@ offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Порядок сортировки"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Year" type="OptionButton" parent="Filter"]
 layout_mode = 0
@@ -154,6 +157,8 @@ offset_top = 77.0
 offset_right = 377.0
 offset_bottom = 108.0
 alignment = 1
+text_overrun_behavior = 3
+clip_text = true
 item_count = 1
 popup/item_0/id = 0
 
@@ -166,6 +171,7 @@ offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Год фильтрации"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Month" type="OptionButton" parent="Filter"]
 layout_mode = 0
@@ -174,6 +180,8 @@ offset_top = 77.0
 offset_right = 754.0
 offset_bottom = 108.0
 alignment = 1
+text_overrun_behavior = 3
+clip_text = true
 selected = 0
 item_count = 12
 popup/item_0/text = "Январь"
@@ -210,6 +218,7 @@ offset_bottom = -1.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Месяц фильтрации"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Button" type="Button" parent="Filter"]
 layout_mode = 0
@@ -218,6 +227,8 @@ offset_top = 77.0
 offset_right = 1131.0
 offset_bottom = 108.0
 text = "Применить"
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="DailyTransactions" parent="." instance=ExtResource("3_mkcc5")]
 layout_mode = 0

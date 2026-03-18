@@ -21,6 +21,8 @@ offset_left = 400.0
 offset_top = 239.0
 offset_right = 693.0
 offset_bottom = 270.0
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="WLabel" type="Label" parent="Wallet_id"]
 layout_mode = 0
@@ -32,6 +34,7 @@ theme_override_font_sizes/font_size = 20
 text = "Счет съема средств"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Wallet_2_id" type="OptionButton" parent="."]
 layout_mode = 0
@@ -39,6 +42,8 @@ offset_left = 400.0
 offset_top = 289.0
 offset_right = 693.0
 offset_bottom = 320.0
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="W2Label" type="Label" parent="Wallet_2_id"]
 layout_mode = 0
@@ -50,6 +55,7 @@ theme_override_font_sizes/font_size = 20
 text = "Целевой счет"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Value" type="TextEdit" parent="."]
 clip_contents = false
@@ -72,6 +78,7 @@ theme_override_font_sizes/font_size = 20
 text = "Сумма транзакции:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Date" parent="." instance=ExtResource("3_qgj1t")]
 layout_mode = 0

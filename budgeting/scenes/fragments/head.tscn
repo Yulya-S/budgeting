@@ -141,19 +141,23 @@ theme_override_constants/outline_size = 20
 theme_override_font_sizes/font_size = 28
 text = "05.08.2025"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Login" type="Label" parent="."]
 layout_mode = 0
-offset_left = 896.0
+offset_left = 776.0
 offset_top = 5.0
 offset_right = 1057.0
 offset_bottom = 45.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/line_spacing = -5
 theme_override_constants/outline_size = 20
 text = "Имя"
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
+text_overrun_behavior = 3
 
 [node name="Notification" type="Button" parent="."]
 layout_mode = 0

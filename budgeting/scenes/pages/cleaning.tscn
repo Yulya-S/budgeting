@@ -10,7 +10,7 @@ script = ExtResource("1_tgrcd")
 
 [node name="Cleaning" type="Label" parent="."]
 layout_mode = 0
-offset_left = 576.0
+offset_left = 38.0
 offset_top = 10.0
 offset_right = 1062.0
 offset_bottom = 52.0
@@ -23,6 +23,7 @@ theme_override_font_sizes/font_size = 30
 text = "Очистка данных"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Close" type="Button" parent="."]
 layout_mode = 0
@@ -42,6 +43,8 @@ offset_top = 200.0
 offset_right = 839.0
 offset_bottom = 231.0
 text = "Очистить движения средств"
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Label" type="Label" parent="CashFlows"]
 layout_mode = 0
@@ -54,6 +57,7 @@ theme_override_constants/line_spacing = -5
 text = "Удаление данных о движениях средств, с даты создания которых прошло более 2х лет"
 horizontal_alignment = 1
 autowrap_mode = 1
+text_overrun_behavior = 3
 
 [node name="ClearEvents" type="Button" parent="."]
 layout_mode = 0
@@ -62,6 +66,8 @@ offset_top = 305.0
 offset_right = 839.0
 offset_bottom = 336.0
 text = "Очистить события"
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Label" type="Label" parent="ClearEvents"]
 layout_mode = 0
@@ -74,6 +80,7 @@ theme_override_constants/line_spacing = -5
 text = "Удаление данных о событиях для которых было назначено повторение \"один раз\", с момента завершения которых прошло больше 2х месяцев"
 horizontal_alignment = 1
 autowrap_mode = 1
+text_overrun_behavior = 3
 
 [node name="Loans" type="Button" parent="."]
 layout_mode = 0
@@ -82,6 +89,8 @@ offset_top = 410.0
 offset_right = 839.0
 offset_bottom = 441.0
 text = "Очистить займы"
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Label" type="Label" parent="Loans"]
 layout_mode = 0
@@ -94,6 +103,7 @@ theme_override_constants/line_spacing = -5
 text = "Удаление данных о выплаченных займах, с момента погашения которых прошло больше 2х месяцев"
 horizontal_alignment = 1
 autowrap_mode = 1
+text_overrun_behavior = 3
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
 auto_translate_mode = 1

@@ -10,7 +10,7 @@ script = ExtResource("1_dqp6w")
 
 [node name="Setting" type="Label" parent="."]
 layout_mode = 0
-offset_left = 576.0
+offset_left = 160.0
 offset_top = 10.0
 offset_right = 1062.0
 offset_bottom = 52.0
@@ -23,6 +23,7 @@ theme_override_font_sizes/font_size = 30
 text = "Настройки"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Language" type="OptionButton" parent="."]
 layout_mode = 0
@@ -30,6 +31,8 @@ offset_left = 10.0
 offset_top = 10.0
 offset_right = 114.0
 offset_bottom = 41.0
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Color_Preset" type="CheckButton" parent="."]
 layout_mode = 0
@@ -45,6 +48,8 @@ theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 text = "Предустановленная тема"
 alignment = 2
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="ColorSchemePre" type="OptionButton" parent="."]
 layout_mode = 0
@@ -52,6 +57,8 @@ offset_left = 300.0
 offset_top = 160.0
 offset_right = 721.0
 offset_bottom = 191.0
+text_overrun_behavior = 3
+clip_text = true
 selected = 0
 item_count = 8
 popup/item_0/text = "Стандартная"
@@ -80,6 +87,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Цветовое оформление"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="ColorSchemeCus" type="OptionButton" parent="."]
 visible = false
@@ -88,6 +96,8 @@ offset_left = 300.0
 offset_top = 160.0
 offset_right = 721.0
 offset_bottom = 191.0
+text_overrun_behavior = 3
+clip_text = true
 selected = 0
 item_count = 4
 popup/item_0/text = "Моно"
@@ -108,6 +118,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Количество цветов"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Colors" type="Control" parent="."]
 anchors_preset = 0
@@ -135,6 +146,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Цвет 1"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Color_2" type="ColorPickerButton" parent="Colors"]
 visible = false
@@ -154,6 +166,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Цвет 2"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Color_3" type="ColorPickerButton" parent="Colors"]
 visible = false
@@ -173,6 +186,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Цвет 3"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Color_4" type="ColorPickerButton" parent="Colors"]
 visible = false
@@ -192,6 +206,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Цвет 4"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Dark_Theme" type="CheckButton" parent="."]
 layout_mode = 0
@@ -207,6 +222,8 @@ theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 text = "Светлая тема"
 alignment = 2
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Event_Page_Calendar" type="CheckButton" parent="."]
 layout_mode = 0
@@ -222,6 +239,8 @@ theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 text = "Календарь событий"
 alignment = 2
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Example" type="ColorRect" parent="."]
 layout_mode = 0
@@ -254,6 +273,7 @@ offset_bottom = 33.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Пример текста"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Object" type="ColorRect" parent="Example"]
 layout_mode = 0
@@ -271,6 +291,7 @@ offset_bottom = 33.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Пример текста"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Filter" type="ColorRect" parent="Example"]
 layout_mode = 0
@@ -288,6 +309,7 @@ offset_bottom = 44.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Пример текста"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="TestButton" type="Button" parent="Example/Filter"]
 layout_mode = 0
@@ -296,6 +318,8 @@ offset_top = 6.0
 offset_right = 1004.0
 offset_bottom = 37.0
 text = "Пример кнопки"
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Menu" type="ColorRect" parent="Example"]
 layout_mode = 0
@@ -315,6 +339,7 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 20
 text = "Пример текста"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="TestButton" type="Button" parent="Example/Menu"]
 layout_mode = 0
@@ -323,6 +348,8 @@ offset_top = 6.0
 offset_right = 1004.0
 offset_bottom = 37.0
 text = "Пример кнопки"
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Head" type="ColorRect" parent="Example"]
 layout_mode = 0
@@ -342,6 +369,7 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 20
 text = "Пример текста"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="TestButton" type="Button" parent="Example/Head"]
 layout_mode = 0
@@ -350,6 +378,8 @@ offset_top = 6.0
 offset_right = 1004.0
 offset_bottom = 37.0
 text = "Пример кнопки"
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="DeleteUser" type="Button" parent="."]
 layout_mode = 0
@@ -359,6 +389,8 @@ offset_right = 470.0
 offset_bottom = 619.0
 theme_override_font_sizes/font_size = 24
 text = "Удалить пользователя"
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Apply" type="Button" parent="."]
 layout_mode = 0
@@ -368,6 +400,8 @@ offset_right = 992.0
 offset_bottom = 619.0
 theme_override_font_sizes/font_size = 24
 text = "Сохранить"
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Close" type="Button" parent="."]
 layout_mode = 0

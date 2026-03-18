@@ -34,6 +34,7 @@ theme_override_font_sizes/font_size = 20
 text = "Название подраздела:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Section_id" type="OptionButton" parent="."]
 layout_mode = 0
@@ -54,6 +55,7 @@ theme_override_font_sizes/font_size = 20
 text = "Статья"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="ConsumptionIncome" type="Label" parent="Section_id"]
 layout_mode = 0
@@ -65,6 +67,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Расход"
 horizontal_alignment = 2
+text_overrun_behavior = 3
 
 [node name="Month_Limit" type="TextEdit" parent="."]
 clip_contents = false
@@ -87,6 +90,7 @@ theme_override_font_sizes/font_size = 20
 text = "Ежемесячное ограничение:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
 [connection signal="item_selected" from="Section_id" to="." method="_on_parent_id_item_selected"]

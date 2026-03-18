@@ -33,6 +33,7 @@ theme_override_font_sizes/font_size = 20
 text = "*Название кошелька:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Value" type="TextEdit" parent="."]
 clip_contents = false
@@ -55,6 +56,7 @@ theme_override_font_sizes/font_size = 20
 text = "*Значение счета:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]

@@ -14,11 +14,12 @@ cell_path = ExtResource("2_xi3pa")
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_top = -33.0
-offset_right = 59.0
+offset_right = 290.0
 offset_bottom = -5.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Выбор даты: "
+text = "Выбор даты:"
+text_overrun_behavior = 3
 
 [node name="Year" type="OptionButton" parent="."]
 custom_minimum_size = Vector2(0, 31)
@@ -26,6 +27,7 @@ layout_mode = 0
 offset_right = 290.0
 offset_bottom = 31.0
 alignment = 1
+text_overrun_behavior = 3
 
 [node name="Month" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 24)
@@ -37,6 +39,7 @@ offset_bottom = 60.0
 text = "Июль"
 horizontal_alignment = 1
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Previous" type="Button" parent="Month"]
 custom_minimum_size = Vector2(0, 24)

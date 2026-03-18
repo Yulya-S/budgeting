@@ -35,6 +35,7 @@ theme_override_font_sizes/font_size = 20
 text = "Имя займа:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Wallet_id" type="OptionButton" parent="."]
 layout_mode = 0
@@ -42,6 +43,8 @@ offset_left = 400.0
 offset_top = 289.0
 offset_right = 693.0
 offset_bottom = 320.0
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="W2Label" type="Label" parent="Wallet_id"]
 layout_mode = 0
@@ -53,6 +56,7 @@ theme_override_font_sizes/font_size = 20
 text = "Целевой счёт"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Value" type="TextEdit" parent="."]
 clip_contents = false
@@ -75,6 +79,7 @@ theme_override_font_sizes/font_size = 20
 text = "Сумма займа:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Date" parent="." instance=ExtResource("2_kl61x")]
 layout_mode = 0
