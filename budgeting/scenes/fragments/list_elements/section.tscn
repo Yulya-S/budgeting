@@ -32,6 +32,7 @@ offset_left = 197.0
 offset_top = 5.0
 offset_right = 382.0
 offset_bottom = 18.0
+mouse_filter = 1
 theme_override_styles/background = SubResource("StyleBoxFlat_vuo4t")
 theme_override_styles/fill = SubResource("StyleBoxFlat_fue4g")
 value = 50.0
