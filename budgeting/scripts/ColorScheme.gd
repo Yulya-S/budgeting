@@ -64,7 +64,7 @@ func _change_color(obj: Variant, idx: float, column: String = "color") -> void:
 # Изменение цветовой палитры объектов ColorRect
 func _set_ColorRect(obj) -> void:
 	match obj.name:
-		"Head", "NBorder", "Border": _change_color(obj, 1)
+		"Head", "Border": _change_color(obj, 1)
 		"Menu", "Marker", "FastCreations": _change_color(obj, 2)
 		"Background": _change_color(obj, 6)
 		"Date":
