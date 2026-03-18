@@ -158,10 +158,15 @@ func _on_event_type_item_selected(index: int) -> void:
 	$Event_type.selected = index
 	$Value.visible = index > 0
 
+# Изменение объекта с именем Section_id
+func _on_Section_id(index: int, new_value: bool = false) -> void:
+	$Section_id.selected = index
+	var income: bool = Request.select_all("sections")[index + 2].income
+	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
+
 # Изменение раздела
 func _on_section_id_item_selected(index: int = 0) -> void:
-	$Section_id.selected = index
-	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(Request.select_all("sections")[index + 2].income))])
+	_on_Section_id(index, index == 0)
 	var values: Array = Request.select_all("subsections", '"__SS4" != title AND section_id = '+str(index+3)) + Request.select_all("subsections", '"__SS4" == title AND section_id = '+str(index+3))
 	$Subsection_id.visible = len(values) > 0
 	$Value.position.y = 407.0 if len(values) > 0 else 357.0
@@ -169,7 +174,5 @@ func _on_section_id_item_selected(index: int = 0) -> void:
 
 # Изменение родительского раздела
 func _on_parent_id_item_selected(index: int = 0) -> void:
-	$Section_id.selected = index
-	var income: bool = Request.select_all("sections")[index + 2].income
-	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
-	$Month_Limit.visible =  not income
+	_on_Section_id(index, index == 0)
+	$Month_Limit.visible =  not Request.select_all("sections")[index + 2].income
