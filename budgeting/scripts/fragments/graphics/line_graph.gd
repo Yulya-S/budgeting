@@ -26,6 +26,7 @@ func _is_loan() -> bool: return graph_type == GraphTypes.LOAN
 func update_data(filter: Variant = {}) -> void:
 	ColorScheme.repainting(self)
 	var filter_data: Dictionary = Global.get_filter(filter)
+	values = []
 	if _is_loan(): values = Request.select_loan_graphics(get_parent().idx)
 	else:
 		for i in range(Request.select_day_count(filter_data.date)): values.append(0.0)
