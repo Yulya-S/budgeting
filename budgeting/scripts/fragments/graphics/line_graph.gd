@@ -19,7 +19,7 @@ func _draw() -> void:
 	if graph_type == GraphTypes.REPORT: _report(max_value)
 	else: _candlestick(max_value)
 
-# Проверка что типом графика является - займ
+# Проверка что типом графика является - заём
 func _is_loan() -> bool: return graph_type == GraphTypes.LOAN
 
 # Перезапуск отрисовки графика
@@ -81,7 +81,7 @@ func _candlestick(max_value: float, x_step: float = (size.x - 20.) / len(values)
 		var x: float = (x_step * i) + 10.
 		var border_color: Color = ColorScheme.border_color()
 		_draw_str(x, 120, str(int(i) + 1), x_step, border_color)
-		if values[i] == 0: continue # Отмена отрисовки если значение точки отсутствует
+		if values[i] == 0: continue # Отмена отрисовки точки
 		var y_size: float = 50. * abs(values[i]) / abs(max_value)
 		var data: Array = [ColorScheme.get_scale_color(0), 58 - y_size, 90.]
 		if values[i] < 0: data = [ColorScheme.get_scale_color(1), 60, 30.]

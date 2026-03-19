@@ -1,4 +1,5 @@
 extends ColorRect
+# Подключение путей к объектам в сцене
 @onready var Progress = $ProgressBar
 @onready var Message = $Message
 # Переменные

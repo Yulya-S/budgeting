@@ -7,14 +7,13 @@ func _ready() -> void:
 	$Login.set_text(File.show_data(File.config.login))
 	$Marker.position.x = 45. * (Global.current_page + 3.) + 2.5
 	update_date()
-	
+
 # Обновление текста даты
 func update_date() -> void:
 	$Date.set_text(Global.date_to_str())
 	NotificationMarker.visible = Request.presence_unread_notifications()
 
-# Вызовы сигнала
-# Открытие окна поверх текущего
+# Вызов сигнала открытия окна поверх текущего
 func _emit_ow(new_page: Global.Pages) -> void: SF.op_w(new_page, null, Global.Dirs.PAGES)
 
 # Обработка нажатия кнопок

@@ -8,7 +8,6 @@ signal update_page(close_page: String) # Обновление данных на 
 enum Pages {BASIC, WALLET, SECTION, CASH_FLOW, LOAN, EVENT, REPORT, TRANSFER, PAYMENT, PERCENT, SUBSECTION, REGISTRATION, HINTS, SETTINGS, CLEANING} # Страницы приложения
 enum Dirs {PAGES, WINDOWS, INFORMATION} # Директории
 enum MouseOver {NORMAL, HOVER} # Состояния курсора мыши
-
 # Переменные
 var current_page: Pages = Pages.REGISTRATION # Текущая страница
 @onready var sys_date: NewDate = NewDate.new() # Текущая дата

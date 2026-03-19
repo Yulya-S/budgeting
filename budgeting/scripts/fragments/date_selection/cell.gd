@@ -5,7 +5,7 @@ extends InteractiveObj
 # Запуск изменения цвета ячейки
 func _ready() -> void: ColorScheme.repainting(self)
 
-# Обработка смены ячейки в процессе работы программы
+# Обработка смены цвета ячейки в процессе работы программы
 func _process(_delta: float) -> void:
 	ColorScheme.set_DS_cell_color(self, Number.get_text(), SF.g_p(self).selected_day.day == SF.L_to_int(Number), bool(state))
 
@@ -13,7 +13,7 @@ func _process(_delta: float) -> void:
 func set_values(idx: int, _current_month: bool, _next_month: bool, day_count: int) -> void:
 	if idx >= 0 and idx < day_count: Number.set_text(str(idx + 1))
 
-# Подпроверка возможности обработки нажатия на объект
+# Под проверка возможности обработки нажатия на объект
 func _other_check() -> bool: return SF.L_is_empty(Number)
 
 # Функция запускаемая при нажатии на объект

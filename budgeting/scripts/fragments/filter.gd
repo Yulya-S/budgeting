@@ -2,9 +2,8 @@ extends ColorRect
 # Экспортируемые переменные
 @export var OB_items: Dictionary = {} # Дополнительные фильтры
 @export var title_pref: String = "" # Приставка для запроса по названию
-
 # Переменные
-var filter: Dictionary = {"where": "", "date": "", "order": ""} # Параметры запроса фильтрации
+var filter: Dictionary = _get_empty_filter() # Параметры запроса фильтрации
 var order_item_texts: Array = [] # Список параметров сортировки
 
 # Стартовое заполнение фильтров времени
@@ -26,9 +25,12 @@ func _update_value(obj: Variant, value_name: String, sep: String) -> void:
 	if filter[value_name] != "": filter[value_name] += sep
 	filter[value_name] += OB_items[obj.name][str(obj.selected)]
 
+# Получение пустого фильтра
+func _get_empty_filter() -> Dictionary: return {"where": "", "date": "", "order": ""}
+
 # Сборка фильтра
 func get_filter() -> Dictionary:
-	filter = {"where": "", "date": "", "order": ""} # Очистка фильтра
+	filter = _get_empty_filter()
 	for i in get_children():
 		if "OR" in filter.where.split("AND")[-1] and filter.where[-1] != ")":
 			filter.where = "("+filter.where+")"
@@ -38,7 +40,6 @@ func get_filter() -> Dictionary:
 			"Month": filter.date.append(i.selected + 1)
 			"Button": continue
 			_: _other_filters(i)
-	# Добавление фильтра времени
 	if filter.date is Array: filter.date = Global.date_to_sql_date("-".join(filter.date+[1]))
 	return filter
 

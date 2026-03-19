@@ -2,7 +2,7 @@ extends Page
 # Переменные
 var idx: int = 0 # Индекс выбранного объекта
 @export var page_type: Global.Pages = Global.Pages.WALLET # Выбранный тип страницы информации
-var filter_data: Dictionary = {"where": ""}
+var filter_data: Dictionary = {"where": ""} # Данные для фильтрации
 
 # Применение параметров страницы информации
 func set_page(new_idx: int, new_page_type: Global.Pages = Global.Pages.WALLET) -> void:
@@ -39,13 +39,13 @@ func update_data() -> void:
 			Request.Tables.SUBSECTIONS, 0, "section_id = " + str(idx)))
 	_run_update()
 
-# отмена запуска дополнительных изменений на странице
+# Отмена запуска дополнительных изменений на странице
 func _match_other_update() -> void: pass
 
 # Открытие окна
 func _open_w(new_page: Global.Pages) -> void: SF.op_w(new_page, idx, Global.Dirs.WINDOWS, page_type)
 
-# Проверка что выбранный займ ещё не погашен
+# Проверка что выбранный заём ещё не погашен
 func _check_loan() -> bool: return Request.check_loan_count("id=" + str(idx))
 
 # Обработки нажатий кнопок

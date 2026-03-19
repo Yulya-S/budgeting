@@ -36,7 +36,7 @@ func _on_timer_timeout() -> void:
 	Global.sys_date.set_value(Time.get_datetime_string_from_system())
 	_update_last_entry()
 
-# Запуск изменения данных на стрницах
+# Запуск изменения данных на страницах
 func start_update() -> void:
 	Global.emit_signal("update_page")
 	for i in get_children(): Global.run_func(i, "new_day")
@@ -79,6 +79,6 @@ func _open_new_page(page: Global.Pages, id: Variant = null, parent: Variant = nu
 	if page == Global.Pages.CASH_FLOW and id: get_child(-1).set_cash_flow_filter(id, parent)
 	_update_last_entry()
 
-# Проверка закрытия окна инфомрации при удалении объекта
+# Проверка закрытия окна информации при удалении объекта
 func close_inf_page() -> void:
 	if not _ch_inf(-2) and get_child(-1).name != "Subsection": get_child(-2)._on_back_button_down()

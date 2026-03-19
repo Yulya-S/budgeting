@@ -1,8 +1,7 @@
 extends Page
-# Подключение пути к объекту в сцене
+# Подключение путей к объектам в сцене
 @onready var Cells = $ObjArray/VBoxContainer/Events/Calendar
 @onready var FCObjects = $FastCreations/ObjArray
-
 # Переменные для календаря событий
 var cell_path: Resource = load("res://scenes/pages/events_calendar/cell.tscn") # Путь к сцене ячеек календаря
 var event_days: Array = [] # Список дат для маркировки
@@ -41,7 +40,7 @@ func fc_update() -> void:
 	FCObjects.update_data()
 	_fc_size_match()
 
-# Обработка нажатия кнопки добавиления быстрого создания записи
+# Обработка нажатия кнопки добавления быстрого создания записи
 func _on_fc_add_button_down() -> void:
 	if not Request.check_sections_and_wallets(): return
 	Request.insert_fast_creation()

@@ -3,7 +3,7 @@ class_name Windows
 # Подключение пути к объекту в сцене
 @onready var Error = get_child(0).get_child(2)
 # Экспортируемая переменная
-@export var page_type: Global.Pages = Global.Pages.WALLET # Тип создаваемого / Изменяемого объкта
+@export var page_type: Global.Pages = Global.Pages.WALLET # Тип создаваемого / Изменяемого объекта
 # Переменная
 var idx: int = 0 # Индекс изменяемого объекта
 

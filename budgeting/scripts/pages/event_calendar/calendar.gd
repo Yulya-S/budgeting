@@ -2,7 +2,6 @@ extends Calendar
 # Подключение путей к объектам в сцене
 @onready var SelectedCell = $SelectedCell
 @onready var Events = $Events/VBoxContainer
-
 # Переменные
 @onready var lines: ArrayLines = ArrayLines.new("event_legend") # Объект для создания строк списка
 var event_days: Array = [] # Список дат для маркировки

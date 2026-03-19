@@ -3,7 +3,7 @@ extends Calendar
 @onready var Year = $Year
 @onready var Month = $Month
 # Переменная
-@onready var selected_day: Dictionary = Global.get_date() # Номер выбранного дня
+@onready var selected_day: Dictionary = Global.get_date() # Выбранный день
 
 # Применение стартового значения
 func _ready() -> void: _update_year_month()

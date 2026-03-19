@@ -32,4 +32,3 @@ func _on_confirmation_dialog_confirmed() -> void:
 	_run_action(Request.ActionTypes.DELETE)
 	SF.g_p(self).close_inf_page()
 	_apply_changes()
-	

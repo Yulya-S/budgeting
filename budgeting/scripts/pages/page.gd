@@ -83,7 +83,7 @@ func highlighting_graph_sections(idx: int, set_highlighting: bool = true) -> voi
 	else: PieChart.reset_highlighter(idx)
 
 # Обработка нажатий кнопок
-# Cоздание движения средств
+# Создание движения средств
 func _on_cash_flow_button_down() -> void: Request.match_check(Global.Pages.CASH_FLOW)
 
 # Создания объектов

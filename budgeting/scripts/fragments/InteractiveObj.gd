@@ -3,7 +3,7 @@ class_name InteractiveObj
 # Переменная
 var state: Global.MouseOver = Global.MouseOver.NORMAL # Текущее состояние объекта
 
-# Подпроверка возможности обработки нажатия на объект
+# Под проверка возможности обработки нажатия на объект
 func _other_check() -> bool: return true
 
 # Функция запускаемая при нажатии на объект

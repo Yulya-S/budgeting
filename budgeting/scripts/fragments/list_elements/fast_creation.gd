@@ -1,5 +1,5 @@
 extends ColorRect
-# Подключение путей к объекту в сцене
+# Подключение путей к объектам в сцене
 @onready var Wallet = $Wallet
 @onready var Section = $Section
 @onready var Subsection = $Subsection
@@ -50,7 +50,7 @@ func _on_add_button_down() -> void:
 	values.append(Global.date_to_str())
 	Request._insert_cash_flow(values)
 	Global.emit_signal("update_page")
-	
+
 # Выбранный кошелёк
 func _on_wallet_item_selected(_index: int) -> void:
 	Request.update_fc_wallet(id, Global.get_OB_id(Wallet))
@@ -63,5 +63,5 @@ func _on_section_item_selected(_index: int) -> void:
 func _on_subsection_item_selected(_index: int = 0) -> void:
 	Request.update_fc_subsection(id, Global.get_OB_id(Subsection))
 
-# Изменене значения
+# Изменение значения
 func _on_value_text_changed() -> void: Global.text_changed_TextEdit(Value, true)
