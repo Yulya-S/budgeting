@@ -6,7 +6,10 @@ func _ready() -> void:
 	custom_minimum_size[0] = SF.g_p(self).size[0]
 	_set_line_size()
 	SF.color_and_lang(self)
-	
+
+# Получение имени строки со словом id
+func _name_id(obj: Variant) -> String: return SF.l(obj).split("title")[0]+"id"
+
 # Изменение высоты строки списка
 func _set_line_size() -> void:
 	var max_count: int = 1
@@ -16,9 +19,6 @@ func _set_line_size() -> void:
 		front_size = i.get_theme_font_size("front_size")
 	custom_minimum_size[1] = max_count * front_size + ((max_count - 1) * 2) + 10.
 	for i in get_children(): if i.get("size"): i.size[1] = custom_minimum_size[1]
-
-# Получение имени строки со словом id
-func _name_id(obj: Variant) -> String: return SF.l(obj).split("title")[0]+"id"
 
 # Изменение значений в сцене
 func set_values(data: Dictionary) -> void:
@@ -41,12 +41,6 @@ func set_values(data: Dictionary) -> void:
 					if _name_id(i) in data.keys():
 						if data[_name_id(i)]: i.set_object(data[SF.l(i)],  data[_name_id(i)])
 						elif data[SF.l(i)] == null: i.set_text("-")
-	_set_special_values(data)
-	File.set_lang(self)
-	_set_line_size()
-
-# Применение значений для особых элементов списка
-func _set_special_values(data: Dictionary) -> void:
 	match scene_file_path.split("/")[-1].replace(".tscn", ""):
 		"notification": $New.visible = bool(data.new)
 		"event_legend": _event_values(data, "-" if data.event_type == 1 else "+")
@@ -78,7 +72,9 @@ func _set_special_values(data: Dictionary) -> void:
 				_:
 					if data.income: $Wallet_Title.visible = false
 					else: $Wallet_2_Title.visible = false
-		
+	File.set_lang(self)
+	_set_line_size()
+
 # Общая часть применения значений для объектов списков событий
 func _event_values(data: Dictionary, et_text: String) -> void:
 	$EventType.visible = data.event_type > 0

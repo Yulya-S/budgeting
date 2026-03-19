@@ -15,10 +15,7 @@ func set_values(idx: int, current_month: bool, next_month: bool, day_count: int)
 # Изменение видимости маркера наличия событий
 func add_event() -> void: $Marker.visible = true
 
-# Запуск функции переноса маркера у родителя
-func _cell(func_name: String) -> void: Global.run_func($"../../", func_name, [Number.text])
-	
 # Обработка наведения курсоры мыши на ячейку
-func _on_mouse_entered() -> void: _cell("set_cell")
+func _on_mouse_entered() -> void: Global.run_func($"../../", "set_cell", [Number.text])
 
-func _on_mouse_exited() -> void: _cell("reset_cell")
+func _on_mouse_exited() -> void: Global.run_func($"../../", "reset_cell", [Number.text])

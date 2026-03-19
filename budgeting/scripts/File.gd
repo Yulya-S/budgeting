@@ -9,12 +9,10 @@ var lang: Dictionary = {} # Язык
 const LangDir: String = BasesPath + "language/" # Директория языков
 
 # Общая часть
-# Создание папки при её отсутствии
-func _make_dir(path: String) -> void:
-	if not DirAccess.dir_exists_absolute(path): DirAccess.make_dir_absolute(path)
-
 # Создание папок для хранения данных
-func create_dirs() -> void: for i in [BasesPath, LangDir]: _make_dir(i)
+func create_dirs() -> void:
+	for i in [BasesPath, LangDir]:
+		if not DirAccess.dir_exists_absolute(i): DirAccess.make_dir_absolute(i)
 
 # Сохранение данных в файл
 func _store_json(file_path: String, data: Dictionary) -> void:
@@ -40,18 +38,14 @@ func show_data(data: String) -> String: return Marshalls.base64_to_utf8(data)
 # Проверка наличия созданного файла конфигураций
 func create_config() -> void:
 	if FileAccess.file_exists(ConfigFilePath):
-		read_config()
-		return
+		var new: Dictionary = _read_file(ConfigFilePath)
+		if new.keys() == config.keys():
+			config = new
+			return
 	save_config()
 
 # Сохранение данных конфигураций в файл
 func save_config() -> void: _store_json(ConfigFilePath, config)
-	
-# Чтение файла конфигураций
-func read_config() -> void:
-	var new: Dictionary = _read_file(ConfigFilePath)
-	if new.keys() == config.keys(): config = new
-	else: save_config()
 
 # Пустой словарь конфигурации
 func _empty_conf() -> Dictionary: return {"enter": false, "lang": "ru", "login": "", "password": ""}
@@ -102,11 +96,6 @@ func _find_lang_keys(obj: Variant, key: String = "") -> String:
 	if key not in lang.keys(): return _find_lang_keys(obj.get_parent(), key)
 	return key
 
-# Применение перевода фрагмента окна подтверждения действия
-func _set_confD(obj: Variant, text: String) -> void:
-	if text in lang._ConfirmationDialog.keys():
-		obj.call("set_"+text+"_button_text", lang._ConfirmationDialog[text])
-
 # Изменение текста объекта в зависимости от типа объекта
 func _lang_match(obj: Variant, key: String) -> void:
 	match obj.get_class():
@@ -131,7 +120,10 @@ func _lang_match(obj: Variant, key: String) -> void:
 					obj.set_item_text(i, lang[key][idx])
 					idx += 1
 		"ConfirmationDialog":
-			if "_ConfirmationDialog" in lang.keys(): for i in ["cancel", "ok"]: _set_confD(obj, i)
+			if "_ConfirmationDialog" in lang.keys():
+				for i in ["cancel", "ok"]:
+					if i in lang._ConfirmationDialog.keys():
+						obj.call("set_"+i+"_button_text", lang._ConfirmationDialog[i])
 			if "text" in lang[key].keys(): obj.set_text(lang["__sure"]+" "+lang[key].text)
 			if "title" in lang[key].keys(): obj.set_title(lang[key].title)
 

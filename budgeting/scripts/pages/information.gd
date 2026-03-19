@@ -17,8 +17,16 @@ func set_page(new_idx: int, new_page_type: Global.Pages = Global.Pages.WALLET) -
 		$Menu/Transactions.position.x = 65.0
 	update_data()
 
-# отмена запуска дополнительных изменений на странице
-func _match_other_update() -> void: pass
+# Получение списка заголовков для применения значений
+func _get_labels() -> Array:
+	match page_type:
+		Global.Pages.WALLET: return [$Filter/Total, $Total/Count, $Total/Cash_flow]
+		Global.Pages.LOAN: return [$Filter/Percent, $Total/Total, $Total/Value]
+		Global.Pages.SECTION: return [$Filter/Value]
+	return []
+
+# Получение данных фильтра
+func _get_filter(_obj: Variant) -> Array: return [filter_data]
 
 # Обновление данных
 func update_data() -> void:
@@ -31,16 +39,8 @@ func update_data() -> void:
 			Request.Tables.SUBSECTIONS, 0, "section_id = " + str(idx)))
 	_run_update()
 
-# Получение списка заголовков для применения значений
-func _get_labels() -> Array:
-	match page_type:
-		Global.Pages.WALLET: return [$Filter/Total, $Total/Count, $Total/Cash_flow]
-		Global.Pages.LOAN: return [$Filter/Percent, $Total/Total, $Total/Value]
-		Global.Pages.SECTION: return [$Filter/Value]
-	return []
-
-# Получение данных фильтра
-func _get_filter(_obj: Variant) -> Array: return [filter_data]
+# отмена запуска дополнительных изменений на странице
+func _match_other_update() -> void: pass
 
 # Открытие окна
 func _open_w(new_page: Global.Pages) -> void: SF.op_w(new_page, idx, Global.Dirs.WINDOWS, page_type)

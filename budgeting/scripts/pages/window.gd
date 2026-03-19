@@ -42,9 +42,6 @@ func set_from_page(obj_idx: int, parent: Global.Pages) -> void:
 		Global.Pages.SUBSECTION: _on_parent_id_item_selected(obj_idx-3)
 		_: Global.set_OB_id($Wallet_2_id, obj_idx)
 
-# Получение пути к Window
-func _window() -> Node: return get_child(0)
-
 # Обновление данных на странице
 func set_page(new_idx: int) -> void:
 	var data: Dictionary = Request.match_elem(str(new_idx), page_type)
@@ -69,8 +66,25 @@ func set_page(new_idx: int) -> void:
 				Global.run_func(self, _create_func_name(i), [data[SF.l(i)]])
 		if i.name == "Date": i.set_date(data[SF.l(i)])
 
+
+# Получение пути к Window
+func _window() -> Node: return get_child(0)
+
 # Сборка имени функции
 func _create_func_name(obj: Variant) -> String: return "_on_" + SF.l(obj) + "_item_selected"
+
+# Получение значений со страницы
+func get_values() -> Array:
+	var values: Array = []
+	for i in get_children():
+		match i.get_class():
+			"CheckButton": values.append(str(i.button_pressed))
+			"OptionButton": values.append(str(Global.get_OB_id(i)))
+			"TextEdit":
+				values.append(i.get_text())
+				if "title" in SF.l(i): values[-1] = '"'+values[-1]+'"'
+			_: if i.name == "Date": values.append('"'+i.get_date()+'"')
+	return values
 
 # Проверка верности заполнения полей
 func check_object() -> bool:
@@ -92,13 +106,13 @@ func _check_value(obj: TextEdit, other: bool = true) -> bool:
 	if (SF.L_is_empty(obj) or SF.L_to_float(obj) <= 0) and other:
 		return Error.set_state(Error.States._E5)
 	return true
-	
+
 # Проверка имени файла
 func _check_name(other: Array = []) -> bool:
 	if not Request.callv("check_"+Global.enum_key(Global.Pages, page_type)+"_name", [$Title.get_text(), idx] + other):
 		return Error.set_state(Error.States._E4)
 	return true
-	
+
 # Проверка названия объекта и его значение
 func _check_with_title(value_node: Node, other_value: bool = true, other_check: bool = true) -> bool:
 	if Error.check($Title): return false
@@ -108,7 +122,7 @@ func _check_with_title(value_node: Node, other_value: bool = true, other_check: 
 func _check_wallet() -> bool:
 	if Error.check_mandatory_fields([$Title, $Value]): return false
 	return _check_name()
-	
+
 # Проверка возможности создания перевода средств
 func _check_transfer() -> bool:
 	if Global.get_OB_id($Wallet_id) == Global.get_OB_id($Wallet_2_id):
@@ -128,25 +142,12 @@ func _check_payment() -> bool:
 		return Error.set_state(Error.States._E8)
 	return true
 
-# Получение значений со страницы
-func get_values() -> Array:
-	var values: Array = []
-	for i in get_children():
-		match i.get_class():
-			"CheckButton": values.append(str(i.button_pressed))
-			"OptionButton": values.append(str(Global.get_OB_id(i)))
-			"TextEdit":
-				values.append(i.get_text())
-				if "title" in SF.l(i): values[-1] = '"'+values[-1]+'"'
-			_: if i.name == "Date": values.append('"'+i.get_date()+'"')
-	return values
-
-# Обработка переключения переключателя
+# Обработка нажатий кнопок
+# Переключатель
 func _on_income_toggled(toggled_on: bool) -> void:
 	File.set_CB($Income)
 	$Month_Limit.visible = not toggled_on
 
-# Обработка действий с элементами страницы
 # Изменение названия объекта
 func _on_title_text_changed() -> void: Global.text_changed_TextEdit($Title)
 
@@ -159,14 +160,14 @@ func _on_event_type_item_selected(index: int) -> void:
 	$Value.visible = index > 0
 
 # Изменение объекта с именем Section_id
-func _on_Section_id(index: int, new_value: bool = false) -> void:
+func _on_Section_id(index: int) -> void:
 	$Section_id.selected = index
 	var income: bool = Request.select_all("sections")[index + 2].income
 	$Section_id/ConsumptionIncome.set_text(File.lang["__CI"+str(int(income))])
 
 # Изменение раздела
 func _on_section_id_item_selected(index: int = 0) -> void:
-	_on_Section_id(index, index == 0)
+	_on_Section_id(index)
 	var values: Array = Request.select_all("subsections", '"__SS4" != title AND section_id = '+str(index+3)) + Request.select_all("subsections", '"__SS4" == title AND section_id = '+str(index+3))
 	$Subsection_id.visible = len(values) > 0
 	$Value.position.y = 407.0 if len(values) > 0 else 357.0
@@ -174,5 +175,5 @@ func _on_section_id_item_selected(index: int = 0) -> void:
 
 # Изменение родительского раздела
 func _on_parent_id_item_selected(index: int = 0) -> void:
-	_on_Section_id(index, index == 0)
+	_on_Section_id(index)
 	$Month_Limit.visible =  not Request.select_all("sections")[index + 2].income

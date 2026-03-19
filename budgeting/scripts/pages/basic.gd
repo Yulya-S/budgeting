@@ -23,11 +23,6 @@ func _process(_delta: float) -> void:
 		if idx < 0: idx = Global.get_day_count() - Global.get_date().day + value + Global.get_date().weekday - 1
 		if idx < Cells.get_child_count(): Cells.get_child(idx).add_event()		
 
-# Обновление списка объектов быстрого создания записей
-func fc_update() -> void:
-	FCObjects.update_data()
-	_fc_size_match()
-
 # Изменение размеров объектов страницы
 func _fc_size_match() -> void:
 	match len(Request.select_fast_creations_list()):
@@ -40,6 +35,11 @@ func _set_size_pos(h_size: float) -> void:
 	FCObjects.set_container_size(Vector2(FCObjects.size[0], h_size))
 	FCObjects.position[1] = h_size * -1
 	Objects.size[1] = 488.0 - h_size
+
+# Обновление списка объектов быстрого создания записей
+func fc_update() -> void:
+	FCObjects.update_data()
+	_fc_size_match()
 
 # Обработка нажатия кнопки добавиления быстрого создания записи
 func _on_fc_add_button_down() -> void:

@@ -18,22 +18,21 @@ func _ready() -> void:
 	for i in [File.create_dirs, File.create_config, File.create_langs]: i.call()
 	Request.connection_user_db()
 
-# Перезагрузка системной даты	
+# Перезагрузка системной даты
 func update_sys_date() -> void: sys_date = NewDate.new()
+
+# Заполнение выпадающего списка объектами
+func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool = true) -> void:
+	if not container: return
+	if clear_OB: container.clear()
+	for i in objects: container.add_item(i.title, i.id)
+	File.set_lang(container)
+
+# Применить значение объекта выпадающего списка по его id
+func set_OB_id(container: OptionButton, idx: int) -> void: container.selected = container.get_item_index(idx)
 
 # Получение имени объекта из перечисления
 func enum_key(enums: Dictionary, obj: int) -> String: return enums.keys()[obj].to_lower()
-
-# Вызов функции у родителя, если она у него есть
-func run_func(obj: Variant, func_name: String, args: Array = []) -> void: if obj.get(func_name): obj.callv(func_name, args)
-
-# Подключение и автоматический вызов сигнала	
-func connect_signal_update_page(obj: Variant):
-	connect("update_page", Callable(obj, "_update_page"))
-	obj._update_page()
-
-# Получение пустого фильтра
-func _empty_filter() -> Dictionary: return {"date": date_to_str(), "where": "", "order": ""}
 
 # Получение результата работы функции get_filter, на случай пустого фильтра
 func get_filter(filter: Variant = {}) -> Dictionary:
@@ -45,7 +44,6 @@ func get_filter(filter: Variant = {}) -> Dictionary:
 	for i in new_filter.keys(): if i not in filter.keys(): filter[i] = new_filter[i]
 	return filter
 
-# Работа с датами
 # Получение даты
 func get_date() -> Dictionary: return sys_date.date.duplicate()
 
@@ -64,6 +62,12 @@ func date_to_dict(date_to_update: String = date_to_str(get_date())) -> Dictionar
 # Изменение даты под формат запроса
 func date_to_sql_date(text: String) -> String: return date_to_str(date_to_dict(text))
 
+# Получение индекса выбранного элемента выпадающего списка
+func get_OB_id(button: OptionButton) -> int: return button.get_item_id(button.selected)
+
+# Получение текста выбранного элемента выпадающего списка
+func get_OB_text(button: OptionButton) -> String: return button.get_item_text(button.selected)
+
 # Получение следующего/предыдущего месяца
 func get_other_month(date: Variant, next: bool = false) -> Variant:
 	var new_date: Dictionary = date.duplicate() if date is Dictionary else date_to_dict(date)
@@ -79,6 +83,13 @@ func get_other_month(date: Variant, next: bool = false) -> Variant:
 			new_date.month = len(File.lang._Months)
 	if date is Dictionary: return new_date
 	return date_to_str(new_date)
+
+# Получение пустого фильтра
+func _empty_filter() -> Dictionary: return {"date": date_to_str(), "where": "", "order": ""}
+
+# Вызов функции у родителя, если она у него есть
+func run_func(obj: Variant, func_name: String, args: Array = []) -> void:
+	if obj.get(func_name): obj.callv(func_name, args)
 
 # Проверка равенства года и месяца
 func _check_equality(d1: Dictionary, d2: Dictionary) -> bool:
@@ -110,22 +121,9 @@ func date_comparison(d1: Dictionary, d2: Dictionary, operator: String = "==", ac
 		"<": return _check_date(d1, d2, true, account_day)
 	return false
 
-# Работа с кнопками
-# Получение индекса выбранного элемента выпадающего списка
-func get_OB_id(button: OptionButton) -> int: return button.get_item_id(button.selected)
-
-# Получение текста выбранного элемента выпадающего списка
-func get_OB_text(button: OptionButton) -> String: return button.get_item_text(button.selected)
-
-# Заполнение выпадающего списка объектами
-func fill_optionButton(container: OptionButton, objects: Array, clear_OB: bool = true) -> void:
-	if not container: return
-	if clear_OB: container.clear()
-	for i in objects: container.add_item(i.title, i.id)
-	File.set_lang(container)
-
 # Проверка что текст - это число
-func text_is_number(text: String) -> bool: return text.is_valid_int() or text.is_valid_float()
+func text_is_number(text: String) -> bool:
+	return text.is_valid_int() or text.is_valid_float()
 
 # Преобразование текста в числовой формат
 func _valide_numeric_text(text_container: TextEdit) -> void:
@@ -157,7 +155,6 @@ func text_changed_TextEdit(container: TextEdit, is_numeric: bool = false) -> voi
 		container.set_text(container.get_text().replace("\t", "").replace("\n", ""))
 		if container.find_next_valid_focus(): container.find_next_valid_focus().grab_focus()
 
-# Работа со сценами
 # Удаление объекта сцены
 func delete_child(parent: Variant, child: Variant) -> void:
 	child.queue_free()
@@ -173,15 +170,7 @@ func add_new_child(parent: Variant, path: Resource, values: Array = [], func_nam
 
 # Проверка наличия ключа в данных и применение при наличии
 func set_label_from_data(obj: Label, data: Dictionary) -> void:
-	if lower(obj) in data.keys(): obj.set_text(str(data[SF.l(obj)]))
-
-# Получение родителя определенного уровня
-func g_parent(obj: Variant, lavel: int, save_lavel: int = 1) -> Variant:
-	if lavel == save_lavel: return obj.get_parent()
-	return g_parent(obj.get_parent(), lavel, save_lavel + 1)
-
-# Получение текста в нижнем регистре
-func lower(obj: Variant) -> String: return obj.name.to_lower()
+	if SF.l(obj) in data.keys(): obj.set_text(str(data[SF.l(obj)]))
 
 # Функция заполнения OptionButton для данных по году
 func fill_year_OB(container: OptionButton, idx: int, year: int = Global.get_date().year) -> void:
@@ -192,18 +181,3 @@ func fill_year_OB(container: OptionButton, idx: int, year: int = Global.get_date
 		if i + 1 > Global.get_date().year+int(last_month): break
 		container.add_item(str(i+1))
 	container.selected = 9
-
-# Применить значение объекта выпадающего списка по его id
-func set_OB_id(container: OptionButton, idx: int) -> void: container.selected = container.get_item_index(idx)
-
-# Создание градиента
-func custom_gradient(values: Array, system: bool = false) -> Gradient:
-	var new_grad: Gradient = Gradient.new()
-	new_grad.colors = PackedColorArray(values)
-	var offsets: Array = []
-	if not system: for i in range(len(values)): offsets.append(i * (1. / (len(values) - 1.)))
-	else:
-		for i in range(len(values) - 2): offsets.append(0.2 + (0.8 / (len(values) - 2.)) * i)
-		offsets = [0.] + offsets + [1.]
-	new_grad.offsets = PackedFloat32Array(offsets)
-	return new_grad

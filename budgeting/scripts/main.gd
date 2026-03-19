@@ -10,6 +10,12 @@ func _ready() -> void:
 	# Изменение значения оставшегося в сутках времени
 	DayTimer.start(_day_time() - (_date_f() + _date_f(1) + _date_f(2)))
 
+# Закрытие БД во время закрытия приложения
+func _notification(what: int) -> void:
+	if Request.db and what == Window.NOTIFICATION_WM_CLOSE_REQUEST:
+		Request.db.close_db()
+		Request.db = null
+
 # Получение суммарного значения времени в сутках
 func _day_time() -> float: return 60. * 60. * 24.
 
@@ -34,12 +40,6 @@ func _on_timer_timeout() -> void:
 func start_update() -> void:
 	Global.emit_signal("update_page")
 	for i in get_children(): Global.run_func(i, "new_day")
-
-# Закрытие БД во время закрытия приложения
-func _notification(what: int) -> void:
-	if Request.db and what == Window.NOTIFICATION_WM_CLOSE_REQUEST:
-		Request.db.close_db()
-		Request.db = null
 
 # Открытие страницы
 func _open_window(page: Global.Pages, id: Variant = null,

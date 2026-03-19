@@ -41,12 +41,13 @@ func _update_legend(idx: int = 0) -> void:
 	if weekday == 6: week_number -= 1
 	SelectedCell.position.y = (78 * week_number) + 80 - (2 * (week_number - 2))
 
-# Изменение списка при выборе ячейки календаря
+# Обработка выбора ячейки
+# Выбор
 func set_cell(index: String = "0") -> void:
 	select_cell = int(index)
 	_update_legend(select_cell)
 
-# Изменение списка при сбросе выбора ячейки
+# Сброс выбора
 func reset_cell(index: String) -> void:
 	if int(index) != select_cell: return
 	set_cell()

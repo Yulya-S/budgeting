@@ -11,16 +11,16 @@ func _process(_delta: float) -> void:
 	error_text[0] = error_text[0].to_upper()
 	set_text(error_text + "!")
 
-# Очистка
-func clear() -> void:
-	visible = false
-	state = States.NONE
-
 # Применить новый код
 func set_state(new_state: States) -> bool:
 	if state != States.NONE: return false
 	state = new_state
 	return false
+
+# Очистка
+func clear() -> void:
+	visible = false
+	state = States.NONE
 
 # Проверка заполнено ли текстовое поле
 func check(field: Variant) -> bool:

@@ -12,13 +12,27 @@ func _ready() -> void:
 	if Global.current_page == Global.Pages.CASH_FLOW: # Заполнение списка кошельков
 		Filter.set_OB_items(Request.Tables.WALLETS)
 		Filter.set_OB_items(Request.Tables.SECTIONS)
-	Global.connect_signal_update_page(self)
+	Global.connect("update_page", Callable(self, "_update_page"))
+	_update_page()
 
 # Применение фильтра если переход на страницу произошел со страницы информации
 func set_cash_flow_filter(idx: int, parent: Global.Pages) -> void:
 	if parent == Global.Pages.WALLET: FilterWallet.selected = idx
 	else: FilterSection.selected = idx
 	update_data()
+
+# Получение данных фильтра
+func _get_filter(obj: Variant) -> Array:
+	match Global.current_page:
+		Global.Pages.BASIC: return [] if obj.get_parent().name != "Sections" else [{"where":"s.month_limit>=0", "order": "value DESC"}]
+		Global.Pages.REPORT:
+			var filter_data: Dictionary = Filter.get_filter()
+			if "Rep" in obj.get_parent().name: filter_data.where = obj.get_parent().name.replace("Rep", "").to_lower()
+			elif obj.get_parent().name == "Sections":
+				filter_data.where = "s.month_limit>=0"
+				filter_data.order = "value DESC"
+			return [filter_data]
+	return [Filter]
 
 # Запуск обновления данных на странице
 func _update_page() -> void:
@@ -41,6 +55,11 @@ func _match_other_update() -> void:
 			FilterSection.selected = save_selected_section
 			File.set_OB_elements(FilterSection) # Применение перевода для списка разделов
 
+# Запуск функции изменения данных
+func _run_update(obj: Variant = self) -> void:
+	if obj != self: Global.run_func(obj, "update_data", _get_filter(obj))
+	for i in obj.get_children(): _run_update(i)
+
 # Обновление данных
 func update_data() -> void:
 	_run_update()
@@ -50,24 +69,6 @@ func update_data() -> void:
 		Request.start_create_multiplied_events_table(Global.date_to_str())
 		set("start_update", true)
 		Global.run_func(self, "_fc_size_match")
-	
-# Запуск функции изменения данных
-func _run_update(obj: Variant = self) -> void:
-	if obj != self: Global.run_func(obj, "update_data", _get_filter(obj))
-	for i in obj.get_children(): _run_update(i)
-	
-# Получение данных фильтра
-func _get_filter(obj: Variant) -> Array:
-	match Global.current_page:
-		Global.Pages.BASIC: return [] if obj.get_parent().name != "Sections" else [{"where":"s.month_limit>=0", "order": "value DESC"}]
-		Global.Pages.REPORT:
-			var filter_data: Dictionary = Filter.get_filter()
-			if "Rep" in obj.get_parent().name: filter_data.where = obj.get_parent().name.replace("Rep", "").to_lower()
-			elif obj.get_parent().name == "Sections":
-				filter_data.where = "s.month_limit>=0"
-				filter_data.order = "value DESC"
-			return [filter_data]
-	return [Filter]
 
 # Изменение данных после смены дня
 func new_day() -> void:
@@ -82,7 +83,6 @@ func highlighting_graph_sections(idx: int, set_highlighting: bool = true) -> voi
 	else: PieChart.reset_highlighter(idx)
 
 # Обработка нажатий кнопок
-# Общие обработки
 # Cоздание движения средств
 func _on_cash_flow_button_down() -> void: Request.match_check(Global.Pages.CASH_FLOW)
 
@@ -94,13 +94,11 @@ func _on_add_button_down() -> void:
 # Перевод средств между счетами
 func _on_transaction_button_down() -> void: Request.match_check(Global.Pages.TRANSFER)
 
-# Займы
 # Добавление процентов по займу
 func _on_Loan_add_interest_button_down() -> void: Request.match_check(Global.Pages.PERCENT)
 
 # Погашение займа
 func _on_Loan_add_payment_button_down() -> void: Request.match_check(Global.Pages.PAYMENT)
 
-# Разделы
 # Создания подраздела
 func _on_Section_add_subsection_button_down() -> void: SF.op_w(Global.Pages.SUBSECTION)

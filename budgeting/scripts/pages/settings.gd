@@ -1,6 +1,5 @@
 extends PageWindow
 # Подключение путей к объектам в сцене
-# Параметры
 @onready var Language = $Language
 @onready var EventType = $Event_Page_Calendar
 @onready var Preinstalled = $Color_Preset
@@ -28,6 +27,11 @@ func _ready() -> void:
 					picker.sliders_visible = false
 					picker.presets_visible = false
 					l.color = Color("#"+data[SF.l(l)] if data[SF.l(l)] != null else "#000000")
+
+# Изменение цвета
+func _set_colors(color_values: Array) -> void:
+	ColorSchemeCus.selected = len(color_values) - 1
+	for i in range(len(color_values)): Colors.get_child(i).color = Color("#" + color_values[i])
 
 # Изменение цветов в примере
 func changed_color() -> void:
@@ -77,13 +81,9 @@ func _on_dark_theme_toggled(_toggled_on: bool) -> void:
 	if Preinstalled.button_pressed: changed_color()
 	else: _on_pre()
 
-# Изменение цвета
-func _set_colors(color_values: Array) -> void:
-	ColorSchemeCus.selected = len(color_values) - 1
-	for i in range(len(color_values)): Colors.get_child(i).color = Color("#" + color_values[i])
-
 # Смена темы между светлой и тёмной
-func _change_theme(light: Array, dark: Array) -> void: _set_colors(dark if DarkTheme.button_pressed else light)
+func _change_theme(light: Array, dark: Array) -> void:
+	_set_colors(dark if DarkTheme.button_pressed else light)
 
 # Обработка выбора количества цветов
 func _on_cus(index: int = ColorSchemeCus.selected) -> void:

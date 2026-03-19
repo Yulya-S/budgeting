@@ -10,7 +10,7 @@ class_name Calendar
 # Постепенное создание элементов страницы
 func _process(_delta: float) -> void: if _end_create():
 	Global.add_new_child(Cells, cell_path, [Cells.get_child_count() - date.weekday(), _date_comparison(), _date_comparison( ">"), date.day_count])
-		
+
 # Сравнение дат
 func _date_comparison(operator: String = "==") -> bool:
 	return date.date_comparison(Global.get_date(), operator)

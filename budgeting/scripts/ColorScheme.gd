@@ -1,45 +1,18 @@
 extends Node
 # Переменные
-var chart_gradient: Gradient = Global.custom_gradient([Color(1, 0, 0), Color(1, 1, 0)]) # Градиент для графиков
-var scales_gradient: Gradient = Global.custom_gradient([Color.from_rgba8(0, 109, 0),
+var chart_gradient: Gradient = _custom_gradient([Color(1, 0, 0), Color(1, 1, 0)]) # Градиент для графиков
+var scales_gradient: Gradient = _custom_gradient([Color.from_rgba8(0, 109, 0),
 		Color(1, 1, 0), Color(1, 0, 0)]) # Градиент для шкал
 var system_gradient: Gradient = Gradient.new() # Градиент для системы
 var highlighter_color: Color = Color.AQUAMARINE # Цвет подсветки
 
-# Получение значения цвета из градиента по индексу
-func get_color(index: float, count: float, gradient: Gradient = chart_gradient) -> Color:
-	if count == 0: count = 1
-	return gradient.sample(index / count)
-
-# Получение значения цвета из градиента системы
-func get_sys_color(index: float, count: float = 6) -> Color: return get_color(index, count, system_gradient)
-
-# Получение значения цвета из градиента шкал
-func get_scale_color(index: float, count: float = 1) -> Color: return get_color(index, count, scales_gradient)
-
-# Получение цвета текста и рамок
-func border_color() -> Color: return ColorScheme.get_sys_color(0, 1)
-
-# Получение цветов из базы данных
-func color_reading() -> void:
-	var colors: Array = []
-	var data: Dictionary = Request.select_settings()
-	for i in range(4): colors.append(data["color_" + str(i + 1)])
-	color_assembly(colors.filter(func(value): return value != null), data.dark_theme)
-	# Изменение градиента для графиков и цвета подсветки под выбранную цветовую тему
-	chart_gradient = Global.custom_gradient([get_sys_color(10, 100), get_sys_color(55, 100)])
-	highlighter_color = Color.AQUAMARINE * get_sys_color(50, 100) / Color("c8c8c8")
-
-# Получение стандартного цвета, черного или белого
-func _color_from_theme(theme: bool) -> Color: return Color.WHITE if theme else Color.BLACK
-
 # Составление цветовой палитры
 func color_assembly(colors: Array, theme: bool) -> void:
-	system_gradient = Global.custom_gradient([_color_from_theme(theme)] + colors + [_color_from_theme(not theme)], true)
+	system_gradient = _custom_gradient([_color_from_theme(theme)] + colors + [_color_from_theme(not theme)], true)
 	
 # Замена цвета текста
-func set_font_color(obj: Variant, column: String = "", color_idx: int = 0) -> void:
-	obj.add_theme_color_override("font_"+column+"color", get_sys_color(color_idx))
+func _set_font_color(obj: Variant, column: String = "", color_idx: int = 0) -> void:
+	obj.add_theme_color_override("font_"+column+"color", _get_sys_color(color_idx))
 
 # Изменение цвета кнопки
 func _set_buttons_color(obj: Variant, a: float = 0.5, column: String = "normal") -> void:
@@ -54,12 +27,12 @@ func _set_all_button_color_parametrs(obj: Variant) -> void:
 	_set_buttons_color(obj)
 	_set_buttons_color(obj, 0.8, "hover")
 	_set_buttons_color(obj, 0.5, "pressed")
-	set_font_color(obj, "outline_")
-	for i in ["", "focus_", "hover_", "hover_pressed_", "pressed_"]: set_font_color(obj, i, 6)		
+	_set_font_color(obj, "outline_")
+	for i in ["", "focus_", "hover_", "hover_pressed_", "pressed_"]: _set_font_color(obj, i, 6)		
 
 # Применение цвета без прямого обращения
 func _change_color(obj: Variant, idx: float, column: String = "color") -> void:
-	obj.set(column, get_sys_color(idx))
+	obj.set(column, _get_sys_color(idx))
 
 # Изменение цветовой палитры объектов ColorRect
 func _set_ColorRect(obj) -> void:
@@ -73,7 +46,7 @@ func _set_ColorRect(obj) -> void:
 		"Filter", "Load", "Total": _change_color(obj, 3)
 		"Example": for i in range(2): _change_color(obj.get_child(1 + i), 4 + i)
 		_:
-			if Global.g_parent(obj, 3).name == "FastCreations": _change_color(obj, 4)
+			if SF.g_p(obj, 3).name == "FastCreations": _change_color(obj, 4)
 			else: match obj.get_parent().get_class():
 				"HBoxContainer": _change_color(obj, 5)
 				"GridContainer": _change_color(obj, 6)
@@ -101,6 +74,47 @@ func set_calendar_cell_color(obj: Variant, day_off: bool, current: bool, complet
 		obj.get_child(-2).color = ColorScheme.get_color(95, 100)
 		obj.get_child(-2).color.a = 101. / 255.
 
+# Создание градиента
+func _custom_gradient(values: Array, system: bool = false) -> Gradient:
+	var new_grad: Gradient = Gradient.new()
+	new_grad.colors = PackedColorArray(values)
+	var offsets: Array = []
+	if not system: for i in range(len(values)): offsets.append(i * (1. / (len(values) - 1.)))
+	else:
+		for i in range(len(values) - 2): offsets.append(0.2 + (0.8 / (len(values) - 2.)) * i)
+		offsets = [0.] + offsets + [1.]
+	new_grad.offsets = PackedFloat32Array(offsets)
+	return new_grad
+
+# Получение значения цвета из градиента по индексу
+func get_color(index: float, count: float, gradient: Gradient = chart_gradient) -> Color:
+	if count == 0: count = 1
+	return gradient.sample(index / count)
+
+# Получение значения цвета из градиента системы
+func _get_sys_color(index: float, count: float = 6) -> Color:
+	return get_color(index, count, system_gradient)
+
+# Получение значения цвета из градиента шкал
+func get_scale_color(index: float, count: float = 1) -> Color:
+	return get_color(index, count, scales_gradient)
+
+# Получение цвета текста и рамок
+func border_color() -> Color: return ColorScheme._get_sys_color(0, 1)
+
+# Получение цветов из базы данных
+func color_reading() -> void:
+	var colors: Array = []
+	var data: Dictionary = Request.select_settings()
+	for i in range(4): colors.append(data["color_" + str(i + 1)])
+	color_assembly(colors.filter(func(value): return value != null), data.dark_theme)
+	# Изменение градиента для графиков и цвета подсветки под выбранную цветовую тему
+	chart_gradient = _custom_gradient([_get_sys_color(10, 100), _get_sys_color(55, 100)])
+	highlighter_color = Color.AQUAMARINE * _get_sys_color(50, 100) / Color("c8c8c8")
+
+# Получение стандартного цвета, черного или белого
+func _color_from_theme(theme: bool) -> Color: return Color.WHITE if theme else Color.BLACK
+
 # Применение цветовой палитры к странице
 func repainting(obj: Variant) -> void:
 	match obj.get_class():
@@ -113,11 +127,11 @@ func repainting(obj: Variant) -> void:
 		"CheckButton":
 			var dark_theme: String = str(int(Request.select_settings().dark_theme))
 			for i in ["", "un"]: _set_icon(obj, i +"checked", dark_theme + ".tres")
-			for i in ["", "focus_", "pressed_"]: set_font_color(obj, i)
-			set_font_color(obj, "hover_", 3)
+			for i in ["", "focus_", "pressed_"]: _set_font_color(obj, i)
+			_set_font_color(obj, "hover_", 3)
 		"Label":
-			if obj.name != "Error": set_font_color(obj)
-			set_font_color(obj, "outline_", 6)
+			if obj.name != "Error": _set_font_color(obj)
+			_set_font_color(obj, "outline_", 6)
 		_: match obj.name:
 			"Gradient": obj.texture.gradient = ColorScheme.chart_gradient
 			"X", "Border", "Separator": _change_color(obj, 0, "default_color")

@@ -9,58 +9,44 @@ var values: Array = [] # Данные для отображения
 # Отрисовка графика
 func _draw() -> void:
 	if _is_loan():
-		print(values)
 		var values_count: int = values.pop_back().count
 		var v: Array = []
 		for i in values: v.append(i.value)
 		_loan([v.max(), v.min() * -1].max(), (size.x - 25) / (values_count - 1))
 		return
-	var max_value: float = [values.max(), values.min() * -1].max()
+	var max_value: float = 0.
+	if len(values) > 0: max_value = [values.max(), values.min() * -1].max()
 	if graph_type == GraphTypes.REPORT: _report(max_value)
 	else: _candlestick(max_value)
 
-# Проверка что типом графика являеся - займ
+# Проверка что типом графика является - займ
 func _is_loan() -> bool: return graph_type == GraphTypes.LOAN
 
 # Перезапуск отрисовки графика
 func update_data(filter: Variant = {}) -> void:
 	ColorScheme.repainting(self)
 	var filter_data: Dictionary = Global.get_filter(filter)
-	var data: Array = []
-	var req_res: Array = _get_data(filter_data)
-	if _is_loan(): data = req_res
+	if _is_loan(): values = Request.select_loan_graphics(get_parent().idx)
 	else:
-		for i in range(Request.select_day_count(filter_data.date)): data.append(0.0)
-		for i in req_res: data[int(i.day) - 1] = i.value
-	values = _update_values(data, filter_data)
+		for i in range(Request.select_day_count(filter_data.date)): values.append(0.0)
+		for i in Request.select_cash_flow_graphics(filter_data.where, filter_data.date):
+			values[int(i.day) - 1] = i.value
+	match graph_type:
+		GraphTypes.LOAN:
+			for i in range(1, len(values) - 1): values[i].value += values[i - 1].value
+		GraphTypes.REPORT:
+			var total: float = Request.select_past_funds_movements(filter_data.date)
+			for i in range(len(values)):
+				values[i] += total
+				total = values[i]
 	queue_redraw()
 
-# Получение списка данных
-func _get_data(filter: Dictionary = {}) -> Array:
-	if _is_loan(): return Request.select_loan_graphics(get_parent().idx)
-	return Request.select_cash_flow_graphics(filter.where, filter.date)
-
-# Получение значений для заполнения графика
-func _update_values(data: Array, filter: Dictionary) -> Array:
-	match graph_type:
-		GraphTypes.LOAN: for i in range(1, len(data) - 1): data[i].value += data[i - 1].value
-		GraphTypes.REPORT:
-			var total: float = Request.select_past_funds_movements(filter.date)
-			for i in range(len(data)):
-				data[i] += total
-				total = data[i]
-	return data
-
-# Пересчет вектора значений позиции точки
-func _get_vector(height: float, v_array: Array, max_v: float, step: float, idx: int) -> Vector2:
-	return Vector2(step * idx + 10., (height * v_array[idx] / max_v) * -1 + int(height + 5))
-
+# Виды графиков
 # Отрисовка текста на графике
 func _draw_str(x, y, text: String, step, border) -> void:
 	if len(text) > 8: return
 	draw_string(ThemeDB.fallback_font, Vector2(x, y), text, HORIZONTAL_ALIGNMENT_CENTER, step, 8, border)
 
-# Виды графиков
 # Отрисовка точек на графике
 func _line_and_dots(vectors: Array):
 	draw_line(vectors[0], vectors[1], Color.FIREBRICK, 2)
