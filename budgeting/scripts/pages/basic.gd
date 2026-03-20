@@ -12,7 +12,7 @@ func _process(_delta: float) -> void:
 	if Cells.get_child_count() < 14:
 		var day_number: int = Global.get_date().day + Cells.get_child_count() - Global.get_date().weekday
 		if day_number >= Global.get_day_count(): day_number -= Global.get_day_count()
-		Global.add_new_child(Cells, cell_path, [day_number, true, true, Global.get_day_count()])
+		Global.add_new_child(Cells, cell_path, [day_number, true, false, Global.get_day_count()])
 	elif Request.completion_creation_et and start_update:
 		start_update = false
 		event_days = Request.select_event_days('date >= "'+Global.date_to_str()+'" AND date < DATE("'+Global.date_to_str()+'", "+14 days")')
