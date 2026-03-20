@@ -66,3 +66,6 @@ func _on_enter_button_down(check_field: bool = true, auto: bool = false) -> void
 		Error.set_state(Error.States._E3)
 		return
 	_entrance(auto)
+
+# Подсказки
+func _on_hints_button_down() -> void: SF.op_w(Global.Pages.HINTS, null, Global.Dirs.PAGES)
