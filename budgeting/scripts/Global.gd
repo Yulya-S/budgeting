@@ -113,8 +113,8 @@ func _check_complex_date(d1: Dictionary, d2: Dictionary, less: bool, account_day
 # Сравнение дат
 func date_comparison(d1: Dictionary, d2: Dictionary, operator: String = "==", account_day: bool = true) -> bool:
 	match operator:
-		"=>": return _check_complex_date(d1, d2, false, account_day)
-		"=<": return _check_complex_date(d1, d2, true, account_day)
+		"=>", ">=": return _check_complex_date(d1, d2, false, account_day)
+		"=<", "<=": return _check_complex_date(d1, d2, true, account_day)
 		"==": if _check_equality(d1, d2): return not account_day or d1.day == d2.day
 		">": return _check_date(d1, d2, false, account_day)
 		"<": return _check_date(d1, d2, true, account_day)

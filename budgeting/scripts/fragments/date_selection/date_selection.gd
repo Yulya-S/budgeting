@@ -18,7 +18,7 @@ func get_date() -> String: return Global.date_to_str(selected_day)
 
 # Обновление данных
 func update_data(_filter: Variant = {}) -> void:
-	var date_dup = selected_day.duplicate()
+	var date_dup: Dictionary = selected_day.duplicate()
 	date_dup.day = 1
 	super.update_data({"date": Global.date_to_str(date_dup)})
 

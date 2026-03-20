@@ -27,10 +27,7 @@ func _process(_delta: float) -> void:
 		match value.repetition_rate:
 			1: _insert_events_with_step(value, new_date, selected_date.day_count, 2)
 			2: _insert_events_with_step(value, new_date, selected_date.day_count, 7)
-			3, 4:
-				_insert_events_to_repetition_rate_3_4(value, new_date, selected_date.date)
-				if selected_date.date.day != 1:
-					_insert_events_to_repetition_rate_3_4(value, new_date, next_month.date)
+			3, 4: _insert_events_to_repetition_rate_3_4(value, new_date, selected_date.date)
 			0:
 				if selected_date.date_comparison(new_date, "=="):
 					_insert_multiplied_event(value, new_date)
@@ -46,7 +43,7 @@ func start_create_multiplied_events_table(date: String) -> void:
 	if selected_date.date.day < selected_date.day_count - 14:
 		new_date = Global.date_to_str(next_month.date)
 	events = select("*, Date(julianday(date)+juli+CASE WHEN juli<0 THEN juli*-1
-		WHEN repetition_rate=1 THEN juli%2 WHEN repetition_rate=2 THEN 7-juli%7
+		WHEN repetition_rate=1 THEN juli%2 WHEN repetition_rate=2 THEN (7-juli)%7
 		ELSE juli*-1 END) new_date FROM (SELECT *, (julianday(Date('" + date +
 		"'))-julianday(date)) juli FROM events) AS event",
 		where_date(new_date, "date", "<="), "new_date")
@@ -177,6 +174,8 @@ func _insert_multiplied_event(value: Dictionary, date: Dictionary) -> void:
 func _insert_events_with_step(value: Dictionary,
 		new_date: Dictionary, day_count: int, step: int) -> void:
 	var two_week: int = 0
+	
+	if selected_date.date_comparison(new_date, ">"): return
 	if selected_date.date.day != 1 and new_date.month != next_month.date.month: two_week = 14
 	while new_date.day <= day_count + two_week:
 		var date_dup: Dictionary = new_date.duplicate()
@@ -190,11 +189,15 @@ func _insert_events_with_step(value: Dictionary,
 # Создание событий для частоты раз в месяц и раз в год
 func _insert_events_to_repetition_rate_3_4(value: Dictionary,
 		new_date: Dictionary, date: Dictionary) -> void:
+	var date_dup: Dictionary = new_date.duplicate()
 	new_date.year = date.year
 	if value.repetition_rate == 3:
 		new_date.month = date.month
-		if last_month_day_count < new_date.day: _insert_multiplied_event(value, new_date)
-		if selected_date.day_count >= new_date.day: _insert_multiplied_event(value, new_date)
+		if Global.date_comparison(date_dup, new_date, ">=", true):
+			if selected_date.day_count >= new_date.day: _insert_multiplied_event(value, new_date)
+			else:
+				new_date.day = selected_date.day_count
+				_insert_multiplied_event(value, new_date)
 	elif (new_date.month == date.month and selected_date.day_count >= new_date.day) or \
 			(new_date.month == Global.get_other_month(date).month and last_month_day_count < new_date.day):
 		_insert_multiplied_event(value, new_date)
