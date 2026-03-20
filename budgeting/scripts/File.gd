@@ -67,10 +67,6 @@ func load_lang(container: OptionButton) -> void:
 
 # Создание файлов языков
 func create_langs() -> void:
-	# Убрать этот фрагмент - он нужен чтобы не удалять каждый раз файлы локализации вручную
-	DirAccess.remove_absolute(BasesPath + "language/ru.json")
-	DirAccess.remove_absolute(BasesPath + "language/en.json")
-	
 	_cr_ru()
 	_cr_en()
 
