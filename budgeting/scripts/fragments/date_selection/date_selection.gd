@@ -11,14 +11,16 @@ func _ready() -> void: _update_year_month()
 # Изменение выбранной даты
 func set_date(new_date: String) -> void:
 	selected_day = Global.date_to_dict(new_date)
-	_update_year_month(selected_day)
+	_update_year_month(Global.date_to_dict(new_date))
 
 # Получение выбранной в календаре даты
 func get_date() -> String: return Global.date_to_str(selected_day)
 
 # Обновление данных
 func update_data(_filter: Variant = {}) -> void:
-	super.update_data({"date": Global.date_to_str(selected_day)})
+	var date_dup = selected_day.duplicate()
+	date_dup.day = 1
+	super.update_data({"date": Global.date_to_str(date_dup)})
 
 # Изменение настроек календаря
 func _update_year_month(new_date: Dictionary = Global.sys_date.date) -> void:
