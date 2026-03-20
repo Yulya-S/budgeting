@@ -63,9 +63,9 @@ func set_page(new_idx: int) -> void:
 						_window().on_close_button_down()
 						return
 					data[SF.l(i)] = i.get_item_index(data[SF.l(i)])
-				Global.run_func(self, _create_func_name(i), [data[SF.l(i)]])
+				if get(_create_func_name(i)): call(_create_func_name(i), data[SF.l(i)])
+				else: i.selected = data[SF.l(i)]
 		if i.name == "Date": i.set_date(data[SF.l(i)])
-
 
 # Получение пути к Window
 func _window() -> Node: return get_child(0)
