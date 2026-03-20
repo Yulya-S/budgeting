@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://ct7pumat37ciy" path="res://scripts/pages/information.gd" id="1_v8uu4"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_3skr8"]
-[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="3_v8ggk"]
+[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/interface/right.png" id="3_v8ggk"]
 [ext_resource type="Texture2D" uid="uid://b85cbftwbxvmv" path="res://img/interface/brush.png" id="4_yv61v"]
 [ext_resource type="Texture2D" uid="uid://i3eg6d82cpd" path="res://img/add/add_section.png" id="5_3skr8"]
 [ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="5_sjrew"]
-[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="6_ea0j8"]
+[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/head/cash_flow.png" id="6_ea0j8"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="7_ug1cx"]
 
 [node name="SectionInf" type="Control"]

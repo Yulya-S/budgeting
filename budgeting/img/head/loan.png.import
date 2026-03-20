@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dkcol6iakx7q6"
-path="res://.godot/imported/broom.png-300fe3934b6eb15028d24b785cd873e3.ctex"
+uid="uid://bj2t2gu7qchrh"
+path="res://.godot/imported/loan.png-febde172bc7cfad6f15a36ffbfed870e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://img/broom.png"
-dest_files=["res://.godot/imported/broom.png-300fe3934b6eb15028d24b785cd873e3.ctex"]
+source_file="res://img/head/loan.png"
+dest_files=["res://.godot/imported/loan.png-febde172bc7cfad6f15a36ffbfed870e.ctex"]
 
 [params]
 

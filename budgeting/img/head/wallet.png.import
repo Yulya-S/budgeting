@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnib8h85vflf7"
-path="res://.godot/imported/question.png-122625df5367d71f8e4ffbdc6bc10c6e.ctex"
+uid="uid://bfw1wk455agmg"
+path="res://.godot/imported/wallet.png-787376800f3a9742f340342276b746a2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://img/question.png"
-dest_files=["res://.godot/imported/question.png-122625df5367d71f8e4ffbdc6bc10c6e.ctex"]
+source_file="res://img/head/wallet.png"
+dest_files=["res://.godot/imported/wallet.png-787376800f3a9742f340342276b746a2.ctex"]
 
 [params]
 

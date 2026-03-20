@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cartg4ce6rg4o"
-path="res://.godot/imported/cash_flow.png-89ddc4d24d2214601132fa6412340474.ctex"
+uid="uid://r264y663qs6s"
+path="res://.godot/imported/section.png-1f174a1cf756feb693c2be549945631d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://img/cash_flow.png"
-dest_files=["res://.godot/imported/cash_flow.png-89ddc4d24d2214601132fa6412340474.ctex"]
+source_file="res://img/head/section.png"
+dest_files=["res://.godot/imported/section.png-1f174a1cf756feb693c2be549945631d.ctex"]
 
 [params]
 

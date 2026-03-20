@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cehtdax4yymqd"
-path="res://.godot/imported/transaction.png-91f4b1b75829def63c1520387c22cb6d.ctex"
+uid="uid://dkcol6iakx7q6"
+path="res://.godot/imported/broom.png-2dfccacdb41fce21a66d136dd3a2a2e5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://img/transaction.png"
-dest_files=["res://.godot/imported/transaction.png-91f4b1b75829def63c1520387c22cb6d.ctex"]
+source_file="res://img/head/broom.png"
+dest_files=["res://.godot/imported/broom.png-2dfccacdb41fce21a66d136dd3a2a2e5.ctex"]
 
 [params]
 
