@@ -152,8 +152,8 @@ func _standard_language() -> Dictionary:
 		# Уведомления
 		"NBorderCleaning": "Очистить уведомлений", "NotificationTitle": "Событие",
 		# Регистрация
-		"Registration": "Регистрация", "Enter": "Вход", "LanguageLabel": "Язык:", "LoginLabel": "*Логин:",
-		"PasswordLabel": "*Пароль:", "Remember": "Запомни меня", "Show": "Показать пароль",
+		"Registration": "Регистрация", "Enter": "Вход", "LanguageLabel": "Язык:", "LoginLabel": "Логин:",
+		"PasswordLabel": "Пароль:", "Remember": "Запомни меня", "Show": "Показать пароль",
 		# Окна создания / изменения
 		"Apply": "Сохранить", "Close": "Отменить изменения",
 		# Настройки
@@ -168,7 +168,7 @@ func _standard_language() -> Dictionary:
 		# Окно очистки данных
 		"CleaningCashFlows": "Очистить движения средств", "ClearEvents": "Очистить события", "CleaningLoans": "Очистить займы",
 		"CleaningCashFlowsLabel": "Удаление данных о движениях средств, с даты создания которых прошло более 2-х лет",
-		"ClearEventsLabel": 'Удаление данных о событиях для которых было назначено повторение "один раз", с момента завершения которых прошло больше 2-х месяцев',
+		"ClearEventsLabel": 'Удаление данных о событиях, для которых было назначено повторение "один раз", с момента завершения которых прошло больше 2-х месяцев',
 		"CleaningLoansLabel": "Удаление данных о выплаченных займах, с момента погашения которых прошло больше 2-х месяцев", 
 		# Фильтры
 		"FilterTitleLabel": "Фрагмент названия", "FilterOrderLabel": "Порядок сортировки",
@@ -284,7 +284,7 @@ func _standard_language() -> Dictionary:
 			"_E5": "Значение должно быть больше нуля",
 			"_E6": "Выбранные для перевода счета должны различаться",
 			"_E7": "Выбранная дата находится до даты оформления займа",
-			"_E8": "Существуют транзакции проведенные над займом после выбранной даты",
+			"_E8": "Существуют транзакции, проведенные над займом после выбранной даты",
 			"_E9": "Введенная сумма превышает необходимое значение для полного погашения займа"
 		}}
 
@@ -301,8 +301,8 @@ func _cr_en() -> void:
 		# Уведомления
 		"NBorderCleaning": "Clear notifications", "NotificationTitle": "Event",
 		# Регистрация
-		"Registration": "Registration", "Enter": "Entry", "LanguageLabel": "Language:", "LoginLabel": "*Login:",
-		"PasswordLabel": "*Password:", "Remember": "Remember me", "Show": "Show password",
+		"Registration": "Registration", "Enter": "Entry", "LanguageLabel": "Language:", "LoginLabel": "Login:",
+		"PasswordLabel": "Password:", "Remember": "Remember me", "Show": "Show password",
 		# Окна создания / изменения
 		"Apply": "Save", "Close": "Cancel changes",
 		# Настройки
