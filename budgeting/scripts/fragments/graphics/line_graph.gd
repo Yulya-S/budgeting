@@ -73,7 +73,7 @@ func _loan(max_value: float, x_step: float) -> void:
 		var vectors: Array = []
 		for l in range(2):
 			vectors.append(Vector2(x_step * (values[i + l].day - 1) + 10.,
-				(102. * values[i + l].value / max_value) * -1 + 107))
+				(114. * values[i + l].value / max_value) * -1 + 119))
 		_line_and_dots(vectors)
 
 # Свечной
