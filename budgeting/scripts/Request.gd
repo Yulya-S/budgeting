@@ -660,6 +660,11 @@ func check_loan_count(where: String = "") -> bool:
 	if where: where = " AND " + where
 	return check_values_count(Tables.LOANS, 0, "total > 0" + where)
 
+# Проверка что после текущей даты была совершена манипуляция над займом
+func check_loan_manipulations(idx: int, loan_idx: int, date: String) -> bool:
+	return len(select_all(Tables.CASH_FLOWS, "id!="+str(idx)+" AND section_id=2 AND
+		wallet_2_id="+str(loan_idx)+' AND date>"'+date+'"')) > 0
+
 # Существование выбранного пользователя
 func select_existence_user(login: bool) -> bool:
 	var req: String = 'login="' + File.config["login"] + '"'

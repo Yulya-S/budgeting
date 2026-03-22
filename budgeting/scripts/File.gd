@@ -284,7 +284,8 @@ func _standard_language() -> Dictionary:
 			"_E5": "Значение должно быть больше нуля",
 			"_E6": "Выбранные для перевода счета должны различаться",
 			"_E7": "Выбранная дата находится до даты оформления займа",
-			"_E8": "Введенная сумма превышает необходимое значение для полного погашения займа"
+			"_E8": "Существуют транзакции проведенные над займом после выбранной даты",
+			"_E9": "Введенная сумма превышает необходимое значение для полного погашения займа"
 		}}
 
 # Русский
@@ -429,6 +430,7 @@ func _cr_en() -> void:
 			"_E5": "Value must be greater than zero",
 			"_E6": "The wallets selected for transfer must be different",
 			"_E7": "The selected date is before the loan registration date",
-			"_E8": "The amount entered exceeds the required amount for full repayment of the loan"
+			"_E8": "There are transactions carried out on the loan after the selected date",
+			"_E9": "The amount entered exceeds the required amount for full repayment of the loan"
 		}
 	})

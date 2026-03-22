@@ -138,9 +138,11 @@ func _check_first_date() -> bool:
 # Проверка возможности создания платежа по займу
 func _check_payment() -> bool:
 	if not _check_value($Value) or not _check_first_date(): return false
-	if Request.select_all_id("loans", Global.get_OB_id($Wallet_2_id))[0].total - SF.L_to_float($Value) < 0:
+	if Request.check_loan_manipulations(idx, Global.get_OB_id($Wallet_2_id), $Date.get_date()):
 		return Error.set_state(Error.States._E8)
-	return true
+	if Request.select_all_id("loans", Global.get_OB_id($Wallet_2_id))[0].total - SF.L_to_float($Value) < 0:
+		return Error.set_state(Error.States._E9)
+	return false
 
 # Обработка нажатий кнопок
 # Переключатель
