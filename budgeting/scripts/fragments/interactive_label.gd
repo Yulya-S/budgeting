@@ -14,4 +14,6 @@ func set_object(new_text: String, new_id: int) -> void:
 func _other_check() -> bool: return not id
 
 # Функция запускаемая при нажатии на объект
-func _start_func() -> void: SF.op_w(next_page, id, next_page_dir)
+func _start_func() -> void:
+	if next_page_dir == Global.Dirs.PAGES: SF.op_np(next_page)
+	else: SF.op_w(next_page, id, next_page_dir)
