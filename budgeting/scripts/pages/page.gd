@@ -10,8 +10,9 @@ class_name Page
 # Подключение сигнала
 func _ready() -> void:
 	if Global.current_page == Global.Pages.CASH_FLOW: # Заполнение списка кошельков
-		Filter.set_OB_items(Request.Tables.WALLETS)
-		Filter.set_OB_items(Request.Tables.SECTIONS)
+		if Filter.get("set_OB_items"):
+			Filter.set_OB_items(Request.Tables.WALLETS)
+			Filter.set_OB_items(Request.Tables.SECTIONS)
 	Global.connect("update_page", Callable(self, "_update_page"))
 	_update_page()
 

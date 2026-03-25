@@ -402,7 +402,7 @@ func _delete_and_update_ids(table: Variant, where: String = "") -> void:
 # Удаление и обновление данных таблицы со сдвигом индексации
 func _del_upd_idx_and_values(table: Variant, idx: Variant, name_fr: String = "", other: String = "") -> void:
 	_delete_and_update_ids(table, name_fr + "id = " + str(idx) + other)
-	_update(table, [name_fr + "id"], [name_fr + "id - 1"], name_fr + "id > " + idx)
+	_update(table, [name_fr + "id"], [name_fr + "id - 1"], name_fr + "id > " + str(idx))
 
 # Пользователь
 func delete_user() -> void:
@@ -477,12 +477,11 @@ func _delete_percent(idx: String) -> void:
 
 # Заём
 func _delete_loan(idx: String) -> void:
-	_delete_record(Tables.LOANS, int(idx))
-	var values: Dictionary = select_all(Tables.CASH_FLOWS,
-		"subsection_id=1 AND wallet_2_id="+idx)[0]
+	var values: Dictionary = select_all_id(Tables.CASH_FLOWS, int(idx))[0]
+	_delete_record(Tables.LOANS, int(values.wallet_2_id))
 	if values.wallet_id != null:
 		_update_record(Tables.WALLETS, ["value"], ["value-" + str(values.value)], values.wallet_id)
-	_del_upd_idx_and_values(Tables.CASH_FLOWS, idx, "wallet_2_") # Удаление движений средств
+	_del_upd_idx_and_values(Tables.CASH_FLOWS, values.wallet_2_id, "wallet_2_") # Удаление движений средств
 
 # Событие
 func _delete_event(idx: String) -> void:
@@ -788,14 +787,17 @@ func match_update_list_element(list_element: ObjectVariants, line: Dictionary, p
 			match line.section_id:
 				1: line["wallet_2_title"] = _select_title(Tables.WALLETS, line.wallet_2_id)
 				2:
-					if line.subsection_id == 1:
-						line["wallet_2_title"] = _select_title(Tables.LOANS, line.wallet_2_id)
-					else:
-						line["wallet_2_title"] = line.wallet_title
-						line.wallet_title = _select_title(Tables.LOANS, line.wallet_2_id)
-						var save_id: int = line.wallet_id if line.wallet_id else 0
-						line.wallet_id = line.wallet_2_id
-						line.wallet_2_id = save_id
+					match line.subsection_id:
+						1:
+							line["wallet_2_title"] = line.wallet_title
+							line.wallet_title = _select_title(Tables.LOANS, line.wallet_2_id)
+							var save_id: int = line.wallet_id if line.wallet_id else 0
+							line.wallet_id = line.wallet_2_id
+							line.wallet_2_id = save_id
+						2: line["wallet_2_title"] = _select_title(Tables.LOANS, line.wallet_2_id)
+						3:
+							line["wallet_title"] = _select_title(Tables.LOANS, line.wallet_2_id)
+							line.wallet_id = line.wallet_2_id
 				_: if line.income:
 					line["wallet_2_title"] = line.wallet_title
 					line.wallet_2_id = line.wallet_id
@@ -832,14 +834,21 @@ func match_elem(idx: String, obj_type: Global.Pages) -> Dictionary:
 			if value.month_limit == -1.0: value.month_limit = 0.0
 			return value
 		Global.Pages.LOAN:
+			var loan_idx: String = str(select_all_id(Tables.CASH_FLOWS, int(idx))[0].wallet_2_id)
 			if select("COUNT(id) count FROM cash_flows", "subsection_id IN
-				(2, 3) AND wallet_2_id=" + idx)[0].count > 0: return {}
+				(2, 3) AND wallet_2_id=" + loan_idx)[0].count > 0: return {}
 			return select("cf.*, l.title FROM cash_flows cf LEFT JOIN loans l
-				ON cf.wallet_2_id=l.id", "subsection_id=1 AND wallet_2_id=" + idx)[0]
+				ON cf.wallet_2_id=l.id", "subsection_id=1 AND wallet_2_id=" + loan_idx)[0]
 		Global.Pages.EVENT:
 			idx = str(select_all_id(Tables.MULTIPLIED_EVENTS, int(idx))[0].event_id)
 			return select_all_id(Tables.EVENTS, int(idx))[0]
-		_: return _select_first_cash_flow(idx)
+		Global.Pages.CASH_FLOW, Global.Pages.TRANSFER: return _select_first_cash_flow(idx)
+		Global.Pages.PAYMENT, Global.Pages.PERCENT:
+			var values: Array = select("cf.* FROM `cash_flows` cf
+				LEFT JOIN loans l ON cf.wallet_2_id==l.id",
+				"cf.section_id=2 AND l.total>0 AND cf.id="+idx)
+			if len(values) == 0: return {}
+			return values[0]
 	return {}
 
 # Распределение обработки действий с объектами

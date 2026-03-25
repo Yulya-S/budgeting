@@ -42,12 +42,13 @@ func _on_delete_button_down() -> void:
 # Создание движения средств
 func _on_add_button_down() -> void:
 	var values: Array = []
+	if (SF.L_is_empty(Value) or SF.L_to_float(Value) <= 0): return
 	for i in get_children():
 		match i.get_class():
 			"OptionButton": values.append(Global.get_OB_id(i))
 			"TextEdit": values.append(Value.get_text())
-	if not Subsection.visible: values[2] = null
-	values.append(Global.date_to_str())
+	if not Subsection.visible: values[2] = "null"
+	values.append('"'+Global.date_to_str()+'"')
 	Request._insert_cash_flow(values)
 	Global.emit_signal("update_page")
 

@@ -81,4 +81,5 @@ func _open_new_page(page: Global.Pages, id: Variant = null, parent: Variant = nu
 
 # Проверка закрытия окна информации при удалении объекта
 func close_inf_page() -> void:
-	if not _ch_inf(-2) and get_child(-1).name != "Subsection": get_child(-2)._on_back_button_down()
+	if not _ch_inf(-2) and get_child(-1).name not in ["Subsection", "Payment", "Percent"]:
+		get_child(-2)._on_back_button_down()

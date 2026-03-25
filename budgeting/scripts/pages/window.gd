@@ -142,7 +142,7 @@ func _check_payment() -> bool:
 		return Error.set_state(Error.States._E8)
 	if Request.select_all_id("loans", Global.get_OB_id($Wallet_2_id))[0].total - SF.L_to_float($Value) < 0:
 		return Error.set_state(Error.States._E9)
-	return false
+	return true
 
 # Обработка нажатий кнопок
 # Переключатель
