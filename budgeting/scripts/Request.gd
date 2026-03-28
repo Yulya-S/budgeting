@@ -769,7 +769,6 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 # Запрос на получение списка разделов
 func select_sections_list(where: String = "",
 		date: String = Global.date_to_str(), order: String = "") -> Array:
-	if 'LIKE "%%"' not in where: where += " AND s.id > 2"
 	return select("s.*, COALESCE(j.v, 0.0) value, j.last_date, j.last_id FROM
 		sections s LEFT JOIN (SELECT cf.section_id, SUM(cf.value) v, cf.date
 		last_date, cf.id last_id FROM cash_flows cf WHERE " + where_date(date) +

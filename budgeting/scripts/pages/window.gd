@@ -169,6 +169,9 @@ func _on_Section_id(index: int) -> void:
 
 # Изменение раздела
 func _on_section_id_item_selected(index: int = 0) -> void:
+	if page_type == Request.ObjectVariants.SUBSECTION:
+		_on_parent_id_item_selected(index)
+		return
 	_on_Section_id(index)
 	var values: Array = Request.select_all("subsections", '"__SS4" != title AND section_id = '+str(index+3)) + Request.select_all("subsections", '"__SS4" == title AND section_id = '+str(index+3))
 	$Subsection_id.visible = len(values) > 0
