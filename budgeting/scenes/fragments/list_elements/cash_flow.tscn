@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bbm4ew21ko7e1"]
 
-[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/Fragment.gd" id="1_rbn4l"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/ListElement.gd" id="1_rbn4l"]
 [ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_nyojl"]
 
 [node name="CashFlow" type="ColorRect"]
@@ -90,6 +90,7 @@ offset_left = 835.0
 offset_right = 985.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
 text = "Сумма"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -105,9 +106,11 @@ offset_right = -12.0
 offset_bottom = 23.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
 text = "Дата"
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 
 [connection signal="mouse_entered" from="Title" to="Title" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Title" to="Title" method="_on_mouse_exited"]

@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cma0tkdwn1ppo"]
+[gd_scene load_steps=4 format=3 uid="uid://cma0tkdwn1ppo"]
 
-[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_dh78s"]
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/pages/window.gd" id="1_dh78s"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_nmpp4"]
-[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_dh78s"]
 [ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="3_nmpp4"]
 
 [node name="CashFlowWindow" type="Control"]
@@ -16,24 +15,14 @@ page_type = 3
 [node name="TWindow" parent="." instance=ExtResource("2_nmpp4")]
 layout_mode = 0
 
-[node name="Error" type="Label" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 110.0
-offset_top = 119.0
-offset_right = 693.0
-offset_bottom = 147.0
-theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
-theme_override_font_sizes/font_size = 18
-horizontal_alignment = 1
-script = ExtResource("3_dh78s")
-
 [node name="Wallet_id" type="OptionButton" parent="."]
 layout_mode = 0
 offset_left = 400.0
 offset_top = 228.0
 offset_right = 693.0
 offset_bottom = 259.0
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Label" type="Label" parent="Wallet_id"]
 layout_mode = 0
@@ -45,6 +34,7 @@ theme_override_font_sizes/font_size = 20
 text = "Имя счета"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Section_id" type="OptionButton" parent="."]
 layout_mode = 0
@@ -65,6 +55,7 @@ theme_override_font_sizes/font_size = 20
 text = "Статья"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="ConsumptionIncome" type="Label" parent="Section_id"]
 layout_mode = 0
@@ -76,8 +67,9 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Расход"
 horizontal_alignment = 2
+text_overrun_behavior = 3
 
-[node name="Subection_id" type="OptionButton" parent="."]
+[node name="Subsection_id" type="OptionButton" parent="."]
 layout_mode = 0
 offset_left = 400.0
 offset_top = 357.0
@@ -86,7 +78,7 @@ offset_bottom = 388.0
 text_overrun_behavior = 3
 clip_text = true
 
-[node name="CashFlowSub_title" type="Label" parent="Subection_id"]
+[node name="CashFlowSub_title" type="Label" parent="Subsection_id"]
 layout_mode = 0
 offset_left = -285.0
 offset_right = -5.0
@@ -96,6 +88,7 @@ theme_override_font_sizes/font_size = 20
 text = "Подстатья"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Value" type="TextEdit" parent="."]
 clip_contents = false
@@ -118,6 +111,7 @@ theme_override_font_sizes/font_size = 19
 text = "Сумма транзакции:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Date" parent="." instance=ExtResource("3_nmpp4")]
 layout_mode = 0

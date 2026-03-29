@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://1o8fdt54m50i"]
 
-[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/Fragment.gd" id="1_f8bn8"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/ListElement.gd" id="1_f8bn8"]
 [ext_resource type="Script" uid="uid://d3c7v884k4oa6" path="res://scripts/fragments/interactive_label.gd" id="2_7rb7u"]
 
 [node name="Event" type="ColorRect"]
@@ -35,8 +35,10 @@ offset_left = 380.0
 offset_right = 587.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="Value" type="Label" parent="EventType"]
 layout_mode = 0
@@ -69,9 +71,11 @@ offset_right = -10.0
 offset_bottom = 23.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
 text = "Дата"
 horizontal_alignment = 2
 vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="Completed" type="ColorRect" parent="."]
 visible = false

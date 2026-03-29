@@ -1,9 +1,8 @@
 extends Page
-
 # Переменные
 var idx: int = 0 # Индекс выбранного объекта
 @export var page_type: Global.Pages = Global.Pages.WALLET # Выбранный тип страницы информации
-var filter_data: Dictionary = {"where": ""}
+var filter_data: Dictionary = {"where": ""} # Данные для фильтрации
 
 # Применение параметров страницы информации
 func set_page(new_idx: int, new_page_type: Global.Pages = Global.Pages.WALLET) -> void:
@@ -12,18 +11,11 @@ func set_page(new_idx: int, new_page_type: Global.Pages = Global.Pages.WALLET) -
 	match page_type:
 		Global.Pages.WALLET: filter_data = {"where": "((cf.section_id = 1 AND cf.wallet_2_id = "+str(idx)+") OR cf.wallet_id = " + str(idx) + ") AND " + Request.where_date(Global.date_to_str(), "cf.date")}
 		Global.Pages.LOAN: filter_data = {"where": "cf.section_id=2 AND cf.wallet_2_id = " + str(idx), "date": ""}
-		Global.Pages.SECTION: filter_data = {"where": "section_id = "+str(idx)}
+		Global.Pages.SECTION: filter_data = {"where": "cf.section_id = "+str(idx)}
+	if page_type == Global.Pages.SECTION and idx <= 2:
+		for i in [$Menu/Update, $Menu/AddSubsection, $Menu/CashFlow]: i.visible = false
+		$Menu/Transactions.position.x = 65.0
 	update_data()
-
-# Обновление данных
-func update_data() -> void:
-	if idx == 0: return
-	var data: Dictionary = Request.select_inf_data(filter_data.where, idx, page_type)
-	for i in [$Filter/Title] + _get_labels(): Global.set_label_from_data(i, data)
-	if page_type == Global.Pages.SECTION:
-		File.set_lang($Filter/Title)
-		$ObjArray.update_obj(Request.ObjectVariants.SUBSECTION if len(Request._select("* FROM subsections WHERE parent_id = "+str(idx))) > 0 else Request.ObjectVariants.CASH_FLOW)
-	super.update_data()
 
 # Получение списка заголовков для применения значений
 func _get_labels() -> Array:
@@ -36,13 +28,46 @@ func _get_labels() -> Array:
 # Получение данных фильтра
 func _get_filter(_obj: Variant) -> Array: return [filter_data]
 
-# Обработка нажатия кнопки "Назад"
+# Обновление данных
+func update_data() -> void:
+	if idx == 0: return
+	var data: Dictionary = Request.select_inf_data(filter_data.where, idx, page_type)
+	for i in [$Filter/Title] + _get_labels(): Global.set_label_from_data(i, data)
+	if page_type == Global.Pages.SECTION:
+		File.set_lang($Filter/Title)
+		$ObjArray.update_section_inf_obj(Request.check_values_count(
+			Request.Tables.SUBSECTIONS, 0, "section_id = " + str(idx)))
+	_run_update()
+
+# Отмена запуска дополнительных изменений на странице
+func _match_other_update() -> void: pass
+
+# Открытие окна
+func _open_w(new_page: Global.Pages) -> void: SF.op_w(new_page, idx, Global.Dirs.WINDOWS, page_type)
+
+# Проверка что выбранный заём ещё не погашен
+func _check_loan() -> bool: return Request.check_loan_count("id=" + str(idx))
+
+# Обработки нажатий кнопок
+# Назад
 func _on_back_button_down() -> void:
 	Global.delete_child(get_parent(), self)
 	idx = 0
 
-# Обработка нажатия кнопки "Изменить"
-func _on_update_button_down() -> void: Global.emit_signal("open_window", page_type, idx)
+# Изменить
+func _on_update_button_down() -> void: SF.op_w(page_type, idx)
 
-# Обработка нажатия кнопки "Создать подраздел"
-func _on_add_subsection_button_down() -> void: Global.emit_signal("open_window", Global.Pages.SUBSECTION)
+# Список транзакций
+func _on_transactions_button_down() -> void: SF.op_np(Global.Pages.CASH_FLOW, idx, page_type)
+
+# Создать движение средств
+func _on_cash_flow_button_down() -> void: _open_w(Global.Pages.CASH_FLOW)
+
+# Создать подраздел
+func _on_add_subsection_button_down() -> void: _open_w(Global.Pages.SUBSECTION)
+
+# Добавить процент по займу
+func _on_add_interest_button_down() -> void: if _check_loan(): _open_w(Global.Pages.PERCENT)
+
+# Добавить платёж по займу
+func _on_add_payment_button_down() -> void: if _check_loan(): _open_w(Global.Pages.PAYMENT)

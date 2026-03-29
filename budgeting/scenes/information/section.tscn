@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://ct7pumat37ciy" path="res://scripts/pages/information.gd" id="1_v8uu4"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_3skr8"]
-[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="3_v8ggk"]
+[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/interface/right.png" id="3_v8ggk"]
 [ext_resource type="Texture2D" uid="uid://b85cbftwbxvmv" path="res://img/interface/brush.png" id="4_yv61v"]
 [ext_resource type="Texture2D" uid="uid://i3eg6d82cpd" path="res://img/add/add_section.png" id="5_3skr8"]
 [ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="5_sjrew"]
-[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="6_ea0j8"]
+[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/head/cash_flow.png" id="6_ea0j8"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="7_ug1cx"]
 
 [node name="SectionInf" type="Control"]
@@ -48,9 +48,9 @@ text_overrun_behavior = 3
 [node name="Back" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 148.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Назад"
 icon = ExtResource("3_v8ggk")
@@ -58,9 +58,9 @@ icon = ExtResource("3_v8ggk")
 [node name="Update" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 65.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 193.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Изменить"
 icon = ExtResource("4_yv61v")
@@ -68,9 +68,9 @@ icon = ExtResource("4_yv61v")
 [node name="AddSubsection" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 110.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 238.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Создать подраздел"
 icon = ExtResource("5_3skr8")
@@ -78,9 +78,9 @@ icon = ExtResource("5_3skr8")
 [node name="CashFlow" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 155.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 283.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Записать движение средств"
 icon = ExtResource("5_sjrew")
@@ -88,9 +88,9 @@ icon = ExtResource("5_sjrew")
 [node name="Transactions" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 200.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 328.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Список транзакций"
 icon = ExtResource("6_ea0j8")
@@ -152,3 +152,5 @@ obj = 0
 [connection signal="button_down" from="Menu/Back" to="." method="_on_back_button_down"]
 [connection signal="button_down" from="Menu/Update" to="." method="_on_update_button_down"]
 [connection signal="button_down" from="Menu/AddSubsection" to="." method="_on_add_subsection_button_down"]
+[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
+[connection signal="button_down" from="Menu/Transactions" to="." method="_on_transactions_button_down"]

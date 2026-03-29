@@ -1,7 +1,7 @@
 extends Page
 # Подгружаемые объекты
 var objArray: Resource = load("res://scenes/fragments/obj_array.tscn")
-var calendar: Resource = load("res://scenes/pages/events/calendar.tscn")
+var calendar: Resource = load("res://scenes/pages/events_calendar/calendar.tscn")
 # Переменная
 var start_update: bool = false # Был ли отправлен запрос на изменение страницы
 
@@ -11,13 +11,10 @@ func _process(_delta: float) -> void:
 		Objects.update_data(Filter)
 		start_update = false
 
-# Запуск обновления данных на странице
-func _update_page() -> void:
-	Global.delete_child(self, get_child(-1)) # Удаление предыдущего формата отображения событий
-	# Создание нового формата отображения событий
-	if not Request.select_value(Request.Tables.SETTINGS, "event_page_calendar"): _create_calendar(calendar, Vector2(456, 473))
+# Создание нового формата отображения событий
+func _create() -> void:
+	if not Request.select_settings().event_page_calendar: _create_calendar(calendar, Vector2(456, 473))
 	else: _create_calendar(objArray, Vector2(1152, 473))
-	super._update_page()
 
 # Создание календаря
 func _create_calendar(obj: Resource, new_size: Vector2) -> void:

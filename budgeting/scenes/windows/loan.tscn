@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://42d46ou8bkds"]
+[gd_scene load_steps=4 format=3 uid="uid://42d46ou8bkds"]
 
-[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_8pp1o"]
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/pages/window.gd" id="1_8pp1o"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="1_804o2"]
 [ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="2_kl61x"]
-[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_8pp1o"]
 
 [node name="LoanWindow" type="Control"]
 layout_mode = 3
@@ -16,18 +15,6 @@ page_type = 4
 [node name="Window" parent="." instance=ExtResource("1_804o2")]
 layout_mode = 0
 
-[node name="Error" type="Label" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 110.0
-offset_top = 119.0
-offset_right = 693.0
-offset_bottom = 147.0
-theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
-theme_override_font_sizes/font_size = 18
-horizontal_alignment = 1
-script = ExtResource("3_8pp1o")
-
 [node name="Title" type="TextEdit" parent="."]
 clip_contents = false
 layout_mode = 0
@@ -35,7 +22,6 @@ offset_left = 400.0
 offset_top = 239.0
 offset_right = 693.0
 offset_bottom = 270.0
-focus_next = NodePath("../Wallet_id")
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
@@ -49,6 +35,7 @@ theme_override_font_sizes/font_size = 20
 text = "Имя займа:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Wallet_id" type="OptionButton" parent="."]
 layout_mode = 0
@@ -56,8 +43,8 @@ offset_left = 400.0
 offset_top = 289.0
 offset_right = 693.0
 offset_bottom = 320.0
-focus_next = NodePath("../Value")
-focus_previous = NodePath("../Title")
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="W2Label" type="Label" parent="Wallet_id"]
 layout_mode = 0
@@ -69,6 +56,7 @@ theme_override_font_sizes/font_size = 20
 text = "Целевой счёт"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Value" type="TextEdit" parent="."]
 clip_contents = false
@@ -77,7 +65,6 @@ offset_left = 400.0
 offset_top = 339.0
 offset_right = 693.0
 offset_bottom = 370.0
-focus_previous = NodePath("../Wallet_id")
 text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true
@@ -92,6 +79,7 @@ theme_override_font_sizes/font_size = 20
 text = "Сумма займа:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Date" parent="." instance=ExtResource("2_kl61x")]
 layout_mode = 0
@@ -101,5 +89,4 @@ offset_right = 999.0
 offset_bottom = 473.0
 
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
-[connection signal="item_selected" from="Wallet_id" to="." method="_on_wallet_item_selected"]
 [connection signal="text_changed" from="Value" to="." method="_on_value_text_changed"]

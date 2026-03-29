@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bm8d2roc1o62"]
+[gd_scene load_steps=3 format=3 uid="uid://bm8d2roc1o62"]
 
-[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_lnpay"]
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/pages/window.gd" id="1_lnpay"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_lnpay"]
-[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_lnpay"]
 
 [node name="SectionWindow" type="Control"]
 layout_mode = 3
@@ -15,18 +14,6 @@ page_type = 2
 [node name="Window" parent="." instance=ExtResource("2_lnpay")]
 layout_mode = 0
 
-[node name="Error" type="Label" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 110.0
-offset_top = 197.0
-offset_right = 1042.0
-offset_bottom = 225.0
-theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
-theme_override_font_sizes/font_size = 18
-horizontal_alignment = 1
-script = ExtResource("3_lnpay")
-
 [node name="Title" type="TextEdit" parent="."]
 clip_contents = false
 layout_mode = 0
@@ -34,8 +21,6 @@ offset_left = 485.0
 offset_top = 225.0
 offset_right = 906.0
 offset_bottom = 256.0
-focus_next = NodePath("../Income")
-focus_previous = NodePath("../Month_Limit")
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
@@ -49,6 +34,7 @@ theme_override_font_sizes/font_size = 20
 text = "*Название раздела:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Income" type="CheckButton" parent="."]
 layout_mode = 0
@@ -56,8 +42,6 @@ offset_left = 648.0
 offset_top = 263.0
 offset_right = 793.0
 offset_bottom = 294.0
-focus_next = NodePath("../Month_Limit")
-focus_previous = NodePath("../Title")
 theme_override_colors/font_disabled_color = Color(0.364706, 0.364706, 0.364706, 1)
 theme_override_colors/font_hover_pressed_color = Color(0.364706, 0.364706, 0.364706, 1)
 theme_override_colors/font_hover_color = Color(0.364706, 0.364706, 0.364706, 1)
@@ -66,6 +50,8 @@ theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 text = "Расход"
 alignment = 2
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="Month_Limit" type="TextEdit" parent="."]
 clip_contents = false
@@ -74,8 +60,6 @@ offset_left = 485.0
 offset_top = 299.0
 offset_right = 906.0
 offset_bottom = 330.0
-focus_next = NodePath("../Title")
-focus_previous = NodePath("../Income")
 text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true
@@ -90,6 +74,7 @@ theme_override_font_sizes/font_size = 20
 text = "*Ежемесячное ограничение:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
 [connection signal="toggled" from="Income" to="." method="_on_income_toggled"]

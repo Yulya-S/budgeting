@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://3fba87w26wfm"]
+[gd_scene load_steps=3 format=3 uid="uid://3fba87w26wfm"]
 
-[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_agcjf"]
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/pages/window.gd" id="1_agcjf"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_h5u6u"]
-[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_u0nra"]
 
 [node name="Subsection" type="Control"]
 layout_mode = 3
@@ -15,18 +14,6 @@ page_type = 10
 [node name="Window" parent="." instance=ExtResource("2_h5u6u")]
 layout_mode = 0
 
-[node name="Error" type="Label" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 110.0
-offset_top = 197.0
-offset_right = 1042.0
-offset_bottom = 225.0
-theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
-theme_override_font_sizes/font_size = 18
-horizontal_alignment = 1
-script = ExtResource("3_u0nra")
-
 [node name="Title" type="TextEdit" parent="."]
 clip_contents = false
 layout_mode = 0
@@ -34,7 +21,6 @@ offset_left = 485.0
 offset_top = 225.0
 offset_right = 906.0
 offset_bottom = 256.0
-focus_previous = NodePath("../Month_Limit")
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
@@ -48,8 +34,9 @@ theme_override_font_sizes/font_size = 20
 text = "Название подраздела:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
-[node name="Parent_id" type="OptionButton" parent="."]
+[node name="Section_id" type="OptionButton" parent="."]
 layout_mode = 0
 offset_left = 485.0
 offset_top = 263.0
@@ -58,7 +45,7 @@ offset_bottom = 294.0
 text_overrun_behavior = 3
 clip_text = true
 
-[node name="Label" type="Label" parent="Parent_id"]
+[node name="Label" type="Label" parent="Section_id"]
 layout_mode = 0
 offset_left = -325.0
 offset_right = -5.0
@@ -68,8 +55,9 @@ theme_override_font_sizes/font_size = 20
 text = "Статья"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
-[node name="ConsumptionIncome" type="Label" parent="Parent_id"]
+[node name="ConsumptionIncome" type="Label" parent="Section_id"]
 layout_mode = 0
 offset_left = -290.0
 offset_top = 31.0
@@ -79,6 +67,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Расход"
 horizontal_alignment = 2
+text_overrun_behavior = 3
 
 [node name="Month_Limit" type="TextEdit" parent="."]
 clip_contents = false
@@ -87,7 +76,6 @@ offset_left = 485.0
 offset_top = 337.0
 offset_right = 906.0
 offset_bottom = 368.0
-focus_next = NodePath("../Title")
 text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true
@@ -102,7 +90,8 @@ theme_override_font_sizes/font_size = 20
 text = "Ежемесячное ограничение:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
-[connection signal="item_selected" from="Parent_id" to="." method="_on_parent_id_item_selected"]
+[connection signal="item_selected" from="Section_id" to="." method="_on_parent_id_item_selected"]
 [connection signal="text_changed" from="Month_Limit" to="." method="_on_month_limit_text_changed"]

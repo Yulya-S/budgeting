@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cx485jfb53fqa"]
 
-[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/Fragment.gd" id="1_73yjl"]
+[ext_resource type="Script" uid="uid://bmqvlg4vbn3vk" path="res://scripts/fragments/list_elements/ListElement.gd" id="1_73yjl"]
 
 [node name="Notification" type="ColorRect"]
 custom_minimum_size = Vector2(490, 23)
@@ -40,6 +40,7 @@ offset_right = -10.0
 offset_bottom = 23.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
 text = "Дата"
 horizontal_alignment = 2
 vertical_alignment = 1

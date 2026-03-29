@@ -21,6 +21,7 @@ Request="*res://scripts/Request.gd"
 Global="*res://scripts/Global.gd"
 ColorScheme="*res://scripts/ColorScheme.gd"
 File="*res://scripts/File.gd"
+SF="*res://scripts/SmallFunction.gd"
 
 [display]
 

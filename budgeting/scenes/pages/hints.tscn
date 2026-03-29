@@ -1,8 +1,90 @@
-[gd_scene load_steps=3 format=3 uid="uid://d33vaqenctmy0"]
+[gd_scene load_steps=22 format=3 uid="uid://d33vaqenctmy0"]
 
 [ext_resource type="Script" uid="uid://ca1g18nw3gtj5" path="res://scripts/pages/hints.gd" id="1_uohb5"]
+[ext_resource type="Texture2D" uid="uid://bls1fxgqogfdd" path="res://img/hints/1.png" id="2_fg8fa"]
+[ext_resource type="Texture2D" uid="uid://bivdbvmkc3b33" path="res://img/hints/2.png" id="3_a520q"]
+[ext_resource type="Texture2D" uid="uid://b414cs4rtekcg" path="res://img/hints/3.png" id="4_va2qa"]
+[ext_resource type="Texture2D" uid="uid://ce2xtglyqvfpo" path="res://img/hints/4.png" id="5_vy6xa"]
+[ext_resource type="Texture2D" uid="uid://bas5gf85ciqgw" path="res://img/hints/5.png" id="6_mjeh1"]
+[ext_resource type="Texture2D" uid="uid://vw6mrkjb210r" path="res://img/hints/6.png" id="7_1bs2u"]
+[ext_resource type="Texture2D" uid="uid://dl7rl4m30jmkf" path="res://img/hints/7.png" id="8_j6vde"]
+[ext_resource type="Texture2D" uid="uid://b13gc8v32n7uc" path="res://img/hints/8.png" id="9_jrlyc"]
+[ext_resource type="Texture2D" uid="uid://bcbfwmi8lywuj" path="res://img/hints/9.png" id="10_n7g8i"]
+[ext_resource type="Texture2D" uid="uid://dl5sovne5mvt0" path="res://img/hints/10.png" id="11_t13sy"]
+[ext_resource type="Texture2D" uid="uid://dcq2dxck7dcnw" path="res://img/hints/11.png" id="12_ritms"]
+[ext_resource type="Texture2D" uid="uid://bresmgyhi56al" path="res://img/hints/12.png" id="13_yaloj"]
+[ext_resource type="Texture2D" uid="uid://b7uxypgv3ak3l" path="res://img/hints/13.png" id="14_jtvrd"]
+[ext_resource type="Texture2D" uid="uid://b8vn0m0w7j5ne" path="res://img/hints/14.png" id="15_4igop"]
+[ext_resource type="Texture2D" uid="uid://cp3u5doaackxu" path="res://img/hints/15.png" id="16_g243u"]
+[ext_resource type="Texture2D" uid="uid://bkw1vjfdyafcp" path="res://img/hints/16.png" id="17_4d5ru"]
+[ext_resource type="Texture2D" uid="uid://dam3ptq5p51w8" path="res://img/hints/17.png" id="18_shb7f"]
+[ext_resource type="Texture2D" uid="uid://cjixa7ehtoli5" path="res://img/hints/18.png" id="19_cyiwt"]
+[ext_resource type="Texture2D" uid="uid://b5ogkx5q7eqe2" path="res://img/hints/19.png" id="20_jo4lt"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_uohb5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_fg8fa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_a520q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_va2qa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_vy6xa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_mjeh1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_1bs2u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_j6vde")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_jrlyc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_n7g8i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_t13sy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_ritms")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_yaloj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_jtvrd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_4igop")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_g243u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_4d5ru")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_shb7f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_cyiwt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_jo4lt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Hints" type="ColorRect"]
 offset_right = 1152.0
@@ -12,7 +94,7 @@ script = ExtResource("1_uohb5")
 
 [node name="Hints" type="Label" parent="."]
 layout_mode = 0
-offset_left = 576.0
+offset_left = 38.0
 offset_top = 10.0
 offset_right = 1062.0
 offset_bottom = 52.0
@@ -25,6 +107,7 @@ theme_override_font_sizes/font_size = 30
 text = "Инструкция"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Close" type="Button" parent="."]
 layout_mode = 0
@@ -39,17 +122,6 @@ text = "X"
 
 [node name="Next" type="Button" parent="."]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 596.0
-offset_right = 60.0
-offset_bottom = 638.0
-tooltip_text = "Отменить изменения"
-theme_override_constants/outline_size = 14
-theme_override_font_sizes/font_size = 24
-text = "X"
-
-[node name="Last" type="Button" parent="."]
-layout_mode = 0
 offset_left = 1092.0
 offset_top = 596.0
 offset_right = 1142.0
@@ -59,55 +131,81 @@ theme_override_constants/outline_size = 14
 theme_override_font_sizes/font_size = 24
 text = ">"
 
+[node name="Last" type="Button" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 596.0
+offset_right = 60.0
+offset_bottom = 638.0
+tooltip_text = "Отменить изменения"
+theme_override_constants/outline_size = 14
+theme_override_font_sizes/font_size = 24
+text = "<"
+
+[node name="Border" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 219.0
+offset_top = 62.0
+offset_right = 917.0
+offset_bottom = 456.0
+color = Color(0.329412, 0.352941, 0.34902, 1)
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(574, 277)
-scale = Vector2(0.7, 0.7)
+position = Vector2(568, 259)
+scale = Vector2(0.602161, 0.602161)
 sprite_frames = SubResource("SpriteFrames_uohb5")
+frame = 12
 
 [node name="Marker" type="ColorRect" parent="."]
 layout_mode = 0
+offset_left = 880.0
+offset_top = 59.0
+offset_right = 921.0
+offset_bottom = 97.0
 color = Color(0.57, 0, 0, 0.486275)
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_left = 10.0
-offset_top = 492.0
+offset_top = 470.0
 offset_right = 1142.0
-offset_bottom = 586.0
+offset_bottom = 591.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "__H1"
 horizontal_alignment = 1
-autowrap_mode = 1
+autowrap_mode = 3
 
-[node name="Count" type="Label" parent="."]
+[node name="Idx" type="Label" parent="."]
 layout_mode = 0
-offset_left = 580.0
-offset_top = 596.0
-offset_right = 1092.0
-offset_bottom = 638.0
+offset_left = 60.0
+offset_top = 606.0
+offset_right = 568.0
+offset_bottom = 648.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
-text = "0"
+text = "1"
+horizontal_alignment = 2
+text_overrun_behavior = 3
 
-[node name="Label" type="Label" parent="Count"]
+[node name="Label" type="Label" parent="Idx"]
 layout_mode = 0
-offset_left = -12.0
+offset_left = 508.0
+offset_right = 520.0
 offset_bottom = 42.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "/"
 
-[node name="Idx" type="Label" parent="."]
+[node name="Count" type="Label" parent="Idx"]
 layout_mode = 0
-offset_left = 60.0
-offset_top = 596.0
-offset_right = 568.0
-offset_bottom = 638.0
+offset_left = 520.0
+offset_right = 1032.0
+offset_bottom = 42.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
-text = "1"
-horizontal_alignment = 2
+text = "0"
+text_overrun_behavior = 3
 
 [connection signal="button_down" from="Close" to="." method="_on_close_button_down"]
 [connection signal="button_down" from="Next" to="." method="_on_next_button_down"]

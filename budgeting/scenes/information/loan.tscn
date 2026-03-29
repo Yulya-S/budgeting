@@ -1,13 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://fwrl2jqi85wt"]
+[gd_scene load_steps=8 format=3 uid="uid://fwrl2jqi85wt"]
 
 [ext_resource type="Script" uid="uid://ct7pumat37ciy" path="res://scripts/pages/information.gd" id="1_w21rr"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_3ky7g"]
-[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="3_i7hoo"]
-[ext_resource type="Texture2D" uid="uid://b85cbftwbxvmv" path="res://img/interface/brush.png" id="4_5fhyb"]
+[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/interface/right.png" id="3_i7hoo"]
 [ext_resource type="Texture2D" uid="uid://cgrjoxjtjep5j" path="res://img/interface/percent.png" id="5_gveen"]
 [ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="6_pnbtf"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="7_mddxm"]
-[ext_resource type="PackedScene" uid="uid://nhpwuw8k2gn1" path="res://scenes/fragments/graphics/loan_repayment.tscn" id="8_bmtg2"]
+[ext_resource type="Script" uid="uid://cysgxx6c0o4ev" path="res://scripts/fragments/graphics/line_graph.gd" id="8_w21rr"]
 
 [node name="LoanInf" type="Control"]
 layout_mode = 3
@@ -46,39 +45,29 @@ text_overrun_behavior = 3
 [node name="Back" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 148.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Назад"
 icon = ExtResource("3_i7hoo")
 
-[node name="Update" type="Button" parent="Menu"]
-layout_mode = 0
-offset_left = 65.0
-offset_top = 6.0
-offset_right = 193.0
-offset_bottom = 134.0
-scale = Vector2(0.31, 0.31)
-tooltip_text = "Изменить"
-icon = ExtResource("4_5fhyb")
-
 [node name="AddInterest" type="Button" parent="Menu"]
 layout_mode = 0
-offset_left = 110.0
-offset_top = 6.0
-offset_right = 238.0
-offset_bottom = 134.0
+offset_left = 65.0
+offset_top = 5.0
+offset_right = 193.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Добавить проценты по займу"
 icon = ExtResource("5_gveen")
 
 [node name="AddPayment" type="Button" parent="Menu"]
 layout_mode = 0
-offset_left = 155.0
-offset_top = 6.0
-offset_right = 283.0
-offset_bottom = 134.0
+offset_left = 110.0
+offset_top = 5.0
+offset_right = 238.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Добавить платёж"
 icon = ExtResource("6_pnbtf")
@@ -139,11 +128,15 @@ offset_right = 1152.0
 offset_bottom = 597.0
 obj = 2
 
-[node name="LoanRepayment" parent="." instance=ExtResource("8_bmtg2")]
-layout_mode = 0
+[node name="LoanRepayment" type="Control" parent="."]
+custom_minimum_size = Vector2(1152, 124)
+layout_mode = 2
+anchors_preset = 0
 offset_top = 156.0
 offset_right = 1152.0
 offset_bottom = 280.0
+script = ExtResource("8_w21rr")
+graph_type = 2
 
 [node name="Total" type="ColorRect" parent="."]
 layout_mode = 0
@@ -209,4 +202,5 @@ clip_text = true
 text_overrun_behavior = 3
 
 [connection signal="button_down" from="Menu/Back" to="." method="_on_back_button_down"]
-[connection signal="button_down" from="Menu/Update" to="." method="_on_update_button_down"]
+[connection signal="button_down" from="Menu/AddInterest" to="." method="_on_add_interest_button_down"]
+[connection signal="button_down" from="Menu/AddPayment" to="." method="_on_add_payment_button_down"]

@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://ct7pumat37ciy" path="res://scripts/pages/information.gd" id="1_k7ufo"]
 [ext_resource type="PackedScene" uid="uid://bg0kb3lreju3h" path="res://scenes/fragments/head.tscn" id="2_caijd"]
-[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/right.png" id="3_ru164"]
+[ext_resource type="Texture2D" uid="uid://dwi480xiut5l4" path="res://img/interface/right.png" id="3_ru164"]
 [ext_resource type="Texture2D" uid="uid://b85cbftwbxvmv" path="res://img/interface/brush.png" id="4_kliq4"]
 [ext_resource type="Texture2D" uid="uid://cr2xn6fcuxoir" path="res://img/interface/plus.png" id="5_4wg3a"]
-[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/cash_flow.png" id="6_on1hd"]
+[ext_resource type="Texture2D" uid="uid://cartg4ce6rg4o" path="res://img/head/cash_flow.png" id="6_on1hd"]
 [ext_resource type="PackedScene" uid="uid://cgg1nqxryvnud" path="res://scenes/fragments/obj_array.tscn" id="7_jbvvl"]
 
 [node name="WalletInf" type="Control"]
@@ -46,9 +46,9 @@ text_overrun_behavior = 3
 [node name="Back" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 148.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Назад"
 icon = ExtResource("3_ru164")
@@ -56,9 +56,9 @@ icon = ExtResource("3_ru164")
 [node name="Update" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 65.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 193.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Изменить"
 icon = ExtResource("4_kliq4")
@@ -66,9 +66,9 @@ icon = ExtResource("4_kliq4")
 [node name="CashFlow" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 110.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 238.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Записать движение средств"
 icon = ExtResource("5_4wg3a")
@@ -76,9 +76,9 @@ icon = ExtResource("5_4wg3a")
 [node name="Transactions" type="Button" parent="Menu"]
 layout_mode = 0
 offset_left = 155.0
-offset_top = 6.0
+offset_top = 5.0
 offset_right = 283.0
-offset_bottom = 134.0
+offset_bottom = 133.0
 scale = Vector2(0.31, 0.31)
 tooltip_text = "Список транзакций"
 icon = ExtResource("6_on1hd")
@@ -135,7 +135,7 @@ layout_mode = 0
 offset_top = 161.0
 offset_right = 1152.0
 offset_bottom = 592.0
-obj = 8
+obj = 9
 
 [node name="Total" type="ColorRect" parent="."]
 layout_mode = 2
@@ -213,3 +213,5 @@ text_overrun_behavior = 3
 
 [connection signal="button_down" from="Menu/Back" to="." method="_on_back_button_down"]
 [connection signal="button_down" from="Menu/Update" to="." method="_on_update_button_down"]
+[connection signal="button_down" from="Menu/CashFlow" to="." method="_on_cash_flow_button_down"]
+[connection signal="button_down" from="Menu/Transactions" to="." method="_on_transactions_button_down"]

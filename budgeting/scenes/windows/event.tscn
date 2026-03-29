@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b7oegk7malo20"]
+[gd_scene load_steps=4 format=3 uid="uid://b7oegk7malo20"]
 
-[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/windows/window.gd" id="1_t3na1"]
+[ext_resource type="Script" uid="uid://b4o58a612xgot" path="res://scripts/pages/window.gd" id="1_t3na1"]
 [ext_resource type="PackedScene" uid="uid://2ktjulcaj65p" path="res://scenes/windows/window.tscn" id="2_t3na1"]
-[ext_resource type="Script" uid="uid://ka36kfhpk7b1" path="res://scripts/fragments/error_label.gd" id="3_t3na1"]
 [ext_resource type="PackedScene" uid="uid://cwknrqthvhq2m" path="res://scenes/fragments/data_selection/date_selection.tscn" id="3_xmdrw"]
 
 [node name="EventWindow" type="Control"]
@@ -15,18 +14,6 @@ page_type = 5
 
 [node name="Window" parent="." instance=ExtResource("2_t3na1")]
 layout_mode = 0
-
-[node name="Error" type="Label" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 110.0
-offset_top = 119.0
-offset_right = 693.0
-offset_bottom = 147.0
-theme_override_colors/font_color = Color(0.537131, 0.106176, 0.148476, 1)
-theme_override_font_sizes/font_size = 18
-horizontal_alignment = 1
-script = ExtResource("3_t3na1")
 
 [node name="Title" type="TextEdit" parent="."]
 clip_contents = false
@@ -48,6 +35,7 @@ theme_override_font_sizes/font_size = 19
 text = "Название события:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Repetition_rate" type="OptionButton" parent="."]
 layout_mode = 0
@@ -55,8 +43,8 @@ offset_left = 400.0
 offset_top = 272.0
 offset_right = 693.0
 offset_bottom = 303.0
-focus_next = NodePath("../Value")
-focus_previous = NodePath("../Title")
+text_overrun_behavior = 3
+clip_text = true
 selected = 0
 item_count = 5
 popup/item_0/text = "Один раз"
@@ -82,6 +70,7 @@ text = "Частота повторения"
 horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 3
+text_overrun_behavior = 3
 
 [node name="Event_type" type="OptionButton" parent="."]
 layout_mode = 0
@@ -89,8 +78,8 @@ offset_left = 400.0
 offset_top = 318.0
 offset_right = 693.0
 offset_bottom = 349.0
-focus_next = NodePath("../Value")
-focus_previous = NodePath("../Title")
+text_overrun_behavior = 3
+clip_text = true
 selected = 0
 item_count = 3
 popup/item_0/text = "Без типа"
@@ -112,6 +101,7 @@ text = "Тип события"
 horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 3
+text_overrun_behavior = 3
 
 [node name="Value" type="TextEdit" parent="."]
 visible = false
@@ -135,6 +125,7 @@ theme_override_font_sizes/font_size = 19
 text = "Значение:"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Date" parent="." instance=ExtResource("3_xmdrw")]
 layout_mode = 0
