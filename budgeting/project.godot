@@ -13,8 +13,8 @@ config_version=5
 config/name="budgeting"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="uid://chrku43e4ccmg"
-config/macos_native_icon="uid://chrku43e4ccmg"
+config/icon="uid://ddvf80ouqgwqn"
+config/macos_native_icon="uid://ddvf80ouqgwqn"
 config/windows_native_icon="res://icon.ico"
 
 [autoload]
