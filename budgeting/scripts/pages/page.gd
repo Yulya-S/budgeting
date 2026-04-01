@@ -102,4 +102,4 @@ func _on_Loan_add_interest_button_down() -> void: Request.match_check(Global.Pag
 func _on_Loan_add_payment_button_down() -> void: Request.match_check(Global.Pages.PAYMENT)
 
 # Создания подраздела
-func _on_Section_add_subsection_button_down() -> void: SF.op_w(Global.Pages.SUBSECTION)
+func _on_Section_add_subsection_button_down() -> void: Request.match_check(Global.Pages.SUBSECTION)

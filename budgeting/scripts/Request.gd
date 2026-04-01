@@ -634,6 +634,7 @@ func get_loan_total(idx: int, w2idx: int, date: String) -> float:
 # Распределение
 func match_check(page_type: Global.Pages) -> void:
 	match page_type:
+		Global.Pages.SUBSECTION: if not check_values_count(Tables.SECTIONS, 2): return
 		Global.Pages.TRANSFER: if not check_wallet_count(1): return
 		Global.Pages.PERCENT: if not check_loan_count(): return
 		Global.Pages.PAYMENT:
