@@ -53,6 +53,7 @@ func _check_loan() -> bool: return Request.check_loan_count("id=" + str(idx))
 func _on_back_button_down() -> void:
 	Global.delete_child(get_parent(), self)
 	idx = 0
+	Global.emit_signal("update_page")
 
 # Изменить
 func _on_update_button_down() -> void: SF.op_w(page_type, idx)
