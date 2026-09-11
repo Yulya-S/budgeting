@@ -705,7 +705,8 @@ func match_select(list_element: ObjectVariants, filter_data: Dictionary) -> Arra
 				ORDER BY cf.date DESC) last_date FROM wallets w",
 				filter_data.where, filter_data.order)
 		ObjectVariants.SECTION:
-			return select_sections_list(filter_data.where, filter_data.date, filter_data.order)
+			if filter_data.where != "": filter_data.where = " AND " + filter_data.where
+			return select_sections_list("id > 1" + filter_data.where, filter_data.date, filter_data.order)
 		ObjectVariants.SUBSECTION:
 			return select("ss.*, s.income, COALESCE(j.v, 0.0) value, j.last_date,
 				j.last_id FROM subsections ss LEFT JOIN sections s ON
