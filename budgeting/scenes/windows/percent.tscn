@@ -43,7 +43,7 @@ offset_left = 400.0
 offset_top = 307.0
 offset_right = 693.0
 offset_bottom = 338.0
-text = "0.0"
+placeholder_text = "0.0"
 autowrap_mode = 1
 scroll_past_end_of_file = true
 
