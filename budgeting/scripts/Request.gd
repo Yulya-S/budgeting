@@ -99,7 +99,7 @@ func connection_db(db_name: String) -> void:
 func _create_table(title: Tables, t_columns: Array, title_c: bool = false) -> void:
 	if title_c: t_columns = ["title VARCHAR(255)"] + t_columns
 	var foreign: Array = []
-	for i in t_columns: if "id" in i:
+	for i in t_columns: if "id" in i and "2" not in i:
 		foreign.append("(`"+i.split(" ")[0]+"`) REFERENCES `"+i.split("_id")[0]+"s`(`id`)")
 	if len(foreign) != 0: foreign = [""] + foreign
 	db.query("CREATE TABLE IF NOT EXISTS " + Global.enum_key(Tables, title) +
@@ -286,8 +286,8 @@ func update_with_columns(table: Variant, idx: Variant, values: Array, other: Str
 # Значения объекта с прибавлением одного значения и отнятием другого
 func _update_value(table: Tables, value_name: String, value_1: Variant,
 		value_2: Variant, idx_1: Variant, idx_2: Variant) -> void:
-	_update_record(table, [value_name], [value_name + "+" + value_1], int(idx_1))
-	_update_record(table, [value_name], [value_name + "-" + value_2], int(idx_2))
+	_update_record(table, [value_name], [value_name + "+" + str(value_1)], int(idx_1))
+	_update_record(table, [value_name], [value_name + "-" + str(value_2)], int(idx_2))
 
 # Удаление пометки о новизне уведомления
 func update_notifications_new() -> void: _update(Tables.NOTIFICATIONS, ["new"], [0])

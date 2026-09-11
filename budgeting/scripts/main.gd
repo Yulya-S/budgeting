@@ -1,27 +1,21 @@
 extends Node2D
-# Подключение пути к объекту в сцене
-@onready var DayTimer = $Timer
 
 # Создание сцены
 func _ready() -> void:
 	# Подключение сигналов
 	Global.connect("open_window", Callable(self, "_open_window"))
 	Global.connect("open_new_page", Callable(self, "_open_new_page"))
-	# Изменение значения оставшегося в сутках времени
-	DayTimer.start(_day_time() - (_date_f() + _date_f(1) + _date_f(2)))
+
+# Обработка смены при использовании приложения
+func _process(_delta: float) -> void:
+	if Global.date_to_str() != Time.get_datetime_string_from_system(false, true).split(" ")[0]:
+		_on_timer_timeout()
 
 # Закрытие БД во время закрытия приложения
 func _notification(what: int) -> void:
 	if Request.db and what == Window.NOTIFICATION_WM_CLOSE_REQUEST:
 		Request.db.close_db()
 		Request.db = null
-
-# Получение суммарного значения времени в сутках
-func _day_time() -> float: return 60. * 60. * 24.
-
-# Получение суммарного значения времени в сутках
-func _date_f(level: float = 0) -> float:
-	return (60. ** level) * Global.get_date()[["second", "minute", "hour"][level]]
 
 # Обновление даты последнего входа
 func _update_last_entry() -> void:
@@ -32,7 +26,6 @@ func _update_last_entry() -> void:
 
 # Обработка окончания работы таймера
 func _on_timer_timeout() -> void:
-	DayTimer.start(_day_time())
 	Global.sys_date.set_value(Time.get_datetime_string_from_system())
 	_update_last_entry()
 

@@ -62,7 +62,7 @@ func _on_update_button_down() -> void: SF.op_w(page_type, idx)
 func _on_transactions_button_down() -> void: SF.op_np(Global.Pages.CASH_FLOW, idx, page_type)
 
 # Создать движение средств
-func _on_cash_flow_button_down() -> void: _open_w(Global.Pages.CASH_FLOW)
+func _on_cash_flow_button_down() -> void: if Request.check_sections_and_wallets(): _open_w(Global.Pages.CASH_FLOW)
 
 # Создать подраздел
 func _on_add_subsection_button_down() -> void: _open_w(Global.Pages.SUBSECTION)
